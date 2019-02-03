@@ -46,6 +46,18 @@ th.tabco4 {
 	text-transform: uppercase;
 	vertical-align: middle !important;
 }
+.tabco5 {
+	background: gray;
+	text-align: center;
+	color: #fff;
+}
+th.tabco5 {
+	background: silver;	
+	padding: 20px 10px !important;
+	font-size: 18px;
+	text-transform: uppercase;
+	vertical-align: middle !important;
+}
 .rightSign {
 	color: #1ab921;
 	background: #fff;
