@@ -30,3 +30,15 @@
 *.exe
 *.out
 *.app
+
+
+# C# directories we do not need
+bin
+obj
+c/\temp\internal-nlog.txt
+
+# MAC OSX
+.DS_Store
+
+# generated test files
+test.ckl
