@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>openSTIG Reports</title>
+		<title>openSTIG - Checklist Result</title>
 		<meta name="description" content="openSTIG tool Dashboard">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
@@ -27,7 +27,7 @@
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
-		
+
 		<!-- Bootstrap CSS -->
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		
@@ -35,12 +35,12 @@
 		<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 		
 		<!-- Custom CSS -->
-		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />		
+		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
 		<!-- END CSS for this page -->
-		
 </head>
 
 <body class="adminbody">
@@ -76,22 +76,21 @@
 						</a>
 					</div>
 				</li>
-			</ul>            
-            <ul class="list-inline menu-left mb-0">
-                <li class="float-left">
-                    <button class="button-menu-mobile open-left">
-                        <i class="fa fa-fw fa-bars"></i>
-                    </button>
-                </li>                        
-            </ul>
-
+			</ul>
+			<ul class="list-inline menu-left mb-0">
+				<li class="float-left">
+					<button class="button-menu-mobile open-left">
+						<i class="fa fa-fw fa-bars"></i>
+					</button>
+				</li>                        
+			</ul>
         </nav>
-
 	</div>
 	<!-- End Navigation -->
-	
+
  
-	<!-- Left Sidebar -->	<div class="left main-sidebar">
+	<!-- Left Sidebar -->
+	<div class="left main-sidebar">
 		<div class="sidebar-inner leftscroll">
 			<div id="sidebar-menu">
 			<ul>
@@ -99,10 +98,10 @@
 					<a href="index.html"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="checklists.html"><i class="fa fa-fw fa-bars"></i><span> Checklists </span> </a>
+					<a class="active" href="checklists.html"><i class="fa fa-fw fa-bars"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
-					<a class="active" href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
 				<li class="submenu">
 					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
@@ -114,74 +113,59 @@
 		</div>
 	</div>
 	<!-- End Sidebar -->
-
     <div class="content-page">	
 		<!-- Start content -->
         <div class="content">            
-		<div class="container-fluid">							
-			<div class="row">
+			<div class="container-fluid">					
+				<div class="row">
 					<div class="col-xl-12">
-							<div class="breadcrumb-holder">
-									<h1 class="main-title float-left">Reports</h1>
-									<ol class="breadcrumb float-right">
-										<li class="breadcrumb-item">Home</li>
-										<li class="breadcrumb-item active">Reports</li>
-									</ol>
-									<div class="clearfix"></div>
-							</div>
+						<div class="breadcrumb-holder">
+							<h1 class="main-title float-left">My Checklist</h1>
+							<ol class="breadcrumb float-right">
+								<li class="breadcrumb-item">Home</li>
+								<li class="breadcrumb-item active">Checklist</li>
+							</ol>
+							<div class="clearfix"></div>
+						</div>
 					</div>
-			</div>
-			<!-- end row -->
-			
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-					<div class="card mb-3">
-						<div class="card-header">
-							<i class="fa fa-table"></i> Severity Breakdown
-						</div>
-							
-						<div class="card-body">
-							<canvas id="chartSeverity"></canvas>
-						</div>
-						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-					</div><!-- end card-->					
 				</div>
-				
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-					<div class="card mb-3">
-						<div class="card-header">
-							<i class="fa fa-table"></i> Category Breakdown
-						</div>
-							
-						<div class="card-body">
-							<canvas id="chartCategory"></canvas>
-						</div>
-						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-					</div><!-- end card-->					
-				</div>							
-			</div>				
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
-					<div class="card mb-3">
-						<div class="card-header">
-							<i class="fa fa-table"></i> Checklist Score Breakdown
-						</div>
-							
-						<div class="card-body">
-							<canvas id="barChart"></canvas>
-						</div>							
-						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-					</div><!-- end card-->					
-				</div>
-			</div>
-			<!-- end row -->
-
-        </div>
-		<!-- END container-fluid -->
-
+				<!-- end row -->		
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-table"></i> My Checklists</h3>
+							</div>								
+							<div class="card-body">
+								
+								<table class="table table-condensed table-hover table-bordered table-responsive-md">
+								<thead>
+								<tr>
+									<th class="tabco1">Name</th>
+									<th class="tabco2">Not a Finding</th>
+									<th class="tabco3">Not Applicable</th>
+									<th class="tabco4">Open</th>
+									<th class="tabco5">Not Reviewed</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td class="tabco1"><a href="#">My App - .NET Core Web #1</a></td>
+									<td class="tabco2"><i class="fa" aria-hidden="true"></i>25</td>
+									<td class="tabco3"><i class="fa" aria-hidden="true"></i>20</td>
+									<td class="tabco4"><i class="fa" aria-hidden="true"></i>100</td>
+									<td class="tabco5"><i class="fa" aria-hidden="true"></i>100</td>
+								</tr>
+								</tbody>
+								</table>
+							</div><!-- end card body -->															
+						</div><!-- end card-->					
+					</div>		
+				</div><!-- end row-->
+            </div>
+			<!-- END container-fluid -->
 		</div>
 		<!-- END content -->
-
     </div>
 	<!-- END content-page -->
     
@@ -208,120 +192,14 @@
 <script src="assets/js/fastclick.js"></script>
 <script src="assets/js/jquery.blockUI.js"></script>
 <script src="assets/js/jquery.nicescroll.js"></script>
+<script src="assets/js/jquery.scrollTo.min.js"></script>
+<script src="assets/plugins/switchery/switchery.min.js"></script>
 
 <!-- App js -->
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-	
-	<script>
-	// barChart
-	var ctx1 = document.getElementById("barChart").getContext('2d');
-	var barChart = new Chart(ctx1, {
-		type: 'bar',
-		data: {
-			labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-			datasets: [{
-				label: 'Amount received',
-				data: [12, 19, 3, 5, 10, 5, 13, 17, 11, 8, 11, 9],
-				backgroundColor: [
-					'rgba(255, 99, 132, 0.2)',
-					'rgba(54, 162, 235, 0.2)',
-					'rgba(255, 206, 86, 0.2)',
-					'rgba(75, 192, 192, 0.2)',
-					'rgba(153, 102, 255, 0.2)',
-					'rgba(255, 159, 64, 0.2)',
-					'rgba(255, 99, 132, 0.2)',
-					'rgba(54, 162, 235, 0.2)',
-					'rgba(255, 206, 86, 0.2)',
-					'rgba(75, 192, 192, 0.2)',
-					'rgba(153, 102, 255, 0.2)',
-					'rgba(255, 159, 64, 0.2)'				
-				],
-				borderColor: [
-					'rgba(255,99,132,1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-					'rgba(255, 159, 64, 1)',
-					'rgba(255,99,132,1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-					'rgba(255, 159, 64, 1)'
-				],
-				borderWidth: 1
-			}]
-		},
-		options: {
-			scales: {
-				yAxes: [{
-					ticks: {
-						beginAtZero:true
-					}
-				}]
-			}
-		}
-	});
-			
-	// chartSeverity
-	var ctx3 = document.getElementById("chartSeverity").getContext('2d');
-	var chartSeverity = new Chart(ctx3, {
-		type: 'pie',
-		data: {
-				datasets: [{
-					data: [50, 50, 13, 100],
-					backgroundColor: [
-						'rgba(255,99,132,1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(150, 150, 150, 1)'
-					],
-					label: 'Checklist Severity Breakdown'
-				}],
-				labels: [
-					"Open",
-					"Not a Finding",
-					"Not Applicable",
-					"Not Reviewed"
-				]
-			},
-			options: {
-				responsive: true
-			}
-	 
-	});
 
-	// chartCategory
-	var ctx4 = document.getElementById("chartCategory").getContext('2d');
-	var chartCategory = new Chart(ctx4, {
-		type: 'pie',
-		data: {
-				datasets: [{
-					data: [24, 200, 53],
-					backgroundColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)'
-					],
-					label: 'Category Breakdown'
-				}],
-				labels: [
-					"CAT I",
-					"CAT II",
-					"CAT III"
-				]
-			},
-			options: {
-				responsive: true
-			}
-	});
-
-	// });
-	</script>
 <!-- END Java Script for this page -->
 
 </body>
