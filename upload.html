@@ -128,37 +128,82 @@
 	</div>
 	<!-- End Sidebar -->
 
-
     <div class="content-page">
 	
 		<!-- Start content -->
         <div class="content">
 			<div class="container-fluid">
 			<div class="row">
-                <div class="col-xl-12">
-                    <div class="breadcrumb-holder">
-                        <h1 class="main-title float-left">Checklist file upload</h1>
-                        <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item active">New checklist upload</li>
-                        </ol>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
+        <div class="col-xl-12">
+            <div class="breadcrumb-holder">
+                <h1 class="main-title float-left">Checklist file upload</h1>
+                <ol class="breadcrumb float-right">
+                    <li class="breadcrumb-item">Home</li>
+                    <li class="breadcrumb-item active">New checklist upload</li>
+                </ol>
+                <div class="clearfix"></div>
+            </div>
+        </div>
 			</div>
             <!-- end row -->
 			<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-12">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-file"></i> New Checklist Upload</h3>
-								 Specify a valid .CKL file and the rest of the mandatory fields and click Submit.
-							</div>
-							<div class="card-body">
-								<input type="file" id="checklistfile" /> 
-							</div>														
-						</div><!-- end card-->					
-                    </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-12">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3><i class="fa fa-file"></i> New Checklist Upload</h3>
+                                Specify a valid .CKL file and the rest of the mandatory fields and click Submit.
+                        </div>
+                        <div class="card-body">
+								        <form>
+                            <div class="form-group">
+                              <label for="checklistTitle">Title (required)</label>
+                              <input type="text" class="form-control" id="checklistTitle" 
+                              aria-describedby="titleHelp" placeholder="Enter title" required>
+                              <small id="titleHelp" class="form-text text-muted">Specify a good title for this Checklist</small>
+                            </div>
+                            <div class="form-group">
+                              <label for="checklistDescription">Description (required)</label>
+                              <input type="text" class="form-control" id="checklistDescription" 
+                              aria-describedby="descriptionHelp" placeholder="Enter a Description" required>
+                              <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this Checklist</small>
+                            </div>
+                            
+                            <div class="form-group">
+                              <select class="form-control select2" id="checklistType">
+                                  <option value="0">Choose one...</option>
+                                <optgroup label="Applications">
+                                    <option value="10">Application Security & Development</option>
+                                <optgroup>
+                                
+                                <optgroup label="Application Servers">	
+                                    <option value="300">Linux Apache HTTP</option>
+                                    <option value="300">IBM WebLogic</option>
+                                <optgroup>
+                                
+                                <optgroup label="Browsers">	
+                                    <option value="100">Chrome</option>
+                                    <option value="105">Firefox</option>
+                                    <option value="110">MS Edge</option>
+                                <optgroup>
+                                
+                                <optgroup label="Operating Systems">	
+                                    <option value="200">Windows 10 OS</option>
+                                    <option value="205">Windows 2016 Server</option>
+                                    <option value="210">Windows 2012 Server</option>
+                                <optgroup>
+                              </select>
+                             </div>
+
+                             <div class="form-group">
+                              <input type="file" id="checklistfile" /> 
+                             </div>
+
+                            <button type="submit" class="btn btn-primary">Upload and Save</button>
+                          </form>
+
+                        </div>														
+                    </div><!-- end card-->					
+                </div>
 			</div>
             </div>
 			<!-- END container-fluid -->
@@ -205,7 +250,7 @@ $(document).ready(function(){
     $('#filer_example2').filer({
         limit: 3,
         maxSize: 3,
-        extensions: ['jpg', 'jpeg', 'png', 'gif', 'psd'],
+        extensions: ['ckl'],
         changeInput: true,
         showThumbs: true,
         addMore: true
@@ -308,12 +353,6 @@ $(document).ready(function(){
 				size: 145,
 				type: "image/jpg",
 				file: "assets/images/sample-image-1.jpg"
-			},
-			{
-				name: "2.jpg",
-				size: 145,
-				type: "image/jpg",
-				file: "assets/images/sample-image-2.jpg"
 			}
 		],
         addMore: false,
