@@ -137,7 +137,6 @@
 								<h3><i class="fa fa-table"></i> My Checklists</h3>
 							</div>								
 							<div class="card-body">
-								
 								<table class="table table-condensed table-hover table-bordered table-responsive-md">
 								<thead>
 								<tr>
@@ -162,6 +161,49 @@
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<i class="fa fa-table"></i> Severity Breakdown
+							</div>
+								
+							<div class="card-body">
+								<canvas id="chartSeverity"></canvas>
+							</div>
+							<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+						</div><!-- end card-->					
+					</div>
+					
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<i class="fa fa-table"></i> Category Breakdown
+							</div>
+								
+							<div class="card-body">
+								<canvas id="chartCategory"></canvas>
+							</div>
+							<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+						</div><!-- end card-->					
+					</div>							
+				</div>				
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<i class="fa fa-table"></i> Checklist Score Breakdown
+							</div>
+								
+							<div class="card-body">
+								<canvas id="barChart"></canvas>
+							</div>							
+							<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+						</div><!-- end card-->					
+					</div>
+				</div>
+
             </div>
 			<!-- END container-fluid -->
 		</div>
@@ -199,8 +241,115 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	
+	<script>
+	// barChart
+	var ctx1 = document.getElementById("barChart").getContext('2d');
+	var barChart = new Chart(ctx1, {
+		type: 'bar',
+		data: {
+			labels: ["CAT I - Open", "CAT I - Not a Finding", "CAT I - N/A", "CAT I - Not Reviewed", "CAT II - Open", "CAT II - Not a Finding", "CAT II - N/A", "CAT II - Not Reviewed","CAT III - Open", "CAT III - Not a Finding", "CAT III - N/A", "CAT III - Not Reviewed"],
+			datasets: [{
+				label: '# Vulnerabilities',
+				data: [12, 19, 3, 5, 10, 5, 13, 17, 11, 8, 11, 9],
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(150, 150, 150, 0.5)',	
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(150, 150, 150, 0.5)',	
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(150, 150, 150, 0.5)'	
+				],
+				borderColor: [
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)'
+				],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero:true
+					}
+				}]
+			}
+		}
+	});
+			
+	// chartSeverity
+	var ctx3 = document.getElementById("chartSeverity").getContext('2d');
+	var chartSeverity = new Chart(ctx3, {
+		type: 'pie',
+		data: {
+				datasets: [{
+					data: [100, 25, 20, 100],
+					backgroundColor: [
+						'rgba(255,99,132,1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(150, 150, 150, 1)'
+					],
+					label: 'Checklist Severity Breakdown'
+				}],
+				labels: [
+					"Open",
+					"Not a Finding",
+					"Not Applicable",
+					"Not Reviewed"
+				]
+			},
+			options: {
+				responsive: true
+			}
+	 
+	});
 
+	// chartCategory
+	var ctx4 = document.getElementById("chartCategory").getContext('2d');
+	var chartCategory = new Chart(ctx4, {
+		type: 'pie',
+		data: {
+				datasets: [{
+					data: [24, 168, 53],
+					backgroundColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)'
+					],
+					label: 'Category Breakdown'
+				}],
+				labels: [
+					"CAT I",
+					"CAT II",
+					"CAT III"
+				]
+			},
+			options: {
+				responsive: true
+			}
+	});
+
+	// });
+	</script>
 <!-- END Java Script for this page -->
-
 </body>
 </html>
