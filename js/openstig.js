@@ -31,6 +31,10 @@ async function getChecklists() {
       throw new Error(response.status)
   }
 
+/*************************************
+ * Single Checklist Data functions
+ *************************************/
+// get the specific checklist data
 async function getChecklistData(id) {
   let response = await fetch(readAPI + "/" + id)
   if (response.ok) {
@@ -40,7 +44,7 @@ async function getChecklistData(id) {
   else 
     throw new Error(response.status)
 }
-
+// call to get the score data and show the name and then funnel data to the
 async function getChecklistScore(id) {
   let response = await fetch(scoreAPI + "/artifact/" + id)
   if (response.ok) {
@@ -49,9 +53,124 @@ async function getChecklistScore(id) {
       $("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
       $("#checklistOpenCount").text(data.totalOpen.toString());
       $("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
+      // show the charts with the same data
+      makeChartStatus(data);
+      makeChartCategory(data);
+      makeBarChartBreakdown(data);
   }
   else 
     throw new Error(response.status)
+}
+// pie chart with the status of the checklist
+async function makeChartStatus (data) {
+	var ctx3 = document.getElementById("chartSeverity").getContext('2d');
+	var chartSeverity = new Chart(ctx3, {
+		type: 'pie',
+		data: {
+				datasets: [{
+					data: [data.totalOpen, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
+					backgroundColor: [
+						'rgba(255,99,132,1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(150, 150, 150, 1)'
+					],
+					label: 'Checklist Severity Breakdown'
+				}],
+				labels: [
+					"Open",
+					"Not a Finding",
+					"Not Applicable",
+					"Not Reviewed"
+				]
+			},
+			options: {
+				responsive: true
+			}
+	 
+  });
+}
+// pie chart showing breakdown by category 1/2/3
+async function makeChartCategory (data) {
+	var ctx4 = document.getElementById("chartCategory").getContext('2d');
+	var chartCategory = new Chart(ctx4, {
+		type: 'pie',
+		data: {
+				datasets: [{
+					data: [data.totalCat1, data.totalCat2, data.totalCat3],
+					backgroundColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)'
+					],
+					label: 'Category Breakdown'
+				}],
+				labels: [
+					"CAT I",
+					"CAT II",
+					"CAT III"
+				]
+			},
+			options: {
+				responsive: true
+			}
+  });
+}
+
+// bar chart breaking down score by category and status
+async function makeBarChartBreakdown(data) {  
+	// barChart
+	var ctx1 = document.getElementById("barChart").getContext('2d');
+	var barChart = new Chart(ctx1, {
+		type: 'bar',
+		data: {
+			labels: ["CAT I - Open", "CAT I - Not a Finding", "CAT I - N/A", "CAT I - Not Reviewed", "CAT II - Open", "CAT II - Not a Finding", "CAT II - N/A", "CAT II - Not Reviewed","CAT III - Open", "CAT III - Not a Finding", "CAT III - N/A", "CAT III - Not Reviewed"],
+			datasets: [{
+				label: '# Vulnerabilities',
+        data: [data.totalCat1Open, data.totalCat1NotAFinding, data.totalCat1NotApplicable, data.totalCat1NotReviewed, 
+          data.totalCat2Open, data.totalCat2NotAFinding, data.totalCat2NotApplicable, data.totalCat2NotReviewed, 
+          data.totalCat3Open, data.totalCat3NotAFinding, data.totalCat3NotApplicable, data.totalCat3NotReviewed],
+				backgroundColor: [
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(150, 150, 150, 0.5)',	
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(150, 150, 150, 0.5)',	
+					'rgba(255, 99, 132, 0.5)',
+					'rgba(75, 192, 192, 0.5)',
+					'rgba(54, 162, 235, 0.5)',
+					'rgba(150, 150, 150, 0.5)'	
+				],
+				borderColor: [
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)',
+					'rgba(0,0,0,0.7)'
+				],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero:true
+					}
+				}]
+			}
+		}
+	});
 }
 
 /************************************ 
