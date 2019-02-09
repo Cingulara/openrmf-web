@@ -4,8 +4,9 @@ AUTHOR ?= "Dale Bingham"
 PORT_EXT ?= 9000
 PORT_INT ?= 80
 NO_CACHE ?= true
+DOCKERHUB_ACCOUNT ?= cingulara
   
-.PHONY: build run stop clean version
+.PHONY: build run stop clean version dockerhub
 
 build:  
 	docker build -f Dockerfile . -t $(NAME)\:$(VERSION) --no-cache=$(NO_CACHE)  
@@ -22,5 +23,12 @@ clean:
 
 version:
 	@echo ${VERSION}
+
+dockerhub:
+	docker login
+	docker tag $(NAME)\:$(VERSION) ${DOCKERHUB_ACCOUNT}\/$(NAME)\:$(VERSION)
+	docker tag $(NAME)\:$(VERSION) ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
+	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:$(VERSION)
+	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
 
 DEFAULT: build
