@@ -239,14 +239,15 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
-
-	<script src="js/openstig.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-	<script>
+<script src="js/openstig.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>
+	$(document).ready(function() {
 		// calls to get the checklist data from the API
 		getChecklistData(getParameterByName('id'));
 		getChecklistScore(getParameterByName('id'));
-	</script>
+	} );
+</script>
 <!-- END Java Script for this page -->
 </body>
 </html>

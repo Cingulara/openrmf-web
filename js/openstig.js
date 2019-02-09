@@ -4,39 +4,57 @@ var saveAPI = 'http://localhost:8082'
 var uploadAPI = 'http://localhost:8086'
 var templateAPI = 'http://localhost:8088'
 
+/*************************************
+ * Dashboard functions
+ ************************************/
 async function getChecklists() {
-    let response = await fetch(readAPI)
+    let response = await fetch(readAPI);
     if (response.ok) {
         var data = await response.json()
         // cycle through the data and fill in the data table at id tblChecklistListing div.html()
         var table = "";
         table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th class="tabco1">Name</th>'
         table += '<th class="tabco2">Not a Finding</th><th class="tabco3">Not Applicable</th><th class="tabco4">Open</th><th class="tabco5">Not Reviewed</th>'
-        table += '</tr></thead><tbody>'
-        data.forEach( function(item, index) {
-          table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.id + '">'
-          table += item.title
-          table += '</a></td><td class="tabco2"><i class="fa" aria-hidden="true"></i>15</td>'
-          table += '<td class="tabco3"><i class="fa" aria-hidden="true"></i>17</td>'
-          table += '<td class="tabco4"><i class="fa" aria-hidden="true"></i>100</td>'
-          table += '<td class="tabco5"><i class="fa" aria-hidden="true"></i>130</td>'
-          table += '</tr>'
-        });
-      table += '</tbody></tbody></table>'
-
-      // with all the data fill in the table and go
-      $("#tblChecklistListing").html(table);
+				table += '</tr></thead><tbody>'
+				if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");}
+				else {
+					data.forEach( function(item, index) {
+						table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.id + '">'
+						table += item.title
+						table += '</a></td><td class="tabco2"><i class="fa" aria-hidden="true"></i>15</td>'
+						table += '<td class="tabco3"><i class="fa" aria-hidden="true"></i>17</td>'
+						table += '<td class="tabco4"><i class="fa" aria-hidden="true"></i>100</td>'
+						table += '<td class="tabco5"><i class="fa" aria-hidden="true"></i>130</td>'
+						table += '</tr>'
+					});
+				table += '</tbody></tbody></table>'
+				// with all the data fill in the table and go
+				$("#tblChecklistListing").html(table);
+			}
     }
     else 
       throw new Error(response.status)
-  }
+	}
+	
+
+async function getChecklistTotalCount() {
+	let response = await fetch(readAPI + "/count");
+	if (response.ok) {
+			var data = await response.json()
+			$("#numberChecklistsTotal").html(data);
+			$("#numberNewChecklistsTotal").text(data);
+	}
+	else 
+		throw new Error(response.status)
+}
+	
 
 /*************************************
  * Single Checklist Data functions
  *************************************/
 // get the specific checklist data
 async function getChecklistData(id) {
-  let response = await fetch(readAPI + "/" + id)
+  let response = await fetch(readAPI + "/" + id);
   if (response.ok) {
       var data = await response.json()
       $("#checklistTitle").html('<i class="fa fa-table"></i> ' + data.title);
@@ -46,7 +64,7 @@ async function getChecklistData(id) {
 }
 // call to get the score data and show the name and then funnel data to the
 async function getChecklistScore(id) {
-  let response = await fetch(scoreAPI + "/artifact/" + id)
+  let response = await fetch(scoreAPI + "/artifact/" + id);
   if (response.ok) {
       var data = await response.json()
       $("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());

@@ -1204,3 +1204,12 @@ a.btn:focus {
 .label-info {
     background-color: #5bc0de;
 }
+
+
+/*************************
+* openSTIG Tool Extra CSS
+**************************/
+
+.clickable {
+  cursor: pointer;
+}

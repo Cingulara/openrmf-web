@@ -136,12 +136,12 @@
 				<!-- end row -->
 						
 				<div class="row">
-						<div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+						<div class="col-xs-12 col-md-6 col-lg-6 col-xl-3 clickable" onclick="location.href='checklists.html';">
 							<div class="card-box noradius noborder bg-default">
 								<i class="fa fa-file-text-o float-right text-white"></i>
 								<h6 class="text-white text-uppercase m-b-20">Checklists</h6>
-								<h1 class="m-b-20 text-white counter">17</h1>
-								<span class="text-white">3 New Checklists</span>
+								<h1 id="numberChecklistsTotal" class="m-b-20 text-white"></h1>
+								<span class="text-white"><span id="numberNewChecklistsTotal"></span> New Checklists</span>
 							</div>
 						</div>
 
@@ -167,65 +167,10 @@
 							<div class="card-box noradius noborder bg-info">
 								<i class="fa fa-code float-right text-white"></i>
 								<h6 class="text-white text-uppercase m-b-20">Version</h6>
-								<h1 class="m-b-20 text-white counter">0.1</h1>
+								<h1 class="m-b-20 text-white counter">0.2</h1>
 								<span class="text-white">alpha release</span>
 							</div>
 						</div>
-				</div>
-				<!-- end row -->
-				
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-table"></i> 5 Latest Checklists</h3>
-							</div>								
-							<div class="card-body">
-								
-								<table class="table table-condensed table-hover table-bordered table-responsive-md">
-								<thead>
-								<tr>
-									<th class="tabco1">Name</th>
-									<th class="tabco2">Not a Finding</th>
-									<th class="tabco3">Not Applicable</th>
-									<th class="tabco4">Open</th>
-									<th class="tabco5">Not Reviewed</th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr>
-									<td class="tabco1"><a href="single-checklist.html">My App - .NET Core Web #1</a></td>
-									<td class="tabco2"><i class="fa" aria-hidden="true"></i>25</td>
-									<td class="tabco3"><i class="fa" aria-hidden="true"></i>20</td>
-									<td class="tabco4"><i class="fa" aria-hidden="true"></i>100</td>
-									<td class="tabco5"><i class="fa" aria-hidden="true"></i>100</td>
-								</tr>
-								<tr>
-									<td class="tabco1"><a href="single-checklist.html">My App - MongoDB</a></td>
-									<td class="tabco2"><i class="fa" aria-hidden="true"></i>15</td>
-									<td class="tabco3"><i class="fa" aria-hidden="true"></i>17</td>
-									<td class="tabco4"><i class="fa" aria-hidden="true"></i>100</td>
-									<td class="tabco5"><i class="fa" aria-hidden="true"></i>130</td>
-								</tr>
-								<tr>
-									<td class="tabco1"><a href="single-checklist.html">My Other NodeJS app</a></td>
-									<td class="tabco2"><i class="fa" aria-hidden="true"></i>190</td>
-									<td class="tabco3"><i class="fa" aria-hidden="true"></i>12</td>
-									<td class="tabco4"><i class="fa" aria-hidden="true"></i>55</td>
-									<td class="tabco5"><i class="fa" aria-hidden="true"></i>0</td>
-								</tr>
-								<tr>
-									<td class="tabco1"><a href="single-checklist.html">My Other NodeJS app - PostgreSQL</a></td>
-									<td class="tabco2"><i class="fa" aria-hidden="true"></i>50</td>
-									<td class="tabco3"><i class="fa" aria-hidden="true"></i>95</td>
-									<td class="tabco4"><i class="fa" aria-hidden="true"></i>39</td>
-									<td class="tabco5"><i class="fa" aria-hidden="true"></i>17</td>
-								</tr>
-								</tbody>
-								</table>
-							</div><!-- end card body -->															
-						</div><!-- end card-->					
-					</div>						
 				</div>
 				<!-- end row -->
             </div>
@@ -269,15 +214,14 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 
+<script src="./js/openstig.js"></script>
+
 <!-- Counter-Up-->
 <script src="assets/plugins/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="assets/plugins/counterup/jquery.counterup.min.js"></script>			
-
+<script src="assets/plugins/counterup/jquery.counterup.min.js"></script>
 <script>
 	$(document).ready(function() {
-		// data-tables
-		$('#example1').DataTable();
-				
+		getChecklistTotalCount();
 		// counter-up
 		$('.counter').counterUp({
 			delay: 10,
