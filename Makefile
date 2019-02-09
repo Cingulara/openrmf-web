@@ -9,6 +9,9 @@ DOCKERHUB_ACCOUNT ?= cingulara
 .PHONY: build run stop clean version dockerhub
 
 build:  
+	dotnet build
+
+docker: 
 	docker build -f Dockerfile . -t $(NAME)\:$(VERSION) --no-cache=$(NO_CACHE)  
 
 run:  
@@ -18,8 +21,8 @@ stop:
 	docker rm -f $(NAME)
   
 clean:
-	@rm -f obj
-	@rm -f bin
+	@rm -f -r obj
+	@rm -f -r bin
 
 version:
 	@echo ${VERSION}
