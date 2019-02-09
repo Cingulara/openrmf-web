@@ -8,50 +8,50 @@ var templateAPI = 'http://localhost:8088'
  * Dashboard functions
  ************************************/
 async function getChecklists() {
-    let response = await fetch(readAPI);
-    if (response.ok) {
-				var data = await response.json()
-				var intNaF = 0;
-				var intNA = 0;
-				var intOpen = 0;
-				var intNR = 0;
-        // cycle through the data and fill in the data table at id tblChecklistListing div.html()
-        var table = "";
-        table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th class="tabco1">Name</th>'
-        table += '<th class="tabco2">Not a Finding</th><th class="tabco3">Not Applicable</th><th class="tabco4">Open</th><th class="tabco5">Not Reviewed</th>'
-				table += '</tr></thead><tbody>'
-				if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");}
-				else {
-					//data.forEach( function(item, index) {
-						for (const item of data) {
-						table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.id + '">'
-						table += item.title
-						intNaF = 0;
-						intNA = 0;
-						intOpen = 0;
-						intNR = 0;
-						var score = await getScoreForChecklistListing(item.id);
-						if (score) {
-							intNaF = score.totalNotAFinding;
-							intNA = score.totalNotApplicable;
-							intOpen = score.totalOpen;
-							intNR = score.totalNotReviewed;
-							}
-						table += '</a></td><td class="tabco2"><i class="fa" aria-hidden="true"></i>' + intNaF.toString() + '</td>'
-						table += '<td class="tabco3"><i class="fa" aria-hidden="true"></i>' + intNA.toString() + '</td>'
-						table += '<td class="tabco4"><i class="fa" aria-hidden="true"></i>' + intOpen.toString() + '</td>'
-						table += '<td class="tabco5"><i class="fa" aria-hidden="true"></i>' + intNR.toString() + '</td>'
-						table += '</tr>'
-					}
-				table += '</tbody></tbody></table>'
-				// with all the data fill in the table and go
-				$("#tblChecklistListing").html(table);
-			}
-    }
-    else 
-      throw new Error(response.status)
+	let response = await fetch(readAPI);
+	if (response.ok) {
+			var data = await response.json()
+			var intNaF = 0;
+			var intNA = 0;
+			var intOpen = 0;
+			var intNR = 0;
+			// cycle through the data and fill in the data table at id tblChecklistListing div.html()
+			var table = "";
+			table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th class="tabco1">Name</th>'
+			table += '<th class="tabco2">Not a Finding</th><th class="tabco3">Not Applicable</th><th class="tabco4">Open</th><th class="tabco5">Not Reviewed</th>'
+			table += '</tr></thead><tbody>'
+			if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");}
+			else {
+				//data.forEach( function(item, index) {
+					for (const item of data) {
+					table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.id + '">'
+					table += item.title
+					intNaF = 0;
+					intNA = 0;
+					intOpen = 0;
+					intNR = 0;
+					var score = await getScoreForChecklistListing(item.id);
+					if (score) {
+						intNaF = score.totalNotAFinding;
+						intNA = score.totalNotApplicable;
+						intOpen = score.totalOpen;
+						intNR = score.totalNotReviewed;
+						}
+					table += '</a></td><td class="tabco2"><i class="fa" aria-hidden="true"></i>' + intNaF.toString() + '</td>'
+					table += '<td class="tabco3"><i class="fa" aria-hidden="true"></i>' + intNA.toString() + '</td>'
+					table += '<td class="tabco4"><i class="fa" aria-hidden="true"></i>' + intOpen.toString() + '</td>'
+					table += '<td class="tabco5"><i class="fa" aria-hidden="true"></i>' + intNR.toString() + '</td>'
+					table += '</tr>'
+				}
+			table += '</tbody></tbody></table>'
+			// with all the data fill in the table and go
+			$("#tblChecklistListing").html(table);
+		}
 	}
-	
+	else 
+		throw new Error(response.status)
+}
+// called from above to return the checklist score
 async function getScoreForChecklistListing(id) {
 	let responseScore = await fetch(scoreAPI + "/artifact/" + id);
 	if (responseScore.ok) {
@@ -59,6 +59,7 @@ async function getScoreForChecklistListing(id) {
 		return dataScore;
 	}
 }
+// fill in the # of total checklists in the system on the dashboard page top right
 async function getChecklistTotalCount() {
 	let response = await fetch(readAPI + "/count");
 	if (response.ok) {
@@ -69,7 +70,6 @@ async function getChecklistTotalCount() {
 	else 
 		throw new Error(response.status)
 }
-	
 
 /*************************************
  * Single Checklist Data functions
@@ -86,20 +86,15 @@ async function getChecklistData(id) {
 }
 // call to get the score data and show the name and then funnel data to the
 async function getChecklistScore(id) {
-  let response = await fetch(scoreAPI + "/artifact/" + id);
-  if (response.ok) {
-      var data = await response.json()
-      $("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
-      $("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
-      $("#checklistOpenCount").text(data.totalOpen.toString());
-      $("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
-      // show the charts with the same data
-      makeChartStatus(data);
-      makeChartCategory(data);
-      makeBarChartBreakdown(data);
-  }
-  else 
-    throw new Error(response.status)
+	var data = await getScoreForChecklistListing(id);
+	$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
+	$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
+	$("#checklistOpenCount").text(data.totalOpen.toString());
+	$("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
+	// show the charts with the same data
+	makeChartStatus(data);
+	makeChartCategory(data);
+	makeBarChartBreakdown(data);
 }
 // pie chart with the status of the checklist
 async function makeChartStatus (data) {
