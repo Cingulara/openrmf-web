@@ -22,11 +22,11 @@ async function getChecklistTotalCount() {
  * Checklist listing functions
  ************************************/
 async function getChecklists(latest) {
+	var url = readAPI;
 	if (latest) // get the top 5
-		let response = await fetch(readAPI + "/latest/5");
-	else // regular checklists page
-		let response = await fetch(readAPI);
-		
+		url += "/latest/5";
+	
+	let response = await fetch(url);
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
 			var data = await response.json()
