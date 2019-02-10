@@ -94,6 +94,7 @@ async function getChecklistData(id) {
 			else {
 				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
 			}
+			$("#checklistDescription").html("Description: " + data.description);
 			$("#chartSeverityUpdated").html(updatedDate);
 			$("#chartCategoryUpdated").html(updatedDate);
 			$("#barChartUpdated").html(updatedDate);
@@ -179,7 +180,7 @@ async function makeBarChartBreakdown(data) {
 		data: {
 			labels: ["CAT I - Open", "CAT I - Not a Finding", "CAT I - N/A", "CAT I - Not Reviewed", "CAT II - Open", "CAT II - Not a Finding", "CAT II - N/A", "CAT II - Not Reviewed","CAT III - Open", "CAT III - Not a Finding", "CAT III - N/A", "CAT III - Not Reviewed"],
 			datasets: [{
-				label: '# Vulnerabilities',
+				label: '# Vulnerabilities by Status and Category',
         data: [data.totalCat1Open, data.totalCat1NotAFinding, data.totalCat1NotApplicable, data.totalCat1NotReviewed, 
           data.totalCat2Open, data.totalCat2NotAFinding, data.totalCat2NotApplicable, data.totalCat2NotReviewed, 
           data.totalCat3Open, data.totalCat3NotAFinding, data.totalCat3NotApplicable, data.totalCat3NotReviewed],
