@@ -227,6 +227,30 @@ async function makeBarChartBreakdown(data) {
 }
 
 /************************************ 
+ Upload Functions
+************************************/
+function uploadChecklist(){
+	var formData = new FormData();
+	formData.append("checklistType",$("#checklistType").val());
+	formData.append("title",$("#checklistTitle").val());
+	formData.append("description",$("#checklistDescription").val());
+	formData.append('checklistFile',$('#checklistFile')[0].files[0]);
+	$.ajax({
+			url : uploadAPI,
+			data : formData,
+			type : 'POST',
+			processData: false,
+			contentType: false,
+			success : function(data){
+				alert('Your form was uploaded! Click Checklists to see your new STIG checklist listing.'); 
+				// reset the form
+				$("#frmChecklistUpload")[0].reset();
+			}
+	});
+	return false;
+}
+
+/************************************ 
  Generic Functions
 ************************************/
 function getParameterByName(name, url) {

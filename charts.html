@@ -137,7 +137,7 @@
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
 					<div class="card mb-3">
 						<div class="card-header">
-							<i class="fa fa-table"></i> Severity Breakdown
+							<i class="fa fa-table"></i> Checklist Type Breakdown
 						</div>
 							
 						<div class="card-body">
@@ -150,7 +150,7 @@
 				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
 					<div class="card mb-3">
 						<div class="card-header">
-							<i class="fa fa-table"></i> Category Breakdown
+							<i class="fa fa-table"></i> Resource Usage
 						</div>
 							
 						<div class="card-body">
@@ -164,11 +164,11 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
 					<div class="card mb-3">
 						<div class="card-header">
-							<i class="fa fa-table"></i> Checklist Score Breakdown
+							<i class="fa fa-table"></i> openSTIG Audit Trail
 						</div>
 							
 						<div class="card-body">
-							<canvas id="barChart"></canvas>
+							<!-- <canvas id="barChart"></canvas> -->
 						</div>							
 						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 					</div><!-- end card-->					
@@ -216,57 +216,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	
 	<script>
-	// barChart
-	var ctx1 = document.getElementById("barChart").getContext('2d');
-	var barChart = new Chart(ctx1, {
-		type: 'bar',
-		data: {
-			labels: ["CAT I - Open", "CAT I - Not a Finding", "CAT I - N/A", "CAT I - Not Reviewed", "CAT II - Open", "CAT II - Not a Finding", "CAT II - N/A", "CAT II - Not Reviewed","CAT III - Open", "CAT III - Not a Finding", "CAT III - N/A", "CAT III - Not Reviewed"],
-			datasets: [{
-				label: '# Vulnerabilities',
-				data: [12, 19, 3, 5, 10, 5, 13, 17, 11, 8, 11, 9],
-				backgroundColor: [
-					'rgba(255, 99, 132, 0.5)',
-					'rgba(75, 192, 192, 0.5)',
-					'rgba(54, 162, 235, 0.5)',
-					'rgba(150, 150, 150, 0.5)',	
-					'rgba(255, 99, 132, 0.5)',
-					'rgba(75, 192, 192, 0.5)',
-					'rgba(54, 162, 235, 0.5)',
-					'rgba(150, 150, 150, 0.5)',	
-					'rgba(255, 99, 132, 0.5)',
-					'rgba(75, 192, 192, 0.5)',
-					'rgba(54, 162, 235, 0.5)',
-					'rgba(150, 150, 150, 0.5)'	
-				],
-				borderColor: [
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)',
-					'rgba(0,0,0,0.7)'
-				],
-				borderWidth: 1
-			}]
-		},
-		options: {
-			scales: {
-				yAxes: [{
-					ticks: {
-						beginAtZero:true
-					}
-				}]
-			}
-		}
-	});
-			
 	// chartSeverity
 	var ctx3 = document.getElementById("chartSeverity").getContext('2d');
 	var chartSeverity = new Chart(ctx3, {
