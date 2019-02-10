@@ -7,9 +7,28 @@ var templateAPI = 'http://localhost:8088'
 /*************************************
  * Dashboard functions
  ************************************/
-async function getChecklists() {
-	let response = await fetch(readAPI);
+// fill in the # of total checklists in the system on the dashboard page top right
+async function getChecklistTotalCount() {
+	let response = await fetch(readAPI + "/count");
 	if (response.ok) {
+			var data = await response.json()
+			$("#numberChecklistsTotal").html(data);
+			$("#numberNewChecklistsTotal").text(data);
+	}
+	else 
+		throw new Error(response.status)
+}
+/*************************************
+ * Checklist listing functions
+ ************************************/
+async function getChecklists(latest) {
+	if (latest) // get the top 5
+		let response = await fetch(readAPI + "/latest/5");
+	else // regular checklists page
+		let response = await fetch(readAPI);
+		
+	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
+  if (response.ok) {
 			var data = await response.json()
 			var intNaF = 0;
 			var intNA = 0;
@@ -66,18 +85,6 @@ async function getScoreForChecklistListing(id) {
 		return dataScore;
 	}
 }
-// fill in the # of total checklists in the system on the dashboard page top right
-async function getChecklistTotalCount() {
-	let response = await fetch(readAPI + "/count");
-	if (response.ok) {
-			var data = await response.json()
-			$("#numberChecklistsTotal").html(data);
-			$("#numberNewChecklistsTotal").text(data);
-	}
-	else 
-		throw new Error(response.status)
-}
-
 /*************************************
  * Single Checklist Data functions
  *************************************/
