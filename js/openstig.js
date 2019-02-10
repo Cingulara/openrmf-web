@@ -102,6 +102,8 @@ async function getChecklistData(id) {
 				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
 			}
 			$("#checklistDescription").html("Description: " + data.description);
+			$("#checklistType").html("Type: " + data.typeTitle);
+
 			$("#chartSeverityUpdated").html(updatedDate);
 			$("#chartCategoryUpdated").html(updatedDate);
 			$("#barChartUpdated").html(updatedDate);
