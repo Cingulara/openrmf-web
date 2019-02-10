@@ -37,7 +37,14 @@ async function getChecklists() {
 						intOpen = score.totalOpen;
 						intNR = score.totalNotReviewed;
 						}
-					table += '</a></td><td class="tabco2"><i class="fa" aria-hidden="true"></i>' + intNaF.toString() + '</td>'
+					table += '</a><br /><span class="small">last updated on '
+					if (item.updatedOn) {
+							table += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
+					}
+					else {
+						table += moment(item.created).format('MM/DD/YYYY h:mm a');
+					}
+					table += '</span></td><td class="tabco2"><i class="fa" aria-hidden="true"></i>' + intNaF.toString() + '</td>'
 					table += '<td class="tabco3"><i class="fa" aria-hidden="true"></i>' + intNA.toString() + '</td>'
 					table += '<td class="tabco4"><i class="fa" aria-hidden="true"></i>' + intOpen.toString() + '</td>'
 					table += '<td class="tabco5"><i class="fa" aria-hidden="true"></i>' + intNR.toString() + '</td>'
@@ -79,7 +86,18 @@ async function getChecklistData(id) {
   let response = await fetch(readAPI + "/" + id);
   if (response.ok) {
       var data = await response.json()
-      $("#checklistTitle").html('<i class="fa fa-table"></i> ' + data.title);
+			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + data.title);
+			var updatedDate = "Last Updated on ";
+			if (data.updatedOn) {
+				updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
+			}
+			else {
+				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+			}
+			$("#chartSeverityUpdated").html(updatedDate);
+			$("#chartCategoryUpdated").html(updatedDate);
+			$("#barChartUpdated").html(updatedDate);
+			$("#checklistLastUpdated").html(updatedDate);
   }
   else 
     throw new Error(response.status)

@@ -155,6 +155,7 @@
 								</tr>
 								</tbody>
 								</table>
+								<div id="checklistLastUpdated"></div>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
@@ -170,7 +171,7 @@
 							<div class="card-body">
 								<canvas id="chartSeverity"></canvas>
 							</div>
-							<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
 						</div><!-- end card-->					
 					</div>
 					
@@ -183,7 +184,7 @@
 							<div class="card-body">
 								<canvas id="chartCategory"></canvas>
 							</div>
-							<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
 						</div><!-- end card-->					
 					</div>							
 				</div>				
@@ -197,7 +198,7 @@
 							<div class="card-body">
 								<canvas id="barChart"></canvas>
 							</div>							
-							<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+							<div id="barChartUpdated" class="card-footer small text-muted"></div>
 						</div><!-- end card-->					
 					</div>
 				</div>
@@ -239,6 +240,7 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
+<script src="js/moment.min.js"></script>
 <script src="js/openstig.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
