@@ -260,6 +260,42 @@ function uploadChecklist(){
 	return false;
 }
 
+/************************************
+ * Reports Functions
+ ***********************************/
+// export with myLineChart.toBase64Image();
+async function getChecklistTypeBreakdown() {
+  let response = await fetch(readAPI + "/counttype");
+  if (response.ok) {
+			var data = await response.json()
+			var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
+			var chartSeverity = new Chart(ctx3, {
+				type: 'pie',
+				data: {
+						datasets: [{
+							label: 'Checklists by Type'
+						}]
+					},
+					options: {
+						responsive: true
+					}
+		});
+		// cycle through the real data
+		var myData = [];
+		var myLabels = [];
+		var myBGColor = [];
+		for (const item of data) {
+			myData.push(item.count);
+			myLabels.push(item.typeTitle);
+			myBGColor.push(getRandomColor());
+		}
+		chartSeverity.data.datasets[0].data = myData;
+		chartSeverity.data.labels = myLabels;
+		chartSeverity.data.datasets[0].backgroundColor = myBGColor;
+		chartSeverity.update();
+	}
+}
+
 /************************************ 
  Generic Functions
 ************************************/
@@ -271,4 +307,14 @@ function getParameterByName(name, url) {
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+function getRandomColor() {
+  var color = 'rgba(';
+  color += (Math.floor(Math.random() * (255 - 0 + 1)) + 0).toString();
+	color += ",";
+  color += (Math.floor(Math.random() * (255 - 0 + 1)) + 0).toString();
+	color += ",";
+  color += (Math.floor(Math.random() * (255 - 0 + 1)) + 0).toString();
+	color +=", 0.7)";
+  return color;
 }

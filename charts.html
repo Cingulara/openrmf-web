@@ -141,7 +141,7 @@
 						</div>
 							
 						<div class="card-body">
-							<canvas id="chartSeverity"></canvas>
+							<canvas id="chartChecklistTypeBreakdown"></canvas>
 						</div>
 						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 					</div><!-- end card-->					
@@ -154,7 +154,8 @@
 						</div>
 							
 						<div class="card-body">
-							<canvas id="chartCategory"></canvas>
+							Coming Soon in a future release...
+							<!-- <canvas id="chartCategory"></canvas> -->
 						</div>
 						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 					</div><!-- end card-->					
@@ -168,6 +169,7 @@
 						</div>
 							
 						<div class="card-body">
+							Coming Soon in a future release...
 							<!-- <canvas id="barChart"></canvas> -->
 						</div>							
 						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
@@ -211,64 +213,13 @@
 
 <!-- App js -->
 <script src="assets/js/pikeadmin.js"></script>
+<script src="./js/openstig.js"></script>
 
 <!-- BEGIN Java Script for this page -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	
 	<script>
-	// chartSeverity
-	var ctx3 = document.getElementById("chartSeverity").getContext('2d');
-	var chartSeverity = new Chart(ctx3, {
-		type: 'pie',
-		data: {
-				datasets: [{
-					data: [50, 50, 13, 100],
-					backgroundColor: [
-						'rgba(255,99,132,1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(150, 150, 150, 1)'
-					],
-					label: 'Checklist Severity Breakdown'
-				}],
-				labels: [
-					"Open",
-					"Not a Finding",
-					"Not Applicable",
-					"Not Reviewed"
-				]
-			},
-			options: {
-				responsive: true
-			}
-	 
-	});
-
-	// chartCategory
-	var ctx4 = document.getElementById("chartCategory").getContext('2d');
-	var chartCategory = new Chart(ctx4, {
-		type: 'pie',
-		data: {
-				datasets: [{
-					data: [24, 200, 53],
-					backgroundColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)'
-					],
-					label: 'Category Breakdown'
-				}],
-				labels: [
-					"CAT I",
-					"CAT II",
-					"CAT III"
-				]
-			},
-			options: {
-				responsive: true
-			}
-	});
-
+		getChecklistTypeBreakdown();
 	// });
 	</script>
 <!-- END Java Script for this page -->
