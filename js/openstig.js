@@ -303,9 +303,9 @@ async function downloadChecklistFile(id, template){
 
 	let response = await fetch(url + "/download/" + id);
 	if (response.ok) {
-		var data = await response.json();
+		var data = await response.text();
 		var element = document.createElement('a');
-		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+		element.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(data));
 		element.setAttribute('download', "openSTIG.ckl");
 		element.style.display = 'none';
 		document.body.appendChild(element);
