@@ -160,8 +160,9 @@
 								</table>
 								<div id="checklistType"></div>
 								<div id="checklistDescription"></div>
-								<div class="small" id="checklistLastUpdated"></div>
-								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), false);" class="btn btn-primary">Download</button>
+								<div class="small" id="checklistLastUpdated"></div><br />
+								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
+									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
@@ -178,7 +179,8 @@
 								<canvas id="chartSeverity"></canvas>
 							</div>
 							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('chartSeverity');" class="btn btn-primary">Save Chart</button>
+							<button type="button" onclick="downloadChart('chartSeverity');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>
 					
@@ -192,7 +194,8 @@
 								<canvas id="chartCategory"></canvas>
 							</div>
 							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('chartCategory');" class="btn btn-primary">Save Chart</button>
+							<button type="button" onclick="downloadChart('chartCategory');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>							
 				</div>				
@@ -207,7 +210,8 @@
 								<canvas id="barChart"></canvas>
 							</div>							
 							<div id="barChartUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('barChart');" class="btn btn-primary">Save Chart</button>
+							<button type="button" onclick="downloadChart('barChart');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>
 				</div>

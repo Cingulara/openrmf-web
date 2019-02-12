@@ -98,10 +98,10 @@
 					<a href="index.html"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
 				</li>
 				<li class="submenu">
-					<a class="active" href="checklists.html"><i class="fa fa-fw fa-bars"></i><span> Checklists </span> </a>
+					<a href="checklists.html"><i class="fa fa-fw fa-bars"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="templates.html"><i class="fa fa-fw fa-bars"></i><span> Templates </span> </a>
+					<a class="active" href="templates.html"><i class="fa fa-fw fa-bars"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
@@ -123,7 +123,7 @@
 				<div class="row">
 					<div class="col-xl-12">
 						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">My Checklist</h1>
+							<h1 class="main-title float-left">My Template</h1>
 							<ol class="breadcrumb float-right">
 								<li class="breadcrumb-item">Home</li>
 								<li class="breadcrumb-item active">Checklist</li>
@@ -160,8 +160,9 @@
 								</table>
 								<div id="checklistType"></div>
 								<div id="checklistDescription"></div>
-								<div class="small" id="checklistLastUpdated"></div>								
-								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), true);" class="btn btn-primary">Download</button>
+								<div class="small" id="checklistLastUpdated"></div><br />
+								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), true);" 
+									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
@@ -178,6 +179,8 @@
 								<canvas id="chartSeverity"></canvas>
 							</div>
 							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
+							<button type="button" onclick="downloadChart('chartSeverity');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>
 					
@@ -191,6 +194,8 @@
 								<canvas id="chartCategory"></canvas>
 							</div>
 							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
+							<button type="button" onclick="downloadChart('chartCategory');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>							
 				</div>				
@@ -205,6 +210,8 @@
 								<canvas id="barChart"></canvas>
 							</div>							
 							<div id="barChartUpdated" class="card-footer small text-muted"></div>
+							<button type="button" onclick="downloadChart('barChart');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>
 				</div>
