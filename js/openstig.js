@@ -182,12 +182,12 @@ async function getChecklistScore(id, template) {
 	$("#checklistOpenCount").text(data.totalOpen.toString());
 	$("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
 	// show the charts with the same data
-	makeChartStatus(data);
+	makeChartSeverity(data);
 	makeChartCategory(data);
 	makeBarChartBreakdown(data);
 }
 // pie chart with the status of the checklist
-async function makeChartStatus (data) {
+async function makeChartSeverity (data) {
 	var ctx3 = document.getElementById("chartSeverity").getContext('2d');
 	var chartSeverity = new Chart(ctx3, {
 		type: 'pie',
@@ -214,6 +214,17 @@ async function makeChartStatus (data) {
 			}
 	 
   });
+}
+function downloadChart(element) {
+	var img = document.getElementById(element).toDataURL("image/jpg");
+	//location.href = url;
+	var element = document.createElement('a');
+	element.setAttribute('href', img);
+	element.setAttribute('download', "openSTIGChart.jpg");
+	element.style.display = 'none';
+	document.body.appendChild(element);
+	element.click();
+	document.body.removeChild(element);
 }
 // pie chart showing breakdown by category 1/2/3
 async function makeChartCategory (data) {
@@ -296,6 +307,8 @@ async function makeBarChartBreakdown(data) {
 		}
 	});
 }
+
+// download the XML into a .CKL file to use
 async function downloadChecklistFile(id, template){
 	var url = readAPI;
 	if (template)
