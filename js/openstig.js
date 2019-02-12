@@ -18,6 +18,62 @@ async function getChecklistTotalCount() {
 	else 
 		throw new Error(response.status)
 }
+
+/*************************************
+ * Template listing functions
+ ************************************/
+async function getTemplates(latest) {
+	var url = templateAPI;	
+	let response = await fetch(url);
+	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
+  if (response.ok) {
+			var data = await response.json()
+			var intNaF = 0;
+			var intNA = 0;
+			var intOpen = 0;
+			var intNR = 0;
+			// cycle through the data and fill in the data table at id tblChecklistListing div.html()
+			var table = "";
+			table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th class="tabco1">Name</th>'
+			table += '<th class="tabco2">Not a Finding</th><th class="tabco3">Not Applicable</th><th class="tabco4">Open</th><th class="tabco5">Not Reviewed</th>'
+			table += '</tr></thead><tbody>'
+			if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklist templates uploaded. Go to the Upload page to add your first one.");}
+			else {
+					for (const item of data) {
+					table += '<tr><td class="tabco1"><a href="single-template.html?id=' + item.id + '">'
+					table += item.title
+					intNaF = 0;
+					intNA = 0;
+					intOpen = 0;
+					intNR = 0;
+					// var score = await getScoreForChecklistListing(item.id);
+					// if (score) {
+					// 	intNaF = score.totalNotAFinding;
+					// 	intNA = score.totalNotApplicable;
+					// 	intOpen = score.totalOpen;
+					// 	intNR = score.totalNotReviewed;
+					// 	}
+					table += '</a><br /><span class="small">last updated on '
+					if (item.updatedOn) {
+							table += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
+					}
+					else {
+						table += moment(item.created).format('MM/DD/YYYY h:mm a');
+					}
+					table += '</span></td><td class="tabco2"><i class="fa" aria-hidden="true"></i>' + intNaF.toString() + '</td>'
+					table += '<td class="tabco3"><i class="fa" aria-hidden="true"></i>' + intNA.toString() + '</td>'
+					table += '<td class="tabco4"><i class="fa" aria-hidden="true"></i>' + intOpen.toString() + '</td>'
+					table += '<td class="tabco5"><i class="fa" aria-hidden="true"></i>' + intNR.toString() + '</td>'
+					table += '</tr>'
+				}
+			table += '</tbody></tbody></table>'
+			// with all the data fill in the table and go
+			$("#tblChecklistListing").html(table);
+		}
+	}
+	else 
+		throw new Error(response.status)
+}
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -41,7 +97,6 @@ async function getChecklists(latest) {
 			table += '</tr></thead><tbody>'
 			if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");}
 			else {
-				//data.forEach( function(item, index) {
 					for (const item of data) {
 					table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.id + '">'
 					table += item.title
@@ -78,7 +133,11 @@ async function getChecklists(latest) {
 		throw new Error(response.status)
 }
 // called from above to return the checklist score
-async function getScoreForChecklistListing(id) {
+async function getScoreForChecklistListing(id, template) {
+	var url = scoreAPI;
+	if (template)
+		url = templateAPI;
+
 	let responseScore = await fetch(scoreAPI + "/artifact/" + id);
 	if (responseScore.ok) {
 		var dataScore = await responseScore.json()
@@ -89,8 +148,11 @@ async function getScoreForChecklistListing(id) {
  * Single Checklist Data functions
  *************************************/
 // get the specific checklist data
-async function getChecklistData(id) {
-  let response = await fetch(readAPI + "/" + id);
+async function getChecklistData(id, template) {
+	var url = readAPI;
+	if (template)
+		url = templateAPI;
+  let response = await fetch(url + "/" + id);
   if (response.ok) {
       var data = await response.json()
 			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + data.title);
@@ -113,8 +175,8 @@ async function getChecklistData(id) {
     throw new Error(response.status)
 }
 // call to get the score data and show the name and then funnel data to the
-async function getChecklistScore(id) {
-	var data = await getScoreForChecklistListing(id);
+async function getChecklistScore(id, template) {
+	var data = await getScoreForChecklistListing(id, template);
 	$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
 	$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
 	$("#checklistOpenCount").text(data.totalOpen.toString());
@@ -179,7 +241,6 @@ async function makeChartCategory (data) {
 			}
   });
 }
-
 // bar chart breaking down score by category and status
 async function makeBarChartBreakdown(data) {  
 	// barChart
@@ -235,7 +296,23 @@ async function makeBarChartBreakdown(data) {
 		}
 	});
 }
+async function downloadChecklistFile(id, template){
+	var url = readAPI;
+	if (template)
+		url = templateAPI;
 
+	let response = await fetch(url + "/download/" + id);
+	if (response.ok) {
+		var data = await response.json();
+		var element = document.createElement('a');
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+		element.setAttribute('download', "openSTIG.ckl");
+		element.style.display = 'none';
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	}
+}
 /************************************ 
  Upload Functions
 ************************************/
@@ -252,9 +329,30 @@ function uploadChecklist(){
 			processData: false,
 			contentType: false,
 			success : function(data){
-				alert('Your form was uploaded! Click Checklists to see your new STIG checklist listing.'); 
+				alert('Your checklist was uploaded! Click Checklists to see your new STIG listing.'); 
 				// reset the form
 				$("#frmChecklistUpload")[0].reset();
+			}
+	});
+	return false;
+}
+
+function uploadTemplate(){
+	var formData = new FormData();
+	formData.append("checklistType",$("#templateType").val());
+	formData.append("title",$("#templateTitle").val());
+	formData.append("description",$("#templateDescription").val());
+	formData.append('checklistFile',$('#templateFile')[0].files[0]);
+	$.ajax({
+			url : templateAPI,
+			data : formData,
+			type : 'POST',
+			processData: false,
+			contentType: false,
+			success : function(data){
+				alert('Your template was uploaded! Click Templates to see your new STIG template listing.'); 
+				// reset the form
+				$("#frmTemplateUpload")[0].reset();
 			}
 	});
 	return false;
@@ -284,9 +382,16 @@ async function getChecklistTypeBreakdown() {
 		var myData = [];
 		var myLabels = [];
 		var myBGColor = [];
-		for (const item of data) {
-			myData.push(item.count);
-			myLabels.push(item.typeTitle);
+		if (data.length > 0){
+			for (const item of data) {
+				myData.push(item.count);
+				myLabels.push(item.typeTitle);
+				myBGColor.push(getRandomColor());
+			}
+		}
+		else {
+			myData.push(0);
+			myLabels.push("None");
 			myBGColor.push(getRandomColor());
 		}
 		chartSeverity.data.datasets[0].data = myData;

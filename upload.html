@@ -115,6 +115,9 @@
 					<a href="checklists.html"><i class="fa fa-fw fa-bars"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
+					<a href="templates.html"><i class="fa fa-fw fa-bars"></i><span> Templates </span> </a>
+				</li>
+				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
 				<li class="submenu">
@@ -134,16 +137,16 @@
         <div class="content">
 			<div class="container-fluid">
 			<div class="row">
-        <div class="col-xl-12">
-            <div class="breadcrumb-holder">
-                <h1 class="main-title float-left">Checklist file upload</h1>
-                <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item">Home</li>
-                    <li class="breadcrumb-item active">New checklist upload</li>
-                </ol>
-                <div class="clearfix"></div>
-            </div>
-        </div>
+                <div class="col-xl-12">
+                    <div class="breadcrumb-holder">
+                        <h1 class="main-title float-left">Checklist file upload</h1>
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item">Home</li>
+                            <li class="breadcrumb-item active">New checklist upload</li>
+                        </ol>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
 			</div>
             <!-- end row -->
 			<div class="row">
@@ -233,7 +236,95 @@
                         </div><!-- end card body -->							
                     </div><!-- end card-->
                 </div>
-			        </div>
+            </div>
+            <!-- end row -->
+			<div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h3><i class="fa fa-file"></i> New Template Upload</h3>
+                            Specify a valid .CKL file and the rest of the mandatory fields and click Submit.
+                        </div>
+                        <div class="card-body">
+						  <form onsubmit="return uploadTemplate();" id="frmTemplateUpload">
+                          <div class="form-group">
+                              <label for="templateTitle">Title (required)</label>
+                              <input type="text" class="form-control" id="templateTitle" 
+                              aria-describedby="titleHelp" placeholder="Enter title" required>
+                              <small id="titleHelp" class="form-text text-muted">Specify a good title for this Template</small>
+                            </div>
+                            <div class="form-group">
+                              <label for="templateDescription">Description (required)</label>
+                              <textarea type="text" class="form-control" id="templateDescription" rows="4"
+                              aria-describedby="descriptionHelp" placeholder="Enter a Description" required></textarea>
+                              <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this Template</small>
+                            </div>
+                            
+                            <div class="form-group">
+                            <label for="templateType">Template Type (required)</label>
+                              <select class="form-control select2" id="checklistType" required>
+                                  <option value="">Choose one...</option>
+                                  <optgroup label="Applications">
+                                    <option value="0">Application Security & Development</option>
+                                <optgroup>
+                                  <optgroup label="Anti-Virus">
+                                    <option value="201">McAfee Anti-Virus</option>
+                                    <option value="205">Windows Defender</option>
+                                <optgroup>
+                                  <optgroup label="Development Technologies">
+                                    <option value="105">.NET Technologies</option>
+                                    <option value="101">Oracle JRE 8</option>
+                                <optgroup>
+                                <optgroup label="Application Servers">	
+                                    <option value="301">Cold Fusion</option>
+                                    <option value="305">Bromium Secure Platform 4</option>
+                                    <option value="310">IBM MQ v9</option>
+                                    <option value="315">IBM Web Sphere</option>
+                                <optgroup>
+                                <optgroup label="Browsers">	
+                                    <option value="400">Chrome</option>
+                                    <option value="405">Firefox</option>
+                                    <option value="410">MS Edge</option>
+                                <optgroup>
+                                <optgroup label="Databases">
+                                    <option value="500">SQL Server 2012 Database</option>
+                                    <option value="502">SQL Server 2012 Instance</option>
+                                    <option value="505">SQL Server 2014 Database</option>
+                                    <option value="507">SQL Server 2014 Instance</option>
+                                    <option value="510">SQL Server 2016 Database</option>
+                                    <option value="512">SQL Server 2016 Instance</option>
+                                    <option value="515">Mongo DB</option>
+                                    <option value="520">Oracle 11.2g</option>
+                                    <option value="525">Oracle 11g</option>
+                                    <option value="530">Oracle 12c</option>
+                                    <option value="535">PostgreSQL</option>
+                                    <option value="540">EDB Postgres Advanced Server</option>
+                                <optgroup>
+                                <optgroup label="Web Servers">
+                                    <option value="600">Apache 2.2 Windows</option>
+                                    <option value="605">Apache 2.2 Unix</option>
+                                    <option value="610">Apache 2.4 Unix Server</option>
+                                    <option value="615">Apache 2.4 Unix Site</option>
+                                    <option value="620">Apache Windows Server</option>
+                                    <option value="625">Apache Windows Site</option>
+                                    <option value="630">IIS 7</option>
+                                    <option value="635">IIS 8.5</option>
+                                    <option value="640">Oracle HTTP</option>
+                                <optgroup>
+                              </select>
+                             </div>
+
+                             <div class="form-group">
+                                <label for="templateFile">Template Checklist File (required)</label><br />
+                                <input type="file" id="templateFile" required /> 
+                             </div>
+
+                            <button type="submit" class="btn btn-primary">Upload and Save</button>
+                          </form>
+
+                        </div><!-- end card body -->							
+                    </div><!-- end card-->
+                </div>
             </div>
 			<!-- END container-fluid -->
 		</div>

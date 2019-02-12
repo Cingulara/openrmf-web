@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>openSTIG - Checklist Result</title>
+		<title>openSTIG - Checklist Record</title>
 		<meta name="description" content="openSTIG tool Dashboard">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
@@ -101,6 +101,9 @@
 					<a class="active" href="checklists.html"><i class="fa fa-fw fa-bars"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
+					<a href="templates.html"><i class="fa fa-fw fa-bars"></i><span> Templates </span> </a>
+				</li>
+				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
 				<li class="submenu">
@@ -158,6 +161,7 @@
 								<div id="checklistType"></div>
 								<div id="checklistDescription"></div>
 								<div class="small" id="checklistLastUpdated"></div>
+								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), false);" class="btn btn-primary">Download</button>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
@@ -248,8 +252,8 @@
 <script>
 	$(document).ready(function() {
 		// calls to get the checklist data from the API
-		getChecklistData(getParameterByName('id'));
-		getChecklistScore(getParameterByName('id'));
+		getChecklistData(getParameterByName('id'), false);
+		getChecklistScore(getParameterByName('id'), false);
 	} );
 </script>
 <!-- END Java Script for this page -->
