@@ -342,7 +342,7 @@ function uploadChecklist(){
 			processData: false,
 			contentType: false,
 			success : function(data){
-				alert('Your checklist was uploaded! Click Checklists to see your new STIG listing.'); 
+				swal("Your Checklist was uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmChecklistUpload")[0].reset();
 			}
@@ -363,7 +363,7 @@ function uploadTemplate(){
 			processData: false,
 			contentType: false,
 			success : function(data){
-				alert('Your template was uploaded! Click Templates to see your new STIG template listing.'); 
+				swal("Your Template was uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmTemplateUpload")[0].reset();
 			}

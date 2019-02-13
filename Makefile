@@ -33,5 +33,6 @@ dockerhub:
 	docker tag $(NAME)\:$(VERSION) ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
 	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:$(VERSION)
 	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
+	docker logout
 
 DEFAULT: build
