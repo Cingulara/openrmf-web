@@ -1,14 +1,8 @@
-// var readAPI = 'http://localhost:8084'
-// var scoreAPI = 'http://localhost:8090'
-// var saveAPI = 'http://localhost:8082'
-// var uploadAPI = 'http://localhost:8086'
-// var templateAPI = 'http://localhost:8088'
-
-var readAPI = 'http://openstigapi-read:8080'
-var scoreAPI = 'http://openstigapi-scoring:8080'
-var saveAPI = 'http://openstigapi-save:8080'
-var uploadAPI = 'http://openstigapi-upload:8080'
-var templateAPI = 'http://openstigapi-template:8080'
+var readAPI = 'http://localhost:8084'
+var scoreAPI = 'http://localhost:8090'
+var saveAPI = 'http://localhost:8082'
+var uploadAPI = 'http://localhost:8086'
+var templateAPI = 'http://localhost:8088'
 
 /*************************************
  * Dashboard functions
