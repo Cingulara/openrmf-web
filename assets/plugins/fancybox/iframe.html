@@ -1,0 +1,75 @@
+
+<!doctype html>
+<html >
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>fancyBox3 - iframe demo</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+ 	<link rel="stylesheet" type="text/css" href="iframe.css" media="screen" />
+
+ 	<style>
+
+ 		body {
+ 			margin: 0;
+ 			padding: 0;
+ 			max-width: 900px;
+ 			padding: 50px;
+ 		}
+
+ 	</style>
+</head>
+<body>
+	<div class="content">
+		<h3>This is an external page</h3>
+
+		<p>
+			Another great feature of fancyBox is auto-sizing iframed pages.
+
+			<a href="javascript:;" class="add">Add content</a>
+		</p>
+
+		<div class="expand">
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque justo ac eros consectetur bibendum. In hac habitasse platea dictumst. Nulla aliquam turpis et tellus elementum luctus. Duis sit amet rhoncus velit.
+			</p>
+		</div>
+
+		<p class="modal-footer">
+			<a class="btn" href="javascript:parent.jQuery.fancybox.close();">Dismiss</a>
+		</p>
+	</div>
+
+ 	<script>
+ 		$(".add").click(function() {
+ 			var $where = $(".expand");
+
+ 			$where.children().eq(0).clone().appendTo( $where );
+
+ 			parent.jQuery.fancybox.getInstance().update();
+
+ 		});
+
+
+ 		$( document ).on('keydown.fb', function (e) {
+
+			var keycode = e.keyCode || e.which;
+
+			if ( keycode === 27 ) {
+
+				e.preventDefault();
+
+				parent.jQuery.fancybox.getInstance().close();
+
+				return;
+			}
+
+
+ 		});
+
+ 	</script>
+</body>
+</html>

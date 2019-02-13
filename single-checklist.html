@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<title>openSTIG - Checklist Record</title>
+		<meta name="description" content="openSTIG tool Dashboard">
+		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="assets/images/favicon.ico">
+		<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicons/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+		<link rel="manifest" href="/assets/favicons/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+
+		<!-- Bootstrap CSS -->
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		
+		<!-- Font Awesome CSS -->
+		<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+		
+		<!-- Custom CSS -->
+		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+		
+		<!-- BEGIN CSS for this page -->
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
+		<!-- END CSS for this page -->
+</head>
+
+<body class="adminbody">
+
+<div id="main">
+
+	<!-- top bar navigation -->
+	<div class="headerbar">
+
+		<!-- LOGO -->
+        <div class="headerbar-left">
+			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.png" /> <span>openSTIG</span></a>
+        </div>
+
+        <nav class="navbar-custom">
+			<ul class="list-inline float-right mb-0">
+				<li class="list-inline-item dropdown notif">
+					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+						<i class="fa fa-fw fa-question-circle"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+						<!-- item-->
+						<div class="dropdown-item noti-title">
+							<h5><small>Help and Support</small></h5>
+						</div>
+
+						<!-- item-->
+						<a target="_blank" href="https://www.github.com/cingulara/openstig-docs/" class="dropdown-item notify-item">                                    
+							<p class="notify-details ml-0">
+								<b>Do you need documentation on how openSTIG works?</b>
+								<span>GitHub Readme</span>
+							</p>
+						</a>
+					</div>
+				</li>
+			</ul>
+			<ul class="list-inline menu-left mb-0">
+				<li class="float-left">
+					<button class="button-menu-mobile open-left">
+						<i class="fa fa-fw fa-bars"></i>
+					</button>
+				</li>                        
+			</ul>
+        </nav>
+	</div>
+	<!-- End Navigation -->
+
+ 
+	<!-- Left Sidebar -->
+	<div class="left main-sidebar">
+		<div class="sidebar-inner leftscroll">
+			<div id="sidebar-menu">
+			<ul>
+				<li class="submenu">
+					<a href="index.html"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+				</li>
+				<li class="submenu">
+					<a class="active" href="checklists.html"><i class="fa fa-fw fa-bars"></i><span> Checklists </span> </a>
+				</li>
+				<li class="submenu">
+					<a href="templates.html"><i class="fa fa-fw fa-bars"></i><span> Templates </span> </a>
+				</li>
+				<li class="submenu">
+					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+				</li>
+				<li class="submenu">
+					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
+				</li>
+            </ul>
+            <div class="clearfix"></div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<!-- End Sidebar -->
+    <div class="content-page">	
+		<!-- Start content -->
+        <div class="content">            
+			<div class="container-fluid">					
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="breadcrumb-holder">
+							<h1 class="main-title float-left">My Checklist</h1>
+							<ol class="breadcrumb float-right">
+								<li class="breadcrumb-item">Home</li>
+								<li class="breadcrumb-item active">Checklist</li>
+							</ol>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				<!-- end row -->		
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3 id="checklistTitle"> </h3>
+							</div>								
+							<div class="card-body">
+								<table class="table table-condensed table-hover table-bordered table-responsive-md">
+								<thead>
+								<tr>
+									<th class="tabco2">Not a Finding</th>
+									<th class="tabco3">Not Applicable</th>
+									<th class="tabco4">Open</th>
+									<th class="tabco5">Not Reviewed</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td class="tabco2"><i class="fa" aria-hidden="true"></i><span id="checklistNotAFindingCount"></span></td>
+									<td class="tabco3"><i class="fa" aria-hidden="true"></i><span id="checklistNotApplicableCount"></span></td>
+									<td class="tabco4"><i class="fa" aria-hidden="true"></i><span id="checklistOpenCount"></span></td>
+									<td class="tabco5"><i class="fa" aria-hidden="true"></i><span id="checklistNotReviewedCount"></span></td>
+								</tr>
+								</tbody>
+								</table>
+								<div id="checklistType"></div>
+								<div id="checklistDescription"></div>
+								<div class="small" id="checklistLastUpdated"></div><br />
+								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
+									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
+							</div><!-- end card body -->															
+						</div><!-- end card-->					
+					</div>		
+				</div><!-- end row-->
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<i class="fa fa-table"></i> Severity Breakdown
+							</div>
+								
+							<div class="card-body">
+								<canvas id="chartSeverity"></canvas>
+							</div>
+							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
+							<button type="button" onclick="downloadChart('chartSeverity');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+						</div><!-- end card-->					
+					</div>
+					
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<i class="fa fa-table"></i> Category Breakdown
+							</div>
+								
+							<div class="card-body">
+								<canvas id="chartCategory"></canvas>
+							</div>
+							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
+							<button type="button" onclick="downloadChart('chartCategory');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+						</div><!-- end card-->					
+					</div>							
+				</div>				
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<i class="fa fa-table"></i> Checklist Score Breakdown
+							</div>
+								
+							<div class="card-body">
+								<canvas id="barChart"></canvas>
+							</div>							
+							<div id="barChartUpdated" class="card-footer small text-muted"></div>
+							<button type="button" onclick="downloadChart('barChart');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+						</div><!-- end card-->					
+					</div>
+				</div>
+
+            </div>
+			<!-- END container-fluid -->
+		</div>
+		<!-- END content -->
+    </div>
+	<!-- END content-page -->
+    
+	<footer class="footer">
+		<span class="text-right">
+		&copy; <a target="_blank" href="#">Cingulara 2019</a>
+		</span>
+		<span class="float-right">
+		Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+		</span>
+	</footer>
+
+</div>
+<!-- END main -->
+
+<script src="assets/js/modernizr.min.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/moment.min.js"></script>
+
+<script src="assets/js/popper.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+
+<script src="assets/js/detect.js"></script>
+<script src="assets/js/fastclick.js"></script>
+<script src="assets/js/jquery.blockUI.js"></script>
+<script src="assets/js/jquery.nicescroll.js"></script>
+<script src="assets/js/jquery.scrollTo.min.js"></script>
+<script src="assets/plugins/switchery/switchery.min.js"></script>
+
+<!-- App js -->
+<script src="assets/js/pikeadmin.js"></script>
+
+<!-- BEGIN Java Script for this page -->
+<script src="js/moment.min.js"></script>
+<script src="js/openstig.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script>
+	$(document).ready(function() {
+		// calls to get the checklist data from the API
+		getChecklistData(getParameterByName('id'), false);
+		getChecklistScore(getParameterByName('id'), false);
+	} );
+</script>
+<!-- END Java Script for this page -->
+</body>
+</html>
