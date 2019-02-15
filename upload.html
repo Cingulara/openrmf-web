@@ -263,29 +263,52 @@
                             <div class="form-group">
                             <label for="templateType">Template Type (required)</label>
                               <select class="form-control select2" id="checklistType" required>
-                                  <option value="">Choose one...</option>
-                                  <optgroup label="Applications">
-                                    <option value="0">Application Security & Development</option>
-                                <optgroup>
-                                  <optgroup label="Anti-Virus">
-                                    <option value="201">McAfee Anti-Virus</option>
-                                    <option value="205">Windows Defender</option>
-                                <optgroup>
-                                  <optgroup label="Development Technologies">
+                                <option value="">Choose one...</option>
+                                <optgroup label="Unknown/Unlisted">
+                                    <option value="0">Other</option>
+                                </optgroup>
+                                <optgroup label="Applications Development">
+                                    <option value="10">Application Security & Development</option>
                                     <option value="105">.NET Technologies</option>
-                                    <option value="101">Oracle JRE 8</option>
-                                <optgroup>
+                                    <option value="101">Oracle JRE 8 Unix</option>
+                                    <option value="102">Oracle JRE 8 Windows</option>
+                                </optgroup>
+                                <optgroup label="Anti-Virus">
+                                    <option value="201">McAfee Anti-Virus Local Client</option>
+                                    <option value="202">McAfee Anti-Virus Managed Client</option>
+                                    <option value="203">McAfee Anti-Virus Enterprise Linux Local Client</option>
+                                    <option value="204">McAfee Anti-Virus Enterprise Linux Managed Client</option>
+                                    <option value="205">Windows Defender</option>
+                                </optgroup>
                                 <optgroup label="Application Servers">	
                                     <option value="301">Cold Fusion</option>
                                     <option value="305">Bromium Secure Platform 4</option>
-                                    <option value="310">IBM MQ v9</option>
+                                    <option value="310">IBM MQ Appliance v9 AS</option>
+                                    <option value="311">IBM MQ Appliance v9 NDM</option>
+                                    <option value="312">IBM MQ Appliance</option>
                                     <option value="315">IBM Web Sphere</option>
-                                <optgroup>
+                                    <option value="320">MS Exchange 2010 Client Access</option>
+                                    <option value="322">MS Exchange 2010 Edge</option>
+                                    <option value="324">MS Exchange 2010 Hub</option>
+                                    <option value="326">MS Exchange 2010 Mailbox</option>
+                                    <option value="330">MS Exchange 2013 Client Access</option>
+                                    <option value="332">MS Exchange 2013 Edge</option>
+                                    <option value="336">MS Exchange 2013 Mailbox</option>
+                                    <option value="340">MS Exchange 2016 Edge Transport Server</option>
+                                    <option value="342">MS Exchange 2016 Mailbox Server</option>
+                                    <option value="350">MS SharePoint 2010</option>
+                                    <option value="355">MS SharePoint 2013</option>
+                                    <option value="360">Oracle WebLogic 12c</option>
+                                    <option value="370">Red Hat JBoss EAP 6.3</option>
+                                    <option value="380">Tanium 6.5</option>
+                                    <option value="385">Tanium 7.0</option>
+                                </optgroup>
                                 <optgroup label="Browsers">	
                                     <option value="400">Chrome</option>
-                                    <option value="405">Firefox</option>
-                                    <option value="410">MS Edge</option>
-                                <optgroup>
+                                    <option value="415">Firefox</option>
+                                    <option value="405">Internet Explorer 10</option>
+                                    <option value="410">Internet Explorer 11</option>
+                                </optgroup>
                                 <optgroup label="Databases">
                                     <option value="500">SQL Server 2012 Database</option>
                                     <option value="502">SQL Server 2012 Instance</option>
@@ -293,13 +316,45 @@
                                     <option value="507">SQL Server 2014 Instance</option>
                                     <option value="510">SQL Server 2016 Database</option>
                                     <option value="512">SQL Server 2016 Instance</option>
-                                    <option value="515">Mongo DB</option>
+                                    <option value="515">Mongo DB Enterprise Advanced 3</option>
                                     <option value="520">Oracle 11.2g</option>
                                     <option value="525">Oracle 11g</option>
                                     <option value="530">Oracle 12c</option>
                                     <option value="535">PostgreSQL</option>
-                                    <option value="540">EDB Postgres Advanced Server</option>
-                                <optgroup>
+                                    <option value="540">EDB Postgres Advanced Server 9 on Red Hat</option>
+                                    <option value="545">EDB Postgres Advanced Server</option>
+                                    <option value="550">IBM DB2 v10.5 LUW</option>
+                                </optgroup>
+                                <optgroup label="Desktop Applications">
+                                </optgroup>
+                                <optgroup label="ESRI">
+                                </optgroup>
+                                <optgroup label="HBSS">
+                                </optgroup>
+                                <optgroup label="Mobile">
+                                </optgroup>
+                                <optgroup label="Microsoft Office">
+                                </optgroup>
+                                <optgroup label="Network Perimeter">
+                                </optgroup>
+                                <optgroup label="Operating Systems">
+                                    <option value="2510">MS Active Directory Domain</option>
+                                    <option value="2515">MS Active Directory Forest</option>
+                                    <option value="2520">MS Windows 10</option>
+                                    <option value="2560">MS Windows Firewall Advanced Security</option>
+                                    <option value="2565">MS Windows Privileged Access Workstation</option>
+                                    <option value="2525">MS Windows Server 2008 DC</option>
+                                    <option value="2530">MS Windows Server 2008 MS</option>
+                                    <option value="2535">MS Windows Server 2008 R2 DC</option>
+                                    <option value="2540">MS Windows Server 2008 R2 MS</option>
+                                    <option value="2545">MS Windows Server 2012 DC</option>
+                                    <option value="2550">MS Windows Server 2012 MS</option>
+                                    <option value="2570">MS Windows Server 2016 MS/DC</option>
+                                </optgroup>
+                                <optgroup label="Remote Desktop">
+                                </optgroup>
+                                <optgroup label="Trend Micro">
+                                </optgroup>
                                 <optgroup label="Web Servers">
                                     <option value="600">Apache 2.2 Windows</option>
                                     <option value="605">Apache 2.2 Unix</option>
@@ -310,7 +365,7 @@
                                     <option value="630">IIS 7</option>
                                     <option value="635">IIS 8.5</option>
                                     <option value="640">Oracle HTTP</option>
-                                <optgroup>
+                                </optgroup>
                               </select>
                              </div>
 
