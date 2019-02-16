@@ -46,13 +46,13 @@ async function getTemplates(latest) {
 					intNA = 0;
 					intOpen = 0;
 					intNR = 0;
-					// var score = await getScoreForChecklistListing(item.internalId);
+					// var score = await getScoreForTemplateListing(item.rawChecklist);
 					// if (score) {
 					// 	intNaF = score.totalNotAFinding;
 					// 	intNA = score.totalNotApplicable;
 					// 	intOpen = score.totalOpen;
 					// 	intNR = score.totalNotReviewed;
-					// 	}
+					// }
 					table += '</a><br /><span class="small">last updated on '
 					if (item.updatedOn) {
 							table += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
@@ -73,6 +73,20 @@ async function getTemplates(latest) {
 	}
 	else 
 		throw new Error(response.status)
+}
+// called from template listing, calls the POST to the scoring API to get back a score dynamically
+async function getScoreForTemplateListing(xmlChecklist) {
+	var formData = new FormData();
+	formData.append("rawChecklist", xmlChecklist);
+	$.ajax({
+		url : scoreAPI,
+		data : formData,
+		type : 'POST',
+		processData: false,
+		contentType: false,
+		success : function(data){
+			displayChecklistScores(data);
+		}});
 }
 /*************************************
  * Checklist listing functions
@@ -166,11 +180,14 @@ async function getChecklistData(id, template) {
 			$("#checklistDescription").html("Description: " + data.description);
 			$("#checklistType").html("Type: " + data.typeTitle);
 
-			// load up chart data now
+			// load updated date
 			$("#chartSeverityUpdated").html(updatedDate);
 			$("#chartCategoryUpdated").html(updatedDate);
 			$("#barChartUpdated").html(updatedDate);
 			$("#checklistLastUpdated").html(updatedDate);
+
+			// update the Template Scoring dynamically
+			if (template) getScoreForTemplateListing(data.rawChecklist);
 
 			// go ahead and fill in the modal for for upload while we are in here
 			$("#frmChecklistTitle").val(data.title);
@@ -210,8 +227,11 @@ function updateSingleChecklist(id) {
 }
 
 // call to get the score data and show the name and then funnel data to the
-async function getChecklistScore(id, template) {
-	var data = await getScoreForChecklistListing(id, template);
+async function getChecklistScore(id) {
+	var data = await getScoreForChecklistListing(id);
+	displayChecklistScores(data);
+}
+async function displayChecklistScores(data) {
 	$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
 	$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
 	$("#checklistOpenCount").text(data.totalOpen.toString());
