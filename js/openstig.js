@@ -40,13 +40,13 @@ async function getTemplates(latest) {
 			if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklist templates uploaded. Go to the Upload page to add your first one.");}
 			else {
 					for (const item of data) {
-					table += '<tr><td class="tabco1"><a href="single-template.html?id=' + item.id + '">'
+					table += '<tr><td class="tabco1"><a href="single-template.html?id=' + item.internalId + '">'
 					table += item.title
 					intNaF = 0;
 					intNA = 0;
 					intOpen = 0;
 					intNR = 0;
-					// var score = await getScoreForChecklistListing(item.id);
+					// var score = await getScoreForChecklistListing(item.internalId);
 					// if (score) {
 					// 	intNaF = score.totalNotAFinding;
 					// 	intNA = score.totalNotApplicable;
@@ -98,13 +98,13 @@ async function getChecklists(latest) {
 			if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");}
 			else {
 					for (const item of data) {
-					table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.id + '">'
+					table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.internalId + '">'
 					table += item.title
 					intNaF = 0;
 					intNA = 0;
 					intOpen = 0;
 					intNR = 0;
-					var score = await getScoreForChecklistListing(item.id);
+					var score = await getScoreForChecklistListing(item.internalId);
 					if (score) {
 						intNaF = score.totalNotAFinding;
 						intNA = score.totalNotApplicable;
