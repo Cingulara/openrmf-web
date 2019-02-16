@@ -386,7 +386,7 @@ async function downloadChecklistFile(id, template){
 ************************************/
 function uploadChecklist(){
 	var formData = new FormData();
-	formData.append("checklistType",$("#checklistType").val());
+	formData.append("type",$("#checklistType").val());
 	formData.append("title",$("#checklistTitle").val());
 	formData.append("description",$("#checklistDescription").val());
 	formData.append('checklistFile',$('#checklistFile')[0].files[0]);
@@ -407,7 +407,7 @@ function uploadChecklist(){
 
 function uploadTemplate(){
 	var formData = new FormData();
-	formData.append("checklistType",$("#templateType").val());
+	formData.append("type",$("#templateType").val());
 	formData.append("title",$("#templateTitle").val());
 	formData.append("description",$("#templateDescription").val());
 	formData.append('checklistFile',$('#templateFile')[0].files[0]);
