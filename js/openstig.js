@@ -166,14 +166,49 @@ async function getChecklistData(id, template) {
 			$("#checklistDescription").html("Description: " + data.description);
 			$("#checklistType").html("Type: " + data.typeTitle);
 
+			// load up chart data now
 			$("#chartSeverityUpdated").html(updatedDate);
 			$("#chartCategoryUpdated").html(updatedDate);
 			$("#barChartUpdated").html(updatedDate);
 			$("#checklistLastUpdated").html(updatedDate);
+
+			// go ahead and fill in the modal for for upload while we are in here
+			$("#frmChecklistTitle").val(data.title);
+			$("#frmChecklistDescription").val(data.description);
+			$("#frmChecklistType").val(data.type);
   }
   else 
     throw new Error(response.status)
 }
+// update function on the checklist page showing all the individual checklist data
+function updateSingleChecklist(id) {
+	var url = saveAPI;
+	// only if there is a file does this get used uploadAPI
+	$("#frmChecklistTitle").val();
+	$("#frmChecklistDescription").val();
+	$("#frmChecklistType").val();
+	var formData = new FormData();
+	formData.append("type",$("#frmChecklistType").val());
+	formData.append("title",$("#frmChecklistTitle").val());
+	formData.append("description",$("#frmChecklistDescription").val());
+	if ($('#checklistFile').val()) {
+		// someone added a file
+		formData.append('checklistFile',$('#checklistFile')[0].files[0]);
+		url = uploadAPI; // include the file contents in the update
+	}
+	$.ajax({
+			url : url + "/" + id,
+			data : formData,
+			type : 'PUT',
+			processData: false,
+			contentType: false,
+			success : function(data){
+				swal("Your Checklist was updated successfully!", "Click OK to continue!", "success");
+				getChecklistData(id, false);
+			}
+	});
+}
+
 // call to get the score data and show the name and then funnel data to the
 async function getChecklistScore(id, template) {
 	var data = await getScoreForChecklistListing(id, template);
