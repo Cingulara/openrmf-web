@@ -426,6 +426,23 @@ function uploadTemplate(){
 	return false;
 }
 
+// display the vulnerability information by the Id
+function viewVulnDetails(vulnId) {
+	$("#vulnId").html(vulnId);
+	$("#vulnStigId").html('');
+	$("#vulnRuleId").html('');
+	$("#vulnRuleName").html('');
+	$("#vulnCCIId").html('');
+	$("#vulnRuleTitle").html('');
+	$("#vulnStatus").html('');
+	$("#vulnSeverity").html('');
+	$("#vulnDiscussion").html('');
+	$("#vulnCheckText").html('');
+	$("#vulnFixText").html('');
+	$("#vulnReferences").html('');
+	$("#vulnFindingDetails").html('');
+	$("#vulnComments").html('');
+}
 /************************************
  * Reports Functions
  ***********************************/

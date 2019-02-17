@@ -40,6 +40,7 @@
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/jstree/style.css" rel="stylesheet" type="text/css"/>
 		<!-- END CSS for this page -->
 </head>
 
@@ -169,7 +170,47 @@
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
-
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-folder-open-o"></i> Checklist IDs</h3>
+							</div>
+							<div class="card-body">
+								<div id="checklistTree">
+									<ul>
+										<li data-jstree='{"type":"file"}'>V-67357</li>
+										<li data-jstree='{"type":"file"}'>V-67359</li>
+										<li data-jstree='{"type":"file"}'>V-67361</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div><!-- end card-->
+					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-folder-open-o"></i> Vulnerability Details</h3>
+							</div>
+							<div class="card-body">
+								<div id="vulnId"></div>
+								<div id="vulnStigId"></div>
+								<div id="vulnRuleId"></div>
+								<div id="vulnRuleName">Select a Vulnerability ID to view details</div>
+								<div id="vulnCCIId"></div>
+								<div id="vulnRuleTitle"></div>
+								<div id="vulnStatus"></div>
+								<div id="vulnSeverity"></div>
+								<div id="vulnDiscussion"></div>
+								<div id="vulnCheckText"></div>
+								<div id="vulnFixText"></div>
+								<div id="vulnReferences"></div>
+								<div id="vulnFindingDetails"></div>
+								<div id="vulnComments"></div>
+							</div>
+						</div>
+					</div><!-- end card-->
+				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
 						<div class="card mb-3">
@@ -256,6 +297,7 @@
 
 <!-- BEGIN Java Script for this page -->
 <script src="js/moment.min.js"></script>
+<script src="assets/plugins/jstree/jstree.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="js/openstig.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -264,7 +306,28 @@
 		// calls to get the checklist data from the API
 		getChecklistData(getParameterByName('id'), false);
 		getChecklistScore(getParameterByName('id'));
-	} );
+		// Basic tree
+		$('#checklistTree').jstree({
+			'core' : {
+				'themes' : {
+					'responsive': false
+				}
+			},
+			'types' : {
+				'default' : {
+					'icon' : 'fa fa-folder-open'
+				},
+				'file' : {
+					'icon' : 'fa fa-file'
+				}
+			},
+			'plugins' : ['types']
+		});
+		
+		$('#checklistTree').on("changed.jstree", function (e, data) {
+			viewVulnDetails(data.node.text);
+		});
+	}); // document ready
 </script>
 <!-- END Java Script for this page -->
 
