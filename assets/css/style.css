@@ -1213,3 +1213,13 @@ a.btn:focus {
 .clickable {
   cursor: pointer;
 }
+.vulnListing {
+  height:400px;
+}
+
+.scrollableDiv {
+  overflow-y: scroll;
+}
+.vulnSpacing {
+  padding: 5px 0px 5px 0px;
+}

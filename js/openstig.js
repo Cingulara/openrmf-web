@@ -168,7 +168,7 @@ async function getChecklistData(id, template) {
 		url = templateAPI;
   let response = await fetch(url + "/" + id);
   if (response.ok) {
-      var data = await response.json()
+      var data = await response.json();
 			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + data.title);
 			var updatedDate = "Last Updated on ";
 			if (data.updatedOn) {
@@ -193,7 +193,18 @@ async function getChecklistData(id, template) {
 			$("#frmChecklistTitle").val(data.title);
 			$("#frmChecklistDescription").val(data.description);
 			$("#frmChecklistType").val(data.type);
-  }
+
+			// load the vulnerabilities into localstorage
+			var vulnListing = "";
+			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
+				localStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
+				// add to the checklistTree
+				vulnListing += '<a role="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" ';
+				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;" '
+				vulnListing += 'title="Click to view the Vulnerability Details">' + vuln.stiG_DATA[0].attributE_DATA + '</a><br />';
+			}
+			$("#checklistTree").html(vulnListing);
+		}
   else 
     throw new Error(response.status)
 }
@@ -428,20 +439,24 @@ function uploadTemplate(){
 
 // display the vulnerability information by the Id
 function viewVulnDetails(vulnId) {
-	$("#vulnId").html(vulnId);
-	$("#vulnStigId").html('');
-	$("#vulnRuleId").html('');
-	$("#vulnRuleName").html('');
-	$("#vulnCCIId").html('');
-	$("#vulnRuleTitle").html('');
-	$("#vulnStatus").html('');
-	$("#vulnSeverity").html('');
-	$("#vulnDiscussion").html('');
-	$("#vulnCheckText").html('');
-	$("#vulnFixText").html('');
-	$("#vulnReferences").html('');
-	$("#vulnFindingDetails").html('');
-	$("#vulnComments").html('');
+	var data = JSON.parse(localStorage.getItem(vulnId));
+	if (data) {
+		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
+		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[0].attributE_DATA);
+		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
+		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
+		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
+		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + data.stiG_DATA[24].attributE_DATA);
+		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
+		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
+		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
+		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + data.stiG_DATA[6].attributE_DATA);
+		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA);
+		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA);
+		$("#vulnReferences").html();
+		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + data.findinG_DETAILS);
+		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + data.comments);
+	}
 }
 /************************************
  * Reports Functions
