@@ -437,14 +437,14 @@ function uploadTemplate(){
 	return false;
 }
 
-// display the vulnerability information by the Id
+// display the vulnerability information by the Vulnerability Id
 function viewVulnDetails(vulnId) {
 	var data = JSON.parse(localStorage.getItem(vulnId));
 	if (data) {
 		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
-		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[0].attributE_DATA);
+		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
 		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
-		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
+		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
 		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
 		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + data.stiG_DATA[24].attributE_DATA);
 		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
