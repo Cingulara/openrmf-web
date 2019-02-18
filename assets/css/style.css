@@ -1213,3 +1213,29 @@ a.btn:focus {
 .clickable {
   cursor: pointer;
 }
+.vulnListing {
+  height:400px;
+}
+
+.scrollableDiv {
+  overflow-y: scroll;
+}
+.vulnSpacing {
+  padding: 5px 0px 5px 0px;
+}
+.vulnOpen {
+  background-color: #E53935;
+  margin: 3px 0px 3px 0px;
+}
+.vulnNotApplicable {
+  background-color: #039BE5;
+  margin: 3px 0px 3px 0px;
+}
+.vulnNotAFinding {
+  background-color: #50cc83;
+  margin: 3px 0px 3px 0px;
+}
+.vulnNotReviewed {
+  background-color: silver;
+  margin: 3px 0px 3px 0px;
+}
