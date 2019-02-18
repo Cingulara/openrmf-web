@@ -1,14 +1,8 @@
-// var readAPI = 'http://localhost:8084'
-// var scoreAPI = 'http://localhost:8090'
-// var saveAPI = 'http://localhost:8082'
-// var uploadAPI = 'http://localhost:8086'
-// var templateAPI = 'http://localhost:8088'
-
-var readAPI = 'http://openstigapi-read:8080'
-var scoreAPI = 'http://openstigapi-scoring:8080'
-var saveAPI = 'http://openstigapi-save:8080'
-var uploadAPI = 'http://openstigapi-upload:8080'
-var templateAPI = 'http://openstigapi-template:8080'
+var readAPI = 'http://localhost:8084'
+var scoreAPI = 'http://localhost:8090'
+var saveAPI = 'http://localhost:8082'
+var uploadAPI = 'http://localhost:8086'
+var templateAPI = 'http://localhost:8088'
 
 /*************************************
  * Dashboard functions
@@ -46,19 +40,19 @@ async function getTemplates(latest) {
 			if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklist templates uploaded. Go to the Upload page to add your first one.");}
 			else {
 					for (const item of data) {
-					table += '<tr><td class="tabco1"><a href="single-template.html?id=' + item.id + '">'
+					table += '<tr><td class="tabco1"><a href="single-template.html?id=' + item.internalId + '">'
 					table += item.title
 					intNaF = 0;
 					intNA = 0;
 					intOpen = 0;
 					intNR = 0;
-					// var score = await getScoreForChecklistListing(item.id);
+					// var score = await getScoreForTemplateListing(item.rawChecklist);
 					// if (score) {
 					// 	intNaF = score.totalNotAFinding;
 					// 	intNA = score.totalNotApplicable;
 					// 	intOpen = score.totalOpen;
 					// 	intNR = score.totalNotReviewed;
-					// 	}
+					// }
 					table += '</a><br /><span class="small">last updated on '
 					if (item.updatedOn) {
 							table += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
@@ -79,6 +73,20 @@ async function getTemplates(latest) {
 	}
 	else 
 		throw new Error(response.status)
+}
+// called from template listing, calls the POST to the scoring API to get back a score dynamically
+async function getScoreForTemplateListing(xmlChecklist) {
+	var formData = new FormData();
+	formData.append("rawChecklist", xmlChecklist);
+	$.ajax({
+		url : scoreAPI,
+		data : formData,
+		type : 'POST',
+		processData: false,
+		contentType: false,
+		success : function(data){
+			displayChecklistScores(data);
+		}});
 }
 /*************************************
  * Checklist listing functions
@@ -104,13 +112,13 @@ async function getChecklists(latest) {
 			if (data.length == 0) {$("#tblChecklistListing").html("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");}
 			else {
 					for (const item of data) {
-					table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.id + '">'
+					table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.internalId + '">'
 					table += item.title
 					intNaF = 0;
 					intNA = 0;
 					intOpen = 0;
 					intNR = 0;
-					var score = await getScoreForChecklistListing(item.id);
+					var score = await getScoreForChecklistListing(item.internalId);
 					if (score) {
 						intNaF = score.totalNotAFinding;
 						intNA = score.totalNotApplicable;
@@ -160,7 +168,7 @@ async function getChecklistData(id, template) {
 		url = templateAPI;
   let response = await fetch(url + "/" + id);
   if (response.ok) {
-      var data = await response.json()
+      var data = await response.json();
 			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + data.title);
 			var updatedDate = "Last Updated on ";
 			if (data.updatedOn) {
@@ -172,17 +180,83 @@ async function getChecklistData(id, template) {
 			$("#checklistDescription").html("Description: " + data.description);
 			$("#checklistType").html("Type: " + data.typeTitle);
 
+			// load updated date
 			$("#chartSeverityUpdated").html(updatedDate);
 			$("#chartCategoryUpdated").html(updatedDate);
 			$("#barChartUpdated").html(updatedDate);
 			$("#checklistLastUpdated").html(updatedDate);
-  }
+
+			// update the Template Scoring dynamically
+			if (template) getScoreForTemplateListing(data.rawChecklist);
+
+			// go ahead and fill in the modal for for upload while we are in here
+			$("#frmChecklistTitle").val(data.title);
+			$("#frmChecklistDescription").val(data.description);
+			$("#frmChecklistType").val(data.type);
+
+			// load the vulnerabilities into localstorage
+			var vulnListing = "";
+			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
+				localStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
+				// add to the checklistTree
+				// based on one of the status color the background appropriately
+				vulnListing += '<button type="button" class="btn btn-sm ';
+				vulnListing += getVulnerabilityStatusClassName(vuln.status);
+				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
+				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
+				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
+			}
+			$("#checklistTree").html(vulnListing);
+		}
   else 
     throw new Error(response.status)
 }
+// get the color coding of the class based on vulnerability status
+function getVulnerabilityStatusClassName (status) {
+	if (status.toLowerCase() == 'not_reviewed')
+		return "vulnNotReviewed";
+	else if (status.toLowerCase() == 'open')
+		return "vulnOpen";
+	else if (status.toLowerCase() == 'not_applicable')
+		return "vulnNotApplicable";
+	else // not a finding
+		return "vulnNotAFinding";
+}
+// update function on the checklist page showing all the individual checklist data
+function updateSingleChecklist(id) {
+	var url = saveAPI;
+	// only if there is a file does this get used uploadAPI
+	$("#frmChecklistTitle").val();
+	$("#frmChecklistDescription").val();
+	$("#frmChecklistType").val();
+	var formData = new FormData();
+	formData.append("type",$("#frmChecklistType").val());
+	formData.append("title",$("#frmChecklistTitle").val());
+	formData.append("description",$("#frmChecklistDescription").val());
+	if ($('#checklistFile').val()) {
+		// someone added a file
+		formData.append('checklistFile',$('#checklistFile')[0].files[0]);
+		url = uploadAPI; // include the file contents in the update
+	}
+	$.ajax({
+			url : url + "/" + id,
+			data : formData,
+			type : 'PUT',
+			processData: false,
+			contentType: false,
+			success : function(data){
+				swal("Your Checklist was updated successfully!", "Click OK to continue!", "success");
+				getChecklistData(id, false);
+			}
+	});
+}
+
 // call to get the score data and show the name and then funnel data to the
-async function getChecklistScore(id, template) {
-	var data = await getScoreForChecklistListing(id, template);
+async function getChecklistScore(id) {
+	var data = await getScoreForChecklistListing(id);
+	displayChecklistScores(data);
+}
+async function displayChecklistScores(data) {
 	$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
 	$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
 	$("#checklistOpenCount").text(data.totalOpen.toString());
@@ -332,12 +406,17 @@ async function downloadChecklistFile(id, template){
 		document.body.removeChild(element);
 	}
 }
+
+async function exportChecklistXLSX(id) {
+	// redirect to the API and it downloads the XLSX file
+	location.href = readAPI + "/export/" + id;
+}
 /************************************ 
  Upload Functions
 ************************************/
 function uploadChecklist(){
 	var formData = new FormData();
-	formData.append("checklistType",$("#checklistType").val());
+	formData.append("type",$("#checklistType").val());
 	formData.append("title",$("#checklistTitle").val());
 	formData.append("description",$("#checklistDescription").val());
 	formData.append('checklistFile',$('#checklistFile')[0].files[0]);
@@ -358,7 +437,7 @@ function uploadChecklist(){
 
 function uploadTemplate(){
 	var formData = new FormData();
-	formData.append("checklistType",$("#templateType").val());
+	formData.append("type",$("#templateType").val());
 	formData.append("title",$("#templateTitle").val());
 	formData.append("description",$("#templateDescription").val());
 	formData.append('checklistFile',$('#templateFile')[0].files[0]);
@@ -377,6 +456,27 @@ function uploadTemplate(){
 	return false;
 }
 
+// display the vulnerability information by the Vulnerability Id
+function viewVulnDetails(vulnId) {
+	var data = JSON.parse(localStorage.getItem(vulnId));
+	if (data) {
+		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
+		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
+		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
+		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
+		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
+		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + data.stiG_DATA[24].attributE_DATA);
+		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
+		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
+		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
+		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + data.stiG_DATA[6].attributE_DATA);
+		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA);
+		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA);
+		$("#vulnReferences").html();
+		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + data.findinG_DETAILS);
+		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + data.comments);
+	}
+}
 /************************************
  * Reports Functions
  ***********************************/
