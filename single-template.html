@@ -167,24 +167,60 @@
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
-
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-folder-open-o"></i> VULN IDs</h3>
+							</div>
+							<div class="card-body">
+								<div id="checklistTree" class="vulnListing scrollableDiv">
+								</div>
+							</div>
+						</div>
+					</div><!-- end card-->
+					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-folder-open-o"></i> Vulnerability Details</h3>
+							</div>
+							<div class="card-body">
+								<div class="vulnListing scrollableDiv">
+									<div class="vulnSpacing" id="vulnId">Select a Vulnerability ID to view details</div>
+									<div class="vulnSpacing" id="vulnStigId"></div>
+									<div class="vulnSpacing" id="vulnStatus"></div>
+									<div class="vulnSpacing" id="vulnSeverity"></div>
+									<div class="vulnSpacing" id="vulnRuleId"></div>
+									<div class="vulnSpacing" id="vulnRuleName"></div>
+									<div class="vulnSpacing" id="vulnCCIId"></div>
+									<div class="vulnSpacing" id="vulnRuleTitle"></div>
+									<div class="vulnSpacing" id="vulnClassification"></div>
+									<div class="vulnSpacing" id="vulnDiscussion"></div>
+									<div class="vulnSpacing" id="vulnCheckText"></div>
+									<div class="vulnSpacing" id="vulnFixText"></div>
+									<div class="vulnSpacing" id="vulnFindingDetails"></div>
+									<div class="vulnSpacing" id="vulnComments"></div>
+									<div class="vulnSpacing" id="vulnReferences"></div>
+								</div>
+							</div>
+						</div>
+					</div><!-- end card-->
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
 						<div class="card mb-3">
 							<div class="card-header">
 								<i class="fa fa-table"></i> Severity Breakdown
-							</div>
-								
+							</div>								
 							<div class="card-body">
 								<canvas id="chartSeverity"></canvas>
 							</div>
 							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
 							<button type="button" onclick="downloadChart('chartSeverity');" style="width: 200px;"
 								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->					
+						</div><!-- end card-->
 					</div>
-					
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
 						<div class="card mb-3">
 							<div class="card-header">
 								<i class="fa fa-table"></i> Category Breakdown
@@ -260,8 +296,7 @@
 	$(document).ready(function() {
 		// calls to get the checklist data from the API
 		getChecklistData(getParameterByName('id'), true);
-		//getChecklistScore(getParameterByName('id'), false);
-	} );
+	});
 </script>
 <!-- END Java Script for this page -->
 </body>

@@ -40,6 +40,7 @@
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/jstree/style.css" rel="stylesheet" type="text/css"/>
 		<!-- END CSS for this page -->
 </head>
 
@@ -137,7 +138,9 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3 id="checklistTitle"> </h3>
+								<h3 id="checklistTitle" class="float-left"> </h3>
+								<a href="#custom-modal" class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
+									data-target="#customModal" data-toggle="modal">Update Checklist Data</a>
 							</div>								
 							<div class="card-body">
 								<table class="table table-condensed table-hover table-bordered table-responsive-md">
@@ -163,11 +166,51 @@
 								<div class="small" id="checklistLastUpdated"></div><br />
 								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
 									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
+								<button type="button" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
+									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export to Excel</button>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
-
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-folder-open-o"></i> Vuln Ids</h3>
+							</div>
+							<div class="card-body">
+								<div id="checklistTree" class="vulnListing scrollableDiv">
+								</div>
+							</div>
+						</div>
+					</div><!-- end card-->
+					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-folder-open-o"></i> Vulnerability Details</h3>
+							</div>
+							<div class="card-body">
+								<div class="vulnListing scrollableDiv">
+									<div class="vulnSpacing" id="vulnId">Select a Vulnerability ID to view details</div>
+									<div class="vulnSpacing" id="vulnStigId"></div>
+									<div class="vulnSpacing" id="vulnStatus"></div>
+									<div class="vulnSpacing" id="vulnSeverity"></div>
+									<div class="vulnSpacing" id="vulnRuleId"></div>
+									<div class="vulnSpacing" id="vulnRuleName"></div>
+									<div class="vulnSpacing" id="vulnCCIId"></div>
+									<div class="vulnSpacing" id="vulnRuleTitle"></div>
+									<div class="vulnSpacing" id="vulnClassification"></div>
+									<div class="vulnSpacing" id="vulnDiscussion"></div>
+									<div class="vulnSpacing" id="vulnCheckText"></div>
+									<div class="vulnSpacing" id="vulnFixText"></div>
+									<div class="vulnSpacing" id="vulnFindingDetails"></div>
+									<div class="vulnSpacing" id="vulnComments"></div>
+									<div class="vulnSpacing" id="vulnReferences"></div>
+								</div>
+							</div>
+						</div>
+					</div><!-- end card-->
+				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
 						<div class="card mb-3">
@@ -254,15 +297,275 @@
 
 <!-- BEGIN Java Script for this page -->
 <script src="js/moment.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="js/openstig.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
 	$(document).ready(function() {
 		// calls to get the checklist data from the API
 		getChecklistData(getParameterByName('id'), false);
-		getChecklistScore(getParameterByName('id'), false);
-	} );
+		getChecklistScore(getParameterByName('id'));
+	}); // document ready
 </script>
 <!-- END Java Script for this page -->
+
+
+<!-- Update Modal -->
+<div class="modal fade custom-modal" id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModal" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel2">Update Your Checklist</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="frmChecklistTitle">Title (required)</label>
+					<input type="text" class="form-control" id="frmChecklistTitle" 
+					aria-describedby="titleHelp" placeholder="Enter title" required>
+					<small id="titleHelp" class="form-text text-muted">Specify a good title for this Checklist</small>
+					</div>
+					<div class="form-group">
+					<label for="frmChecklistDescription">Description (required)</label>
+					<textarea type="text" class="form-control" id="frmChecklistDescription" rows="4"
+					aria-describedby="descriptionHelp" placeholder="Enter a Description" required></textarea>
+					<small id="descriptionHelp" class="form-text text-muted">Specify a good description for this Checklist</small>
+					</div>
+					
+					<div class="form-group">
+					<label for="frmChecklistType">Checklist Type (required)</label>
+					<select class="form-control select2" id="frmChecklistType" required>
+						<option value="">Choose one...</option>
+						<optgroup label="Unknown/Unlisted">
+							<option value="0">Other</option>
+						</optgroup>
+						<optgroup label="Applications Development">
+							<option value="10">Application Security & Development</option>
+							<option value="105">.NET Technologies</option>
+							<option value="101">Oracle JRE 8 Unix</option>
+							<option value="102">Oracle JRE 8 Windows</option>
+						</optgroup>
+						<optgroup label="Anti-Virus">
+							<option value="201">McAfee Anti-Virus Local Client</option>
+							<option value="202">McAfee Anti-Virus Managed Client</option>
+							<option value="203">McAfee Anti-Virus Enterprise Linux Local Client</option>
+							<option value="204">McAfee Anti-Virus Enterprise Linux Managed Client</option>
+							<option value="205">Windows Defender</option>
+						</optgroup>
+						<optgroup label="Application Servers">	
+							<option value="301">Cold Fusion</option>
+							<option value="305">Bromium Secure Platform 4</option>
+							<option value="310">IBM MQ Appliance v9 AS</option>
+							<option value="311">IBM MQ Appliance v9 NDM</option>
+							<option value="312">IBM MQ Appliance</option>
+							<option value="315">IBM Web Sphere</option>
+							<option value="320">MS Exchange 2010 Client Access</option>
+							<option value="322">MS Exchange 2010 Edge</option>
+							<option value="324">MS Exchange 2010 Hub</option>
+							<option value="326">MS Exchange 2010 Mailbox</option>
+							<option value="330">MS Exchange 2013 Client Access</option>
+							<option value="332">MS Exchange 2013 Edge</option>
+							<option value="336">MS Exchange 2013 Mailbox</option>
+							<option value="340">MS Exchange 2016 Edge Transport Server</option>
+							<option value="342">MS Exchange 2016 Mailbox Server</option>
+							<option value="350">MS SharePoint 2010</option>
+							<option value="355">MS SharePoint 2013</option>
+							<option value="360">Oracle WebLogic 12c</option>
+							<option value="370">Red Hat JBoss EAP 6.3</option>
+							<option value="380">Tanium 6.5</option>
+							<option value="385">Tanium 7.0</option>
+						</optgroup>
+						<optgroup label="Browsers">	
+							<option value="400">Chrome</option>
+							<option value="415">Firefox</option>
+							<option value="405">Internet Explorer 10</option>
+							<option value="410">Internet Explorer 11</option>
+						</optgroup>
+						<optgroup label="Databases">
+							<option value="500">SQL Server 2012 Database</option>
+							<option value="502">SQL Server 2012 Instance</option>
+							<option value="505">SQL Server 2014 Database</option>
+							<option value="507">SQL Server 2014 Instance</option>
+							<option value="510">SQL Server 2016 Database</option>
+							<option value="512">SQL Server 2016 Instance</option>
+							<option value="515">Mongo DB Enterprise Advanced 3</option>
+							<option value="520">Oracle 11.2g</option>
+							<option value="525">Oracle 11g</option>
+							<option value="530">Oracle 12c</option>
+							<option value="535">PostgreSQL</option>
+							<option value="540">EDB Postgres Advanced Server 9 on Red Hat</option>
+							<option value="545">EDB Postgres Advanced Server</option>
+							<option value="550">IBM DB2 v10.5 LUW</option>
+						</optgroup>
+						<optgroup label="Desktop Applications">
+							<option value="700">Adobe Acrobat Pro DC Classic</option>
+							<option value="705">Adobe Acrobat Pro DC Continuous</option>
+							<option value="710">Adobe Acrobat Reader DC Classic</option>
+							<option value="715">Adobe Acrobat Reader DC ontinuous</option>
+						</optgroup>
+						<optgroup label="Esri">
+							<option value="800">Esri ArcGIS Server 10.3</option>
+						</optgroup>
+						<optgroup label="Google Search Appliance">
+							<option value="850">Google Search Appliance</option>
+						</optgroup>
+						<optgroup label="HBSS">
+							<option value="2000">McAfee Application Control</option>
+						</optgroup>
+						<optgroup label="Mobile">
+							<option value="2100">AppleIOS12</option>
+							<option value="2110">BlackBerry Enterprise Mobility Server 2</option>
+							<option value="2115">BlackBerry OS 10.3</option>
+							<option value="2120">BlackBerry UEM 12.7/option>
+							<option value="2122">BlackBerry UEM 12.8</option>
+							<option value="2130">CMD Policy</option>
+							<option value="2135">IBM MaaS 360 Watson1 0</option>
+							<option value="2140">LG Android 6</option>
+							<option value="2145">MDM Server Policy</option>
+							<option value="2150">MS Windows 1 0Mobile</option>
+							<option value="2155">Mobile Iron Core 9</option>
+							<option value="2160">Mobile Policy</option>
+							<option value="2170">Samsung Android 7 (w/ Knox 2)</option>
+							<option value="2172">Samsung Android 5 (w/ Knox 2)</option>
+							<option value="2174">Samsung Android 6 (w/ Knox 2)</option>
+							<option value="2176">Samsung Android 8 (w/ Knox 3) COBO</option>
+							<option value="2178">Samsung Android 8 (w/ Knox 3) COPE</option>
+							<option value="2180">Samsung SDS EMM v1.5</option>
+							<option value="2185">VM AirWatch 9</option>
+						</optgroup>
+						<optgroup label="Microsoft Office">
+							<option value="900">MS Office Access 2010</option>
+							<option value="902">MS Office Access 2013</option>
+							<option value="904">MS Office Access 2016</option>
+							<option value="910">MS Office Excel 2010</option>
+							<option value="912">MS Office Excel 2013</option>
+							<option value="914">MS Office Excel 2016</option>
+							<option value="920">MS Office Groove 2016</option>
+							<option value="925">MS Office InfoPath 2010</option>
+							<option value="927">MS Office InfoPath 2013</option>
+							<option value="930">MS Office System 2010</option>
+							<option value="932">MS Office System 2013</option>
+							<option value="934">MS Office System 2016</option>
+							<option value="940">MS One Drive Business</option>
+							<option value="950">MS OneNote 2010</option>
+							<option value="952">MS OneNote 2013</option>
+							<option value="954">MS OneNote 2016</option>
+							<option value="960">MS Outlook 2010</option>
+							<option value="962">MS Outlook 2013</option>
+							<option value="964">MS Outlook 2016</option>
+							<option value="970">MS PowerPoint 2010</option>
+							<option value="972">MS PowerPoint 2013</option>
+							<option value="974">MS PowerPoint 2016</option>
+							<option value="980">MS Project 2010</option>
+							<option value="982">MS Project 2013</option>
+							<option value="984">MS Project 2016</option>
+							<option value="990">MS Publisher 2010</option>
+							<option value="992">MS Publisher 2013</option>
+							<option value="994">MS Publisher 2016</option>
+							<option value="1000">MS SharePoint Designer 2013</option>
+							<option value="1010">MS Skype Business 2016</option>
+							<option value="1020">MS Visio 2013</option>
+							<option value="1022">MS Visio 2016</option>
+							<option value="1030">MS Word 2010</option>
+							<option value="1032">MS Word 2013</option>
+							<option value="1034">MS Word 2016</option>
+						</optgroup>
+						<optgroup label="Network Perimeter">
+							<option value="2200">Enclave Test and Development</option>
+						</optgroup>
+						<optgroup label="Operating Systems">
+							<option value="2300">Apple Mac OSX 10.11 Workstation</option>
+							<option value="2305">Apple Mac OSX 10.12 Workstation</option>
+							<option value="2310">Apple Mac OSX 10.13 Workstation</option>
+							<option value="2320">IBM HMC</option>
+							<option value="2325">IBM zVM CA VMSecure/option>
+							<option value="2330">SLES V11 for System Z</option>
+							<option value="2335">z/OS AFC2</option>
+							<option value="2340">z/OS RACF</option>
+							<option value="2345">z/OS TSS</option>
+							<option value="2350">AIX 6.1</option>
+							<option value="2355">Canonical Ubuntu 16.04</option>
+							<option value="2360">Oracle Linux 5</option>
+							<option value="2365">Oracle Linux 6</option>
+							<option value="2370">RedHat Enterprise Linux 6</option>
+							<option value="2375">RedHat Enterprise Linux 7</option>
+							<option value="2380">Solaris 10 SPARC</option>
+							<option value="2385">Solaris 10 x86</option>
+							<option value="2390">Solaris 11 SPARC</option>
+							<option value="2395">Solaris 11 x86</option>
+							<option value="2400">SUSE Linux Enterprise Server</option>
+							<option value="2405">VMWare ESXi 5 vCenter</option>
+							<option value="2410">VMWare ESXi 5 Virtual Machine</option>
+							<option value="2415">VMWare ESXi 5 Server</option>
+							<option value="2420">VMWare vRealize Automation 7 Application</option>
+							<option value="2425">VMWare vRealize Automation 7 HAProxy</option>
+							<option value="2430">VMWare vRealize Automation 7 Lighttpd</option>
+							<option value="2435">VMWare vRealize Automation 7 Overview</option>
+							<option value="2440">VMWare vRealize Automation 7 PostgreSQL</option>
+							<option value="2445">VMWare vRealize Automation 7 SLES</option>
+							<option value="2450">VMWare vRealize Automation 7 tcServer</option>
+							<option value="2455">VMWare vRealize Automation 7 vAMI</option>
+							<option value="2460">VMWare vRealize Automation 7 vIDM</option>
+							<option value="2465">VMWare vRealize Operations Manager Cassandra</option>
+							<option value="2470">VMWare vRealize Ops 6 Application</option>
+							<option value="2475">VMWare vRealize Ops 6 PostgreSQL</option>
+							<option value="2480">VMWare vRealize Ops 6 SLES 11.3</option>
+							<option value="2485">VMWare vRealize Ops 6 txServer</option>
+							<option value="2490">VMWare vSphere 6 ESXi</option>
+							<option value="2495">VMWare vSphere 6 vCenter Server Windows</option>
+							<option value="2500">VMWare vSphere 6 Virtual Machine</option>
+							<option value="2510">MS Windows Active Directory Domain</option>
+							<option value="2515">MS Windows Active Directory Forest</option>
+							<option value="2520">MS Windows 10</option>
+							<option value="2560">MS Windows Firewall Advanced Security</option>
+							<option value="2565">MS Windows Privileged Access Workstation</option>
+							<option value="2525">MS Windows Server 2008 DC</option>
+							<option value="2530">MS Windows Server 2008 MS</option>
+							<option value="2535">MS Windows Server 2008 R2 DC</option>
+							<option value="2540">MS Windows Server 2008 R2 MS</option>
+							<option value="2545">MS Windows Server 2012 DC</option>
+							<option value="2550">MS Windows Server 2012 MS</option>
+							<option value="2570">MS Windows Server 2016 MS/DC</option>
+						</optgroup>
+						<optgroup label="Remote Desktop">
+								<option value="1060">Citrix XenDesktop 7</option>
+								<option value="1065">Citrix XenDesktop 7 License Server</option>
+								<option value="1070">Citrix XenDesktop 7 Receiver</option>
+								<option value="1075">Citrix XenDesktop 7 Delivery Controller</option>
+								<option value="1080">Citrix XenDesktop 7 StoreFront</option>
+								<option value="1085">Citrix XenDesktop 7 Windows VDA</option>
+						</optgroup>
+						<optgroup label="Trend Micro">
+							<option value="1050">TrendMicro Deep Security 9</option>
+						</optgroup>
+						<optgroup label="Web Servers">
+							<option value="600">Apache 2.2 Windows</option>
+							<option value="605">Apache 2.2 Unix</option>
+							<option value="610">Apache 2.4 Unix Server</option>
+							<option value="615">Apache 2.4 Unix Site</option>
+							<option value="620">Apache Windows Server</option>
+							<option value="625">Apache Windows Site</option>
+							<option value="630">IIS 7</option>
+							<option value="635">IIS 8.5 Server</option>
+							<option value="637">IIS 8.5 Site</option>
+							<option value="640">Oracle HTTP</option>
+						</optgroup>
+					</select>
+					</div>
+
+					<div class="form-group">
+						<label for="frmChecklistFile">Checklist File (not required)</label><br />
+						<input type="file" id="checklistFile" /> 
+					</div>
+				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="updateSingleChecklist(getParameterByName('id'));">Save changes</button>
+			</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
