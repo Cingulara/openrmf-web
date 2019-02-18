@@ -199,14 +199,28 @@ async function getChecklistData(id, template) {
 			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
 				localStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
 				// add to the checklistTree
-				vulnListing += '<a role="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" ';
-				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;" '
-				vulnListing += 'title="Click to view the Vulnerability Details">' + vuln.stiG_DATA[0].attributE_DATA + '</a><br />';
+				// based on one of the status color the background appropriately
+				vulnListing += '<button type="button" class="btn btn-sm ';
+				vulnListing += getVulnerabilityStatusClassName(vuln.status);
+				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
+				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
+				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
 			}
 			$("#checklistTree").html(vulnListing);
 		}
   else 
     throw new Error(response.status)
+}
+// get the color coding of the class based on vulnerability status
+function getVulnerabilityStatusClassName (status) {
+	if (status.toLowerCase() == 'not_reviewed')
+		return "vulnNotReviewed";
+	else if (status.toLowerCase() == 'open')
+		return "vulnOpen";
+	else if (status.toLowerCase() == 'not_applicable')
+		return "vulnNotApplicable";
+	else // not a finding
+		return "vulnNotAFinding";
 }
 // update function on the checklist page showing all the individual checklist data
 function updateSingleChecklist(id) {
@@ -391,6 +405,11 @@ async function downloadChecklistFile(id, template){
 		element.click();
 		document.body.removeChild(element);
 	}
+}
+
+async function exportChecklistXLSX(id) {
+	// redirect to the API and it downloads the XLSX file
+	location.href = readAPI + "/export/" + id;
 }
 /************************************ 
  Upload Functions
