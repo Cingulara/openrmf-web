@@ -429,12 +429,50 @@ async function exportChecklistXLSX(id) {
 /************************************ 
  Upload Functions
 ************************************/
+// get the list of systems from system memory OR from local storage
+// also need a way to refresh this
+async function getChecklistSystems() {
+	var data = JSON.parse(localStorage.getItem("checklistSystems"));
+	if (data) 
+		return data;
+	else {
+		let response = await fetch(readAPI + "/systems");
+		if (response.ok) {
+				var data = await response.json();
+				localStorage.setItem("checklistSystems", JSON.stringify(data));
+				// for each data add to the upload checklistSystem
+				$.each(data, function (index, value) {
+					$('#checklistSystem').append($('<option/>', { 
+							value: value,
+							text : value 
+					}));
+			});
+		}
+	}
+}
+// get the list of systems for the upload function
+async function getChecklistSystemsForUpload() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	$.each(data, function (index, value) {
+		$('#checklistSystem').append($('<option/>', { 
+				value: value,
+				text : value 
+		}));
+	}); 
+}
+
 function uploadChecklist(){
 	var formData = new FormData();
 	formData.append("type",$("#checklistType").val());
 	formData.append("title",$("#checklistTitle").val());
 	formData.append("description",$("#checklistDescription").val());
 	formData.append('checklistFile',$('#checklistFile')[0].files[0]);
+	// if a new system, use it, otherwise select from the list
+	if (checklistSystemText.val().trim().length > 0)
+		formData.append("system",$("#checklistSystemText").val());
+	else
+		formData.append("system",$("#checklistSystem").val());
 	$.ajax({
 			url : uploadAPI,
 			data : formData,
