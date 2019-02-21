@@ -151,11 +151,16 @@ async function getScoreForChecklistListing(id, template) {
 	var url = scoreAPI;
 	if (template)
 		url = templateAPI;
-
-	let responseScore = await fetch(scoreAPI + "/artifact/" + id);
-	if (responseScore.ok) {
-		var dataScore = await responseScore.json()
-		return dataScore;
+  try {
+		let responseScore = await fetch(scoreAPI + "/artifact/" + id);
+		if (responseScore.ok) {
+			var dataScore = await responseScore.json()
+			return dataScore;
+		}
+	}
+	catch (error) {
+		console.error("returning an empty score");
+		return null;
 	}
 }
 /*************************************
@@ -177,8 +182,9 @@ async function getChecklistData(id, template) {
 			else {
 				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
 			}
-			$("#checklistDescription").html("Description: " + data.description);
-			$("#checklistType").html("Type: " + data.typeTitle);
+			$("#checklistDescription").html("<b>Description:</b> " + data.description);
+			$("#checklistType").html("<b>Type:</b> " + data.typeTitle);
+			$("#checklistSystem").html("<b>System:</b> " + data.system);
 
 			// load updated date
 			$("#chartSeverityUpdated").html(updatedDate);
@@ -193,6 +199,7 @@ async function getChecklistData(id, template) {
 			$("#frmChecklistTitle").val(data.title);
 			$("#frmChecklistDescription").val(data.description);
 			$("#frmChecklistType").val(data.type);
+			$("#frmChecklistSystem").val(data.system);
 
 			// load the vulnerabilities into localstorage
 			var vulnListing = "";
@@ -257,14 +264,22 @@ async function getChecklistScore(id) {
 	displayChecklistScores(data);
 }
 async function displayChecklistScores(data) {
-	$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
-	$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
-	$("#checklistOpenCount").text(data.totalOpen.toString());
-	$("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
-	// show the charts with the same data
-	makeChartSeverity(data);
-	makeChartCategory(data);
-	makeBarChartBreakdown(data);
+	if (data) {
+		$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
+		$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
+		$("#checklistOpenCount").text(data.totalOpen.toString());
+		$("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
+		// show the charts with the same data
+		makeChartSeverity(data);
+		makeChartCategory(data);
+		makeBarChartBreakdown(data);
+	}
+	else {
+		$("#checklistNotAFindingCount").text("0");
+		$("#checklistNotApplicableCount").text("0");
+		$("#checklistOpenCount").text("0");
+		$("#checklistNotReviewedCount").text("0");
+	}
 }
 // pie chart with the status of the checklist
 async function makeChartSeverity (data) {

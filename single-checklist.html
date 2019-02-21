@@ -161,6 +161,7 @@
 								</tr>
 								</tbody>
 								</table>
+								<div id="checklistSystem"></div>
 								<div id="checklistType"></div>
 								<div id="checklistDescription"></div>
 								<div class="small" id="checklistLastUpdated"></div><br />
@@ -322,19 +323,24 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
+					<label for="frmChecklistSystem">Title (required)</label>
+					<input type="text" class="form-control" id="frmChecklistSystem" 
+					aria-describedby="titleHelp" placeholder="Enter System" required>
+					<small id="titleHelp" class="form-text text-muted">Enter the system this belongs to, if any</small>
+					</div>
+				<div class="form-group">
 					<label for="frmChecklistTitle">Title (required)</label>
 					<input type="text" class="form-control" id="frmChecklistTitle" 
 					aria-describedby="titleHelp" placeholder="Enter title" required>
 					<small id="titleHelp" class="form-text text-muted">Specify a good title for this Checklist</small>
 					</div>
-					<div class="form-group">
+				<div class="form-group">
 					<label for="frmChecklistDescription">Description (required)</label>
 					<textarea type="text" class="form-control" id="frmChecklistDescription" rows="4"
 					aria-describedby="descriptionHelp" placeholder="Enter a Description" required></textarea>
 					<small id="descriptionHelp" class="form-text text-muted">Specify a good description for this Checklist</small>
 					</div>
-					
-					<div class="form-group">
+				<div class="form-group">
 					<label for="frmChecklistType">Checklist Type (required)</label>
 					<select class="form-control select2" id="frmChecklistType" required>
 						<option value="">Choose one...</option>
@@ -553,13 +559,12 @@
 							<option value="640">Oracle HTTP</option>
 						</optgroup>
 					</select>
-					</div>
-
-					<div class="form-group">
-						<label for="frmChecklistFile">Checklist File (not required)</label><br />
-						<input type="file" id="checklistFile" /> 
-					</div>
 				</div>
+				<div class="form-group">
+					<label for="frmChecklistFile">Checklist File (not required)</label><br />
+					<input type="file" id="checklistFile" /> 
+				</div>
+			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary" onclick="updateSingleChecklist(getParameterByName('id'));">Save changes</button>
