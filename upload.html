@@ -158,7 +158,7 @@
                         </div>
                         <div class="card-body">
 						<form onsubmit="return uploadChecklist();" id="frmChecklistUpload">
-                          <div class="form-group">
+                          <div class="form-group" id="divNewChecklistSystem" >
                             <label for="checklistSystem">System Name (required)</label>
                             <select class="form-control select2" id="checklistSystem" required>
                                 <option value="">Choose one...</option>
@@ -166,7 +166,9 @@
                             </select>
                             <small id="titleHelp" class="form-text text-muted">Select the system this belongs to, or 'None'</small>
                           </div>
-                          <div class="form-group">
+                          <div class="form-group" ><a href="#" 
+                            onclick="$('#divNewChecklistSystem').hide(); $('#divNewChecklistSystemText').show(); return false;">Add a new System</a></div>
+                          <div class="form-group" id="divNewChecklistSystemText" style="display: none;">
                             <label for="checklistSystemText">New System Name</label>
                             <input type="text" class="form-control" id="checklistSystemText" maxlength="100"
                             aria-describedby="titleHelp" placeholder="Enter a new System Name (if any)" required>

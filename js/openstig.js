@@ -195,6 +195,7 @@ async function getChecklistData(id, template) {
 			// update the Template Scoring dynamically
 			if (template) getScoreForTemplateListing(data.rawChecklist);
 
+			await getChecklistSystemsForChecklist();
 			// go ahead and fill in the modal for for upload while we are in here
 			$("#frmChecklistTitle").val(data.title);
 			$("#frmChecklistDescription").val(data.description);
@@ -240,6 +241,11 @@ function updateSingleChecklist(id) {
 	formData.append("type",$("#frmChecklistType").val());
 	formData.append("title",$("#frmChecklistTitle").val());
 	formData.append("description",$("#frmChecklistDescription").val());
+	if (frmChecklistSystemText.val().trim().length > 0)
+		formData.append("system",$("#frmChecklistSystemText").val());
+	else
+		formData.append("system",$("#frmChecklistSystem").val());
+
 	if ($('#checklistFile').val()) {
 		// someone added a file
 		formData.append('checklistFile',$('#checklistFile')[0].files[0]);
@@ -257,7 +263,17 @@ function updateSingleChecklist(id) {
 			}
 	});
 }
-
+// get the list of systems for the update function
+async function getChecklistSystemsForChecklist() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	$.each(data, function (index, value) {
+		$('#frmChecklistSystem').append($('<option/>', { 
+				value: value,
+				text : value 
+		}));
+	}); 
+}
 // call to get the score data and show the name and then funnel data to the
 async function getChecklistScore(id) {
 	var data = await getScoreForChecklistListing(id);
