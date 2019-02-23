@@ -269,7 +269,9 @@ function updateSingleChecklist(id) {
 	formData.append("type",$("#frmChecklistType").val());
 	formData.append("title",$("#frmChecklistTitle").val());
 	formData.append("description",$("#frmChecklistDescription").val());
-	if ($("#frmChecklistSystemText").val().trim().length > 0){
+
+	// if a new system, use it, otherwise select from the list
+ if ($("#frmChecklistSystemText").val() && $("#frmChecklistSystemText").val().trim().length > 0) {
 		formData.append("system",$("#frmChecklistSystemText").val());
 		localStorage.removeItem("checklistSystems"); // reset and make it read again
 	}
@@ -289,6 +291,7 @@ function updateSingleChecklist(id) {
 			contentType: false,
 			success : function(data){
 				swal("Your Checklist was updated successfully!", "Click OK to continue!", "success");
+				getChecklistSystemsForChecklist();
 				getChecklistData(id, false);
 			}
 	});
@@ -519,7 +522,11 @@ function uploadChecklist(){
 	formData.append("description",$("#checklistDescription").val());
 	formData.append('checklistFile',$('#checklistFile')[0].files[0]);
 	// if a new system, use it, otherwise select from the list
-	if (checklistSystemText.val().trim().length > 0) {
+	if ($("#checklistSystemText").is(':visible')){
+		if ($("#checklistSystemText").val() && $("#checklistSystemText").val().trim().length ==0) {
+			alert('please fill in the system name');
+			return false;
+		}
 		formData.append("system",$("#checklistSystemText").val());
 		localStorage.removeItem("checklistSystems"); // reset and make it read again
 	}
