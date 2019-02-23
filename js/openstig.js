@@ -91,9 +91,16 @@ async function getScoreForTemplateListing(xmlChecklist) {
 /*************************************
  * Checklist listing functions
  ************************************/
-async function getChecklists(latest) {
+async function getChecklistsBySystem() {
+	var system = $("#checklistSystemFilter").val();
+	await getChecklists(false, system);
+}
+async function getChecklists(latest, system) {
+	$("#tblChecklistListing").block({ message: "Updating the checklist listing..." }); 
 	var url = readAPI;
-	if (latest) // get the top 5
+	if (system && system != "All")
+		url += "/systems/" + encodeURIComponent(system);
+	else if (latest) // get the top 5
 		url += "/latest/5";
 	
 	let response = await fetch(url);
@@ -113,6 +120,8 @@ async function getChecklists(latest) {
 			else {
 					for (const item of data) {
 					table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.internalId + '">'
+					if (item.system && item.system != 'None')
+						table += item.system + ": ";
 					table += item.title
 					intNaF = 0;
 					intNA = 0;
@@ -141,22 +150,41 @@ async function getChecklists(latest) {
 			table += '</tbody></tbody></table>'
 			// with all the data fill in the table and go
 			$("#tblChecklistListing").html(table);
+			$("tblChecklistListing").unblock();
 		}
 	}
-	else 
+	else {
+		$('div.tblChecklistListing').unblock(); 
 		throw new Error(response.status)
+	}
 }
 // called from above to return the checklist score
 async function getScoreForChecklistListing(id, template) {
 	var url = scoreAPI;
 	if (template)
 		url = templateAPI;
-
-	let responseScore = await fetch(scoreAPI + "/artifact/" + id);
-	if (responseScore.ok) {
-		var dataScore = await responseScore.json()
-		return dataScore;
+  try {
+		let responseScore = await fetch(scoreAPI + "/artifact/" + id);
+		if (responseScore.ok) {
+			var dataScore = await responseScore.json()
+			return dataScore;
+		}
 	}
+	catch (error) {
+		console.error("returning an empty score");
+		return null;
+	}
+}
+// the dropdown filter for the checklist listing page
+async function getChecklistSystemsForChecklistFilter() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	$.each(data, function (index, value) {
+		$('#checklistSystemFilter').append($('<option/>', { 
+				value: value,
+				text : value 
+		}));
+	}); 
 }
 /*************************************
  * Single Checklist Data functions
@@ -168,8 +196,11 @@ async function getChecklistData(id, template) {
 		url = templateAPI;
   let response = await fetch(url + "/" + id);
   if (response.ok) {
-      var data = await response.json();
-			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + data.title);
+			var data = await response.json();
+			var title = data.title;
+			if (data.system && data.system != 'None')
+				title = data.system + ": " + title;
+			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
 			var updatedDate = "Last Updated on ";
 			if (data.updatedOn) {
 				updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
@@ -177,8 +208,9 @@ async function getChecklistData(id, template) {
 			else {
 				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
 			}
-			$("#checklistDescription").html("Description: " + data.description);
-			$("#checklistType").html("Type: " + data.typeTitle);
+			$("#checklistDescription").html("<b>Description:</b> " + data.description);
+			$("#checklistType").html("<b>Type:</b> " + data.typeTitle);
+			$("#checklistSystem").html("<b>System:</b> " + data.system);
 
 			// load updated date
 			$("#chartSeverityUpdated").html(updatedDate);
@@ -189,10 +221,12 @@ async function getChecklistData(id, template) {
 			// update the Template Scoring dynamically
 			if (template) getScoreForTemplateListing(data.rawChecklist);
 
+			await getChecklistSystemsForChecklist();
 			// go ahead and fill in the modal for for upload while we are in here
 			$("#frmChecklistTitle").val(data.title);
 			$("#frmChecklistDescription").val(data.description);
 			$("#frmChecklistType").val(data.type);
+			$("#frmChecklistSystem").val(data.system);
 
 			// load the vulnerabilities into localstorage
 			var vulnListing = "";
@@ -233,6 +267,11 @@ function updateSingleChecklist(id) {
 	formData.append("type",$("#frmChecklistType").val());
 	formData.append("title",$("#frmChecklistTitle").val());
 	formData.append("description",$("#frmChecklistDescription").val());
+	if ($("#frmChecklistSystemText").val().trim().length > 0)
+		formData.append("system",$("#frmChecklistSystemText").val());
+	else
+		formData.append("system",$("#frmChecklistSystem").val());
+
 	if ($('#checklistFile').val()) {
 		// someone added a file
 		formData.append('checklistFile',$('#checklistFile')[0].files[0]);
@@ -250,21 +289,39 @@ function updateSingleChecklist(id) {
 			}
 	});
 }
-
+// get the list of systems for the update function
+async function getChecklistSystemsForChecklist() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	$.each(data, function (index, value) {
+		$('#frmChecklistSystem').append($('<option/>', { 
+				value: value,
+				text : value 
+		}));
+	}); 
+}
 // call to get the score data and show the name and then funnel data to the
 async function getChecklistScore(id) {
 	var data = await getScoreForChecklistListing(id);
 	displayChecklistScores(data);
 }
 async function displayChecklistScores(data) {
-	$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
-	$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
-	$("#checklistOpenCount").text(data.totalOpen.toString());
-	$("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
-	// show the charts with the same data
-	makeChartSeverity(data);
-	makeChartCategory(data);
-	makeBarChartBreakdown(data);
+	if (data) {
+		$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
+		$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
+		$("#checklistOpenCount").text(data.totalOpen.toString());
+		$("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
+		// show the charts with the same data
+		makeChartSeverity(data);
+		makeChartCategory(data);
+		makeBarChartBreakdown(data);
+	}
+	else {
+		$("#checklistNotAFindingCount").text("0");
+		$("#checklistNotApplicableCount").text("0");
+		$("#checklistOpenCount").text("0");
+		$("#checklistNotReviewedCount").text("0");
+	}
 }
 // pie chart with the status of the checklist
 async function makeChartSeverity (data) {
@@ -414,12 +471,50 @@ async function exportChecklistXLSX(id) {
 /************************************ 
  Upload Functions
 ************************************/
+// get the list of systems from system memory OR from local storage
+// also need a way to refresh this
+async function getChecklistSystems() {
+	var data = JSON.parse(localStorage.getItem("checklistSystems"));
+	if (data) 
+		return data;
+	else {
+		let response = await fetch(readAPI + "/systems");
+		if (response.ok) {
+				var data = await response.json();
+				localStorage.setItem("checklistSystems", JSON.stringify(data));
+				// for each data add to the upload checklistSystem
+				$.each(data, function (index, value) {
+					$('#checklistSystem').append($('<option/>', { 
+							value: value,
+							text : value 
+					}));
+			});
+		}
+	}
+}
+// get the list of systems for the upload function
+async function getChecklistSystemsForUpload() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	$.each(data, function (index, value) {
+		$('#checklistSystem').append($('<option/>', { 
+				value: value,
+				text : value 
+		}));
+	}); 
+}
+
 function uploadChecklist(){
 	var formData = new FormData();
 	formData.append("type",$("#checklistType").val());
 	formData.append("title",$("#checklistTitle").val());
 	formData.append("description",$("#checklistDescription").val());
 	formData.append('checklistFile',$('#checklistFile')[0].files[0]);
+	// if a new system, use it, otherwise select from the list
+	if (checklistSystemText.val().trim().length > 0)
+		formData.append("system",$("#checklistSystemText").val());
+	else
+		formData.append("system",$("#checklistSystem").val());
 	$.ajax({
 			url : uploadAPI,
 			data : formData,
@@ -480,9 +575,12 @@ function viewVulnDetails(vulnId) {
 /************************************
  * Reports Functions
  ***********************************/
-// export with myLineChart.toBase64Image();
-async function getChecklistTypeBreakdown() {
-  let response = await fetch(readAPI + "/counttype");
+async function getChecklistTypeBreakdown(system) {
+	var url = readAPI + "/counttype";
+	// if they pass in the system use it after encoding it
+	if (system && system.length > 0 && system != "All")
+		url += "?system=" + encodeURIComponent(system);
+  let response = await fetch(url);
   if (response.ok) {
 			var data = await response.json()
 			var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
@@ -519,7 +617,21 @@ async function getChecklistTypeBreakdown() {
 		chartSeverity.update();
 	}
 }
+// the system dropdown on the Reports page
+async function getChecklistSystemsForReportFilter() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	$.each(data, function (index, value) {
+		$('#checklistSystemFilter').append($('<option/>', { 
+				value: value,
+				text : value 
+		}));
+	}); 
 
+}
+async function getReportsBySystem() {
+	await getChecklistTypeBreakdown($("#checklistSystemFilter").val());
+}
 /************************************ 
  Generic Functions
 ************************************/
