@@ -179,12 +179,14 @@ async function getScoreForChecklistListing(id, template) {
 async function getChecklistSystemsForChecklistFilter() {
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
-	$.each(data, function (index, value) {
-		$('#checklistSystemFilter').append($('<option/>', { 
-				value: value,
-				text : value 
-		}));
-	}); 
+	if (data) {
+		$.each(data, function (index, value) {
+			$('#checklistSystemFilter').append($('<option/>', { 
+					value: value,
+					text : value 
+			}));
+		}); 
+	}
 }
 /*************************************
  * Single Checklist Data functions
@@ -267,8 +269,10 @@ function updateSingleChecklist(id) {
 	formData.append("type",$("#frmChecklistType").val());
 	formData.append("title",$("#frmChecklistTitle").val());
 	formData.append("description",$("#frmChecklistDescription").val());
-	if ($("#frmChecklistSystemText").val().trim().length > 0)
+	if ($("#frmChecklistSystemText").val().trim().length > 0){
 		formData.append("system",$("#frmChecklistSystemText").val());
+		localStorage.removeItem("checklistSystems"); // reset and make it read again
+	}
 	else
 		formData.append("system",$("#frmChecklistSystem").val());
 
@@ -293,12 +297,14 @@ function updateSingleChecklist(id) {
 async function getChecklistSystemsForChecklist() {
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
-	$.each(data, function (index, value) {
-		$('#frmChecklistSystem').append($('<option/>', { 
-				value: value,
-				text : value 
-		}));
-	}); 
+	if (data) {
+		$.each(data, function (index, value) {
+			$('#frmChecklistSystem').append($('<option/>', { 
+					value: value,
+					text : value 
+			}));
+		}); 
+	}
 }
 // call to get the score data and show the name and then funnel data to the
 async function getChecklistScore(id) {
@@ -496,12 +502,14 @@ async function getChecklistSystems() {
 async function getChecklistSystemsForUpload() {
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
-	$.each(data, function (index, value) {
-		$('#checklistSystem').append($('<option/>', { 
-				value: value,
-				text : value 
-		}));
-	}); 
+	if (data) {
+		$.each(data, function (index, value) {
+			$('#checklistSystem').append($('<option/>', { 
+					value: value,
+					text : value 
+			}));
+		}); 
+	}
 }
 
 function uploadChecklist(){
@@ -511,8 +519,10 @@ function uploadChecklist(){
 	formData.append("description",$("#checklistDescription").val());
 	formData.append('checklistFile',$('#checklistFile')[0].files[0]);
 	// if a new system, use it, otherwise select from the list
-	if (checklistSystemText.val().trim().length > 0)
+	if (checklistSystemText.val().trim().length > 0) {
 		formData.append("system",$("#checklistSystemText").val());
+		localStorage.removeItem("checklistSystems"); // reset and make it read again
+	}
 	else
 		formData.append("system",$("#checklistSystem").val());
 	$.ajax({
@@ -621,13 +631,14 @@ async function getChecklistTypeBreakdown(system) {
 async function getChecklistSystemsForReportFilter() {
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
-	$.each(data, function (index, value) {
-		$('#checklistSystemFilter').append($('<option/>', { 
-				value: value,
-				text : value 
-		}));
-	}); 
-
+	if (data) {
+		$.each(data, function (index, value) {
+			$('#checklistSystemFilter').append($('<option/>', { 
+					value: value,
+					text : value 
+			}));
+		}); 
+	}
 }
 async function getReportsBySystem() {
 	await getChecklistTypeBreakdown($("#checklistSystemFilter").val());
