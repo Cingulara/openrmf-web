@@ -91,9 +91,16 @@ async function getScoreForTemplateListing(xmlChecklist) {
 /*************************************
  * Checklist listing functions
  ************************************/
-async function getChecklists(latest) {
+async function getChecklistsBySystem() {
+	var system = $("#checklistSystemFilter").val();
+	await getChecklists(false, system);
+}
+async function getChecklists(latest, system) {
+	$("#tblChecklistListing").block({ message: "Updating the checklist listing..." }); 
 	var url = readAPI;
-	if (latest) // get the top 5
+	if (system && system != "All")
+		url += "/systems/" + encodeURIComponent(system);
+	else if (latest) // get the top 5
 		url += "/latest/5";
 	
 	let response = await fetch(url);
@@ -113,6 +120,8 @@ async function getChecklists(latest) {
 			else {
 					for (const item of data) {
 					table += '<tr><td class="tabco1"><a href="single-checklist.html?id=' + item.internalId + '">'
+					if (item.system && item.system != 'None')
+						table += item.system + ": ";
 					table += item.title
 					intNaF = 0;
 					intNA = 0;
@@ -141,10 +150,13 @@ async function getChecklists(latest) {
 			table += '</tbody></tbody></table>'
 			// with all the data fill in the table and go
 			$("#tblChecklistListing").html(table);
+			$("tblChecklistListing").unblock();
 		}
 	}
-	else 
+	else {
+		$('div.tblChecklistListing').unblock(); 
 		throw new Error(response.status)
+	}
 }
 // called from above to return the checklist score
 async function getScoreForChecklistListing(id, template) {
@@ -163,6 +175,17 @@ async function getScoreForChecklistListing(id, template) {
 		return null;
 	}
 }
+// the dropdown filter for the checklist listing page
+async function getChecklistSystemsForChecklistFilter() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	$.each(data, function (index, value) {
+		$('#checklistSystemFilter').append($('<option/>', { 
+				value: value,
+				text : value 
+		}));
+	}); 
+}
 /*************************************
  * Single Checklist Data functions
  *************************************/
@@ -173,8 +196,11 @@ async function getChecklistData(id, template) {
 		url = templateAPI;
   let response = await fetch(url + "/" + id);
   if (response.ok) {
-      var data = await response.json();
-			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + data.title);
+			var data = await response.json();
+			var title = data.title;
+			if (data.system && data.system != 'None')
+				title = data.system + ": " + title;
+			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
 			var updatedDate = "Last Updated on ";
 			if (data.updatedOn) {
 				updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');

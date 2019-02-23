@@ -141,8 +141,16 @@
 						<div class="card mb-3">
 							<div class="card-header">
 								<h3><i class="fa fa-table"></i> My Checklists</h3>
-							</div>								
-							<div class="card-body">								
+							</div>
+							<div class="card-body">
+								<div class="checklistSystemsList">
+									<form class="form-inline">
+										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
+										<select class="form-control" id="checklistSystemFilter" onchange="getChecklistsBySystem();">
+											<option value="All">All</option>
+										</select>
+									</form>
+								</div>
 								<div id="tblChecklistListing"></div>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
@@ -187,10 +195,12 @@
 <!-- BEGIN Java Script for this page -->
 <script src="js/moment.min.js"></script>
 <script src="js/openstig.js"></script>
+<script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
 		// calls to get the checklist data from the API
 		getChecklists(false);
+		getChecklistSystemsForChecklistFilter();
 	} );
 </script>
 <!-- END Java Script for this page -->
