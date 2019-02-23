@@ -1239,3 +1239,10 @@ a.btn:focus {
   background-color: silver;
   margin: 3px 0px 3px 0px;
 }
+.checklistSystemsList {
+  margin: 3px 0px 10px 0px;
+  width: 250px;
+}
+.checklistSystemsListLabel {
+  margin: 3px;
+}
