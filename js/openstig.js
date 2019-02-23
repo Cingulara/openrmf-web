@@ -267,7 +267,7 @@ function updateSingleChecklist(id) {
 	formData.append("type",$("#frmChecklistType").val());
 	formData.append("title",$("#frmChecklistTitle").val());
 	formData.append("description",$("#frmChecklistDescription").val());
-	if (frmChecklistSystemText.val().trim().length > 0)
+	if ($("#frmChecklistSystemText").val().trim().length > 0)
 		formData.append("system",$("#frmChecklistSystemText").val());
 	else
 		formData.append("system",$("#frmChecklistSystem").val());
@@ -575,9 +575,12 @@ function viewVulnDetails(vulnId) {
 /************************************
  * Reports Functions
  ***********************************/
-// export with myLineChart.toBase64Image();
-async function getChecklistTypeBreakdown() {
-  let response = await fetch(readAPI + "/counttype");
+async function getChecklistTypeBreakdown(system) {
+	var url = readAPI + "/counttype";
+	// if they pass in the system use it after encoding it
+	if (system && system.length > 0 && system != "All")
+		url += "?system=" + encodeURIComponent(system);
+  let response = await fetch(url);
   if (response.ok) {
 			var data = await response.json()
 			var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
@@ -614,7 +617,21 @@ async function getChecklistTypeBreakdown() {
 		chartSeverity.update();
 	}
 }
+// the system dropdown on the Reports page
+async function getChecklistSystemsForReportFilter() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	$.each(data, function (index, value) {
+		$('#checklistSystemFilter').append($('<option/>', { 
+				value: value,
+				text : value 
+		}));
+	}); 
 
+}
+async function getReportsBySystem() {
+	await getChecklistTypeBreakdown($("#checklistSystemFilter").val());
+}
 /************************************ 
  Generic Functions
 ************************************/
