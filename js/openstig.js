@@ -577,7 +577,12 @@ function viewVulnDetails(vulnId) {
 		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
 		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
 		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
-		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + data.stiG_DATA[24].attributE_DATA);
+		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
+		for(i = 24; i < data.stiG_DATA.length; i++) { 
+			ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
+		}
+		ccilist = ccilist.substring(0, ccilist.length -2);
+		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
 		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
 		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
 		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
