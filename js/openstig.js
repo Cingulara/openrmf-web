@@ -343,8 +343,8 @@ async function makeChartSeverity (data) {
 					backgroundColor: [
 						'rgba(255,99,132,1)',
 						'rgba(75, 192, 192, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(150, 150, 150, 1)'
+						'rgba(150, 150, 150, 1)',
+						'rgba(54, 162, 235, 1)'
 					],
 					label: 'Checklist Severity Breakdown'
 				}],

@@ -23,12 +23,12 @@ th.tabco2 {
 	vertical-align: middle !important;
 }
 .tabco3 {
-	background: #03A9F4;
+	background: silver;	
 	text-align: center;
 	color: #fff;
 }
 th.tabco3 {
-	background: #039BE5;
+	background: silver;	
 	padding: 20px 10px !important;
 	font-size: 18px;
 	text-transform: uppercase;
@@ -47,12 +47,12 @@ th.tabco4 {
 	vertical-align: middle !important;
 }
 .tabco5 {
-	background: gray;
+	background: #039BE5;
 	text-align: center;
 	color: #fff;
 }
 th.tabco5 {
-	background: silver;	
+	background: #039BE5;
 	padding: 20px 10px !important;
 	font-size: 18px;
 	text-transform: uppercase;
