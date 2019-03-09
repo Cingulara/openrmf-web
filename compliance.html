@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>openSTIG - Template Listing</title>
+		<title>openSTIG - Compliance Generator</title>
 		<meta name="description" content="openSTIG tool Dashboard">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
@@ -101,10 +101,10 @@
 					<a href="checklists.html"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="compliance.html"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					<a class="active" href="compliance.html"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
 				</li>
 				<li class="submenu">
-					<a class="active" href="templates.html"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					<a href="templates.html"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
@@ -128,10 +128,10 @@
 				<div class="row">
 					<div class="col-xl-12">
 						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">Templates</h1>
+							<h1 class="main-title float-left">Compliance</h1>
 							<ol class="breadcrumb float-right">
 								<li class="breadcrumb-item">Home</li>
-								<li class="breadcrumb-item active">Templates</li>
+								<li class="breadcrumb-item active">Compliance</li>
 							</ol>
 							<div class="clearfix"></div>
 						</div>
@@ -143,9 +143,17 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3><i class="fa fa-list"></i> My Templates (starting point for Checklists)</h3>
-							</div>								
-							<div class="card-body">								
+								<h3><i class="fa fa-table"></i> Compliance Generator</h3>
+							</div>
+							<div class="card-body">
+								<div class="checklistSystemsList">
+									<form class="form-inline">
+										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
+										<select class="form-control" id="checklistSystemFilter" onchange="getChecklistsBySystem();">
+											<option value="All">All</option>
+										</select>
+									</form>
+								</div>
 								<div id="tblChecklistListing"></div>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
@@ -193,8 +201,9 @@
 <script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
-		// calls to get the checklist data from the API
-		getTemplates(false);
+		// calls to get the compliance page setup
+		//getChecklists(false);
+		//getChecklistSystemsForChecklistFilter();
 	} );
 </script>
 <!-- END Java Script for this page -->

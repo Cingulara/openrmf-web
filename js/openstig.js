@@ -3,6 +3,7 @@ var scoreAPI = 'http://localhost:8090'
 var saveAPI = 'http://localhost:8082'
 var uploadAPI = 'http://localhost:8086'
 var templateAPI = 'http://localhost:8088'
+var complianceAPI = 'http://localhost:8092'
 
 /*************************************
  * Dashboard functions
@@ -655,6 +656,10 @@ async function getChecklistSystemsForReportFilter() {
 async function getReportsBySystem() {
 	await getChecklistTypeBreakdown($("#checklistSystemFilter").val());
 }
+/************************************ 
+ Compliance Functions
+************************************/
+
 /************************************ 
  Generic Functions
 ************************************/
