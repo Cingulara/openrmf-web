@@ -148,7 +148,7 @@ async function getChecklists(latest, system) {
 					table += '<td class="tabco5"><i class="fa" aria-hidden="true"></i>' + intNR.toString() + '</td>'
 					table += '</tr>'
 				}
-			table += '</tbody></tbody></table>'
+			table += '</tbody></table>'
 			// with all the data fill in the table and go
 			$("#tblChecklistListing").html(table);
 			$("tblChecklistListing").unblock();
@@ -676,13 +676,39 @@ async function getComplianceBySystem() {
 	var system = $("#checklistSystemFilter").val();
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0 && system != "All") {
+		$("#tblComplianceListing").block({ message: "Updating the compliance listing..." }); 
 		var url = complianceAPI + "/system/" + encodeURIComponent(system);
 		let response = await fetch(url);
 		if (response.ok) {
 			var data = await response.json()
 			if (data.result.length > 0) {
 				// cycle through all data and display a data table
-				$("#tblComplianceListing").html(data.result.length.toString() + " compliance records generated.");
+				var table = "";
+				table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th>Major Control</th><th>Index</th>'
+				table += '<th>Checklist</th><th>Vuln Id</th><th>Status</th><th>Description</th>';
+				table += '</tr></thead><tbody>'
+				// for each control print out the information
+				// control/category, checklist, vulnID, status, description
+				for (const item of data.result) {
+					if (item.complianceRecords.length > 0) {
+						for (const record of item.complianceRecords){
+							table += '<tr><td>' + item.control + '</td>';
+							table += '<td>' + item.index + ' / ' + item.cci + '</td>';
+							table += '<td>' + record.title + '</td>';
+							table += '<td>' + record.vulnId + '</td>';
+							table += '<td>' + record.status + '</td>';
+							table += '<td>' + record.vulnTitle + '</td>';
+							table += '</tr>'
+						}
+					}
+					// else {
+					// 	table += '<tr><td>' + item.control + '</td><td></td><td></td><td></td><td></td></tr>';
+					// }
+				}
+				table += '</tbody></table>'
+				// with all the data fill in the table and go
+				$("#tblComplianceListing").html(table);
+				$("tblComplianceListing").unblock();
 			}
 			else {
 				$("#tblComplianceListing").html("There are no checklists ready for this compliance report.");
