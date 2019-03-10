@@ -685,7 +685,7 @@ async function getComplianceBySystem() {
 				// cycle through all data and display a data table
 				var table = "";
 				table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th>Major Control</th><th>Index</th>'
-				table += '<th>Checklist</th><th>Vuln Id</th><th>Status</th><th>Description</th>';
+				table += '<th>Checklist</th><th>Host</th><th>Vuln Id</th><th>Status</th><th>Description</th>';
 				table += '</tr></thead><tbody>'
 				// for each control print out the information
 				// control/category, checklist, vulnID, status, description
@@ -695,6 +695,7 @@ async function getComplianceBySystem() {
 							table += '<tr><td>' + item.control + '</td>';
 							table += '<td>' + item.index + ' / ' + item.cci + '</td>';
 							table += '<td>' + record.title + '</td>';
+							table += '<td>' + record.hostName + '</td>';
 							table += '<td>' + record.vulnId + '</td>';
 							table += '<td>' + record.status + '</td>';
 							table += '<td>' + record.vulnTitle + '</td>';
