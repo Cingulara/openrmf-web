@@ -87,8 +87,6 @@
         </nav>
 	</div>
 	<!-- End Navigation -->
-
- 
 	<!-- Left Sidebar -->
 	<div class="left main-sidebar">
 		<div class="sidebar-inner leftscroll">
@@ -120,7 +118,6 @@
 	</div>
 	<!-- End Sidebar -->
 
-
     <div class="content-page">	
 		<!-- Start content -->
         <div class="content">            
@@ -148,13 +145,16 @@
 							<div class="card-body">
 								<div class="checklistSystemsList">
 									<form class="form-inline">
-										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
-										<select class="form-control" id="checklistSystemFilter" onchange="getChecklistsBySystem();">
-											<option value="All">All</option>
-										</select>
+                    <div class="form-group">
+                      <label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
+                      <select class="form-control" id="checklistSystemFilter">
+                        <option value="">[Choose One]</option>
+                      </select>
+                    </div>
+                    <button onclick="getComplianceBySystem(); return false;" class="btn btn-primary btn-sm">Generate</button>
 									</form>
 								</div>
-								<div id="tblChecklistListing"></div>
+								<div id="tblComplianceListing"></div>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
@@ -202,8 +202,7 @@
 <script>
 	$(document).ready(function() {
 		// calls to get the compliance page setup
-		//getChecklists(false);
-		//getChecklistSystemsForChecklistFilter();
+		getChecklistSystemsForComplianceFilter();
 	} );
 </script>
 <!-- END Java Script for this page -->

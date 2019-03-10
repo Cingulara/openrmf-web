@@ -231,10 +231,10 @@ async function getChecklistData(id, template) {
 			$("#frmChecklistType").val(data.type);
 			$("#frmChecklistSystem").val(data.system);
 
-			// load the vulnerabilities into localstorage
+			// load the vulnerabilities into sessionStorage
 			var vulnListing = "";
 			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
-				localStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
+				sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
 				// add to the checklistTree
 				// based on one of the status color the background appropriately
 				vulnListing += '<button type="button" class="btn btn-sm ';
@@ -274,7 +274,7 @@ function updateSingleChecklist(id) {
 	// if a new system, use it, otherwise select from the list
  if ($("#frmChecklistSystemText").val() && $("#frmChecklistSystemText").val().trim().length > 0) {
 		formData.append("system",$("#frmChecklistSystemText").val());
-		localStorage.removeItem("checklistSystems"); // reset and make it read again
+		sessionStorage.removeItem("checklistSystems"); // reset and make it read again
 	}
 	else
 		formData.append("system",$("#frmChecklistSystem").val());
@@ -484,14 +484,14 @@ async function exportChecklistXLSX(id) {
 // get the list of systems from system memory OR from local storage
 // also need a way to refresh this
 async function getChecklistSystems() {
-	var data = JSON.parse(localStorage.getItem("checklistSystems"));
+	var data = JSON.parse(sessionStorage.getItem("checklistSystems"));
 	if (data) 
 		return data;
 	else {
 		let response = await fetch(readAPI + "/systems");
 		if (response.ok) {
 				var data = await response.json();
-				localStorage.setItem("checklistSystems", JSON.stringify(data));
+				sessionStorage.setItem("checklistSystems", JSON.stringify(data));
 				// for each data add to the upload checklistSystem
 				$.each(data, function (index, value) {
 					$('#checklistSystem').append($('<option/>', { 
@@ -529,7 +529,7 @@ function uploadChecklist(){
 			return false;
 		}
 		formData.append("system",$("#checklistSystemText").val());
-		localStorage.removeItem("checklistSystems"); // reset and make it read again
+		sessionStorage.removeItem("checklistSystems"); // reset and make it read again
 	}
 	else
 		formData.append("system",$("#checklistSystem").val());
@@ -571,7 +571,7 @@ function uploadTemplate(){
 
 // display the vulnerability information by the Vulnerability Id
 function viewVulnDetails(vulnId) {
-	var data = JSON.parse(localStorage.getItem(vulnId));
+	var data = JSON.parse(sessionStorage.getItem(vulnId));
 	if (data) {
 		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
 		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
@@ -659,7 +659,43 @@ async function getReportsBySystem() {
 /************************************ 
  Compliance Functions
 ************************************/
-
+// the system dropdown on the Compliance page
+async function getChecklistSystemsForComplianceFilter() {
+	var data = await getChecklistSystems();
+	// for each data add to the compliance checklistSystem
+	if (data) {
+		$.each(data, function (index, value) {
+			$('#checklistSystemFilter').append($('<option/>', { 
+					value: value,
+					text : value 
+			}));
+		}); 
+	}
+}
+async function getComplianceBySystem() {
+	var system = $("#checklistSystemFilter").val();
+	// if they pass in the system use it after encoding it
+	if (system && system.length > 0 && system != "All") {
+		var url = complianceAPI + "/system/" + encodeURIComponent(system);
+		let response = await fetch(url);
+		if (response.ok) {
+			var data = await response.json()
+			if (data.result.length > 0) {
+				// cycle through all data and display a data table
+				$("#tblComplianceListing").html(data.result.length.toString() + " compliance records generated.");
+			}
+			else {
+				$("#tblComplianceListing").html("There are no checklists ready for this compliance report.");
+			}
+		}
+		else { // response was not Ok()
+			$("#tblComplianceListing").html("There was a problem generating the compliance for that system. Make sure the checklists are valid.");
+		}
+	}
+	else {
+		alert('Choose a system first...');
+	}
+}
 /************************************ 
  Generic Functions
 ************************************/
