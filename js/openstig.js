@@ -700,10 +700,6 @@ async function getComplianceBySystem() {
 							table += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span><br />';
 						}
 					}
-					else {
-						table += '<tr><td>' + item.index + '</td>';
-						table += '<td></td><td></td></tr>';
-					}
 					table += '</td></tr>';
 				}
 				table += '</tbody></table>'
