@@ -684,27 +684,27 @@ async function getComplianceBySystem() {
 			if (data.result.length > 0) {
 				// cycle through all data and display a data table
 				var table = "";
-				table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th>Major Control</th><th>Index</th>'
-				table += '<th>Checklist</th><th>Host</th><th>Vuln Id</th><th>Status</th><th>Description</th>';
-				table += '</tr></thead><tbody>'
+				table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th>Control</th>'
+				table += '<th>Title</th><th>Checklists</th>';
+				table += '</tr>'
 				// for each control print out the information
 				// control/category, checklist, vulnID, status, description
 				for (const item of data.result) {
+					table += '<tr><td>' + item.index + '</td>';
+							table += '<td>' + item.title + '</td>';
+							table += '<td>';
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
-							table += '<tr><td>' + item.control + '</td>';
-							table += '<td>' + item.index + ' / ' + item.cci + '</td>';
-							table += '<td>' + record.title + '</td>';
-							table += '<td>' + record.hostName + '</td>';
-							table += '<td>' + record.vulnId + '</td>';
-							table += '<td>' + record.status + '</td>';
-							table += '<td>' + record.vulnTitle + '</td>';
-							table += '</tr>'
+							table += '<a href="http://localhost:9000/single-checklist.html?id=';
+							table += record.artifactId + '" target="' + record.artifactId + '">'; 
+							table += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span><br />';
 						}
 					}
-					// else {
-					// 	table += '<tr><td>' + item.control + '</td><td></td><td></td><td></td><td></td></tr>';
-					// }
+					else {
+						table += '<tr><td>' + item.index + '</td>';
+						table += '<td></td><td></td></tr>';
+					}
+					table += '</td></tr>';
 				}
 				table += '</tbody></table>'
 				// with all the data fill in the table and go
@@ -722,6 +722,16 @@ async function getComplianceBySystem() {
 	else {
 		alert('Choose a system first...');
 	}
+}
+function getComplianceTextClassName(status) {
+	if (status.toLowerCase() == 'not_reviewed')
+		return "vulnNotReviewedText";
+	else if (status.toLowerCase() == 'open')
+		return "vulnOpenText";
+	else if (status.toLowerCase() == 'not_applicable')
+		return "vulnNotApplicableText";
+	else // not a finding
+		return "vulnNotAFindingText";
 }
 /************************************ 
  Generic Functions

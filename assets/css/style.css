@@ -1239,6 +1239,18 @@ a.btn:focus {
   background-color: #039BE5;
   margin: 3px 0px 3px 0px;
 }
+.vulnOpenText {
+  color: #E53935;
+}
+.vulnNotApplicableText {
+  color: silver;
+}
+.vulnNotAFindingText {
+  color: #50cc83;
+}
+.vulnNotReviewedText {
+  color: #039BE5;
+}
 .checklistSystemsList {
   margin: 3px 0px 10px 0px;
   width: 250px;
