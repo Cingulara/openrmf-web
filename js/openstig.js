@@ -692,7 +692,7 @@ async function getComplianceBySystem() {
 				for (const item of data.result) {
 					table += '<tr><td>' + item.index + '</td>';
 							table += '<td>' + item.title + '</td>';
-							table += '<td>';
+							table += '<td style="width: 33%;">';
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
 							table += '<a href="http://localhost:9000/single-checklist.html?id=';
