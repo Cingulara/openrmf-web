@@ -38,8 +38,16 @@
 		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
-		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css"/>	
+		<style>	
+		td.details-control {
+		background: url('assets/plugins/datatables/img/details_open.png') no-repeat center center;
+		cursor: pointer;
+		}
+		tr.shown td.details-control {
+		background: url('assets/plugins/datatables/img/details_close.png') no-repeat center center;
+		}
+		</style>		
 		<!-- END CSS for this page -->
 </head>
 
@@ -154,12 +162,32 @@
                     <button onclick="getComplianceBySystem(); return false;" class="btn btn-primary btn-sm">Generate</button>
 									</form>
 								</div>
-								<div id="tblComplianceListing"></div>
+								<!-- <div id="tblComplianceListing"></div> -->
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
-            </div>
+
+				<div class="row">
+				
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-table"></i> Compliance Results</h3>
+								Below find the results. Green = Not A Finding / Not Applicable. Blue = Not Reviewed. Red = Open.
+							</div>
+								
+							<div class="card-body">
+								<div class="table-responsive">
+									<table id="tblCompliance" class="table table-bordered table-hover display"><thead><tr><th>Control</th><th>Title</th><th>Checklists</th></tr></thead>
+										<tbody>
+									</tbody></table>
+								</div>								
+							</div>														
+						</div><!-- end card-->					
+					</div>
+			  </div>
+      </div>
 			<!-- END container-fluid -->
 		</div>
 		<!-- END content -->
@@ -196,14 +224,23 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
-<script src="js/moment.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="js/openstig.js"></script>
 <script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
 		// calls to get the compliance page setup
 		getChecklistSystemsForComplianceFilter();
-	} );
+		$('#tblCompliance').DataTable({
+				"pageLength": 50, 
+			  "columnDefs": [
+					{ "width": "20%", "targets": 0 },
+					{ "width": "50%", "targets": 1 },
+					{ "width": "30%", "targets": 2 }
+  			]
+			});
+		} );
 </script>
 <!-- END Java Script for this page -->
 

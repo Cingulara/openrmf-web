@@ -676,44 +676,39 @@ async function getComplianceBySystem() {
 	var system = $("#checklistSystemFilter").val();
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0 && system != "All") {
-		$("#tblComplianceListing").block({ message: "Updating the compliance listing..." }); 
+		$.blockUI({ message: "Updating the compliance listing...this may take a minute" }); 
 		var url = complianceAPI + "/system/" + encodeURIComponent(system);
 		let response = await fetch(url);
 		if (response.ok) {
 			var data = await response.json()
 			if (data.result.length > 0) {
 				// cycle through all data and display a data table
-				var table = "";
-				table += '<table class="table table-condensed table-hover table-bordered table-responsive-md"><thead><tr><th>Control</th>'
-				table += '<th>Title</th><th>Checklists</th>';
-				table += '</tr>'
+				// add to the datatable JS #tblCompliance
 				// for each control print out the information
 				// control/category, checklist, vulnID, status, description
+				var table = $('#tblCompliance').DataTable();
+				var checklists = ''; // holds the list of checklists
 				for (const item of data.result) {
-					table += '<tr><td>' + item.index + '</td>';
-							table += '<td>' + item.title + '</td>';
-							table += '<td style="width: 33%;">';
+					checklists = '';
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
-							table += '<a href="http://localhost:9000/single-checklist.html?id=';
-							table += record.artifactId + '" target="' + record.artifactId + '">'; 
-							table += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span><br />';
+							checklists += '<a href="/single-checklist.html?id=';
+							checklists += record.artifactId + '" target="' + record.artifactId + '">'; 
+							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span><br />';
 						}
 					}
-					table += '</td></tr>';
+					// dynamically add to the datatable
+					table.row.add( [item.index, item.title, checklists] ).draw();
 				}
-				table += '</tbody></table>'
-				// with all the data fill in the table and go
-				$("#tblComplianceListing").html(table);
-				$("tblComplianceListing").unblock();
 			}
 			else {
-				$("#tblComplianceListing").html("There are no checklists ready for this compliance report.");
+				alert("There are no checklists ready for this compliance report.");
 			}
 		}
 		else { // response was not Ok()
-			$("#tblComplianceListing").html("There was a problem generating the compliance for that system. Make sure the checklists are valid.");
+			alert("There was a problem generating the compliance for that system. Make sure the checklists are valid.");
 		}
+		$.unblockUI();
 	}
 	else {
 		alert('Choose a system first...');
