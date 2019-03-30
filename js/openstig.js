@@ -233,6 +233,7 @@ async function getChecklistData(id, template) {
 
 			// load the vulnerabilities into sessionStorage
 			var vulnListing = "";
+			var vulnStatus = "[";
 			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
 				sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
 				// add to the checklistTree
@@ -242,7 +243,14 @@ async function getChecklistData(id, template) {
 				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
 				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
 				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
+				// save off a list of all VulnIDs and their status to filter later client side
+				vulnStatus += '{"vulnId" : "' + vuln.stiG_DATA[0].attributE_DATA +  '", "status" : "' + vuln.status + '"},';
 			}
+			// take off the last comma and then close it out
+			vulnStatus = vulnStatus.slice(0,-1) + "]";
+			//vulnStatus = JSON.parse(vulnStatus);
+			//sessionStorage.setItem("vulnStatus", JSON.stringify(vulnStatus));
+			sessionStorage.setItem("vulnStatus", vulnStatus);
 			$("#checklistTree").html(vulnListing);
 		}
   else 
@@ -250,10 +258,40 @@ async function getChecklistData(id, template) {
 }
 // based on the checkboxes, filter the Vuln Ids listing
 function updateVulnerabilityListingByFilter() {
+	var status = JSON.parse(sessionStorage.getItem("vulnStatus"));
+	if (status) {
+		var vulnListing = "";
+		for (const vuln of status) {
+			// if we should show it, add it to the HTML listing
+			if (showVulnId(vuln)) {
+				// parse them base on the above booleans and print them out
+				vulnListing += '<button type="button" class="btn btn-sm ';
+				vulnListing += getVulnerabilityStatusClassName(vuln.status);
+				vulnListing += '" title="' + vuln.vulnId + '" ';
+				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.vulnId + '\'); return false;">'
+				vulnListing += vuln.vulnId + '</button><br />';
+			}
+		}
+		// rewrite the listing
+		$("#checklistTree").html(vulnListing);
+	}
+}
+function showVulnId(vuln){
 	var bOpen = $('#chkVulnOpen').prop('checked');
 	var bNaF  = $('#chkVulnNaF').prop('checked');
 	var bNA   = $('#chkVulnNA').prop('checked');
 	var bNR   = $('#chkVulnNR').prop('checked');
+	// check status and boolean
+	if (vuln.status.toLowerCase() == 'not_reviewed' && bNR)
+		return true;
+	else if (vuln.status.toLowerCase() == 'open' && bOpen)
+		return true;
+  else if (vuln.status.toLowerCase() == 'not_applicable' && bNA)
+		return true;
+	else if (vuln.status.toLowerCase() == 'notafinding' && bNaF)
+		return true;
+	else 
+		return false;
 }
 // get the color coding of the class based on vulnerability status
 function getVulnerabilityStatusClassName (status) {
@@ -266,6 +304,34 @@ function getVulnerabilityStatusClassName (status) {
 	else // not a finding
 		return "vulnNotAFinding";
 }
+
+// display the vulnerability information by the Vulnerability Id
+function viewVulnDetails(vulnId) {
+	var data = JSON.parse(sessionStorage.getItem(vulnId));
+	if (data) {
+		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
+		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
+		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
+		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
+		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
+		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
+		for(i = 24; i < data.stiG_DATA.length; i++) { 
+			ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
+		}
+		ccilist = ccilist.substring(0, ccilist.length -2);
+		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
+		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
+		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
+		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
+		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + data.stiG_DATA[6].attributE_DATA);
+		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA);
+		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA);
+		$("#vulnReferences").html();
+		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + data.findinG_DETAILS);
+		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + data.comments);
+	}
+}
+
 // update function on the checklist page showing all the individual checklist data
 function updateSingleChecklist(id) {
 	var url = saveAPI;
@@ -576,32 +642,6 @@ function uploadTemplate(){
 	return false;
 }
 
-// display the vulnerability information by the Vulnerability Id
-function viewVulnDetails(vulnId) {
-	var data = JSON.parse(sessionStorage.getItem(vulnId));
-	if (data) {
-		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
-		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
-		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
-		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
-		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
-		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
-		for(i = 24; i < data.stiG_DATA.length; i++) { 
-			ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
-		}
-		ccilist = ccilist.substring(0, ccilist.length -2);
-		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
-		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
-		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
-		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
-		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + data.stiG_DATA[6].attributE_DATA);
-		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA);
-		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA);
-		$("#vulnReferences").html();
-		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + data.findinG_DETAILS);
-		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + data.comments);
-	}
-}
 /************************************
  * Reports Functions
  ***********************************/
