@@ -248,6 +248,13 @@ async function getChecklistData(id, template) {
   else 
     throw new Error(response.status)
 }
+// based on the checkboxes, filter the Vuln Ids listing
+function updateVulnerabilityListingByFilter() {
+	var bOpen = $('#chkVulnOpen').prop('checked');
+	var bNaF  = $('#chkVulnNaF').prop('checked');
+	var bNA   = $('#chkVulnNA').prop('checked');
+	var bNR   = $('#chkVulnNR').prop('checked');
+}
 // get the color coding of the class based on vulnerability status
 function getVulnerabilityStatusClassName (status) {
 	if (status.toLowerCase() == 'not_reviewed')

@@ -188,12 +188,12 @@
 										<div>			
 											<div class="row">
 												<div class="col-xl-6">
-													<input type="checkbox" checked="true"> <span class="vulnOpenText">Open</span><br /> 
-													<input type="checkbox" checked="true"> <span class="vulnNotAFindingText">NaF</span>
+													<input id="chkVulnOpen" type="checkbox" checked="true" onchange="updateVulnerabilityListingByFilter();"> <span class="vulnOpenText">Open</span><br /> 
+													<input id="chkVulnNaF" type="checkbox" checked="true" onchange="updateVulnerabilityListingByFilter();"> <span class="vulnNotAFindingText">NaF</span>
 												</div>
 												<div class="col-xl-6">
-													<input type="checkbox" checked="true"> <span class="vulnNotApplicableText">N/A</span><br /> 
-													<input type="checkbox" checked="true"> <span class="vulnNotReviewedText">NR</span>
+													<input id="chkVulnNA" type="checkbox" checked="true" onchange="updateVulnerabilityListingByFilter();"> <span class="vulnNotApplicableText">N/A</span><br /> 
+													<input id="chkVulnNR" type="checkbox" checked="true" onchange="updateVulnerabilityListingByFilter();"> <span class="vulnNotReviewedText">NR</span>
 												</div>
 											</div>
 										</div>
