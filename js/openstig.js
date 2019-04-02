@@ -3,6 +3,7 @@ var scoreAPI = 'http://localhost:8090'
 var saveAPI = 'http://localhost:8082'
 var uploadAPI = 'http://localhost:8086'
 var templateAPI = 'http://localhost:8088'
+var complianceAPI = 'http://localhost:8092'
 
 /*************************************
  * Dashboard functions
@@ -147,7 +148,7 @@ async function getChecklists(latest, system) {
 					table += '<td class="tabco5"><i class="fa" aria-hidden="true"></i>' + intNR.toString() + '</td>'
 					table += '</tr>'
 				}
-			table += '</tbody></tbody></table>'
+			table += '</tbody></table>'
 			// with all the data fill in the table and go
 			$("#tblChecklistListing").html(table);
 			$("tblChecklistListing").unblock();
@@ -230,10 +231,11 @@ async function getChecklistData(id, template) {
 			$("#frmChecklistType").val(data.type);
 			$("#frmChecklistSystem").val(data.system);
 
-			// load the vulnerabilities into localstorage
+			// load the vulnerabilities into sessionStorage
 			var vulnListing = "";
+			var vulnStatus = "[";
 			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
-				localStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
+				sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
 				// add to the checklistTree
 				// based on one of the status color the background appropriately
 				vulnListing += '<button type="button" class="btn btn-sm ';
@@ -241,11 +243,55 @@ async function getChecklistData(id, template) {
 				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
 				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
 				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
+				// save off a list of all VulnIDs and their status to filter later client side
+				vulnStatus += '{"vulnId" : "' + vuln.stiG_DATA[0].attributE_DATA +  '", "status" : "' + vuln.status + '"},';
 			}
+			// take off the last comma and then close it out
+			vulnStatus = vulnStatus.slice(0,-1) + "]";
+			//vulnStatus = JSON.parse(vulnStatus);
+			//sessionStorage.setItem("vulnStatus", JSON.stringify(vulnStatus));
+			sessionStorage.setItem("vulnStatus", vulnStatus);
 			$("#checklistTree").html(vulnListing);
 		}
   else 
     throw new Error(response.status)
+}
+// based on the checkboxes, filter the Vuln Ids listing
+function updateVulnerabilityListingByFilter() {
+	var status = JSON.parse(sessionStorage.getItem("vulnStatus"));
+	if (status) {
+		var vulnListing = "";
+		for (const vuln of status) {
+			// if we should show it, add it to the HTML listing
+			if (showVulnId(vuln)) {
+				// parse them base on the above booleans and print them out
+				vulnListing += '<button type="button" class="btn btn-sm ';
+				vulnListing += getVulnerabilityStatusClassName(vuln.status);
+				vulnListing += '" title="' + vuln.vulnId + '" ';
+				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.vulnId + '\'); return false;">'
+				vulnListing += vuln.vulnId + '</button><br />';
+			}
+		}
+		// rewrite the listing
+		$("#checklistTree").html(vulnListing);
+	}
+}
+function showVulnId(vuln){
+	var bOpen = $('#chkVulnOpen').prop('checked');
+	var bNaF  = $('#chkVulnNaF').prop('checked');
+	var bNA   = $('#chkVulnNA').prop('checked');
+	var bNR   = $('#chkVulnNR').prop('checked');
+	// check status and boolean
+	if (vuln.status.toLowerCase() == 'not_reviewed' && bNR)
+		return true;
+	else if (vuln.status.toLowerCase() == 'open' && bOpen)
+		return true;
+  else if (vuln.status.toLowerCase() == 'not_applicable' && bNA)
+		return true;
+	else if (vuln.status.toLowerCase() == 'notafinding' && bNaF)
+		return true;
+	else 
+		return false;
 }
 // get the color coding of the class based on vulnerability status
 function getVulnerabilityStatusClassName (status) {
@@ -258,6 +304,34 @@ function getVulnerabilityStatusClassName (status) {
 	else // not a finding
 		return "vulnNotAFinding";
 }
+
+// display the vulnerability information by the Vulnerability Id
+function viewVulnDetails(vulnId) {
+	var data = JSON.parse(sessionStorage.getItem(vulnId));
+	if (data) {
+		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
+		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
+		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
+		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
+		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
+		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
+		for(i = 24; i < data.stiG_DATA.length; i++) { 
+			ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
+		}
+		ccilist = ccilist.substring(0, ccilist.length -2);
+		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
+		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
+		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
+		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
+		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + data.stiG_DATA[6].attributE_DATA);
+		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA);
+		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA);
+		$("#vulnReferences").html();
+		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + data.findinG_DETAILS);
+		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + data.comments);
+	}
+}
+
 // update function on the checklist page showing all the individual checklist data
 function updateSingleChecklist(id) {
 	var url = saveAPI;
@@ -273,7 +347,7 @@ function updateSingleChecklist(id) {
 	// if a new system, use it, otherwise select from the list
  if ($("#frmChecklistSystemText").val() && $("#frmChecklistSystemText").val().trim().length > 0) {
 		formData.append("system",$("#frmChecklistSystemText").val());
-		localStorage.removeItem("checklistSystems"); // reset and make it read again
+		sessionStorage.removeItem("checklistSystems"); // reset and make it read again
 	}
 	else
 		formData.append("system",$("#frmChecklistSystem").val());
@@ -343,8 +417,8 @@ async function makeChartSeverity (data) {
 					backgroundColor: [
 						'rgba(255,99,132,1)',
 						'rgba(75, 192, 192, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(150, 150, 150, 1)'
+						'rgba(150, 150, 150, 1)',
+						'rgba(54, 162, 235, 1)'
 					],
 					label: 'Checklist Severity Breakdown'
 				}],
@@ -483,14 +557,14 @@ async function exportChecklistXLSX(id) {
 // get the list of systems from system memory OR from local storage
 // also need a way to refresh this
 async function getChecklistSystems() {
-	var data = JSON.parse(localStorage.getItem("checklistSystems"));
+	var data = JSON.parse(sessionStorage.getItem("checklistSystems"));
 	if (data) 
 		return data;
 	else {
 		let response = await fetch(readAPI + "/systems");
 		if (response.ok) {
 				var data = await response.json();
-				localStorage.setItem("checklistSystems", JSON.stringify(data));
+				sessionStorage.setItem("checklistSystems", JSON.stringify(data));
 				// for each data add to the upload checklistSystem
 				$.each(data, function (index, value) {
 					$('#checklistSystem').append($('<option/>', { 
@@ -528,7 +602,7 @@ function uploadChecklist(){
 			return false;
 		}
 		formData.append("system",$("#checklistSystemText").val());
-		localStorage.removeItem("checklistSystems"); // reset and make it read again
+		sessionStorage.removeItem("checklistSystems"); // reset and make it read again
 	}
 	else
 		formData.append("system",$("#checklistSystem").val());
@@ -568,27 +642,6 @@ function uploadTemplate(){
 	return false;
 }
 
-// display the vulnerability information by the Vulnerability Id
-function viewVulnDetails(vulnId) {
-	var data = JSON.parse(localStorage.getItem(vulnId));
-	if (data) {
-		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
-		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
-		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
-		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
-		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
-		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + data.stiG_DATA[24].attributE_DATA);
-		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
-		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
-		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
-		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + data.stiG_DATA[6].attributE_DATA);
-		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA);
-		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA);
-		$("#vulnReferences").html();
-		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + data.findinG_DETAILS);
-		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + data.comments);
-	}
-}
 /************************************
  * Reports Functions
  ***********************************/
@@ -649,6 +702,74 @@ async function getChecklistSystemsForReportFilter() {
 }
 async function getReportsBySystem() {
 	await getChecklistTypeBreakdown($("#checklistSystemFilter").val());
+}
+/************************************ 
+ Compliance Functions
+************************************/
+// the system dropdown on the Compliance page
+async function getChecklistSystemsForComplianceFilter() {
+	var data = await getChecklistSystems();
+	// for each data add to the compliance checklistSystem
+	if (data) {
+		$.each(data, function (index, value) {
+			$('#checklistSystemFilter').append($('<option/>', { 
+					value: value,
+					text : value 
+			}));
+		}); 
+	}
+}
+async function getComplianceBySystem() {
+	var system = $("#checklistSystemFilter").val();
+	// if they pass in the system use it after encoding it
+	if (system && system.length > 0 && system != "All") {
+		$.blockUI({ message: "Updating the compliance listing...this may take a minute" }); 
+		var url = complianceAPI + "/system/" + encodeURIComponent(system);
+		let response = await fetch(url);
+		if (response.ok) {
+			var data = await response.json()
+			if (data.result.length > 0) {
+				// cycle through all data and display a data table
+				// add to the datatable JS #tblCompliance
+				// for each control print out the information
+				// control/category, checklist, vulnID, status, description
+				var table = $('#tblCompliance').DataTable();
+				var checklists = ''; // holds the list of checklists
+				for (const item of data.result) {
+					checklists = '';
+					if (item.complianceRecords.length > 0) {
+						for (const record of item.complianceRecords){
+							checklists += '<a href="/single-checklist.html?id=';
+							checklists += record.artifactId + '" target="' + record.artifactId + '">'; 
+							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span><br />';
+						}
+					}
+					// dynamically add to the datatable
+					table.row.add( [item.index, item.title, checklists] ).draw();
+				}
+			}
+			else {
+				alert("There are no checklists ready for this compliance report.");
+			}
+		}
+		else { // response was not Ok()
+			alert("There was a problem generating the compliance for that system. Make sure the checklists are valid.");
+		}
+		$.unblockUI();
+	}
+	else {
+		alert('Choose a system first...');
+	}
+}
+function getComplianceTextClassName(status) {
+	if (status.toLowerCase() == 'not_reviewed')
+		return "vulnNotReviewedText";
+	else if (status.toLowerCase() == 'open')
+		return "vulnOpenText";
+	else if (status.toLowerCase() == 'not_applicable')
+		return "vulnNotApplicableText";
+	else // not a finding
+		return "vulnNotAFindingText";
 }
 /************************************ 
  Generic Functions

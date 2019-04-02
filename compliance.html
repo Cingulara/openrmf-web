@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>openSTIG - Template Listing</title>
+		<title>openSTIG - Compliance Generator</title>
 		<meta name="description" content="openSTIG tool Dashboard">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
@@ -38,8 +38,16 @@
 		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
-		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css"/>	
+		<style>	
+		td.details-control {
+		background: url('assets/plugins/datatables/img/details_open.png') no-repeat center center;
+		cursor: pointer;
+		}
+		tr.shown td.details-control {
+		background: url('assets/plugins/datatables/img/details_close.png') no-repeat center center;
+		}
+		</style>		
 		<!-- END CSS for this page -->
 </head>
 
@@ -87,8 +95,6 @@
         </nav>
 	</div>
 	<!-- End Navigation -->
-
- 
 	<!-- Left Sidebar -->
 	<div class="left main-sidebar">
 		<div class="sidebar-inner leftscroll">
@@ -101,10 +107,10 @@
 					<a href="checklists.html"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="compliance.html"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					<a class="active" href="compliance.html"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
 				</li>
 				<li class="submenu">
-					<a class="active" href="templates.html"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					<a href="templates.html"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
@@ -120,7 +126,6 @@
 	</div>
 	<!-- End Sidebar -->
 
-
     <div class="content-page">	
 		<!-- Start content -->
         <div class="content">            
@@ -128,10 +133,10 @@
 				<div class="row">
 					<div class="col-xl-12">
 						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">Templates</h1>
+							<h1 class="main-title float-left">Compliance</h1>
 							<ol class="breadcrumb float-right">
 								<li class="breadcrumb-item">Home</li>
-								<li class="breadcrumb-item active">Templates</li>
+								<li class="breadcrumb-item active">Compliance</li>
 							</ol>
 							<div class="clearfix"></div>
 						</div>
@@ -143,15 +148,46 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3><i class="fa fa-list"></i> My Templates (starting point for Checklists)</h3>
-							</div>								
-							<div class="card-body">								
-								<div id="tblChecklistListing"></div>
+								<h3><i class="fa fa-table"></i> Compliance Generator</h3>
+							</div>
+							<div class="card-body">
+								<div class="checklistSystemsList">
+									<form class="form-inline">
+                    <div class="form-group">
+                      <label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
+                      <select class="form-control" id="checklistSystemFilter">
+                        <option value="">[Choose One]</option>
+                      </select>
+                    </div>
+                    <button onclick="getComplianceBySystem(); return false;" class="btn btn-primary btn-sm">Generate</button>
+									</form>
+								</div>
+								<!-- <div id="tblComplianceListing"></div> -->
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
-            </div>
+
+				<div class="row">
+				
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-table"></i> Compliance Results</h3>
+								Below find the results. Green = Not A Finding / Not Applicable. Blue = Not Reviewed. Red = Open.
+							</div>
+								
+							<div class="card-body">
+								<div class="table-responsive">
+									<table id="tblCompliance" class="table table-bordered table-hover display"><thead><tr><th>Control</th><th>Title</th><th>Checklists</th></tr></thead>
+										<tbody>
+									</tbody></table>
+								</div>								
+							</div>														
+						</div><!-- end card-->					
+					</div>
+			  </div>
+      </div>
 			<!-- END container-fluid -->
 		</div>
 		<!-- END content -->
@@ -188,14 +224,23 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
-<script src="js/moment.min.js"></script>
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="js/openstig.js"></script>
 <script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
-		// calls to get the checklist data from the API
-		getTemplates(false);
-	} );
+		// calls to get the compliance page setup
+		getChecklistSystemsForComplianceFilter();
+		$('#tblCompliance').DataTable({
+				"pageLength": 50, 
+			  "columnDefs": [
+					{ "width": "20%", "targets": 0 },
+					{ "width": "50%", "targets": 1 },
+					{ "width": "30%", "targets": 2 }
+  			]
+			});
+		} );
 </script>
 <!-- END Java Script for this page -->
 

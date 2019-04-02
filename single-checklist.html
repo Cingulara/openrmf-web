@@ -102,6 +102,9 @@
 					<a class="active" href="checklists.html"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
+					<a href="compliance.html"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+				</li>
+				<li class="submenu">
 					<a href="templates.html"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
@@ -179,8 +182,27 @@
 							<div class="card-header">
 								<h3><i class="fa fa-folder-open-o"></i> Vuln Ids</h3>
 							</div>
-							<div class="card-body">
-								<div id="checklistTree" class="vulnListing scrollableDiv">
+							<div class="card-body">				
+								<div class="row">
+									<div class="col-xl-12">
+										<div>			
+											<div class="row">
+												<div class="col-xl-6">
+													<input id="chkVulnOpen" type="checkbox" checked="true" onchange="updateVulnerabilityListingByFilter();"> <span class="vulnOpenText">Open</span><br /> 
+													<input id="chkVulnNaF" type="checkbox" checked="true" onchange="updateVulnerabilityListingByFilter();"> <span class="vulnNotAFindingText">NaF</span>
+												</div>
+												<div class="col-xl-6">
+													<input id="chkVulnNA" type="checkbox" checked="true" onchange="updateVulnerabilityListingByFilter();"> <span class="vulnNotApplicableText">N/A</span><br /> 
+													<input id="chkVulnNR" type="checkbox" checked="true" onchange="updateVulnerabilityListingByFilter();"> <span class="vulnNotReviewedText">NR</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>			
+								<div class="row">
+									<div class="col-xl-12">
+										<div id="checklistTree" class="vulnListing scrollableDiv"></div>
+									</div>			
 								</div>
 							</div>
 						</div>
@@ -191,7 +213,7 @@
 								<h3><i class="fa fa-folder-open-o"></i> Vulnerability Details</h3>
 							</div>
 							<div class="card-body">
-								<div class="vulnListing scrollableDiv">
+								<div class="vulnListingDetail scrollableDiv">
 									<div class="vulnSpacing" id="vulnId">Select a Vulnerability ID to view details</div>
 									<div class="vulnSpacing" id="vulnStigId"></div>
 									<div class="vulnSpacing" id="vulnStatus"></div>
