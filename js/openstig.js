@@ -248,8 +248,6 @@ async function getChecklistData(id, template) {
 			}
 			// take off the last comma and then close it out
 			vulnStatus = vulnStatus.slice(0,-1) + "]";
-			//vulnStatus = JSON.parse(vulnStatus);
-			//sessionStorage.setItem("vulnStatus", JSON.stringify(vulnStatus));
 			sessionStorage.setItem("vulnStatus", vulnStatus);
 			$("#checklistTree").html(vulnListing);
 		}
@@ -394,6 +392,19 @@ async function displayChecklistScores(data) {
 		$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
 		$("#checklistOpenCount").text(data.totalOpen.toString());
 		$("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
+		$("#cat1NotAFindingCount").text(data.totalCat1NotAFinding.toString());
+		$("#cat1NotApplicableCount").text(data.totalCat1NotApplicable.toString());
+		$("#cat1OpenCount").text(data.totalCat1Open.toString());
+		$("#cat1NotReviewedCount").text(data.totalCat1NotReviewed.toString());
+		$("#cat2NotAFindingCount").text(data.totalCat2NotAFinding.toString());
+		$("#cat2NotApplicableCount").text(data.totalCat2NotApplicable.toString());
+		$("#cat2OpenCount").text(data.totalCat2Open.toString());
+		$("#cat2NotReviewedCount").text(data.totalCat2NotReviewed.toString());
+		$("#cat3NotAFindingCount").text(data.totalCat3NotAFinding.toString());
+		$("#cat3NotApplicableCount").text(data.totalCat3NotApplicable.toString());
+		$("#cat3OpenCount").text(data.totalCat3Open.toString());
+		$("#cat3NotReviewedCount").text(data.totalCat3NotReviewed.toString());
+		
 		// show the charts with the same data
 		makeChartSeverity(data);
 		makeChartCategory(data);
