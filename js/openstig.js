@@ -109,6 +109,7 @@ async function getChecklists(latest, system) {
   if (response.ok) {
 			var data = await response.json()
 			var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
+			table.clear();
 			var checklistLink = "";
 			if (data.length == 0) {
 				alert("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");
