@@ -208,7 +208,16 @@ async function getChecklistData(id, template) {
 			else {
 				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
 			}
-			$("#checklistDescription").html("<b>Description:</b> " + data.description);
+			// targeT_KEY: "2777"
+			// weB_DB_INSTANCE: ""
+			// weB_DB_SITE: ""
+			// weB_OR_DATABASE: "false"
+			$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
+			$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
+			$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
+			$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
+			$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
+			
 			$("#checklistType").html("<b>Type:</b> " + data.typeTitle);
 			$("#checklistSystem").html("<b>System:</b> " + data.system);
 
@@ -546,8 +555,9 @@ async function downloadChecklistFile(id, template){
 	if (response.ok) {
 		var data = await response.text();
 		var element = document.createElement('a');
+		var title = $("#checklistTitle").text() + ".ckl";
 		element.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(data));
-		element.setAttribute('download', "openSTIG.ckl");
+		element.setAttribute('download', $.trim(title.replace(/\s+/g, '_').toLowerCase()));
 		element.style.display = 'none';
 		document.body.appendChild(element);
 		element.click();

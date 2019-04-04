@@ -52,11 +52,11 @@
 	<div class="headerbar">
 
 		<!-- LOGO -->
-        <div class="headerbar-left">
+    <div class="headerbar-left">
 			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.png" /> <span>openSTIG</span></a>
-        </div>
+    </div>
 
-        <nav class="navbar-custom">
+    <nav class="navbar-custom">
 			<ul class="list-inline float-right mb-0">
 				<li class="list-inline-item dropdown notif">
 					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -85,11 +85,10 @@
 					</button>
 				</li>                        
 			</ul>
-        </nav>
+    </nav>
 	</div>
 	<!-- End Navigation -->
 
- 
 	<!-- Left Sidebar -->
 	<div class="left main-sidebar">
 		<div class="sidebar-inner leftscroll">
@@ -165,21 +164,21 @@
                     <td class="tabco5"><i class="fa" aria-hidden="true"></i><span id="checklistNotReviewedCount"></span></td>
                   </tr>
                   <tr>
-                    <td>CAT 1</td>
+                    <td style="text-align: right;">CAT 1</td>
                     <td class="tabco2"><i class="fa" aria-hidden="true"></i><span id="cat1NotAFindingCount"></span></td>
                     <td class="tabco3"><i class="fa" aria-hidden="true"></i><span id="cat1NotApplicableCount"></span></td>
                     <td class="tabco4"><i class="fa" aria-hidden="true"></i><span id="cat1OpenCount"></span></td>
                     <td class="tabco5"><i class="fa" aria-hidden="true"></i><span id="cat1NotReviewedCount"></span></td>
                   </tr>
                   <tr>
-                    <td>CAT 2</td>
+                    <td style="text-align: right;">CAT 2</td>
                     <td class="tabco2"><i class="fa" aria-hidden="true"></i><span id="cat2NotAFindingCount"></span></td>
                     <td class="tabco3"><i class="fa" aria-hidden="true"></i><span id="cat2NotApplicableCount"></span></td>
                     <td class="tabco4"><i class="fa" aria-hidden="true"></i><span id="cat2OpenCount"></span></td>
                     <td class="tabco5"><i class="fa" aria-hidden="true"></i><span id="cat2NotReviewedCount"></span></td>
                   </tr>
                   <tr>
-                    <td>CAT 3</td>
+                    <td style="text-align: right;">CAT 3</td>
                     <td class="tabco2"><i class="fa" aria-hidden="true"></i><span id="cat3NotAFindingCount"></span></td>
                     <td class="tabco3"><i class="fa" aria-hidden="true"></i><span id="cat3NotApplicableCount"></span></td>
                     <td class="tabco4"><i class="fa" aria-hidden="true"></i><span id="cat3OpenCount"></span></td>
@@ -189,7 +188,11 @@
 								</table>
 								<div id="checklistSystem"></div>
 								<div id="checklistType"></div>
-								<div id="checklistDescription"></div>
+								<div id="checklistHost"></div>
+								<div id="checklistFQDN"></div>
+								<div id="checklistTechArea"></div>
+								<div id="checklistAssetType"></div>
+								<div id="checklistRole"></div>
 								<div class="small" id="checklistLastUpdated"></div><br />
 								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
 									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
