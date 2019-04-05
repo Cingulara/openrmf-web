@@ -135,12 +135,12 @@
 						</div>
 					</div>
 				</div>
-				<!-- end row -->		
+				<!-- end row -->
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3 id="checklistTitle" class="float-left"> </h3>
+								<h3 id="checklistTitle" class="float-left"></h3>
 								<a href="#custom-modal" class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
 									data-target="#customModal" data-toggle="modal">Update Checklist Data</a>
 							</div>								
@@ -186,13 +186,6 @@
                   </tr>
                 </tbody>
 								</table>
-								<div id="checklistSystem"></div>
-								<div id="checklistType"></div>
-								<div id="checklistHost"></div>
-								<div id="checklistFQDN"></div>
-								<div id="checklistTechArea"></div>
-								<div id="checklistAssetType"></div>
-								<div id="checklistRole"></div>
 								<div class="small" id="checklistLastUpdated"></div><br />
 								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
 									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
@@ -202,6 +195,37 @@
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
+				
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3 class="float-left">STIG Information</h3>
+							</div>								
+							<div class="card-body">
+								<div id="checklistSTIGTitle"></div>
+								<div id="checklistSTIGReleaseInfo"></div>
+								<div id="checklistSTIGDescription"></div>
+							</div><!-- end card body -->															
+						</div><!-- end card-->					
+					</div>	
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3 class="float-left">Asset Information</h3>
+							</div>								
+							<div class="card-body">
+								<div id="checklistSystem"></div>
+								<div id="checklistHost"></div>
+								<div id="checklistFQDN"></div>
+								<div id="checklistTechArea"></div>
+								<div id="checklistAssetType"></div>
+								<div id="checklistRole"></div>
+							</div><!-- end card body -->															
+						</div><!-- end card-->					
+					</div>		
+				</div><!-- end row-->
+
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
 						<div class="card mb-3">

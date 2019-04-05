@@ -208,18 +208,16 @@ async function getChecklistData(id, template) {
 			else {
 				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
 			}
-			// targeT_KEY: "2777"
-			// weB_DB_INSTANCE: ""
-			// weB_DB_SITE: ""
-			// weB_OR_DATABASE: "false"
+			$("#checklistSystem").html("<b>System:</b> " + data.system);
 			$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
 			$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
 			$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
 			$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
 			$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
 			
-			$("#checklistType").html("<b>Type:</b> " + data.typeTitle);
-			$("#checklistSystem").html("<b>System:</b> " + data.system);
+			$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+			$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
+			$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
 
 			// load updated date
 			$("#chartSeverityUpdated").html(updatedDate);
