@@ -121,10 +121,12 @@ async function getChecklists(latest, system) {
 				//alert("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");
 			}
 			else {
+				$("#divMessaging").html('');
+				$("#divMessaging").hide();
 				for (const item of data) {
 					checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '">'
 					if (item.system && item.system != 'None')
-						checklistLink += item.system + ": ";
+						checklistLink += item.system + "-";
 					checklistLink += item.title
 					checklistLink += '</a><br /><span class="small">last updated on '
 					if (item.updatedOn) {
@@ -205,7 +207,7 @@ async function getChecklistData(id, template) {
 			var data = await response.json();
 			var title = data.title;
 			if (data.system && data.system != 'None')
-				title = data.system + ": " + title;
+				title = data.system + "-" + title;
 			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
 			var updatedDate = "Last Updated on ";
 			if (data.updatedOn) {
@@ -344,14 +346,7 @@ function viewVulnDetails(vulnId) {
 function updateSingleChecklist(id) {
 	var url = saveAPI;
 	// only if there is a file does this get used uploadAPI
-	$("#frmChecklistTitle").val();
-	$("#frmChecklistDescription").val();
-	$("#frmChecklistType").val();
 	var formData = new FormData();
-	formData.append("type",$("#frmChecklistType").val());
-	formData.append("title",$("#frmChecklistTitle").val());
-	formData.append("description",$("#frmChecklistDescription").val());
-
 	// if a new system, use it, otherwise select from the list
  if ($("#frmChecklistSystemText").val() && $("#frmChecklistSystemText").val().trim().length > 0) {
 		formData.append("system",$("#frmChecklistSystemText").val());

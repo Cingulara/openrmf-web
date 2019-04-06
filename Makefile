@@ -1,4 +1,4 @@
-VERSION ?= 0.5
+VERSION ?= 0.6
 NAME ?= "openstig-web"
 AUTHOR ?= "Dale Bingham"
 PORT_EXT ?= 9000
