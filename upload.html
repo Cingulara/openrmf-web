@@ -159,7 +159,7 @@
                   <h3><i class="fa fa-file"></i> Checklist Upload</h3>
               </div>
               <div class="card-body">
-              <form onsubmit="return uploadChecklist();" id="frmChecklistUpload">
+              <form id="frmChecklistUpload">
                 <div class="form-group" id="divNewChecklistSystem" >
                   <label for="checklistSystem">System Name </label>
                   <select class="form-control select2" id="checklistSystem" required>
@@ -175,13 +175,11 @@
                   aria-describedby="titleHelp" placeholder="Enter a new System Name (if any)">
                   <small id="titleHelp" class="form-text text-muted">Enter a new system if not in the list above</small>
                 </div>
-
-                    <div class="form-group">
-                      <label for="checklistFile">Checklist File</label><br />
-                      <input type="file" name="files[]" id="checklistFile" multiple="multiple" required>
-                    </div>
-
-                  <button type="submit" class="btn btn-primary">Upload and Save</button>
+                <div class="form-group">
+                  <label for="checklistFile">Checklist File</label><br />
+                  <input type="file" name="files[]" id="checklistFile" multiple="multiple" required />
+                </div>
+                <button type="submit" onclick="uploadChecklist();" class="btn btn-primary">Upload and Save</button>
               </form>
 
               </div><!-- end card body -->							
@@ -196,6 +194,8 @@
                 <p>Use this form to upload a new CKL STIG checklist file to the system for scoring, indexing, and managing
                   your STIG information. Select your system (if any) and then select up to five (5) CKL files to upload at a time.</p>
                 <p>All fields are mandatory.</p>
+                <p>* Please fill in the <b><i>Host</i></b> field on your CKL! All checklists are named by SYSTEM-HOSTNAME-STIGTYPE-REVISION.</p>
+                <p>i.e. <i>PAL Platform - ca2335.myorg.navy.mil - Google Chrome Current Windows STIG - Release: 15 Benchmark Date: 25 Jan 2019</i></p>
               </div><!-- end card body -->							
             </div><!-- end card-->
           </div>
@@ -210,25 +210,25 @@
                 <div class="card-body">
     						  <form onsubmit="return uploadTemplate();" id="frmTemplateUpload">
                     <div class="form-group">
-                        <label for="templateTitle">Title</label>
-                        <input type="text" class="form-control" id="templateTitle" maxlength="100"
-                        aria-describedby="titleHelp" placeholder="Enter title" required>
-                        <small id="titleHelp" class="form-text text-muted">Specify a good title for this Template</small>
+                      <label for="templateTitle">Title</label>
+                      <input type="text" class="form-control" id="templateTitle" maxlength="100"
+                      aria-describedby="titleHelp" placeholder="Enter title" required>
+                      <small id="titleHelp" class="form-text text-muted">Specify a good title for this Template</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="templateDescription">Description</label>
+                      <textarea type="text" class="form-control" id="templateDescription" rows="4"
+                      aria-describedby="descriptionHelp" placeholder="Enter a Description" required></textarea>
+                      <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this Template</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="templateFile">Template Checklist File</label><br />
+                        <input type="file" id="templateFile" required /> 
                       </div>
-                      <div class="form-group">
-                        <label for="templateDescription">Description</label>
-                        <textarea type="text" class="form-control" id="templateDescription" rows="4"
-                        aria-describedby="descriptionHelp" placeholder="Enter a Description" required></textarea>
-                        <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this Template</small>
-                      </div>
-                      <div class="form-group">
-                          <label for="templateFile">Template Checklist File</label><br />
-                          <input type="file" id="templateFile" required /> 
-                        </div>
-                      <button type="submit" class="btn btn-primary">Upload and Save</button>
-                    </form>
-                  </div><!-- end card body -->							
-              </div><!-- end card-->
+                    <button type="submit" class="btn btn-primary">Upload and Save</button>
+                  </form>
+                </div><!-- end card body -->							
+            </div><!-- end card-->
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
               <div class="card mb-3">

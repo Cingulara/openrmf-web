@@ -112,6 +112,7 @@ async function getChecklists(latest, system) {
 			table.clear();
 			var checklistLink = "";
 			if (data.length == 0) {
+				$.unblockUI();
 				alert("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");
 			}
 			else {
@@ -607,10 +608,16 @@ async function getChecklistSystemsForUpload() {
 
 function uploadChecklist(){
 	var formData = new FormData();
-	formData.append("type",$("#checklistType").val());
-	formData.append("title",$("#checklistTitle").val());
-	formData.append("description",$("#checklistDescription").val());
-	formData.append('checklistFile',$('#checklistFile')[0].files[0]);
+	if ($("input[id=checklistFile]").length == 0) {
+		alert('You need to upload at least 1 checklist');
+		return false;
+	}
+	for (i = 0; i < $("input[id=checklistFile]").length; i++) {
+		// add each file to the list and post
+		if ($("input[id=checklistFile]")[i].files.length == 1) {
+			formData.append('checklistFiles',$("input[id=checklistFile]")[i].files[0]);
+		}
+	}
 	// if a new system, use it, otherwise select from the list
 	if ($("#checklistSystemText").is(':visible')){
 		if ($("#checklistSystemText").val() && $("#checklistSystemText").val().trim().length ==0) {
@@ -619,6 +626,7 @@ function uploadChecklist(){
 		}
 		formData.append("system",$("#checklistSystemText").val());
 		sessionStorage.removeItem("checklistSystems"); // reset and make it read again
+		getChecklistSystemsForUpload();
 	}
 	else
 		formData.append("system",$("#checklistSystem").val());
@@ -632,6 +640,9 @@ function uploadChecklist(){
 				swal("Your Checklist was uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmChecklistUpload")[0].reset();
+			},
+			error: function() {
+				alert("There was an error uploading the checklist. Try again please!");
 			}
 	});
 	return false;
