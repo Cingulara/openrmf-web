@@ -113,7 +113,12 @@ async function getChecklists(latest, system) {
 			var checklistLink = "";
 			if (data.length == 0) {
 				$.unblockUI();
-				alert("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");
+				var alertText = 'There are no STIG checklists uploaded. Please go to the Upload page to add your first.';
+				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+				alertText += '<span aria-hidden="true">&times;</span></button>';
+				$("#divMessaging").html(alertText);
+				$("#divMessaging").show();
+				//alert("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");
 			}
 			else {
 				for (const item of data) {
