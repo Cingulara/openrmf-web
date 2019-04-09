@@ -194,6 +194,11 @@ async function getChecklistSystemsForChecklistFilter() {
 		}); 
 	}
 }
+
+async function exportChecklistListingXLSX() {
+	// redirect to the API and it downloads the XLSX file of all Checklist Listings
+	location.href = readAPI + "/export";
+}
 /*************************************
  * Single Checklist Data functions
  *************************************/
