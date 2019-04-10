@@ -374,7 +374,7 @@ function updateSingleChecklist(id) {
 			processData: false,
 			contentType: false,
 			success : function(data){
-				swal("Your Checklists were updated successfully!", "Click OK to continue!", "success");
+				swal("Your Checklist was updated successfully!", "Click OK to continue!", "success");
 				getChecklistSystemsForChecklist();
 				getChecklistData(id, false);
 			}
@@ -637,7 +637,7 @@ function uploadChecklist(){
 			processData: false,
 			contentType: false,
 			success : function(data){
-				swal("Your Checklist was uploaded successfully!", "Click OK to continue!", "success");
+				swal("Your Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmChecklistUpload")[0].reset();
 				$('#checklistFile').trigger("filer.reset")
@@ -764,14 +764,15 @@ async function getComplianceBySystem() {
 				var table = $('#tblCompliance').DataTable();
 				var checklists = ''; // holds the list of checklists
 				for (const item of data.result) {
-					checklists = '';
+					checklists = '<ul>';
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
-							checklists += '<a href="/single-checklist.html?id=';
+							checklists += '<li><a href="/single-checklist.html?id=';
 							checklists += record.artifactId + '" target="' + record.artifactId + '">'; 
-							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span><br />';
+							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></li>';
 						}
 					}
+					checklists += "</ul>";
 					// dynamically add to the datatable
 					table.row.add( [item.control, item.title, checklists] ).draw();
 				}
