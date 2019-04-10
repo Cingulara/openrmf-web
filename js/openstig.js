@@ -773,7 +773,7 @@ async function getComplianceBySystem() {
 						}
 					}
 					// dynamically add to the datatable
-					table.row.add( [item.index, item.title, checklists] ).draw();
+					table.row.add( [item.control, item.title, checklists] ).draw();
 				}
 			}
 			else {
