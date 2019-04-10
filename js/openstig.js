@@ -103,7 +103,9 @@ async function getChecklists(latest, system) {
 		url += "/systems/" + encodeURIComponent(system);
 	else if (latest) // get the top 5
 		url += "/latest/5";
-	
+
+	// reset the list of systems
+  sessionStorage.removeItem("checklistSystems");
 	let response = await fetch(url);
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
@@ -587,18 +589,13 @@ async function getChecklistSystems() {
 		if (response.ok) {
 				var data = await response.json();
 				sessionStorage.setItem("checklistSystems", JSON.stringify(data));
-				// for each data add to the upload checklistSystem
-				$.each(data, function (index, value) {
-					$('#checklistSystem').append($('<option/>', { 
-							value: value,
-							text : value 
-					}));
-			});
+				return data;
 		}
 	}
 }
 // get the list of systems for the upload function
 async function getChecklistSystemsForUpload() {
+	sessionStorage.removeItem("checklistSystems");
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
 	if (data) {
@@ -629,9 +626,7 @@ function uploadChecklist(){
 			alert('please fill in the system name');
 			return false;
 		}
-		formData.append("system",$("#checklistSystemText").val());
-		sessionStorage.removeItem("checklistSystems"); // reset and make it read again
-		getChecklistSystemsForUpload();
+		formData.append("system",$("#checklistSystemText").val().trim());
 	}
 	else
 		formData.append("system",$("#checklistSystem").val());
@@ -645,12 +640,13 @@ function uploadChecklist(){
 				swal("Your Checklist was uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmChecklistUpload")[0].reset();
+				$('#checklistFile').trigger("filer.reset")
 			},
 			error: function() {
 				alert("There was an error uploading the checklist. Try again please!");
 			}
 	});
-	return false;
+
 }
 
 function uploadTemplate(){
