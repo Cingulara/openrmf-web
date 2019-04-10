@@ -374,7 +374,7 @@ function updateSingleChecklist(id) {
 			processData: false,
 			contentType: false,
 			success : function(data){
-				swal("Your Checklist was updated successfully!", "Click OK to continue!", "success");
+				swal("Your Checklists were updated successfully!", "Click OK to continue!", "success");
 				getChecklistSystemsForChecklist();
 				getChecklistData(id, false);
 			}
