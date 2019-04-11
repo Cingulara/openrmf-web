@@ -614,10 +614,15 @@ function uploadChecklist(){
 		alert('You need to upload at least 1 checklist');
 		return false;
 	}
+	// could be 1 to 5 of these depending on how they selected the CKL files
+	// can do 1 at a time or in bunches or 5 at once
 	for (i = 0; i < $("input[id=checklistFile]").length; i++) {
-		// add each file to the list and post
-		if ($("input[id=checklistFile]")[i].files.length == 1) {
-			formData.append('checklistFiles',$("input[id=checklistFile]")[i].files[0]);
+		// add each file to the list and post them later below
+		// could be 1 to 5 files per file entry
+		if ($("input[id=checklistFile]")[i].files.length > 0) {
+			for (j = 0; j < $("input[id=checklistFile]")[i].files.length; j++) {
+				formData.append('checklistFiles',$("input[id=checklistFile]")[i].files[j]);
+			}
 		}
 	}
 	// if a new system, use it, otherwise select from the list
@@ -762,6 +767,7 @@ async function getComplianceBySystem() {
 				// for each control print out the information
 				// control/category, checklist, vulnID, status, description
 				var table = $('#tblCompliance').DataTable();
+				table.clear();
 				var checklists = ''; // holds the list of checklists
 				for (const item of data.result) {
 					checklists = '<ul>';
