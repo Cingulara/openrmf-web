@@ -632,6 +632,13 @@ function uploadChecklist(){
 			return false;
 		}
 		formData.append("system",$("#checklistSystemText").val().trim());
+		// add this new one to the listing, and then reset the form to show this
+		$('#divNewChecklistSystem').show(); 
+		$('#divNewChecklistSystemText').hide();
+		$('#checklistSystem').append($('<option/>', { 
+			value: $("#checklistSystemText").val().trim(),
+			text : $("#checklistSystemText").val().trim() 
+		}));
 	}
 	else
 		formData.append("system",$("#checklistSystem").val());
