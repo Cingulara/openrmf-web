@@ -178,7 +178,7 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table id="tblCompliance" class="table table-bordered table-hover display">
-										<thead><tr><th>Control</th><th>Title</th><th>Checklists</th></tr></thead>
+										<thead><tr><th>#</th><th>Control</th><th>Title</th><th>Checklists</th></tr></thead>
 										<tbody></tbody>
 									</table>
 								</div>
@@ -234,9 +234,10 @@
 		$('#tblCompliance').DataTable({
 				"pageLength": 50, 
 			  "columnDefs": [
-					{ "width": "10%", "targets": 0 },
-					{ "width": "40%", "targets": 1 },
-					{ "width": "50%", "targets": 2 }
+				  { "width": "2%", "targets": 0 },
+				  { "width": "8%", "targets": 1 },
+					{ "width": "40%", "targets": 2 },
+					{ "width": "50%", "targets": 3 }
   			]
 			});
 		} );

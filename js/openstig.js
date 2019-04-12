@@ -259,6 +259,10 @@ async function getChecklistData(id, template) {
 				// only show the relevant Vuln IDs by the artifact ID and the control passed in
 				vulnFilter = await getVulnerabilitiesByControl(id, controlFilter);
 			}
+			if (vulnFilter.length == 0)
+				$("#divVulnFilter").show();
+			else
+				$("#divVulnFilter").hide();
 			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
 				sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
 				// if we are not filtering on the control, print this out
@@ -279,10 +283,6 @@ async function getChecklistData(id, template) {
 			// take off the last comma and then close it out
 			vulnStatus = vulnStatus.slice(0,-1) + "]";
 			sessionStorage.setItem("vulnStatus", vulnStatus);
-			if (vulnFilter.length == 0)
-				$("#divVulnFilter").show();
-			else
-				$("#divVulnFilter").hide();
 			// see if there is a control passed in and if so, only show the valid controls
 			$("#checklistTree").html(vulnListing);
 		}
@@ -792,7 +792,9 @@ async function getComplianceBySystem() {
 				var table = $('#tblCompliance').DataTable();
 				table.clear();
 				var checklists = ''; // holds the list of checklists
+				var recordNum = 0;
 				for (const item of data.result) {
+					recordNum++;
 					checklists = '<ul>';
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
@@ -803,7 +805,7 @@ async function getComplianceBySystem() {
 					}
 					checklists += "</ul>";
 					// dynamically add to the datatable
-					table.row.add( [item.control, item.title, checklists] ).draw();
+					table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
 				}
 			}
 			else {
