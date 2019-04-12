@@ -253,21 +253,37 @@ async function getChecklistData(id, template) {
 			// load the vulnerabilities into sessionStorage
 			var vulnListing = "";
 			var vulnStatus = "[";
+			var vulnFilter = [];
+			var controlFilter = getParameterByName("ctrl");
+			if (controlFilter) {
+				// only show the relevant Vuln IDs by the artifact ID and the control passed in
+				vulnFilter = await getVulnerabilitiesByControl(id, controlFilter);
+			}
 			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
 				sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
-				// add to the checklistTree
-				// based on one of the status color the background appropriately
-				vulnListing += '<button type="button" class="btn btn-sm ';
-				vulnListing += getVulnerabilityStatusClassName(vuln.status);
-				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
-				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
-				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
+				// if we are not filtering on the control, print this out
+				// OR
+				// if we are filtering on the control and this Vuln ID is in the list of the filter, print this out
+				if (vulnFilter.length == 0 || (jQuery.inArray(vuln.stiG_DATA[0].attributE_DATA, vulnFilter) > -1)) {
+					// add to the checklistTree
+					// based on one of the status color the background appropriately
+					vulnListing += '<button type="button" class="btn btn-sm ';
+					vulnListing += getVulnerabilityStatusClassName(vuln.status);
+					vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
+					vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
+					vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
+				}
 				// save off a list of all VulnIDs and their status to filter later client side
 				vulnStatus += '{"vulnId" : "' + vuln.stiG_DATA[0].attributE_DATA +  '", "status" : "' + vuln.status + '"},';
 			}
 			// take off the last comma and then close it out
 			vulnStatus = vulnStatus.slice(0,-1) + "]";
 			sessionStorage.setItem("vulnStatus", vulnStatus);
+			if (vulnFilter.length == 0)
+				$("#divVulnFilter").show();
+			else
+				$("#divVulnFilter").hide();
+			// see if there is a control passed in and if so, only show the valid controls
 			$("#checklistTree").html(vulnListing);
 		}
   else 
@@ -781,7 +797,7 @@ async function getComplianceBySystem() {
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
 							checklists += '<li><a href="/single-checklist.html?id=';
-							checklists += record.artifactId + '" target="' + record.artifactId + '">'; 
+							checklists += record.artifactId + '&ctrl=' + item.control + '" target="' + record.artifactId + '">'; 
 							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></li>';
 						}
 					}
@@ -803,6 +819,16 @@ async function getComplianceBySystem() {
 		alert('Choose a system first...');
 	}
 }
+
+async function getVulnerabilitiesByControl(id, control) {
+	let response = await fetch(readAPI + "/" + id + "/control/" + encodeURIComponent(control));
+	if (response.ok) {
+			var data = await response.json();
+			return data;
+	}
+}
+// http://localhost:8084/5cafc25c142eeb6adac6461c/control/AU-3
+// getParameterByName('id')
 function getComplianceTextClassName(status) {
 	if (status.toLowerCase() == 'not_reviewed')
 		return "vulnNotReviewedText";
