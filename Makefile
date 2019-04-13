@@ -1,4 +1,4 @@
-VERSION ?= 0.5
+VERSION ?= 0.6
 NAME ?= "openstig-web"
 AUTHOR ?= "Dale Bingham"
 PORT_EXT ?= 9000
@@ -28,7 +28,7 @@ version:
 	@echo ${VERSION}
 
 dockerhub:
-	docker login
+	docker login -u ${DOCKERHUB_ACCOUNT}
 	docker tag $(NAME)\:$(VERSION) ${DOCKERHUB_ACCOUNT}\/$(NAME)\:$(VERSION)
 	docker tag $(NAME)\:$(VERSION) ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
 	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:$(VERSION)

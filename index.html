@@ -40,6 +40,15 @@
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
+    <style>	
+      td.details-control {
+        background: url('assets/plugins/datatables/img/details_open.png') no-repeat center center;
+        cursor: pointer;
+      }
+      tr.shown td.details-control {
+        background: url('assets/plugins/datatables/img/details_close.png') no-repeat center center;
+      }
+    </style>
 		<!-- END CSS for this page -->
 		
 </head>
@@ -52,11 +61,11 @@
 	<div class="headerbar">
 
 		<!-- LOGO -->
-        <div class="headerbar-left">
+		<div class="headerbar-left">
 			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.png" /> <span>openSTIG</span></a>
-        </div>
+		</div>
 
-        <nav class="navbar-custom">
+    <nav class="navbar-custom">
 			<ul class="list-inline float-right mb-0">
 				<li class="list-inline-item dropdown notif">
 					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
@@ -86,10 +95,9 @@
 					</button>
 				</li>                        
 			</ul>
-        </nav>
+    </nav>
 	</div>
 	<!-- End Navigation -->
-	
  
 	<!-- Left Sidebar -->
 	<div class="left main-sidebar">
@@ -124,7 +132,7 @@
 
     <div class="content-page">	
 		<!-- Start content -->
-        <div class="content">
+      <div class="content">
             
 			<div class="container-fluid">
 				<div class="row">
@@ -173,7 +181,7 @@
 							<div class="card-box noradius noborder bg-info">
 								<i class="fa fa-code float-right text-white"></i>
 								<h6 class="text-white text-uppercase m-b-20">Version</h6>
-								<h1 class="m-b-20 text-white counter">0.5</h1>
+								<h1 class="m-b-20 text-white counter">0.6</h1>
 								<span class="text-white">beta release</span>
 							</div>
 						</div>
@@ -196,8 +204,14 @@
 							<div class="card-header">
 								<h3><i class="fa fa-table"></i> Top 5 Latest Checklists</h3>
 							</div>								
-							<div class="card-body">								
-								<div id="tblChecklistListing"></div>
+							<div class="card-body">
+                <div class="table-responsive">
+									<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" role="alert"></div>
+                  <table id="tblChecklistListing" class="table table-bordered table-hover display">
+                    <thead><tr><th></th><th>Name</th><th>NaF</th><th>N/A</th><th>Open</th><th>N/R</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
@@ -259,6 +273,74 @@
 			delay: 10,
 			time: 600
 		});
+		
+    // START CODE FOR Child rows (show extra / detailed information) DATA TABLE 
+    function format ( d ) {
+      // `d` is the original data object for the row
+      return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
+        '<tr>'+
+          '<td style="width: 60%; text-align: right;">CAT 1:</td>'+
+          '<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
+          '<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
+          '<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
+          '<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
+        '</tr>'+
+        '<tr>'+
+          '<td style="width: 60%; text-align: right;">CAT 2:</td>'+
+          '<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
+          '<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
+          '<td style="width: 10%;" class="tabco4">'+d.totalOpenCat2+'</td>'+
+          '<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
+        '</tr>'+
+        '<tr>'+
+          '<td style="width: 60%; text-align: right;">CAT 3:</td>'+
+          '<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
+          '<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
+          '<td style="width: 10%;" class="tabco4">'+d.totalOpenCat3+'</td>'+
+          '<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
+        '</tr>'+
+      '</table>';
+    }
+		var tableChecklist = $('#tblChecklistListing').DataTable({
+        "paging": false,
+        "searching": false,
+        "columns": [
+        { 
+						"className":      'details-control',
+						"orderable":      false,
+						"data":           null,
+            "defaultContent": ''
+          },
+					{ "data": "title" },
+					{ "data": "totalNaF" },
+					{ "data": "totalNA" },
+					{ "data": "totalOpen" },
+					{ "data": "totalNR" }
+        ],
+			  "columnDefs": [
+					{ "width": "60%", "targets": 1 },
+					{ "className": "tabco2", "width": "10%", "targets": 2 },
+					{ "className": "tabco3", "width": "10%", "targets": 3 },
+					{ "className": "tabco4", "width": "10%", "targets": 4 },
+					{ "className": "tabco5", "width": "10%", "targets": 5 }
+  			]
+      });
+      // Add event listener for opening and closing details
+			$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
+				var tr = $(this).closest('tr');
+				var row = tableChecklist.row( tr );
+		 
+				if ( row.child.isShown() ) {
+					// This row is already open - close it
+					row.child.hide();
+					tr.removeClass('shown');
+				}
+				else {
+					// Open this row
+					row.child( format(row.data()) ).show();
+					tr.addClass('shown');
+				}
+			} );
 	} );		
 </script>
 <!-- END Java Script for this page -->
