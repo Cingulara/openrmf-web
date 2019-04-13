@@ -4,8 +4,8 @@
 	<ASSET>
 		<ROLE>Member Server</ROLE>
 		<ASSET_TYPE>Computing</ASSET_TYPE>
-		<HOST_NAME>ocp-worker2-edmz</HOST_NAME>
-		<HOST_IP>192.168.1.12</HOST_IP>
+		<HOST_NAME>ocp2.worker2.edmz.mil</HOST_NAME>
+		<HOST_IP></HOST_IP>
 		<HOST_MAC></HOST_MAC>
 		<HOST_FQDN>worker2.ocp.edmz.mydomain.mil</HOST_FQDN>
 		<TECH_AREA>Application Review</TECH_AREA>

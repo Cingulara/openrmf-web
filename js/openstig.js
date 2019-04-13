@@ -4,6 +4,7 @@ var saveAPI = 'http://localhost:8082'
 var uploadAPI = 'http://localhost:8086'
 var templateAPI = 'http://localhost:8088'
 var complianceAPI = 'http://localhost:8092'
+var controlAPI = 'http://localhost:8094'
 
 /*************************************
  * Dashboard functions
@@ -259,10 +260,19 @@ async function getChecklistData(id, template) {
 				// only show the relevant Vuln IDs by the artifact ID and the control passed in
 				vulnFilter = await getVulnerabilitiesByControl(id, controlFilter);
 			}
-			if (vulnFilter.length == 0)
+			if (vulnFilter.length == 0){
 				$("#divVulnFilter").show();
-			else
+				$("#rowControlInformation").hide();
+			}
+			else {
 				$("#divVulnFilter").hide();
+				var controlInfo = await getControlInformation(controlFilter); // see if there is a description
+				if (controlInfo && controlInfo.length >= 1) {
+					$("#checklistControlTitle").html(controlInfo[0].family + ": " + controlInfo[0].number + " - " + controlInfo[0].title);
+					$("#checklistControlGuidance").html(controlInfo[0].supplementalGuidance);
+					$("#rowControlInformation").show();
+				}
+			}
 			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
 				sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
 				// if we are not filtering on the control, print this out
@@ -829,8 +839,14 @@ async function getVulnerabilitiesByControl(id, control) {
 			return data;
 	}
 }
-// http://localhost:8084/5cafc25c142eeb6adac6461c/control/AU-3
-// getParameterByName('id')
+
+async function getControlInformation(control) {
+	let response = await fetch(controlAPI + "/" + encodeURIComponent(control));
+	if (response.ok) {
+			var data = await response.json();
+			return data;
+	}
+}
 function getComplianceTextClassName(status) {
 	if (status.toLowerCase() == 'not_reviewed')
 		return "vulnNotReviewedText";
