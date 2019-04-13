@@ -2,13 +2,13 @@
 <!--DISA STIG Viewer :: 2.8-->
 <CHECKLIST>
 	<ASSET>
-		<ROLE>None</ROLE>
+		<ROLE>Member Server</ROLE>
 		<ASSET_TYPE>Computing</ASSET_TYPE>
-		<HOST_NAME></HOST_NAME>
-		<HOST_IP></HOST_IP>
+		<HOST_NAME>ocp.worker1.myorg.navy.mil</HOST_NAME>
+		<HOST_IP>192.168.1.11</HOST_IP>
 		<HOST_MAC></HOST_MAC>
-		<HOST_FQDN></HOST_FQDN>
-		<TECH_AREA></TECH_AREA>
+		<HOST_FQDN>worker1.ocp.edmz.mydomain.mil</HOST_FQDN>
+		<TECH_AREA>Application Review</TECH_AREA>
 		<TARGET_KEY>2777</TARGET_KEY>
 		<WEB_OR_DATABASE>false</WEB_OR_DATABASE>
 		<WEB_DB_SITE></WEB_DB_SITE>
