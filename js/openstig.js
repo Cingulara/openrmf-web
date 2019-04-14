@@ -260,7 +260,7 @@ async function getChecklistData(id, template) {
 				// only show the relevant Vuln IDs by the artifact ID and the control passed in
 				vulnFilter = await getVulnerabilitiesByControl(id, controlFilter);
 			}
-			if (vulnFilter.length == 0){
+			if (vulnFilter && vulnFilter.length == 0){
 				$("#divVulnFilter").show();
 				$("#rowControlInformation").hide();
 			}
@@ -838,6 +838,10 @@ async function getVulnerabilitiesByControl(id, control) {
 			var data = await response.json();
 			return data;
 	}
+	else {
+		var emptydata = [];
+		return emptydata;
+	}
 }
 
 async function getControlInformation(control) {
@@ -845,6 +849,10 @@ async function getControlInformation(control) {
 	if (response.ok) {
 			var data = await response.json();
 			return data;
+	}
+	else {
+		var emptydata = [];
+		return emptydata;
 	}
 }
 function getComplianceTextClassName(status) {
