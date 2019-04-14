@@ -6,13 +6,20 @@ PORT_INT ?= 80
 NO_CACHE ?= true
 DOCKERHUB_ACCOUNT ?= cingulara
   
-.PHONY: build run stop clean version dockerhub
+.PHONY: build docker latest run stop clean version dockerhub
 
 build:  
 	dotnet build
 
 docker: 
 	docker build -f Dockerfile -t $(NAME)\:$(VERSION) --no-cache=$(NO_CACHE) .
+
+latest: 
+	docker build -f Dockerfile -t $(NAME)\:latest --no-cache=$(NO_CACHE) .
+	docker login -u ${DOCKERHUB_ACCOUNT}
+	docker tag $(NAME)\:latest ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
+	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
+	docker logout
 
 run:  
 	docker run --rm --name $(NAME) -d -p $(PORT_EXT):$(PORT_INT) $(NAME)\:$(VERSION) && docker ps -a --format "{{.ID}}\t{{.Names}}"|grep $(NAME)  
