@@ -1,5 +1,5 @@
 VERSION ?= 0.6
-NAME ?= "openstig-web"
+NAME ?= "openrmf-web"
 AUTHOR ?= "Dale Bingham"
 PORT_EXT ?= 9000
 PORT_INT ?= 80
