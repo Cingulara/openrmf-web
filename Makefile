@@ -17,13 +17,7 @@ latest:
 	docker tag $(NAME)\:latest ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
 	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
 	docker logout
-
-run:  
-	docker run --rm --name $(NAME) -d -p $(PORT_EXT):$(PORT_INT) $(NAME)\:$(VERSION) && docker ps -a --format "{{.ID}}\t{{.Names}}"|grep $(NAME)  
-
-stop:  
-	docker rm -f $(NAME)
-  
+ 
 clean:
 	@rm -f -r obj
 	@rm -f -r bin
