@@ -8,9 +8,6 @@ DOCKERHUB_ACCOUNT ?= cingulara
   
 .PHONY: build docker latest run stop clean version dockerhub
 
-build:  
-	dotnet build
-
 docker: 
 	docker build -f Dockerfile -t $(NAME)\:$(VERSION) --no-cache=$(NO_CACHE) .
 
@@ -42,4 +39,4 @@ dockerhub:
 	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
 	docker logout
 
-DEFAULT: build
+DEFAULT: latest
