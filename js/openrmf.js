@@ -288,8 +288,6 @@ async function getChecklistData(id, template) {
 			// see if there is a control passed in and if so, only show the valid controls
 			$("#checklistTree").html(vulnListing);
 		}
-  else 
-    throw new Error(response.status)
 }
 // based on the checkboxes, filter the Vuln Ids listing
 function updateVulnerabilityListingByFilter() {
@@ -592,6 +590,23 @@ async function downloadChecklistFile(id, template){
 async function exportChecklistXLSX(id) {
 	// redirect to the API and it downloads the XLSX file
 	location.href = readAPI + "/export/" + id;
+}
+async function deleteChecklist(id) {
+	if (id && id.length > 10) {
+		if (confirm ("Are you sure you wish to delete this checklist?")) {
+			$.ajax({
+					url : saveAPI + "/" + id,
+					type : 'DELETE',
+					success : function(data){
+						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success");
+						location.href = "checklists.html";
+					},
+					error : function(data){
+						swal("Your Checklist was not deleted successfully!", "Click OK to continue!", "error");
+					}
+			});
+		}
+	}
 }
 /************************************ 
  Upload Functions
