@@ -192,7 +192,12 @@ async function getChecklistSystemsForChecklistFilter() {
 
 async function exportChecklistListingXLSX() {
 	// redirect to the API and it downloads the XLSX file of all Checklist Listings
-	location.href = readAPI + "/export";
+	// if we have a specific system selected only export the ones for that system
+	var systemFilter = '';
+	if ($("#checklistSystemFilter").val() && $("#checklistSystemFilter").val().toLowerCase() != "all"){
+		systemFilter = $("#checklistSystemFilter").val();
+	}
+	location.href = readAPI + "/export?system=" + encodeURIComponent(systemFilter);
 }
 /*************************************
  * Single Checklist Data functions
