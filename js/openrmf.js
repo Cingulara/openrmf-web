@@ -582,7 +582,7 @@ async function downloadChecklistFile(id, template){
 	if (response.ok) {
 		var data = await response.text();
 		var element = document.createElement('a');
-		var title = $("#checklistTitle").text() + ".ckl";
+		var title = $.trim($("#checklistTitle").text()) + ".ckl";
 		element.setAttribute('href', 'data:application/xml;charset=utf-8,' + encodeURIComponent(data));
 		element.setAttribute('download', $.trim(title.replace(/\s+/g, '_').toLowerCase()));
 		element.style.display = 'none';
@@ -594,7 +594,16 @@ async function downloadChecklistFile(id, template){
 
 async function exportChecklistXLSX(id) {
 	// redirect to the API and it downloads the XLSX file
-	location.href = readAPI + "/export/" + id;
+	// pass in bool nf, bool open, bool na, bool nr to see if the filters are checked or
+
+	var bOpen = $('#chkVulnOpen').prop('checked');
+	var bNaF  = $('#chkVulnNaF').prop('checked');
+	var bNA   = $('#chkVulnNA').prop('checked');
+	var bNR   = $('#chkVulnNR').prop('checked');
+	// based on the checks above, generate the URL and launch
+	var url = readAPI + "/export/" + id + "/";
+	url += "?nf=" + bNaF.toString() + "&open=" + bOpen.toString() + "&na=" + bNA.toString() + "&nr=" + bNR.toString();
+	location.href = url;
 }
 async function deleteChecklist(id) {
 	if (id && id.length > 10) {
