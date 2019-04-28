@@ -120,8 +120,6 @@ async function getChecklists(latest, system) {
 				$("#divMessaging").hide();
 				for (const item of data) {
 					checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '">'
-					if (item.system && item.system != 'None')
-						checklistLink += item.system + "-";
 					checklistLink += item.title
 					checklistLink += '</a><br /><span class="small">last updated on '
 					if (item.updatedOn) {
@@ -211,8 +209,6 @@ async function getChecklistData(id, template) {
   if (response.ok) {
 			var data = await response.json();
 			var title = data.title;
-			if (data.system && data.system != 'None')
-				title = data.system + "-" + title;
 			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
 			var updatedDate = "Last Updated on ";
 			if (data.updatedOn) {
