@@ -82,6 +82,60 @@ async function getScoreForTemplateListing(xmlChecklist) {
 			displayChecklistScores(data);
 		}});
 }
+
+/*************************************
+ * System listing functions
+ ************************************/
+async function getChecklistSystemListing(){
+	$.blockUI({ message: "Updating the system listing..." }); 
+	var url = readAPI + "/systems/";
+
+	// setup the table visibility
+	$("#divSystemListing").show();
+	$("#divChecklistListing").hide();	
+	$("#btnListAllSystems").hide();
+	$("#txtSystemName").val('');
+
+	// reset the list of systems
+  sessionStorage.removeItem("checklistSystems");
+	let response = await fetch(url);
+	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
+  if (response.ok) {
+			var data = await response.json()
+			var table = $('#tblSystemListing').DataTable(); // the datatable reference to do a row.add() to
+			table.clear();
+			$("#txtListingTitle").text("Systems");
+
+			if (data.length == 0) {
+				$.unblockUI();
+				var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
+				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+				alertText += '<span aria-hidden="true">&times;</span></button>';
+				$("#divMessaging").html(alertText);
+				$("#divMessaging").show();
+			}
+			else {
+				$.unblockUI();
+				$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
+				$("#divMessaging").html('');
+				$("#divMessaging").hide();
+				// cycle through the systems and add the data
+				var systemLink = "";
+				for (const item of data) {
+					systemLink = "<button type='button' class='btn btn-primary' onclick='getChecklists(false,\"" + item.system + "\"); return false;'>Open Checklists</button>";
+					table.row.add( { "systemLink": systemLink, "system": item.system, "checklistCount": item.checklistCount}).draw();
+				}
+			}
+	}
+	else {
+		$.unblockUI();
+		var alertText = 'There is a problem fetching the system listing. Please check that all available services are alive and well.';
+		alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+		alertText += '<span aria-hidden="true">&times;</span></button>';
+		$("#divMessaging").html(alertText);
+		$("#divMessaging").show();
+	}
+}
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -102,52 +156,59 @@ async function getChecklists(latest, system) {
 	let response = await fetch(url);
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
-			var data = await response.json()
-			var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
-			table.clear();
-			var checklistLink = "";
-			if (data.length == 0) {
-				$.unblockUI();
-				var alertText = 'There are no STIG checklists uploaded. Please go to the Upload page to add your first.';
-				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-				alertText += '<span aria-hidden="true">&times;</span></button>';
-				$("#divMessaging").html(alertText);
-				$("#divMessaging").show();
-				//alert("There are currently no STIG checklists uploaded. Go to the Upload page to add your first one.");
-			}
-			else {
-				$("#divMessaging").html('');
-				$("#divMessaging").hide();
-				for (const item of data) {
-					checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '">'
-					checklistLink += item.title
-					checklistLink += '</a><br /><span class="small">last updated on '
-					if (item.updatedOn) {
-						checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
-					}
-					else {
-						checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
-					}
-					// now get the score
-					var score = await getScoreForChecklistListing(item.internalId);
-					if (score) {
-	  				// dynamically add to the datatable but only show main data, click the + for extra data
-  					table.row.add( { "title": checklistLink, 
-							"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
-							"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
-							"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
-							"totalNaFCat3": score.totalCat3NotAFinding, "totalNACat3": score.totalCat3NotApplicable, "totalOpenCat3": intOpenCat2 = score.totalCat3Open, "totalNRCat3": score.totalCat3NotReviewed
-						}).draw();
-					}
-					else {
-						table.row.add( { "title": checklistLink, 
-							"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
-							"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
-							"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
-							"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
-						}).draw();
-						}
+		var data = await response.json()
+		// hide the system listing
+		$("#divSystemListing").hide();
+		$("#divChecklistListing").show();
+		$("#btnListAllSystems").show();
+		$("#txtSystemName").val(system);
+		
+		$("#txtListingTitle").text(system + " Checklists");
+		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
+		table.clear();
+		var checklistLink = "";
+		if (data.length == 0) {
+			$.unblockUI();
+			var alertText = 'There are no STIG checklists uploaded. Please go to the Upload page to add your first.';
+			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+			alertText += '<span aria-hidden="true">&times;</span></button>';
+			$("#divMessaging").html(alertText);
+			$("#divMessaging").show();
+		}
+		else {
+			$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
+			$("#divMessaging").html('');
+			$("#divMessaging").hide();
+			for (const item of data) {
+				checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '">'
+				checklistLink += item.title
+				checklistLink += '</a><br /><span class="small">last updated on '
+				if (item.updatedOn) {
+					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
 				}
+				else {
+					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
+				}
+				// now get the score
+				var score = await getScoreForChecklistListing(item.internalId);
+				if (score) {
+					// dynamically add to the datatable but only show main data, click the + for extra data
+					table.row.add( { "title": checklistLink, 
+						"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
+						"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
+						"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
+						"totalNaFCat3": score.totalCat3NotAFinding, "totalNACat3": score.totalCat3NotApplicable, "totalOpenCat3": intOpenCat2 = score.totalCat3Open, "totalNRCat3": score.totalCat3NotReviewed
+					}).draw();
+				}
+				else {
+					table.row.add( { "title": checklistLink, 
+						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
+						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
+						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
+						"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
+					}).draw();
+				}
+			}
 			// with all the data fill in the table and go
 		$.unblockUI();
 		}
@@ -192,8 +253,8 @@ async function exportChecklistListingXLSX() {
 	// redirect to the API and it downloads the XLSX file of all Checklist Listings
 	// if we have a specific system selected only export the ones for that system
 	var systemFilter = '';
-	if ($("#checklistSystemFilter").val() && $("#checklistSystemFilter").val().toLowerCase() != "all"){
-		systemFilter = $("#checklistSystemFilter").val();
+	if ($("#txtSystemName").val()){
+		systemFilter = $("#txtSystemName").val();
 	}
 	location.href = readAPI + "/export?system=" + encodeURIComponent(systemFilter);
 }
