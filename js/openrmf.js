@@ -271,8 +271,8 @@ async function getChecklistSystemsForChecklistFilter() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value,
-					text : value 
+					value: value.system,
+					text : value.system 
 			}));
 		}); 
 	}
@@ -494,8 +494,8 @@ async function getChecklistSystemsForChecklist() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#frmChecklistSystem').append($('<option/>', { 
-					value: value,
-					text : value 
+					value: value.system,
+					text : value.system
 			}));
 		}); 
 	}
@@ -739,8 +739,8 @@ async function getChecklistSystemsForUpload() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystem').append($('<option/>', { 
-					value: value,
-					text : value 
+					value: value.system,
+					text : value.system 
 			}));
 		}); 
 	}
@@ -872,8 +872,8 @@ async function getChecklistSystemsForReportFilter() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value,
-					text : value 
+					value: value.system,
+					text : value.system 
 			}));
 		}); 
 	}
@@ -891,8 +891,8 @@ async function getChecklistSystemsForComplianceFilter() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value,
-					text : value 
+					value: value.system,
+					text : value.system 
 			}));
 		}); 
 	}
