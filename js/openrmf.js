@@ -902,7 +902,9 @@ async function getComplianceBySystem() {
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0 && system != "All") {
 		$.blockUI({ message: "Updating the compliance listing...this may take a minute" }); 
-		var url = complianceAPI + "/system/" + encodeURIComponent(system) + "/?filter=" + $('#checklistImpactFilter').val();
+		// is the PII checked? This is returned as an array even if just one
+		var pii = $('#checklistPrivacyFilter')[0].checked;
+		var url = complianceAPI + "/system/" + encodeURIComponent(system) + "/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
 		let response = await fetch(url);
 		if (response.ok) {
 			var data = await response.json()
