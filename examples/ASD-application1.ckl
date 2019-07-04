@@ -1498,7 +1498,7 @@ If SOAP messages requiring integrity do not have the Message ID, Service Request
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-001453</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>NotAFinding</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
@@ -2192,7 +2192,7 @@ If SOAP using the &lt;Conditions&gt; element does not contain &lt;NotBefore&gt; 
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000068</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>NotAFinding</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
@@ -2791,7 +2791,7 @@ If the application has no ability to specify a user account as being temporary i
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000016</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>Open</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
@@ -2914,7 +2914,7 @@ If the application is not set to expire inactive accounts after 35 days, or if t
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000017</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>NotAFinding</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
@@ -5779,7 +5779,7 @@ If the standard DoD-approved banner is not displayed prior to obtaining access, 
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000048</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>Not_Applicable</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
