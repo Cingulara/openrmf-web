@@ -4,26 +4,26 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>openSTIG - Template Listing</title>
-		<meta name="description" content="openSTIG tool Dashboard">
+		<title>OpenRMF - Template Listing</title>
+		<meta name="description" content="OpenRMF tool Dashboard">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="assets/images/favicon.ico">
-		<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
-		<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
-		<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
-		<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
-		<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
-		<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
-		<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
-		<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
-		<link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicons/android-icon-192x192.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
-		<link rel="manifest" href="/assets/favicons/manifest.json">
+		<link rel="apple-touch-icon" sizes="57x57" href="assets/favicons/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="assets/favicons/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="assets/favicons/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="assets/favicons/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="assets/favicons/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="assets/favicons/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="assets/favicons/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="assets/favicons/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="assets/favicons/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="assets/favicons/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+		<link rel="manifest" href="assets/favicons/manifest.json">
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
@@ -40,7 +40,16 @@
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
-		<!-- END CSS for this page -->
+		<style>	
+			td.details-control {
+				background: url('assets/plugins/datatables/img/details_open.png') no-repeat center center;
+				cursor: pointer;
+			}
+			tr.shown td.details-control {
+				background: url('assets/plugins/datatables/img/details_close.png') no-repeat center center;
+			}
+		</style>
+	  <!-- END CSS for this page -->
 </head>
 
 <body class="adminbody">
@@ -52,7 +61,7 @@
 
 		<!-- LOGO -->
         <div class="headerbar-left">
-			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.png" /> <span>openSTIG</span></a>
+			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.png" /> <span>OpenRMF</span></a>
         </div>
 
         <nav class="navbar-custom">
@@ -68,9 +77,9 @@
 						</div>
 
 						<!-- item-->
-						<a target="_blank" href="https://www.github.com/cingulara/openstig-docs/" class="dropdown-item notify-item">                                    
+						<a target="_blank" href="https://www.github.com/cingulara/openrmf-docs/" class="dropdown-item notify-item">                                    
 							<p class="notify-details ml-0">
-								<b>Do you need documentation on how openSTIG works?</b>
+								<b>Do you need documentation on how OpenRMF works?</b>
 								<span>GitHub Readme</span>
 							</p>
 						</a>
@@ -87,7 +96,6 @@
         </nav>
 	</div>
 	<!-- End Navigation -->
-
  
 	<!-- Left Sidebar -->
 	<div class="left main-sidebar">
@@ -120,7 +128,6 @@
 	</div>
 	<!-- End Sidebar -->
 
-
     <div class="content-page">	
 		<!-- Start content -->
         <div class="content">            
@@ -145,8 +152,14 @@
 							<div class="card-header">
 								<h3><i class="fa fa-list"></i> My Templates (starting point for Checklists)</h3>
 							</div>								
-							<div class="card-body">								
-								<div id="tblChecklistListing"></div>
+							<div class="card-body">	
+								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" role="alert"></div>
+								<div class="table-responsive" id="divChecklistListing">
+									<table id="tblChecklistListing" class="table table-bordered table-hover display">
+										<thead><tr><th></th><th>Title</th><th>NaF</th><th>N/A</th><th>Open</th><th>N/R</th></tr></thead>
+										<tbody></tbody>
+									</table>
+								</div>							
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
@@ -188,13 +201,82 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="js/moment.min.js"></script>
-<script src="js/openstig.js"></script>
+<script src="./js/openrmf.js"></script>
+<script src="./js/apis.js"></script>
 <script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
 		// calls to get the checklist data from the API
 		getTemplates(false);
+		// START CODE FOR Child rows (show extra / detailed information) DATA TABLE 
+		function format ( d ) {
+			// `d` is the original data object for the row
+			return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
+				'<tr>'+
+				'<td style="width: 60%; text-align: right;">CAT 1:</td>'+
+				'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
+				'<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
+				'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
+				'<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
+				'</tr>'+
+				'<tr>'+
+				'<td style="width: 60%; text-align: right;">CAT 2:</td>'+
+				'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
+				'<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
+				'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat2+'</td>'+
+				'<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
+				'</tr>'+
+				'<tr>'+
+				'<td style="width: 60%; text-align: right;">CAT 3:</td>'+
+				'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
+				'<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
+				'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat3+'</td>'+
+				'<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
+				'</tr>'+
+			'</table>';
+		}
+		var tableChecklist = $('#tblChecklistListing').DataTable({
+			"pageLength": 50, 
+			"columns": [
+				{ 
+					"className":      'details-control',
+					"orderable":      false,
+					"data":           null,
+					"defaultContent": ''
+				},
+				{ "data": "title" },
+				{ "data": "totalNaF" },
+				{ "data": "totalNA" },
+				{ "data": "totalOpen" },
+				{ "data": "totalNR" }
+			],
+			"columnDefs": [
+				{ "width": "40%", "targets": 1 },
+				{ "className": "tabco2", "width": "14%", "targets": 2 },
+				{ "className": "tabco3", "width": "14%", "targets": 3 },
+				{ "className": "tabco4", "width": "14%", "targets": 4 },
+				{ "className": "tabco5", "width": "14%", "targets": 5 }
+			]
+		});
+        // Add event listener for opening and closing details
+		$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
+			var tr = $(this).closest('tr');
+			var row = tableChecklist.row( tr );
+		
+			if ( row.child.isShown() ) {
+				// This row is already open - close it
+				row.child.hide();
+				tr.removeClass('shown');
+			}
+			else {
+				// Open this row
+				row.child( format(row.data()) ).show();
+				tr.addClass('shown');
+			}
+		} );
 	} );
 </script>
 <!-- END Java Script for this page -->
