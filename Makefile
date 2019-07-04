@@ -13,11 +13,9 @@ docker:
 
 latest: 
 	docker build -f Dockerfile -t $(NAME)\:latest --no-cache=$(NO_CACHE) .
-	docker login -u ${DOCKERHUB_ACCOUNT}
 	docker tag $(NAME)\:latest ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
 	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
-	docker logout
- 
+
 clean:
 	@rm -f -r obj
 	@rm -f -r bin
@@ -26,9 +24,7 @@ version:
 	@echo ${VERSION}
 
 dockerhub:
-	docker login -u ${DOCKERHUB_ACCOUNT}
 	docker tag $(NAME)\:$(VERSION) ${DOCKERHUB_ACCOUNT}\/$(NAME)\:$(VERSION)
 	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:$(VERSION)
-	docker logout
 
 DEFAULT: latest
