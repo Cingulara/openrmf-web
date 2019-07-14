@@ -55,7 +55,10 @@
 
 <body class="adminbody">
 
-<div id="main">
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
+
+	<div id="main">
 
 	<!-- top bar navigation -->
 	<div class="headerbar">
@@ -267,14 +270,22 @@
 <script src="assets/plugins/counterup/jquery.counterup.min.js"></script>
 <script>
 	$(document).ready(function() {
-		getChecklistTotalCount();
-		getChecklists(true);
-		// counter-up
-		$('.counter').counterUp({
-			delay: 10,
-			time: 600
+		// authentication first
+		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
+			alert(authenticated ? 'authenticated' : 'not authenticated');
+			if (authenticated) {
+				getChecklistTotalCount();
+				getChecklists(true);
+				// counter-up
+				$('.counter').counterUp({
+					delay: 10,
+					time: 600
+				});
+			}
+		}).error(function() {
+			alert('failed to initialize');
 		});
-		
+
     // START CODE FOR Child rows (show extra / detailed information) DATA TABLE 
     function format ( d ) {
       // `d` is the original data object for the row

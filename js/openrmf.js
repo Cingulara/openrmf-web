@@ -3,7 +3,9 @@
  ************************************/
 // fill in the # of total checklists in the system on the dashboard page top right
 async function getChecklistTotalCount() {
-	let response = await fetch(readAPI + "/count");
+	let response = await fetch(readAPI + "/count", {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	if (response.ok) {
 			var data = await response.json()
 			$("#numberChecklistsTotal").html(data);
@@ -182,7 +184,9 @@ async function getChecklists(latest, system) {
 
 	// reset the list of systems
   sessionStorage.removeItem("checklistSystems");
-	let response = await fetch(url);
+  let response = await fetch(url, {headers: {
+      'Authorization': 'Bearer ' + keycloak.token
+  }});
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
 		var data = await response.json()
