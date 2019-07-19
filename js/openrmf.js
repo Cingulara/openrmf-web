@@ -129,7 +129,9 @@ async function getChecklistSystemListing(){
 
 	// reset the list of systems
   sessionStorage.removeItem("checklistSystems");
-	let response = await fetch(url);
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
 			var data = await response.json()
@@ -299,7 +301,9 @@ async function getChecklistData(id, template) {
 	var url = readAPI;
 	if (template)
 		url = templateAPI;
-  let response = await fetch(url + "/" + id);
+  let response = await fetch(url + "/" + id, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
   if (response.ok) {
 			var data = await response.json();
 			var title = data.title;
@@ -668,7 +672,9 @@ async function downloadChecklistFile(id, template){
 	if (template)
 		url = templateAPI;
 
-	let response = await fetch(url + "/download/" + id);
+	let response = await fetch(url + "/download/" + id, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	if (response.ok) {
 		var data = await response.text();
 		var element = document.createElement('a');
@@ -727,7 +733,9 @@ async function getChecklistSystems() {
 	if (data) 
 		return data;
 	else {
-		let response = await fetch(readAPI + "/systems");
+		let response = await fetch(readAPI + "/systems", {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
 		if (response.ok) {
 				var data = await response.json();
 				sessionStorage.setItem("checklistSystems", JSON.stringify(data));
@@ -832,7 +840,9 @@ async function getChecklistTypeBreakdown(system) {
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0 && system != "All")
 		url += "?system=" + encodeURIComponent(system);
-  let response = await fetch(url);
+  let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
   if (response.ok) {
 			var data = await response.json()
 			var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
@@ -951,7 +961,9 @@ async function getComplianceBySystem() {
 }
 
 async function getVulnerabilitiesByControl(id, control) {
-	let response = await fetch(readAPI + "/" + id + "/control/" + encodeURIComponent(control));
+	let response = await fetch(readAPI + "/" + id + "/control/" + encodeURIComponent(control), {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	if (response.ok) {
 			var data = await response.json();
 			return data;

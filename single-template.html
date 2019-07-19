@@ -45,6 +45,9 @@
 
 <body class="adminbody">
 
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
+
 <div id="main">
 
 	<!-- top bar navigation -->
@@ -296,8 +299,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
 	$(document).ready(function() {
-		// calls to get the checklist data from the API
-		getChecklistData(getParameterByName('id'), true);
+		// authentication first
+		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
+			if (authenticated) {
+				// calls to get the checklist data from the API
+				getChecklistData(getParameterByName('id'), true);
+			}
+			else {
+				alert('You are not logged in. Please check your setup with Keycloak.');
+			}
+		}).error(function() {
+			alert('failed to initialize');
+		});
 	});
 </script>
 <!-- END Java Script for this page -->

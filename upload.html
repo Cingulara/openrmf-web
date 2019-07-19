@@ -59,7 +59,8 @@
 <body class="adminbody">
 
 <div id="main">
-
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
 	<!-- top bar navigation -->
 	<div class="headerbar">
 
@@ -290,8 +291,17 @@
 <script src="./js/apis.js"></script>
 <script>
   $(document).ready(function() {
-      // get the list of systems
-      getChecklistSystemsForUpload();
+		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
+			if (authenticated) {
+        // get the list of systems
+        getChecklistSystemsForUpload();
+			}
+			else {
+				alert('You are not logged in. Please check your setup with Keycloak.');
+			}
+		}).error(function() {
+			alert('failed to initialize');
+		});
       
     $('#checklistFile').filer({
         limit: 5,

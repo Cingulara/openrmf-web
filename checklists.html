@@ -54,6 +54,8 @@
 
 <body class="adminbody">
 
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
 <div id="main">
 
 	<!-- top bar navigation -->
@@ -220,35 +222,46 @@
 <script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
-		// calls to get the checklist page setup
-    getChecklistSystemListing();
-    // START CODE FOR Child rows (show extra / detailed information) DATA TABLE 
-    function format ( d ) {
-      // `d` is the original data object for the row
-      return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
-        '<tr>'+
-          '<td style="width: 60%; text-align: right;">CAT 1:</td>'+
-          '<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
-          '<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
-          '<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
-          '<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
-        '</tr>'+
-        '<tr>'+
-          '<td style="width: 60%; text-align: right;">CAT 2:</td>'+
-          '<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
-          '<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
-          '<td style="width: 10%;" class="tabco4">'+d.totalOpenCat2+'</td>'+
-          '<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
-        '</tr>'+
-        '<tr>'+
-          '<td style="width: 60%; text-align: right;">CAT 3:</td>'+
-          '<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
-          '<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
-          '<td style="width: 10%;" class="tabco4">'+d.totalOpenCat3+'</td>'+
-          '<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
-        '</tr>'+
-      '</table>';
-    }
+		// authentication first
+		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
+			if (authenticated) {
+				// calls to get the checklist page setup
+				getChecklistSystemListing();
+			}
+			else {
+				alert('You are not logged in. Please check your setup with Keycloak.');
+			}
+		}).error(function() {
+			alert('failed to initialize');
+		});
+
+		// START CODE for Child rows (show extra / detailed information) DATA TABLE 
+		function format ( d ) {
+		// `d` is the original data object for the row
+		return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
+			'<tr>'+
+			'<td style="width: 60%; text-align: right;">CAT 1:</td>'+
+			'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
+			'<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
+			'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
+			'<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td style="width: 60%; text-align: right;">CAT 2:</td>'+
+			'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
+			'<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
+			'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat2+'</td>'+
+			'<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
+			'</tr>'+
+			'<tr>'+
+			'<td style="width: 60%; text-align: right;">CAT 3:</td>'+
+			'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
+			'<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
+			'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat3+'</td>'+
+			'<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
+			'</tr>'+
+		'</table>';
+		}
 		var tableChecklist = $('#tblChecklistListing').DataTable({
         "pageLength": 50, 
         "columns": [
@@ -272,40 +285,40 @@
 					{ "className": "tabco5", "width": "14%", "targets": 5 }
   			]
 			});
-      // Add event listener for opening and closing details
-			$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
-				var tr = $(this).closest('tr');
-				var row = tableChecklist.row( tr );
-		 
-				if ( row.child.isShown() ) {
-					// This row is already open - close it
-					row.child.hide();
-					tr.removeClass('shown');
-				}
-				else {
-					// Open this row
-					row.child( format(row.data()) ).show();
-					tr.addClass('shown');
-				}
-			} );
+    	// Add event listener for opening and closing details
+		$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
+		var tr = $(this).closest('tr');
+		var row = tableChecklist.row( tr );
+	
+		if ( row.child.isShown() ) {
+			// This row is already open - close it
+			row.child.hide();
+			tr.removeClass('shown');
+		}
+		else {
+			// Open this row
+			row.child( format(row.data()) ).show();
+			tr.addClass('shown');
+		}
+	} );
 
-			// function for setting up the System table
-			var tableChecklist = $('#tblSystemListing').DataTable({
-        "pageLength": 10, 
-        "columns": [
-          { 
-						"orderable":      false,
-						"data":           "systemLink"
-          },
-					{ "data": "system" },
-					{ "data": "checklistCount" }
-        ],
-			  "columnDefs": [
-					{ "width": "15%", "targets": 0 },
-					{ "width": "65%", "targets": 1 },
-					{ "width": "20%", "targets": 2 }
-  			]
-			});
+		// function for setting up the System table
+		var tableChecklist = $('#tblSystemListing').DataTable({
+		"pageLength": 10, 
+		"columns": [
+			{ 
+				"orderable":      false,
+				"data":           "systemLink"
+			},
+				{ "data": "system" },
+				{ "data": "checklistCount" }
+		],
+			"columnDefs": [
+				{ "width": "15%", "targets": 0 },
+				{ "width": "65%", "targets": 1 },
+				{ "width": "20%", "targets": 2 }
+			]
+		});
 	} );
 </script>
 <!-- END Java Script for this page -->

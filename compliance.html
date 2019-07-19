@@ -53,6 +53,9 @@
 
 <body class="adminbody">
 
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
+
 <div id="main">
 
 	<!-- top bar navigation -->
@@ -244,8 +247,18 @@
 <script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
-		// calls to get the compliance page setup
-		getChecklistSystemsForComplianceFilter();
+		// authentication first
+		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
+			if (authenticated) {
+				// calls to get the compliance page setup
+				getChecklistSystemsForComplianceFilter();
+			}
+			else {
+				alert('You are not logged in. Please check your setup with Keycloak.');
+			}
+		}).error(function() {
+			alert('failed to initialize');
+		});
 		$('#tblCompliance').DataTable({
 				"pageLength": 50, 
 			  "columnDefs": [
@@ -255,7 +268,7 @@
 					{ "width": "50%", "targets": 3 }
   			]
 			});
-		} );
+	});
 </script>
 <!-- END Java Script for this page -->
 

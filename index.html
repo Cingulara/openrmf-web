@@ -272,7 +272,6 @@
 	$(document).ready(function() {
 		// authentication first
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
-			alert(authenticated ? 'authenticated' : 'not authenticated');
 			if (authenticated) {
 				getChecklistTotalCount();
 				getChecklists(true);
@@ -281,6 +280,9 @@
 					delay: 10,
 					time: 600
 				});
+			}
+			else {
+				alert('You are not logged in. Please check your setup with Keycloak.');
 			}
 		}).error(function() {
 			alert('failed to initialize');
