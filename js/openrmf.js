@@ -60,6 +60,9 @@ async function getTemplates(latest) {
 						type : 'POST',
 						processData: false,
 						contentType: false,
+						beforeSend: function(request) {
+						  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+						},
 						success : function(data){
 							score = data;
 							if (score) {
@@ -107,6 +110,9 @@ async function getScoreForTemplateListing(xmlChecklist) {
 		url : scoreAPI,
 		data : formData,
 		type : 'POST',
+		beforeSend: function(request) {
+		  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+		},
 		processData: false,
 		contentType: false,
 		success : function(data){
@@ -259,7 +265,9 @@ async function getScoreForChecklistListing(id, template) {
 	if (template)
 		url = templateAPI;
   try {
-		let responseScore = await fetch(scoreAPI + "/artifact/" + id);
+		let responseScore = await fetch(scoreAPI + "/artifact/" + id, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
 		if (responseScore.ok) {
 			var dataScore = await responseScore.json()
 			return dataScore;
