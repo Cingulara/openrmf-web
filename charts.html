@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">		
 		
 		<title>OpenRMF Reports</title>
-		<meta name="description" content="OpenRMF tool Dashboard">
+		<meta name="description" content="OpenRMF Charts Dashboard">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
 		<!-- Favicon -->
@@ -114,7 +114,7 @@
 				<li class="submenu">
 					<a class="active" href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
-				<li class="submenu">
+				<li class="submenu" id="menuUpload" style="display: none;">
 					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
             </ul>
@@ -255,6 +255,8 @@
 			// authentication first
 			keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 				if (authenticated) {
+					// see if the upload menu should show
+					verifyUploadMenu();
 					getChecklistSystemsForReportFilter();
 					getChecklistTypeBreakdown();
 				}

@@ -1043,3 +1043,8 @@ function getRandomColor() {
 	color +=", 0.7)";
   return color;
 }
+function verifyUploadMenu() {
+	if (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator")) {
+    	$("#menuUpload").show();
+	}
+}

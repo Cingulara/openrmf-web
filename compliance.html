@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
 		<title>OpenRMF - Compliance Generator</title>
-		<meta name="description" content="OpenRMF tool Dashboard">
+		<meta name="description" content="OpenRMF Compliance Generator">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
 		<!-- Favicon -->
@@ -118,7 +118,7 @@
 				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
-				<li class="submenu">
+				<li class="submenu" id="menuUpload" style="display: none;">
 					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
             </ul>
@@ -250,16 +250,11 @@
 		// authentication first
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 			if (authenticated) {
+				// see if the upload menu should show
+				verifyUploadMenu();
 				// calls to get the compliance page setup
 				getChecklistSystemsForComplianceFilter();
-			}
-			else {
-				alert('You are not logged in. Please check your setup with Keycloak.');
-			}
-		}).error(function() {
-			alert('failed to initialize');
-		});
-		$('#tblCompliance').DataTable({
+        $('#tblCompliance').DataTable({
 				"pageLength": 50, 
 			  "columnDefs": [
 				  { "width": "2%", "targets": 0 },
@@ -268,6 +263,13 @@
 					{ "width": "50%", "targets": 3 }
   			]
 			});
+			}
+			else {
+				alert('You are not logged in. Please check your setup with Keycloak.');
+			}
+		}).error(function() {
+			alert('failed to initialize');
+		});
 	});
 </script>
 <!-- END Java Script for this page -->
