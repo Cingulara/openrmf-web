@@ -494,6 +494,9 @@ function updateSingleChecklist(id) {
 			url : url + "/" + id,
 			data : formData,
 			type : 'PUT',
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
 			processData: false,
 			contentType: false,
 			success : function(data){
@@ -720,6 +723,9 @@ async function deleteChecklist(id) {
 			$.ajax({
 					url : saveAPI + "/" + id,
 					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
 					success : function(data){
 						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success");
 						location.href = "checklists.html";
@@ -806,6 +812,9 @@ function uploadChecklist(){
 			type : 'POST',
 			processData: false,
 			contentType: false,
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
 			success : function(data){
 				swal("Your Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
@@ -829,6 +838,9 @@ function uploadTemplate(){
 			url : templateAPI,
 			data : formData,
 			type : 'POST',
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
 			processData: false,
 			contentType: false,
 			success : function(data){
