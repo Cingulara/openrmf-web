@@ -21,7 +21,9 @@ async function getChecklistTotalCount() {
 async function getTemplates(latest) {
 	$.blockUI({ message: "Updating the checklist listing..." }); 
 	var url = templateAPI;	
-	let response = await fetch(url);
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
 			var data = await response.json()
@@ -939,7 +941,9 @@ async function getComplianceBySystem() {
 		// is the PII checked? This is returned as an array even if just one
 		var pii = $('#checklistPrivacyFilter')[0].checked;
 		var url = complianceAPI + "/system/" + encodeURIComponent(system) + "/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
-		let response = await fetch(url);
+		let response = await fetch(url, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
 		if (response.ok) {
 			var data = await response.json()
 			if (data.result.length > 0) {
@@ -995,7 +999,9 @@ async function getVulnerabilitiesByControl(id, control) {
 }
 
 async function getControlInformation(control) {
-	let response = await fetch(controlAPI + "/" + encodeURIComponent(control));
+	let response = await fetch(controlAPI + "/" + encodeURIComponent(control), {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	if (response.ok) {
 			var data = await response.json();
 			return data;
