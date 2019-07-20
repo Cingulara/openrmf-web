@@ -165,7 +165,8 @@
 								<div id="checklistType"></div>
 								<div id="checklistDescription"></div>
 								<div class="small" id="checklistLastUpdated"></div><br />
-								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), true);" 
+								<button type="button" id="btnDownloadTemplate" style="display: none;" 
+									onclick="downloadChecklistFile(getParameterByName('id'), true);" 
 									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
@@ -304,6 +305,8 @@
 			if (authenticated) {
 				// see if the upload menu should show
 				verifyUploadMenu();
+				// see if they can download
+				verifyDownloadTemplate();
 				// calls to get the checklist data from the API
 				getChecklistData(getParameterByName('id'), true);
 			}

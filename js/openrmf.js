@@ -1066,6 +1066,11 @@ function verifyDownloadSingleChecklist() {
 		$("#btnDownloadBarChart").show();
 	}
 }
+function verifyDownloadTemplate() {
+	if (canDownload()){
+		$("#btnDownloadTemplate").show();
+	}
+}
 function verifyDeleteChecklist() {
 	if (canDelete()) {
 		$("#btnDeleteChecklist").show();
