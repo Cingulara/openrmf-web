@@ -142,7 +142,7 @@
 						<div class="card mb-3">
 							<div class="card-header">
 								<h3 id="checklistTitle" class="float-left"></h3>
-								<a href="#custom-modal" class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
+								<a href="#custom-modal"  id="btnUpdateChecklist" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
 									data-target="#customModal" data-toggle="modal">Update Checklist Data</a>
 							</div>								
 							<div class="card-body">
@@ -188,11 +188,11 @@
                 </tbody>
 								</table>
 								<div class="small" id="checklistLastUpdated"></div><br />
-								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
+								<button type="button" id="btnDownloadChecklist" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
 									class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
-								<button type="button" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
+								<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
 									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export to Excel</button>
-								<button type="button" onclick="deleteChecklist(getParameterByName('id'), false);" 
+								<button type="button" id="btnDeleteChecklist" style="display: none;" onclick="deleteChecklist(getParameterByName('id'), false);" 
 									class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete Checklist</button>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
@@ -311,7 +311,7 @@
 								<canvas id="chartSeverity"></canvas>
 							</div>
 							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('chartSeverity');" style="width: 200px;"
+							<button type="button" id="btnDownloadChartSeverity" style="display: none;" onclick="downloadChart('chartSeverity');" style="width: 200px;"
 								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>
@@ -326,7 +326,7 @@
 								<canvas id="chartCategory"></canvas>
 							</div>
 							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('chartCategory');" style="width: 200px;"
+							<button type="button" id="btnDownloadChartCategory" style="display: none;" onclick="downloadChart('chartCategory');" style="width: 200px;"
 								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>							
@@ -342,7 +342,7 @@
 								<canvas id="barChart"></canvas>
 							</div>							
 							<div id="barChartUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('barChart');" style="width: 200px;"
+							<button type="button" id="btnDownloadBarChart" style="display: none;"  onclick="downloadChart('barChart');" style="width: 200px;"
 								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 						</div><!-- end card-->					
 					</div>
@@ -397,6 +397,12 @@
 			if (authenticated) {
 				// see if the upload menu should show
 				verifyUploadMenu();
+				// check if they can download
+				verifyDownloadSingleChecklist();
+				// check if they can delete a checklist
+				verifyDeleteChecklist();
+				// check if they can update the checklist
+				verifyUpdateChecklist();
 				// calls to get the checklist data from the API
 				getChecklistData(getParameterByName('id'), false);
 				getChecklistScore(getParameterByName('id'));

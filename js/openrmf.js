@@ -1044,7 +1044,35 @@ function getRandomColor() {
   return color;
 }
 function verifyUploadMenu() {
-	if (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator")) {
+	if (canUpload()) {
     	$("#menuUpload").show();
+	}
+}
+function canDownload() {
+	return (keycloak.hasRealmRole("Download") || keycloak.hasRealmRole("Administrator"));
+}
+function canUpload() {
+	return (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator"));
+}
+function canDelete() {
+	return (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator"));
+}
+function verifyDownloadSingleChecklist() {
+	if (canDownload()) {
+		$("#btnDownloadChecklist").show();
+		$("#btnExportChecklist").show();
+		$("#btnDownloadChartSeverity").show();
+		$("#btnDownloadChartCategory").show();
+		$("#btnDownloadBarChart").show();
+	}
+}
+function verifyDeleteChecklist() {
+	if (canDelete()) {
+		$("#btnDeleteChecklist").show();
+	}
+}
+function verifyUpdateChecklist() {
+	if (canUpload()) {
+		$("#btnUpdateChecklist").show();
 	}
 }
