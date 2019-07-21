@@ -1043,6 +1043,9 @@ function getRandomColor() {
 	color +=", 0.7)";
   return color;
 }
+/************************************ 
+ Permission and User Login Functions
+************************************/
 function verifyUploadMenu() {
 	if (canUpload()) {
     	$("#menuUpload").show();
@@ -1080,4 +1083,13 @@ function verifyUpdateChecklist() {
 	if (canUpload()) {
 		$("#btnUpdateChecklist").show();
 	}
+}
+function setupProfileMenu()
+{
+	// use the person's first name
+	$("#profileUserName").text(keycloak.tokenParsed.given_name);
+	$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
+	var logoutURL = keycloak.endpoints.logout();
+	logoutURL += "?redirect_uri="+encodeURIComponent(location.protocol + "//" + location.host + "/logout.html");
+	$("#profileLogoutURL").attr("href", logoutURL);
 }

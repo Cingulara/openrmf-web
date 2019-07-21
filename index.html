@@ -89,6 +89,31 @@
 						</a>
 					</div>
 				</li>
+				<li class="list-inline-item dropdown notif">
+					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" 
+						href="#" role="button" aria-haspopup="false" aria-expanded="false">
+						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
+						class="avatar-rounded">
+					</a>
+					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+						<!-- item-->
+						<div class="dropdown-item noti-title">
+							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+						</div>
+
+						<!-- item-->
+						<a id="profileAccountURL" href="" class="dropdown-item notify-item">
+							<i class="fa fa-user"></i> <span>Profile</span>
+						</a>
+
+						<!-- item-->
+            <a id="profileLogoutURL" 
+              href="" 
+							class="dropdown-item notify-item">
+							<i class="fa fa-power-off"></i> <span>Logout</span>
+						</a>
+					</div>
+				</li>
 			</ul>
 
 			<ul class="list-inline menu-left mb-0">
@@ -273,6 +298,8 @@
 		// authentication first
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 			if (authenticated) {
+        // setup the profile account and logout menu
+        setupProfileMenu();
 				// see if the upload menu should show
 				verifyUploadMenu();
 				getChecklistTotalCount();
