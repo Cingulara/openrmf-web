@@ -301,7 +301,32 @@ async function exportChecklistListingXLSX() {
 	if ($("#txtSystemName").val()){
 		systemFilter = $("#txtSystemName").val();
 	}
-	location.href = readAPI + "/export?system=" + encodeURIComponent(systemFilter);
+	var url = readAPI + "/export?system=" + encodeURIComponent(systemFilter);
+
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';
+	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#txtSystemName").val()) + "-listing.xlsx";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+				}
+			}
+		};
+		request.send();
 }
 /*************************************
  * Single Checklist Data functions
@@ -722,7 +747,6 @@ async function exportChecklistXLSX(id) {
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('POST', url, true);
-	//request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
 	request.responseType = 'blob';
 	
