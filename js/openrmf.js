@@ -705,9 +705,10 @@ async function exportChecklistXLSX(id) {
 	// redirect to the API and it downloads the XLSX file
 	// pass in bool nf, bool open, bool na, bool nr to see if the filters are checked or
 	var url = readAPI + "/export/" + id + "/";
-  if (getParameterByName('ctrl')) {
+
+	// get the proper URL to parse and get back the XLSX file
+    if (getParameterByName('ctrl')) { // this is from the Compliance Report so export with the linked VULNs
 		url += "?ctrl=" + getParameterByName('ctrl');
-		location.href = url;
 	}
 	else { // this is opening a regular checklist, use the VULN filter
 		var bOpen = $('#chkVulnOpen').prop('checked');
@@ -716,9 +717,35 @@ async function exportChecklistXLSX(id) {
 		var bNR   = $('#chkVulnNR').prop('checked');
 		// based on the checks above, generate the URL and launch
 		url += "?nf=" + bNaF.toString() + "&open=" + bOpen.toString() + "&na=" + bNA.toString() + "&nr=" + bNR.toString();
-		location.href = url;
 	}
+
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('POST', url, true);
+	//request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';
+	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#checklistTitle").text()) + ".xlsx";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+				}
+			}
+		};
+		request.send();
 }
+
 async function deleteChecklist(id) {
 	if (id && id.length > 10) {
 		if (confirm ("Are you sure you wish to delete this checklist?")) {
