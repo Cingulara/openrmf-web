@@ -301,8 +301,8 @@ async function exportChecklistListingXLSX() {
 	if ($("#txtSystemName").val()){
 		systemFilter = $("#txtSystemName").val();
 	}
+	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait" }); 
 	var url = readAPI + "/export?system=" + encodeURIComponent(systemFilter);
-
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -323,10 +323,11 @@ async function exportChecklistListingXLSX() {
 				document.body.appendChild(downloadLink);
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
-				}
 			}
-		};
-		request.send();
+		}
+	};
+	request.send();
+	$.unblockUI();
 }
 /*************************************
  * Single Checklist Data functions
