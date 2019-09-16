@@ -7,7 +7,7 @@
 
 // if this is the dev-stack.yml
 if (window.location.port == 9080) { 
-    var root = 'http://localhost'
+    var root = 'http://' + document.location.hostname
     var readAPI = root + ':9084'
     var scoreAPI = root + ':9090'
     var saveAPI = root + ':9082'
@@ -18,7 +18,7 @@ if (window.location.port == 9080) {
 } 
 // if this is the stack.yml, web, k8s, or other configuration use the real one
 else { 
-    var root = 'http://192.168.11.39'
+    var root = 'http://' + document.location.hostname
     var readAPI = root + ':8084'
     var scoreAPI = root + ':8090'
     var saveAPI = root + ':8082'
