@@ -489,14 +489,14 @@ function viewVulnDetails(vulnId) {
 		ccilist = ccilist.substring(0, ccilist.length -2);
 		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
 		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
-		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
-		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
-		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + data.stiG_DATA[6].attributE_DATA);
-		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA);
-		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA);
+		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + (data.stiG_DATA[21].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + (data.stiG_DATA[1].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + (data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA.replace(/\n/g, "<br />"));
+		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA.replace(/\n/g, "<br />"));
 		$("#vulnReferences").html();
-		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + data.findinG_DETAILS);
-		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + data.comments);
+		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
+		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
 	}
 }
 
