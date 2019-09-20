@@ -438,7 +438,7 @@
 				alert('You are not logged in. Please check your setup with Keycloak.');
 			}
 		}).error(function() {
-			alert('failed to initialize');
+			alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
 		});
 	}); // document ready
 </script>
