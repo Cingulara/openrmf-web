@@ -3,7 +3,9 @@
  ************************************/
 // fill in the # of total checklists in the system on the dashboard page top right
 async function getChecklistTotalCount() {
-	let response = await fetch(readAPI + "/count");
+	let response = await fetch(readAPI + "/count", {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	if (response.ok) {
 			var data = await response.json()
 			$("#numberChecklistsTotal").html(data);
@@ -19,7 +21,9 @@ async function getChecklistTotalCount() {
 async function getTemplates(latest) {
 	$.blockUI({ message: "Updating the checklist listing..." }); 
 	var url = templateAPI;	
-	let response = await fetch(url);
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
 			var data = await response.json()
@@ -58,6 +62,9 @@ async function getTemplates(latest) {
 						type : 'POST',
 						processData: false,
 						contentType: false,
+						beforeSend: function(request) {
+						  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+						},
 						success : function(data){
 							score = data;
 							if (score) {
@@ -105,6 +112,9 @@ async function getScoreForTemplateListing(xmlChecklist) {
 		url : scoreAPI,
 		data : formData,
 		type : 'POST',
+		beforeSend: function(request) {
+		  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+		},
 		processData: false,
 		contentType: false,
 		success : function(data){
@@ -127,7 +137,9 @@ async function getChecklistSystemListing(){
 
 	// reset the list of systems
   sessionStorage.removeItem("checklistSystems");
-	let response = await fetch(url);
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
 			var data = await response.json()
@@ -182,7 +194,9 @@ async function getChecklists(latest, system) {
 
 	// reset the list of systems
   sessionStorage.removeItem("checklistSystems");
-	let response = await fetch(url);
+  let response = await fetch(url, {headers: {
+      'Authorization': 'Bearer ' + keycloak.token
+  }});
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
 		var data = await response.json()
@@ -253,7 +267,9 @@ async function getScoreForChecklistListing(id, template) {
 	if (template)
 		url = templateAPI;
   try {
-		let responseScore = await fetch(scoreAPI + "/artifact/" + id);
+		let responseScore = await fetch(scoreAPI + "/artifact/" + id, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
 		if (responseScore.ok) {
 			var dataScore = await responseScore.json()
 			return dataScore;
@@ -285,7 +301,33 @@ async function exportChecklistListingXLSX() {
 	if ($("#txtSystemName").val()){
 		systemFilter = $("#txtSystemName").val();
 	}
-	location.href = readAPI + "/export?system=" + encodeURIComponent(systemFilter);
+	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait" }); 
+	var url = readAPI + "/export?system=" + encodeURIComponent(systemFilter);
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';
+	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#txtSystemName").val()) + "-listing.xlsx";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		}
+	};
+	request.send();
+	$.unblockUI();
 }
 /*************************************
  * Single Checklist Data functions
@@ -295,7 +337,9 @@ async function getChecklistData(id, template) {
 	var url = readAPI;
 	if (template)
 		url = templateAPI;
-  let response = await fetch(url + "/" + id);
+  let response = await fetch(url + "/" + id, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
   if (response.ok) {
 			var data = await response.json();
 			var title = data.title;
@@ -445,14 +489,14 @@ function viewVulnDetails(vulnId) {
 		ccilist = ccilist.substring(0, ccilist.length -2);
 		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
 		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
-		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + data.stiG_DATA[21].attributE_DATA);
-		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + data.stiG_DATA[1].attributE_DATA);
-		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + data.stiG_DATA[6].attributE_DATA);
-		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA);
-		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA);
+		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + (data.stiG_DATA[21].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + (data.stiG_DATA[1].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + (data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA.replace(/\n/g, "<br />"));
+		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA.replace(/\n/g, "<br />"));
 		$("#vulnReferences").html();
-		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + data.findinG_DETAILS);
-		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + data.comments);
+		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
+		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
 	}
 }
 
@@ -478,6 +522,9 @@ function updateSingleChecklist(id) {
 			url : url + "/" + id,
 			data : formData,
 			type : 'PUT',
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
 			processData: false,
 			contentType: false,
 			success : function(data){
@@ -664,7 +711,9 @@ async function downloadChecklistFile(id, template){
 	if (template)
 		url = templateAPI;
 
-	let response = await fetch(url + "/download/" + id);
+	let response = await fetch(url + "/download/" + id, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	if (response.ok) {
 		var data = await response.text();
 		var element = document.createElement('a');
@@ -682,9 +731,10 @@ async function exportChecklistXLSX(id) {
 	// redirect to the API and it downloads the XLSX file
 	// pass in bool nf, bool open, bool na, bool nr to see if the filters are checked or
 	var url = readAPI + "/export/" + id + "/";
-  if (getParameterByName('ctrl')) {
+
+	// get the proper URL to parse and get back the XLSX file
+    if (getParameterByName('ctrl')) { // this is from the Compliance Report so export with the linked VULNs
 		url += "?ctrl=" + getParameterByName('ctrl');
-		location.href = url;
 	}
 	else { // this is opening a regular checklist, use the VULN filter
 		var bOpen = $('#chkVulnOpen').prop('checked');
@@ -693,15 +743,43 @@ async function exportChecklistXLSX(id) {
 		var bNR   = $('#chkVulnNR').prop('checked');
 		// based on the checks above, generate the URL and launch
 		url += "?nf=" + bNaF.toString() + "&open=" + bOpen.toString() + "&na=" + bNA.toString() + "&nr=" + bNR.toString();
-		location.href = url;
 	}
+
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('POST', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';
+	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#checklistTitle").text()) + ".xlsx";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+				}
+			}
+		};
+		request.send();
 }
+
 async function deleteChecklist(id) {
 	if (id && id.length > 10) {
 		if (confirm ("Are you sure you wish to delete this checklist?")) {
 			$.ajax({
 					url : saveAPI + "/" + id,
 					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
 					success : function(data){
 						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success");
 						location.href = "checklists.html";
@@ -723,7 +801,9 @@ async function getChecklistSystems() {
 	if (data) 
 		return data;
 	else {
-		let response = await fetch(readAPI + "/systems");
+		let response = await fetch(readAPI + "/systems", {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
 		if (response.ok) {
 				var data = await response.json();
 				sessionStorage.setItem("checklistSystems", JSON.stringify(data));
@@ -786,6 +866,9 @@ function uploadChecklist(){
 			type : 'POST',
 			processData: false,
 			contentType: false,
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
 			success : function(data){
 				swal("Your Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
@@ -809,6 +892,9 @@ function uploadTemplate(){
 			url : templateAPI,
 			data : formData,
 			type : 'POST',
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
 			processData: false,
 			contentType: false,
 			success : function(data){
@@ -828,7 +914,9 @@ async function getChecklistTypeBreakdown(system) {
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0 && system != "All")
 		url += "?system=" + encodeURIComponent(system);
-  let response = await fetch(url);
+  let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
   if (response.ok) {
 			var data = await response.json()
 			var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
@@ -905,7 +993,9 @@ async function getComplianceBySystem() {
 		// is the PII checked? This is returned as an array even if just one
 		var pii = $('#checklistPrivacyFilter')[0].checked;
 		var url = complianceAPI + "/system/" + encodeURIComponent(system) + "/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
-		let response = await fetch(url);
+		let response = await fetch(url, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
 		if (response.ok) {
 			var data = await response.json()
 			if (data.result.length > 0) {
@@ -947,7 +1037,9 @@ async function getComplianceBySystem() {
 }
 
 async function getVulnerabilitiesByControl(id, control) {
-	let response = await fetch(readAPI + "/" + id + "/control/" + encodeURIComponent(control));
+	let response = await fetch(readAPI + "/" + id + "/control/" + encodeURIComponent(control), {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	if (response.ok) {
 			var data = await response.json();
 			return data;
@@ -959,7 +1051,9 @@ async function getVulnerabilitiesByControl(id, control) {
 }
 
 async function getControlInformation(control) {
-	let response = await fetch(controlAPI + "/" + encodeURIComponent(control));
+	let response = await fetch(controlAPI + "/" + encodeURIComponent(control), {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
 	if (response.ok) {
 			var data = await response.json();
 			return data;
@@ -1000,4 +1094,65 @@ function getRandomColor() {
   color += (Math.floor(Math.random() * (255 - 0 + 1)) + 0).toString();
 	color +=", 0.7)";
   return color;
+}
+/************************************ 
+ Permission and User Login Functions
+************************************/
+function verifyUploadMenu() {
+	if (canUpload()) {
+    	$("#menuUpload").show();
+	}
+}
+function canDownload() {
+	return (keycloak.hasRealmRole("Download") || keycloak.hasRealmRole("Administrator"));
+}
+function canUpload() {
+	return (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator"));
+}
+function canDelete() {
+	return (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator"));
+}
+function verifyDownloadSingleChecklist() {
+	if (canDownload()) {
+		$("#btnDownloadChecklist").show();
+		$("#btnExportChecklist").show();
+		$("#btnDownloadChartSeverity").show();
+		$("#btnDownloadChartCategory").show();
+		$("#btnDownloadBarChart").show();
+	}
+}
+function verifyDownloadTemplate() {
+	if (canDownload()){
+		$("#btnDownloadTemplate").show();
+	}
+}
+function verifyDeleteChecklist() {
+	if (canDelete()) {
+		$("#btnDeleteChecklist").show();
+	}
+}
+function verifyUpdateChecklist() {
+	if (canUpload()) {
+		$("#btnUpdateChecklist").show();
+	}
+}
+function setupProfileMenu()
+{
+	// use the person's first name
+	$("#profileUserName").text(keycloak.tokenParsed.given_name);
+	$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
+	var logoutURL = keycloak.endpoints.logout();
+	var path = "";
+
+	// if there is a subfolder in the path not just the root in this get it
+	var locations = window.location.pathname.split('/');
+	// add all slash subfolders in the URL until the last one which is the filename
+	// if the first one is "" empty it does no harm
+	for (var i = 0; i < locations.length-1; i++) {
+		if (locations[i].length > 0)
+			path = path + "/" + locations[i];
+	}
+
+	logoutURL += "?redirect_uri="+encodeURIComponent(location.protocol + "//" + location.host + path + "/logout.html");
+	$("#profileLogoutURL").attr("href", logoutURL);
 }

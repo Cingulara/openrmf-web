@@ -532,7 +532,7 @@ If the configuration setting is not set to time out admin user sessions after 10
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-002361</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>NotAFinding</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
@@ -1958,7 +1958,7 @@ If the design document does not exist, or does not indicate all WS-Security toke
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000068</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>Not_Applicable</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
@@ -3876,7 +3876,7 @@ If system administrators and ISSOs are not notified when accounts are disabled, 
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-001685</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>Not_Applicable</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>
@@ -4622,7 +4622,7 @@ If the enforcement of configured access restrictions is not performed, this is a
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000213</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
+				<STATUS>Not_Applicable</STATUS>
 				<FINDING_DETAILS></FINDING_DETAILS>
 				<COMMENTS></COMMENTS>
 				<SEVERITY_OVERRIDE></SEVERITY_OVERRIDE>

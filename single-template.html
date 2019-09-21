@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
 		<title>OpenRMF - Template Record</title>
-		<meta name="description" content="OpenRMF tool Dashboard">
+		<meta name="description" content="OpenRMF Template">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
 		<!-- Favicon -->
@@ -45,6 +45,9 @@
 
 <body class="adminbody">
 
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
+
 <div id="main">
 
 	<!-- top bar navigation -->
@@ -73,6 +76,31 @@
 								<b>Do you need documentation on how OpenRMF works?</b>
 								<span>GitHub Readme</span>
 							</p>
+						</a>
+					</div>
+				</li>
+				<li class="list-inline-item dropdown notif">
+					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" 
+						href="#" role="button" aria-haspopup="false" aria-expanded="false">
+						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
+						class="avatar-rounded">
+					</a>
+					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+						<!-- item-->
+						<div class="dropdown-item noti-title">
+							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+						</div>
+
+						<!-- item-->
+						<a id="profileAccountURL" href="" class="dropdown-item notify-item">
+							<i class="fa fa-user"></i> <span>Profile</span>
+						</a>
+
+						<!-- item-->
+            <a id="profileLogoutURL" 
+              href="" 
+							class="dropdown-item notify-item">
+							<i class="fa fa-power-off"></i> <span>Logout</span>
 						</a>
 					</div>
 				</li>
@@ -107,7 +135,7 @@
 				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
-				<li class="submenu">
+				<li class="submenu" id="menuUpload" style="display: none;">
 					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
             </ul>
@@ -162,7 +190,8 @@
 								<div id="checklistType"></div>
 								<div id="checklistDescription"></div>
 								<div class="small" id="checklistLastUpdated"></div><br />
-								<button type="button" onclick="downloadChecklistFile(getParameterByName('id'), true);" 
+								<button type="button" id="btnDownloadTemplate" style="display: none;" 
+									onclick="downloadChecklistFile(getParameterByName('id'), true);" 
 									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
@@ -296,8 +325,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
 	$(document).ready(function() {
-		// calls to get the checklist data from the API
-		getChecklistData(getParameterByName('id'), true);
+		// authentication first
+		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
+			if (authenticated) {
+				// setup the profile account and logout menu
+				setupProfileMenu();
+				// see if the upload menu should show
+				verifyUploadMenu();
+				// see if they can download
+				verifyDownloadTemplate();
+				// calls to get the checklist data from the API
+				getChecklistData(getParameterByName('id'), true);
+			}
+			else {
+				alert('You are not logged in. Please check your setup with Keycloak.');
+			}
+		}).error(function() {
+			alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+		});
 	});
 </script>
 <!-- END Java Script for this page -->
