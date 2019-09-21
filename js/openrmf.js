@@ -1149,7 +1149,8 @@ function setupProfileMenu()
 	// add all slash subfolders in the URL until the last one which is the filename
 	// if the first one is "" empty it does no harm
 	for (var i = 0; i < locations.length-1; i++) {
-		path = path + "/" + locations[i];
+		if (locations[i].length > 0)
+			path = path + "/" + locations[i];
 	}
 
 	logoutURL += "?redirect_uri="+encodeURIComponent(location.protocol + "//" + location.host + path + "/logout.html");
