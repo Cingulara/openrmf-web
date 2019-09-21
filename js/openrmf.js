@@ -1142,6 +1142,16 @@ function setupProfileMenu()
 	$("#profileUserName").text(keycloak.tokenParsed.given_name);
 	$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
 	var logoutURL = keycloak.endpoints.logout();
-	logoutURL += "?redirect_uri="+encodeURIComponent(location.protocol + "//" + location.host + "/logout.html");
+	var path = "";
+
+	// if there is a subfolder in the path not just the root in this get it
+	var locations = window.location.pathname.split('/');
+	// add all slash subfolders in the URL until the last one which is the filename
+	// if the first one is "" empty it does no harm
+	for (var i = 0; i < locations.length-1; i++) {
+		path = path + "/" + locations[i];
+	}
+
+	logoutURL += "?redirect_uri="+encodeURIComponent(location.protocol + "//" + location.host + path + "/logout.html");
 	$("#profileLogoutURL").attr("href", logoutURL);
 }
