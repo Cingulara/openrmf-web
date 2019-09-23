@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
 		<title>OpenRMF - Template Listing</title>
-		<meta name="description" content="OpenRMF tool Dashboard">
+		<meta name="description" content="OpenRMF Template Dashboard">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
 		<!-- Favicon -->
@@ -53,7 +53,8 @@
 </head>
 
 <body class="adminbody">
-
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
 <div id="main">
 
 	<!-- top bar navigation -->
@@ -82,6 +83,31 @@
 								<b>Do you need documentation on how OpenRMF works?</b>
 								<span>GitHub Readme</span>
 							</p>
+						</a>
+					</div>
+				</li>
+				<li class="list-inline-item dropdown notif">
+					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" 
+						href="#" role="button" aria-haspopup="false" aria-expanded="false">
+						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
+						class="avatar-rounded">
+					</a>
+					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+						<!-- item-->
+						<div class="dropdown-item noti-title">
+							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+						</div>
+
+						<!-- item-->
+						<a id="profileAccountURL" href="" class="dropdown-item notify-item">
+							<i class="fa fa-user"></i> <span>Profile</span>
+						</a>
+
+						<!-- item-->
+            <a id="profileLogoutURL" 
+              href="" 
+							class="dropdown-item notify-item">
+							<i class="fa fa-power-off"></i> <span>Logout</span>
 						</a>
 					</div>
 				</li>
@@ -117,7 +143,7 @@
 				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
-				<li class="submenu">
+				<li class="submenu" id="menuUpload" style="display: none;">
 					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
             </ul>
@@ -209,74 +235,87 @@
 <script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
-		// calls to get the checklist data from the API
-		getTemplates(false);
-		// START CODE FOR Child rows (show extra / detailed information) DATA TABLE 
-		function format ( d ) {
-			// `d` is the original data object for the row
-			return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
-				'<tr>'+
-				'<td style="width: 60%; text-align: right;">CAT 1:</td>'+
-				'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
-				'<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
-				'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
-				'<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
-				'</tr>'+
-				'<tr>'+
-				'<td style="width: 60%; text-align: right;">CAT 2:</td>'+
-				'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
-				'<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
-				'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat2+'</td>'+
-				'<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
-				'</tr>'+
-				'<tr>'+
-				'<td style="width: 60%; text-align: right;">CAT 3:</td>'+
-				'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
-				'<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
-				'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat3+'</td>'+
-				'<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
-				'</tr>'+
-			'</table>';
-		}
-		var tableChecklist = $('#tblChecklistListing').DataTable({
-			"pageLength": 50, 
-			"columns": [
-				{ 
-					"className":      'details-control',
-					"orderable":      false,
-					"data":           null,
-					"defaultContent": ''
-				},
-				{ "data": "title" },
-				{ "data": "totalNaF" },
-				{ "data": "totalNA" },
-				{ "data": "totalOpen" },
-				{ "data": "totalNR" }
-			],
-			"columnDefs": [
-				{ "width": "40%", "targets": 1 },
-				{ "className": "tabco2", "width": "14%", "targets": 2 },
-				{ "className": "tabco3", "width": "14%", "targets": 3 },
-				{ "className": "tabco4", "width": "14%", "targets": 4 },
-				{ "className": "tabco5", "width": "14%", "targets": 5 }
-			]
-		});
-        // Add event listener for opening and closing details
-		$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
-			var tr = $(this).closest('tr');
-			var row = tableChecklist.row( tr );
-		
-			if ( row.child.isShown() ) {
-				// This row is already open - close it
-				row.child.hide();
-				tr.removeClass('shown');
+		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
+			if (authenticated) {
+				// setup the profile account and logout menu
+				setupProfileMenu();
+				// see if the upload menu should show
+				verifyUploadMenu();
+				// calls to get the checklist data from the API
+				getTemplates(false);
+				// START CODE FOR Child rows (show extra / detailed information) DATA TABLE 
+				function format ( d ) {
+					// `d` is the original data object for the row
+					return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
+						'<tr>'+
+						'<td style="width: 60%; text-align: right;">CAT 1:</td>'+
+						'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
+						'<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
+						'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
+						'<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
+						'</tr>'+
+						'<tr>'+
+						'<td style="width: 60%; text-align: right;">CAT 2:</td>'+
+						'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
+						'<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
+						'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat2+'</td>'+
+						'<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
+						'</tr>'+
+						'<tr>'+
+						'<td style="width: 60%; text-align: right;">CAT 3:</td>'+
+						'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
+						'<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
+						'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat3+'</td>'+
+						'<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
+						'</tr>'+
+					'</table>';
+				}
+				var tableChecklist = $('#tblChecklistListing').DataTable({
+					"pageLength": 50, 
+					"columns": [
+						{ 
+							"className":      'details-control',
+							"orderable":      false,
+							"data":           null,
+							"defaultContent": ''
+						},
+						{ "data": "title" },
+						{ "data": "totalNaF" },
+						{ "data": "totalNA" },
+						{ "data": "totalOpen" },
+						{ "data": "totalNR" }
+					],
+					"columnDefs": [
+						{ "width": "40%", "targets": 1 },
+						{ "className": "tabco2", "width": "14%", "targets": 2 },
+						{ "className": "tabco3", "width": "14%", "targets": 3 },
+						{ "className": "tabco4", "width": "14%", "targets": 4 },
+						{ "className": "tabco5", "width": "14%", "targets": 5 }
+					]
+				});
+				// Add event listener for opening and closing details
+				$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
+					var tr = $(this).closest('tr');
+					var row = tableChecklist.row( tr );
+				
+					if ( row.child.isShown() ) {
+						// This row is already open - close it
+						row.child.hide();
+						tr.removeClass('shown');
+					}
+					else {
+						// Open this row
+						row.child( format(row.data()) ).show();
+						tr.addClass('shown');
+					}
+				} );
 			}
 			else {
-				// Open this row
-				row.child( format(row.data()) ).show();
-				tr.addClass('shown');
+				alert('You are not logged in. Please check your setup with Keycloak.');
 			}
-		} );
+		}).error(function() {
+			alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+		});
 	} );
 </script>
 <!-- END Java Script for this page -->

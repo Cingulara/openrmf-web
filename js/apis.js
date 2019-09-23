@@ -7,21 +7,23 @@
 
 // if this is the dev-stack.yml
 if (window.location.port == 9080) { 
-    var readAPI = 'http://localhost:9084'
-    var scoreAPI = 'http://localhost:9090'
-    var saveAPI = 'http://localhost:9082'
-    var uploadAPI = 'http://localhost:9086'
-    var templateAPI = 'http://localhost:9088'
-    var complianceAPI = 'http://localhost:9092'
-    var controlAPI = 'http://localhost:9094'
+    var root = 'http://' + document.location.hostname
+    var readAPI = root + ':9084'
+    var scoreAPI = root + ':9090'
+    var saveAPI = root + ':9082'
+    var uploadAPI = root + ':9086'
+    var templateAPI = root + ':9088'
+    var complianceAPI = root + ':9092'
+    var controlAPI = root + ':9094'
 } 
 // if this is the stack.yml, web, k8s, or other configuration use the real one
 else { 
-    var readAPI = 'http://localhost:8084'
-    var scoreAPI = 'http://localhost:8090'
-    var saveAPI = 'http://localhost:8082'
-    var uploadAPI = 'http://localhost:8086'
-    var templateAPI = 'http://localhost:8088'
-    var complianceAPI = 'http://localhost:8092'
-    var controlAPI = 'http://localhost:8094'
+    var root = 'http://' + document.location.hostname
+    var readAPI = root + ':8084'
+    var scoreAPI = root + ':8090'
+    var saveAPI = root + ':8082'
+    var uploadAPI = root + ':8086'
+    var templateAPI = root + ':8088'
+    var complianceAPI = root + ':8092'
+    var controlAPI = root + ':8094'
 }

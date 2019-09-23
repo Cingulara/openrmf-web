@@ -10,20 +10,20 @@
 
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="assets/images/favicon.ico">
-		<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
-		<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
-		<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
-		<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
-		<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
-		<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
-		<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
-		<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
-		<link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicons/android-icon-192x192.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
-		<link rel="manifest" href="/assets/favicons/manifest.json">
+		<link rel="apple-touch-icon" sizes="57x57" href="assets/favicons/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="assets/favicons/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="assets/favicons/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="assets/favicons/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="assets/favicons/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="assets/favicons/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="assets/favicons/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="assets/favicons/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="assets/favicons/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="assets/favicons/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+		<link rel="manifest" href="assets/favicons/manifest.json">
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
@@ -59,7 +59,8 @@
 <body class="adminbody">
 
 <div id="main">
-
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
 	<!-- top bar navigation -->
 	<div class="headerbar">
 
@@ -89,17 +90,40 @@
 						</a>
 					</div>
 				</li>
+				<li class="list-inline-item dropdown notif">
+					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" 
+						href="#" role="button" aria-haspopup="false" aria-expanded="false">
+						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
+						class="avatar-rounded">
+					</a>
+					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+						<!-- item-->
+						<div class="dropdown-item noti-title">
+							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+						</div>
+
+						<!-- item-->
+						<a id="profileAccountURL" href="" class="dropdown-item notify-item">
+							<i class="fa fa-user"></i> <span>Profile</span>
+						</a>
+
+						<!-- item-->
+            <a id="profileLogoutURL" 
+              href="" 
+							class="dropdown-item notify-item">
+							<i class="fa fa-power-off"></i> <span>Logout</span>
+						</a>
+					</div>
+				</li>
 			</ul>            
-            <ul class="list-inline menu-left mb-0">
-                <li class="float-left">
-                    <button class="button-menu-mobile open-left">
-                        <i class="fa fa-fw fa-bars"></i>
-                    </button>
-                </li>                        
-            </ul>
-
-        </nav>
-
+      <ul class="list-inline menu-left mb-0">
+          <li class="float-left">
+              <button class="button-menu-mobile open-left">
+                  <i class="fa fa-fw fa-bars"></i>
+              </button>
+          </li>                        
+      </ul>
+    </nav>
 	</div>
 	<!-- End Navigation -->
 
@@ -123,7 +147,7 @@
 				<li class="submenu">
 					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
-				<li class="submenu">
+				<li class="submenu" id="menuUpload" style="display: none;">
 					<a class="active" href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
             </ul>
@@ -137,71 +161,70 @@
     <div class="content-page">
 	
 		<!-- Start content -->
-        <div class="content">
+    <div class="content" id="content" style="display: none;">
 			<div class="container-fluid">
-			<div class="row">
-                <div class="col-xl-12">
-                    <div class="breadcrumb-holder">
-                        <h1 class="main-title float-left">Checklist file upload</h1>
-                        <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item">Home</li>
-                            <li class="breadcrumb-item active">New checklist upload</li>
-                        </ol>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-			</div>
-            <!-- end row -->
-			<div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
-            <div class="card mb-3">
-              <div class="card-header">
-                  <h3><i class="fa fa-file"></i> Checklist Upload</h3>
+        <div class="row">
+          <div class="col-xl-12">
+              <div class="breadcrumb-holder">
+                  <h1 class="main-title float-left">Checklist file upload</h1>
+                  <ol class="breadcrumb float-right">
+                      <li class="breadcrumb-item">Home</li>
+                      <li class="breadcrumb-item active">New checklist upload</li>
+                  </ol>
+                  <div class="clearfix"></div>
               </div>
-              <div class="card-body">
-              <form id="frmChecklistUpload">
-                <div class="form-group" id="divNewChecklistSystem" >
-                  <label for="checklistSystem">System Name </label>
-                  <select class="form-control select2" id="checklistSystem" required>
-                      <option value="None">None</option>
-                  </select>
-                  <small id="titleHelp" class="form-text text-muted">Select the system this belongs to, or 'None'</small>
+          </div>
+        </div>
+        <div class="row" id="divUploadChecklist" style="display: none;">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+              <div class="card mb-3">
+                <div class="card-header">
+                    <h3><i class="fa fa-file"></i> Checklist Upload</h3>
                 </div>
-                <div class="form-group" ><a href="#" 
-                  onclick="$('#divNewChecklistSystem').hide(); $('#divNewChecklistSystemText').show(); return false;">Add a new System</a></div>
-                <div class="form-group" id="divNewChecklistSystemText" style="display: none;">
-                  <label for="checklistSystemText">New System Name</label>
-                  <input type="text" class="form-control" id="checklistSystemText" maxlength="100"
-                  aria-describedby="titleHelp" placeholder="Enter a new System Name (if any)">
-                  <small id="titleHelp" class="form-text text-muted">Enter a new system if not in the list above</small>
-                </div>
-                <div class="form-group">
-                  <label for="checklistFile">Checklist Files (up to 5 at a time)</label><br />
-                  <input type="file" name="files[]" id="checklistFile" multiple="multiple" required />
-                </div>
-                <button type="submit" onclick="uploadChecklist();" class="btn btn-primary">Upload and Save</button>
-              </form>
+                <div class="card-body">
+                <form id="frmChecklistUpload">
+                  <div class="form-group" id="divNewChecklistSystem" >
+                    <label for="checklistSystem">System Name </label>
+                    <select class="form-control select2" id="checklistSystem" required>
+                        <option value="None">None</option>
+                    </select>
+                    <small id="titleHelp" class="form-text text-muted">Select the system this belongs to, or 'None'</small>
+                  </div>
+                  <div class="form-group" ><a href="#" 
+                    onclick="$('#divNewChecklistSystem').hide(); $('#divNewChecklistSystemText').show(); return false;">Add a new System</a></div>
+                  <div class="form-group" id="divNewChecklistSystemText" style="display: none;">
+                    <label for="checklistSystemText">New System Name</label>
+                    <input type="text" class="form-control" id="checklistSystemText" maxlength="100"
+                    aria-describedby="titleHelp" placeholder="Enter a new System Name (if any)">
+                    <small id="titleHelp" class="form-text text-muted">Enter a new system if not in the list above</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="checklistFile">Checklist Files (up to 5 at a time)</label><br />
+                    <input type="file" name="files[]" id="checklistFile" multiple="multiple" required />
+                  </div>
+                  <button type="submit" onclick="uploadChecklist();" class="btn btn-primary">Upload and Save</button>
+                </form>
 
-              </div><!-- end card body -->							
-            </div><!-- end card-->
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
-            <div class="card mb-3">
-              <div class="card-header">
-                  <h3><i class="fa fa-help"></i> Checklist Upload Help</h3>
-              </div>
-              <div class="card-body">
-                <p>Use this form to upload a new CKL STIG checklist file to the system for scoring, indexing, and managing
-                  your STIG information. Select your system (if any) and then select up to five (5) CKL files to upload at a time.</p>
-                <p>All fields are mandatory.</p>
-                <p>* Please fill in the <b><i>Host</i></b> field on your CKL! All checklists are named by SYSTEM-HOSTNAME-STIGTYPE-REVISION.</p>
-                <p>i.e. <i>PAL Platform - ca2335.myorg.navy.mil - Google Chrome Current Windows STIG - Release: 15 Benchmark Date: 25 Jan 2019</i></p>
-              </div><!-- end card body -->							
-            </div><!-- end card-->
-          </div>
-      </div>
-      <!-- end row -->
-			<div class="row">
+                </div><!-- end card body -->							
+              </div><!-- end card-->
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+              <div class="card mb-3">
+                <div class="card-header">
+                    <h3><i class="fa fa-help"></i> Checklist Upload Help</h3>
+                </div>
+                <div class="card-body">
+                  <p>Use this form to upload a new CKL STIG checklist file to the system for scoring, indexing, and managing
+                    your STIG information. Select your system (if any) and then select up to five (5) CKL files to upload at a time.</p>
+                  <p>All fields are mandatory.</p>
+                  <p>* Please fill in the <b><i>Host</i></b> field on your CKL! All checklists are named by SYSTEM-HOSTNAME-STIGTYPE-REVISION.</p>
+                  <p>i.e. <i>PAL Platform - ca2335.myorg.navy.mil - Google Chrome Current Windows STIG - Release: 15 Benchmark Date: 25 Jan 2019</i></p>
+                </div><!-- end card body -->							
+              </div><!-- end card-->
+            </div>
+        </div>
+        <!-- end row -->
+			  <div class="row" id="divUploadTemplate" style="display: none;">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
             <div class="card mb-3">
                 <div class="card-header">
@@ -249,7 +272,7 @@
                   </div> 
                 </div><!-- end card body -->							
               </div><!-- end card-->
-            </div>
+        </div>
       </div>
 			<!-- END container-fluid -->
 		</div>
@@ -290,17 +313,40 @@
 <script src="./js/apis.js"></script>
 <script>
   $(document).ready(function() {
-      // get the list of systems
-      getChecklistSystemsForUpload();
-      
-    $('#checklistFile').filer({
-        limit: 5,
-        maxSize: 10,
-        extensions: ['ckl'],
-        changeInput: true,
-        showThumbs: true,
-        addMore: true
-    });
+		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
+			if (authenticated) {
+        if (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator")) {
+          // setup the profile account and logout menu
+          setupProfileMenu();
+          $("#content").show();
+          $("#divUploadChecklist").show();
+          $("#divUploadTemplate").show();
+          // see if the upload menu should show
+          verifyUploadMenu();
+          // get the list of systems
+          getChecklistSystemsForUpload();
+              
+          $('#checklistFile').filer({
+              limit: 5,
+              maxSize: 10,
+              extensions: ['ckl'],
+              changeInput: true,
+              showThumbs: true,
+              addMore: true
+          });
+        }
+        else
+        {
+          location.href = "resource.html";
+        }
+			}
+			else {
+				alert('You are not logged in. Please check your setup with Keycloak.');
+			}
+		}).error(function() {
+			alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+		});
+
   }); // document ready
   </script>
 <!-- END Java Script for this page -->
