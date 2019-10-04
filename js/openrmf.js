@@ -938,7 +938,7 @@ async function getChecklistTypeBreakdown(system) {
 		if (data.length > 0){
 			for (const item of data) {
 				myData.push(item.count);
-				myLabels.push(item.typeTitle);
+				myLabels.push(item.stigType);
 				myBGColor.push(getRandomColor());
 			}
 		}
