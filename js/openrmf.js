@@ -394,9 +394,10 @@ async function getChecklistData(id, template) {
 			else {
 				$("#divVulnFilter").hide();
 				var controlInfo = await getControlInformation(controlFilter); // see if there is a description
-				if (controlInfo && controlInfo.length >= 1) {
-					$("#checklistControlTitle").html(controlInfo[0].family + ": " + controlInfo[0].number + " - " + controlInfo[0].title);
-					$("#checklistControlGuidance").html(controlInfo[0].supplementalGuidance);
+				if (controlInfo) { 
+					// print out the control information
+					$("#checklistControlTitle").html(controlInfo.family + ": " + controlInfo.number + " - " + controlInfo.title);
+					$("#checklistControlGuidance").html(controlInfo.supplementalGuidance);
 					$("#rowControlInformation").show();
 				}
 			}
