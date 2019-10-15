@@ -774,24 +774,39 @@ async function exportChecklistXLSX(id) {
 
 async function deleteChecklist(id) {
 	if (id && id.length > 10) {
-		if (confirm("Are you sure you wish to delete this checklist?")) {
-			$.ajax({
+		swal({
+			title: "Deleting this Checklist?",
+			text: "Are you sure you wish to delete this checklist?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
 					url : saveAPI + "/" + id,
 					type : 'DELETE',
 					beforeSend: function(request) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
 					success : function(data){
-						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success");
-						location.href = "checklists.html";
+						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success")
+						.then((value) => {
+							location.href = "checklists.html";
+						});
 					},
 					error : function(data){
 						swal("Your Checklist was not deleted successfully!", "Click OK to continue!", "error");
 					}
-			});
-		}
+			    });
+			  
+			} else {
+			  swal("Canceled the Deletion.");
+			}
+		});
 	}
 }
+
 /************************************ 
  Upload Functions
 ************************************/
@@ -833,6 +848,10 @@ function uploadChecklist(){
 		swal("Error Uploading Checklist", "You need to upload at least one checklist.", "error");
 		return false;
 	}
+	swal("Uploading Checklists...", {
+		buttons: false,
+		timer: 2000,
+	});
 	// could be 1 to 5 of these depending on how they selected the CKL files
 	// can do 1 at a time or in bunches or 5 at once
 	for (i = 0; i < $("input[id=checklistFile]").length; i++) {
@@ -884,6 +903,10 @@ function uploadChecklist(){
 }
 
 function uploadTemplate(){
+	swal("Uploading Template...", {
+		buttons: false,
+		timer: 2000,
+	});
 	var formData = new FormData();
 	formData.append("type",$("#templateType").val());
 	formData.append("title",$("#templateTitle").val());
