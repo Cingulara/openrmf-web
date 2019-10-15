@@ -774,7 +774,7 @@ async function exportChecklistXLSX(id) {
 
 async function deleteChecklist(id) {
 	if (id && id.length > 10) {
-		if (confirm ("Are you sure you wish to delete this checklist?")) {
+		if (confirm("Are you sure you wish to delete this checklist?")) {
 			$.ajax({
 					url : saveAPI + "/" + id,
 					type : 'DELETE',
@@ -830,7 +830,7 @@ async function getChecklistSystemsForUpload() {
 function uploadChecklist(){
 	var formData = new FormData();
 	if ($("input[id=checklistFile]").length == 0) {
-		alert('You need to upload at least 1 checklist');
+		swal("Error Uploading Checklist", "You need to upload at least one checklist.", "error");
 		return false;
 	}
 	// could be 1 to 5 of these depending on how they selected the CKL files
@@ -847,7 +847,7 @@ function uploadChecklist(){
 	// if a new system, use it, otherwise select from the list
 	if ($("#checklistSystemText").is(':visible')){
 		if ($("#checklistSystemText").val() && $("#checklistSystemText").val().trim().length ==0) {
-			alert('please fill in the system name');
+			swal("Error Uploading Checklist", "Please fill in the System Name field.", "error");
 			return false;
 		}
 		formData.append("system",$("#checklistSystemText").val().trim());
@@ -877,7 +877,7 @@ function uploadChecklist(){
 				$('#checklistFile').trigger("filer.reset")
 			},
 			error: function() {
-				alert("There was an error uploading the checklist. Try again please!");
+				swal("Error Uploading Checklist", "There was an error uploading the checklist. Please try again.", "error");
 			}
 	});
 
@@ -1024,16 +1024,16 @@ async function getComplianceBySystem() {
 				}
 			}
 			else {
-				alert("There are no checklists ready for this compliance report.");
+				swal("Error Generating Compliance", "There are no checklists ready for this compliance report.", "error");
 			}
 		}
 		else { // response was not Ok()
-			alert("There was a problem generating the compliance for that system. Make sure the checklists are valid.");
+			swal("Error Generating Compliance", "There was a problem generating the compliance for that system. Make sure the checklists are valid.", "error");
 		}
 		$.unblockUI();
 	}
 	else {
-		alert('Choose a system first...');
+		swal("Choose a System", "You must first choose a system to generate a Compliance Report.", "info");
 	}
 }
 
