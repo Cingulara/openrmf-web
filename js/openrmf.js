@@ -232,6 +232,12 @@ async function getChecklists(latest, system) {
 				else {
 					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
 				}
+				// add a delete link on the listing page
+				if (canDelete()) {
+					checklistLink += '<br /><span class="small"><a href="javascript:deleteChecklist(\'' + item.internalId + '\')">';
+					checklistLink += 'delete</a>';
+				}
+				checklistLink += "</span>";
 				// now get the score
 				var score = await getScoreForChecklistListing(item.internalId);
 				if (score) {

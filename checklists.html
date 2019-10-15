@@ -290,25 +290,25 @@
 				"pageLength": 50, 
 				"columns": [
 				{ 
-								"className":      'details-control',
-								"orderable":      false,
-								"data":           null,
+					"className":      'details-control',
+					"orderable":      false,
+					"data":           null,
 					"defaultContent": ''
 				},
-							{ "data": "title" },
-							{ "data": "totalNaF" },
-							{ "data": "totalNA" },
-							{ "data": "totalOpen" },
-							{ "data": "totalNR" }
+					{ "data": "title" },
+					{ "data": "totalNaF" },
+					{ "data": "totalNA" },
+					{ "data": "totalOpen" },
+					{ "data": "totalNR" }
 				],
 					"columnDefs": [
-							{ "width": "40%", "targets": 1 },
-							{ "className": "tabco2", "width": "14%", "targets": 2 },
-							{ "className": "tabco3", "width": "14%", "targets": 3 },
-							{ "className": "tabco4", "width": "14%", "targets": 4 },
-							{ "className": "tabco5", "width": "14%", "targets": 5 }
+						{ "width": "40%", "targets": 1 },
+						{ "className": "tabco2", "width": "14%", "targets": 2 },
+						{ "className": "tabco3", "width": "14%", "targets": 3 },
+						{ "className": "tabco4", "width": "14%", "targets": 4 },
+						{ "className": "tabco5", "width": "14%", "targets": 5 }
 					]
-					});
+				});
 				// Add event listener for opening and closing details
 				$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
 				var tr = $(this).closest('tr');
@@ -345,16 +345,13 @@
 				});
 			}
 			else {
-				alert('You are not logged in. Please check your setup with Keycloak.');
+				swal("Invalid Login", "You are not logged in. Please check your setup with Keycloak.", "error");
 			}
 		}).error(function() {
-			alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+			swal("Invalid Login", "Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an '*' somewhere?", "error");
 		});
-
-		
 	} );
 </script>
 <!-- END Java Script for this page -->
-
 </body>
 </html>
