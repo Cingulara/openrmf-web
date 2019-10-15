@@ -149,11 +149,16 @@ async function getChecklistSystemListing(){
 
 			if (data.length == 0) {
 				$.unblockUI();
-				var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
-				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-				alertText += '<span aria-hidden="true">&times;</span></button>';
-				$("#divMessaging").html(alertText);
-				$("#divMessaging").show();
+				if (canUpload()) {
+					document.location.href="upload.html?redir=nochecklists";
+				}
+				else {
+					var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
+					alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+					alertText += '<span aria-hidden="true">&times;</span></button>';
+					$("#divMessaging").html(alertText);
+					$("#divMessaging").show();
+				}
 			}
 			else {
 				$.unblockUI();
@@ -212,11 +217,17 @@ async function getChecklists(latest, system) {
 		var checklistLink = "";
 		if (data.length == 0) {
 			$.unblockUI();
-			var alertText = 'There are no STIG checklists uploaded. Please go to the Upload page to add your first.';
-			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-			alertText += '<span aria-hidden="true">&times;</span></button>';
-			$("#divMessaging").html(alertText);
-			$("#divMessaging").show();
+			
+			if (canUpload()) {
+				document.location.href="upload.html?redir=nochecklists";
+			}
+			else {
+				var alertText = 'There are no Checklists uploaded. Please go to the Upload page to add your first.';
+				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+				alertText += '<span aria-hidden="true">&times;</span></button>';
+				$("#divMessaging").html(alertText);
+				$("#divMessaging").show();
+			}
 		}
 		else {
 			$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live

@@ -335,6 +335,12 @@
               showThumbs: true,
               addMore: true
           });
+
+          var redir = getParameterByName('redir');
+          if (redir) {
+            // redirection on empty checklists so tell them
+            swal("Please Upload a Checklist", "There are currently no checklists for you to view. Please upload at least one checklist to start.", "info");
+          }
         }
         else
         {
