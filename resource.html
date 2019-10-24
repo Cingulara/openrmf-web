@@ -70,8 +70,8 @@
         <nav class="navbar-custom">
 			<ul class="list-inline float-right mb-0">
 				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" title="Help and Support"
-						role="button" aria-haspopup="false" aria-expanded="false">
+					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
+						aria-haspopup="false" aria-expanded="false">
 						<i class="fa fa-fw fa-question-circle"></i>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
@@ -79,7 +79,7 @@
 						<div class="dropdown-item noti-title">
 							<h5><small>Help and Support</small></h5>
 						</div>
-
+	
 						<!-- item-->
 						<a target="_blank" href="https://www.github.com/cingulara/openrmf-docs/" class="dropdown-item notify-item">                                    
 							<p class="notify-details ml-0">
@@ -89,15 +89,39 @@
 						</a>
 					</div>
 				</li>
-			</ul>            
-      <ul class="list-inline menu-left mb-0">
-          <li class="float-left">
-              <button class="button-menu-mobile open-left">
-                  <i class="fa fa-fw fa-bars"></i>
-              </button>
-          </li>                        
-      </ul>
-    </nav>
+				<li class="list-inline-item dropdown notif">
+					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
+						href="#" role="button" aria-haspopup="false" aria-expanded="false">
+						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
+						class="avatar-rounded">
+					</a>
+					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+						<!-- item-->
+						<div class="dropdown-item noti-title">
+							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+						</div>
+	
+						<!-- item-->
+						<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
+							<i class="fa fa-user"></i> <span>Profile</span>
+						</a>
+	
+						<!-- item-->
+						<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
+							class="dropdown-item notify-item"><i class="fa fa-power-off"></i> <span>Logout</span>
+						</a>
+					</div>
+				</li>
+			</ul>
+	
+			<ul class="list-inline menu-left mb-0">
+				<li class="float-left">
+					<button class="button-menu-mobile open-left">
+						<i class="fa fa-fw fa-bars"></i>
+					</button>
+				</li>                        
+			</ul>
+    	</nav>
 	</div>
 	<!-- End Navigation -->
 
@@ -107,19 +131,19 @@
 			<div id="sidebar-menu">
 			<ul>
 				<li class="submenu">
-					<a href="index.html"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+					<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="checklists.html"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
+					<a href="checklists.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="compliance.html"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="templates.html"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					<a href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+					<a href="charts.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
             </ul>
             <div class="clearfix"></div>
