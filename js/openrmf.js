@@ -446,6 +446,7 @@ async function getChecklistData(id, template) {
 function updateVulnerabilityListingByFilter() {
 	var status = JSON.parse(sessionStorage.getItem("vulnStatus"));
 	if (status) {
+		clearVulnDetails();
 		var vulnListing = "";
 		for (const vuln of status) {
 			// if we should show it, add it to the HTML listing
@@ -516,6 +517,25 @@ function viewVulnDetails(vulnId) {
 		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
 		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
 	}
+}
+
+// clear the vulnerability details
+function clearVulnDetails() {
+	$("#vulnId").html("Please select a Vulnerability ID to view its details.");
+	$("#vulnStigId").html("");
+	$("#vulnRuleId").html("");
+	$("#vulnRuleName").html("");
+	$("#vulnRuleTitle").html("");
+	$("#vulnCCIId").html("");
+	$("#vulnStatus").html("");
+	$("#vulnClassification").html("");
+	$("#vulnSeverity").html("");
+	$("#vulnDiscussion").html("");
+	$("#vulnCheckText").html("");
+	$("#vulnFixText").html("");
+	$("#vulnReferences").html("");
+	$("#vulnFindingDetails").html("");
+	$("#vulnComments").html("");
 }
 
 // update function on the checklist page showing all the individual checklist data
