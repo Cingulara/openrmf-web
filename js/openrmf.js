@@ -358,90 +358,94 @@ async function getChecklistData(id, template) {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
   if (response.ok) {
-			var data = await response.json();
-			var title = data.title;
-			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
-			var updatedDate = "Last Updated on ";
-			if (data.updatedOn) {
-				updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
-			}
-			else {
-				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
-			}
-			$("#checklistSystem").html("<b>System:</b> " + data.system);
-			$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
-			$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
-			$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
-			$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
-			$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
-			
-			$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
-			$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
-			$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
-
-			// load updated date
-			$("#chartSeverityUpdated").html(updatedDate);
-			$("#chartCategoryUpdated").html(updatedDate);
-			$("#barChartUpdated").html(updatedDate);
-			$("#checklistLastUpdated").html(updatedDate);
-
-			// update the Template Scoring dynamically
-			if (template) getScoreForTemplateListing(data.rawChecklist);
-
-			await getChecklistSystemsForChecklist();
-			// go ahead and fill in the modal for for upload while we are in here
-			$("#frmChecklistTitle").val(data.title);
-			$("#frmChecklistDescription").val(data.description);
-			$("#frmChecklistType").val(data.type);
-			$("#frmChecklistSystem").val(data.system);
-
-			// load the vulnerabilities into sessionStorage
-			var vulnListing = "";
-			var vulnStatus = "[";
-			var vulnFilter = [];
-			var controlFilter = getParameterByName("ctrl");
-			if (controlFilter) {
-				// only show the relevant Vuln IDs by the artifact ID and the control passed in
-				vulnFilter = await getVulnerabilitiesByControl(id, controlFilter);
-			}
-			if (vulnFilter && vulnFilter.length == 0){
-				$("#divVulnFilter").show();
-				$("#rowControlInformation").hide();
-			}
-			else {
-				$("#divVulnFilter").hide();
-				var controlInfo = await getControlInformation(controlFilter); // see if there is a description
-				if (controlInfo) { 
-					// print out the control information
-					$("#checklistControlTitle").html(controlInfo.family + ": " + controlInfo.number + " - " + controlInfo.title);
-					$("#checklistControlGuidance").html(controlInfo.supplementalGuidance);
-					$("#rowControlInformation").show();
-				}
-			}
-			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
-				sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
-				// if we are not filtering on the control, print this out
-				// OR
-				// if we are filtering on the control and this Vuln ID is in the list of the filter, print this out
-				if (vulnFilter.length == 0 || (jQuery.inArray(vuln.stiG_DATA[0].attributE_DATA, vulnFilter) > -1)) {
-					// add to the checklistTree
-					// based on one of the status color the background appropriately
-					vulnListing += '<button type="button" class="btn btn-sm ';
-					vulnListing += getVulnerabilityStatusClassName(vuln.status);
-					vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
-					vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
-					vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
-				}
-				// save off a list of all VulnIDs and their status to filter later client side
-				vulnStatus += '{"vulnId" : "' + vuln.stiG_DATA[0].attributE_DATA +  '", "status" : "' + vuln.status + '"},';
-			}
-			// take off the last comma and then close it out
-			vulnStatus = vulnStatus.slice(0,-1) + "]";
-			sessionStorage.setItem("vulnStatus", vulnStatus);
-			// see if there is a control passed in and if so, only show the valid controls
-			$("#checklistTree").html(vulnListing);
+		var data = await response.json();
+		var title = data.title;
+		$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
+		var updatedDate = "Last Updated on ";
+		if (data.updatedOn) {
+			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
 		}
+		else {
+			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+		}
+		$("#checklistSystem").html("<b>System:</b> " + data.system);
+		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
+		$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
+		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
+		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
+		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
+		
+		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
+		$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
+
+		// load updated date
+		$("#chartSeverityUpdated").html(updatedDate);
+		$("#chartCategoryUpdated").html(updatedDate);
+		$("#barChartUpdated").html(updatedDate);
+		$("#checklistLastUpdated").html(updatedDate);
+
+		// update the Template Scoring dynamically
+		if (template) getScoreForTemplateListing(data.rawChecklist);
+
+		await getChecklistSystemsForChecklist();
+		// go ahead and fill in the modal for for upload while we are in here
+		$("#frmChecklistTitle").val(data.title);
+		$("#frmChecklistDescription").val(data.description);
+		$("#frmChecklistType").val(data.type);
+		$("#frmChecklistSystem").val(data.system);
+
+		// load the vulnerabilities into sessionStorage
+		var vulnListing = "";
+		var vulnStatus = "[";
+		var vulnFilter = [];
+		var controlFilter = getParameterByName("ctrl");
+		if (controlFilter) {
+			// only show the relevant Vuln IDs by the artifact ID and the control passed in
+			vulnFilter = await getVulnerabilitiesByControl(id, controlFilter);
+		}
+		if (vulnFilter && vulnFilter.length == 0){
+			$("#divVulnFilter").show();
+			$("#rowControlInformation").hide();
+		}
+		else {
+			$("#divVulnFilter").hide();
+			var controlInfo = await getControlInformation(controlFilter); // see if there is a description
+			if (controlInfo) { 
+				// print out the control information
+				$("#checklistControlTitle").html(controlInfo.family + ": " + controlInfo.number + " - " + controlInfo.title);
+				$("#checklistControlGuidance").html(controlInfo.supplementalGuidance);
+				$("#rowControlInformation").show();
+			}
+		}
+		for (const vuln of data.checklist.stigs.iSTIG.vuln) {
+			sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
+			// if we are not filtering on the control, print this out
+			// OR
+			// if we are filtering on the control and this Vuln ID is in the list of the filter, print this out
+			if (vulnFilter.length == 0 || (jQuery.inArray(vuln.stiG_DATA[0].attributE_DATA, vulnFilter) > -1)) {
+				// add to the checklistTree
+				// based on one of the status color the background appropriately
+				vulnListing += '<button type="button" class="btn btn-sm ';
+				vulnListing += getVulnerabilityStatusClassName(vuln.status);
+				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
+				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
+				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
+			}
+			// save off a list of all VulnIDs and their status to filter later client side
+			vulnStatus += '{"vulnId" : "' + vuln.stiG_DATA[0].attributE_DATA +  '", "status" : "' + vuln.status + '"},';
+		}
+		// take off the last comma and then close it out
+		vulnStatus = vulnStatus.slice(0,-1) + "]";
+		sessionStorage.setItem("vulnStatus", vulnStatus);
+		// see if there is a control passed in and if so, only show the valid controls
+		$("#checklistTree").html(vulnListing);
+	} else {
+		$("#txtBadChecklistId").text(id);
+		$("#divBadChecklistId").show();
+	}
 }
+
 // based on the checkboxes, filter the Vuln Ids listing
 function updateVulnerabilityListingByFilter() {
 	var status = JSON.parse(sessionStorage.getItem("vulnStatus"));
