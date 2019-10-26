@@ -216,8 +216,8 @@
                     <h3><i class="fa fa-help"></i> Checklist Upload Help</h3>
                 </div>
                 <div class="card-body">
-                  <p>Use this form to upload a new CKL STIG checklist file to the system for scoring, indexing, and managing
-                    your STIG information. Select your system (if any) and then select up to five (5) *.CKL files to upload at a time.</p>
+                  <p>Use this form to upload a new *.CKL STIG checklist file or SCAP Scan XCCDF *.XML to the system for scoring, indexing, and managing
+                    your DoD STIG information. Select your system (if any) and then select up to five (5) *.CKL or *.XML files to upload at a time.</p>
                   <p>All fields are mandatory.</p>
                   <p>* Please fill in the <b><i>Host</i></b> field on your Checklist file CKL! All checklists are named by SYSTEM-HOSTNAME-STIGTYPE-REVISION.</p>
                   <p>i.e. <i>PAL Platform - ca2335.myorg.navy.mil - Google Chrome Current Windows STIG - Release: 15 Benchmark Date: 25 Jan 2019</i></p>
@@ -331,10 +331,18 @@
           $('#checklistFile').filer({
               limit: 5,
               maxSize: 10,
-              extensions: ['ckl'],
+              extensions: ['ckl', 'xml'],
               changeInput: true,
               showThumbs: true,
-              addMore: true
+              addMore: true,
+              captions: {
+                errors: {
+                  filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+                  filesType: "Only Checklist *.CKL and SCAP scan XCCDF *.XML files can be uploaded.",
+                  filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB.",
+                  filesSizeAll: "Files you have chosen are too large! Please upload a file up to {{fi-maxSize}} MB."
+                }
+              }
           });
 
           var redir = getParameterByName('redir');
