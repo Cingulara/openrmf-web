@@ -199,12 +199,13 @@ async function getChecklists(latest, system) {
 		url += "/latest/5";
 
 	// reset the list of systems
-  sessionStorage.removeItem("checklistSystems");
-  let response = await fetch(url, {headers: {
-      'Authorization': 'Bearer ' + keycloak.token
-  }});
+	sessionStorage.removeItem("checklistSystems");
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
-  if (response.ok) {
+	if (response.ok) {
 		var data = await response.json()
 		// hide the system listing
 		$("#divSystemListing").hide();
@@ -245,7 +246,7 @@ async function getChecklists(latest, system) {
 					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
 				}
 				// add a delete link on the listing page
-				if (canDelete()) {
+				if (canDelete() && !latest) {
 					checklistLink += '<br /><span class="small"><a href="javascript:deleteChecklist(\'' + item.internalId + '\')">';
 					checklistLink += 'delete</a>';
 				}
