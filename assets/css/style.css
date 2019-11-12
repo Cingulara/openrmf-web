@@ -251,7 +251,7 @@ a {
   z-index: 999; }
 
 .headerbar .headerbar-left {
-    background: #4980b5;
+    background: #ffffff;
     float: left;
     text-align: center;
     height: 50px;
@@ -267,7 +267,7 @@ a {
 }
 	  
 .navbar-custom {
-  background-color: #4980b5 ;
+  background-color: #2C5FBC;
   border-radius: 0;
   margin-bottom: 0;
   padding: 0 10px;
@@ -287,14 +287,15 @@ a {
     overflow: hidden; }
 
 .logo {
-  color: #e3ebf3 !important;
+  color: #013088 !important;
   font-size: 20px;
-  font-weight: 200;
+  font-weight: 500;
   letter-spacing: 1px; 
   line-height: 48px; }
   
 .logo span span {
-    color: #fff; }
+    color: #026536;
+}
 
 .main-sidebar {
   top: 50px;
@@ -409,14 +410,14 @@ body.adminbody .main-sidebar.left {
     margin-top: 2px; }
   #sidebar-menu .subdrop {
     color: #fff !important; 
-	background-color: #414d58; 
-	border-left: 2px solid #608ab3; }
+	background-color: #2C5FBC; 
+	border-left: 2px solid #2C5FBC; }
 	
   #sidebar-menu .submenu ul .submenu .menu-arrow {
     top: 10px !important; }
 
 #sidebar-menu > ul > li > a {
-  color: #b5b5b5;
+  color: #E4E1E1;
   display: block;
   padding: 12px 12px 15px 12px;
   font-weight: 400;
@@ -448,7 +449,7 @@ body.adminbody .main-sidebar.left {
 
 #sidebar-menu > ul > li > a.active {
   color: #ffffff !important;
-  background-color: #6194c1; }
+  background-color: #2C5FBC; }
 
 .menu-title {
   padding: 12px 20px !important;

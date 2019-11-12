@@ -19,84 +19,85 @@ async function getChecklistTotalCount() {
  * Template listing functions
  ************************************/
 async function getTemplates(latest) {
-	$.blockUI({ message: "Updating the checklist listing..." }); 
+	$.blockUI({ message: "Updating the template listing..." }); 
 	var url = templateAPI;	
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
   if (response.ok) {
-			var data = await response.json()
-
-			var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
-			table.clear();
-			var checklistLink = "";
-			if (data.length == 0) {
-				$.unblockUI();
-				var alertText = 'There are no STIG templates uploaded. Please go to the Upload page to add your first.';
-				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-				alertText += '<span aria-hidden="true">&times;</span></button>';
-				$("#divMessaging").html(alertText);
-				$("#divMessaging").show();
-			}
-			else {
-				$("#divMessaging").html('');
-				$("#divMessaging").hide();
-				for (const item of data) {
-					checklistLink = '<a href="single-template.html?id=' + item.internalId + '">'
-					checklistLink += item.title
-					checklistLink += '</a><br /><span class="small">last updated on '
-					if (item.updatedOn) {
-						checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
-					}
-					else {
-						checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
-					}
-					// now get the score
-					var score = null;
-					var formData = new FormData();
-					formData.append("rawChecklist", item.rawChecklist);
-					$.ajax({
-						url : scoreAPI,
-						data : formData,
-						type : 'POST',
-						processData: false,
-						contentType: false,
-						beforeSend: function(request) {
-						  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
-						},
-						success : function(data){
-							score = data;
-							if (score) {
-								// dynamically add to the datatable but only show main data, click the + for extra data
-								table.row.add( { "title": checklistLink, 
-									"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
-									"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
-									"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
-									"totalNaFCat3": score.totalCat3NotAFinding, "totalNACat3": score.totalCat3NotApplicable, "totalOpenCat3": intOpenCat2 = score.totalCat3Open, "totalNRCat3": score.totalCat3NotReviewed
-								}).draw();
-							}
-							else {
-								table.row.add( { "title": checklistLink, 
-									"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
-									"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
-									"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
-									"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
-								}).draw();
-							}
-						},
-					error: function() {
-						table.row.add( { "title": checklistLink, 
-									"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
-									"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
-									"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
-									"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
-								}).draw();
-					}});
+		var data = await response.json()
+		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
+		table.clear();
+		var checklistLink = "";
+		if (data.length == 0) {
+			$.unblockUI();
+			var alertText = 'There are no Checklist templates uploaded. Please go to the Upload page to add your first.';
+			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+			alertText += '<span aria-hidden="true">&times;</span></button>';
+			$("#divMessaging").html(alertText);
+			$("#divMessaging").show();
+		}
+		else {
+			$("#divMessaging").html('');
+			$("#divMessaging").hide();
+			for (const item of data) {
+				checklistLink = '<a href="single-template.html?id=' + item.internalId + '" title="Open Checklist Template">'
+				checklistLink += item.title
+				checklistLink += '</a><br /><span class="small">last updated on '
+				if (item.updatedOn) {
+					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
 				}
-				// with all the data fill in the table and go
-			  $.unblockUI();
+				else {
+					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
+				}
+				checklistLink += "</span>";
+				// now get the score
+				var score = null;
+				var formData = new FormData();
+				formData.append("rawChecklist", item.rawChecklist);
+				$.ajax({
+					url : scoreAPI,
+					data : formData,
+					async: false,
+					type : 'POST',
+					processData: false,
+					contentType: false,
+					beforeSend: function(request) {
+						request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success : function(data){
+						score = data;
+						if (score) {
+							// dynamically add to the datatable but only show main data, click the + for extra data
+							table.row.add( { "title": checklistLink, 
+								"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
+								"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
+								"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
+								"totalNaFCat3": score.totalCat3NotAFinding, "totalNACat3": score.totalCat3NotApplicable, "totalOpenCat3": intOpenCat2 = score.totalCat3Open, "totalNRCat3": score.totalCat3NotReviewed
+							}).draw();
+						}
+						else {
+							table.row.add( { "title": checklistLink, 
+								"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
+								"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
+								"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
+								"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
+							}).draw();
+						}
+						$.unblockUI();
+					},
+				error: function() {
+					table.row.add( { "title": checklistLink, 
+						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
+						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
+						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
+						"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
+					}).draw();
+					$.unblockUI();
+				}});
 			}
+		}
 	}
 	else {
 		$.unblockUI();
@@ -149,11 +150,16 @@ async function getChecklistSystemListing(){
 
 			if (data.length == 0) {
 				$.unblockUI();
-				var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
-				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-				alertText += '<span aria-hidden="true">&times;</span></button>';
-				$("#divMessaging").html(alertText);
-				$("#divMessaging").show();
+				if (canUpload()) {
+					document.location.href="upload.html?redir=nochecklists";
+				}
+				else {
+					var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
+					alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+					alertText += '<span aria-hidden="true">&times;</span></button>';
+					$("#divMessaging").html(alertText);
+					$("#divMessaging").show();
+				}
 			}
 			else {
 				$.unblockUI();
@@ -163,7 +169,7 @@ async function getChecklistSystemListing(){
 				// cycle through the systems and add the data
 				var systemLink = "";
 				for (const item of data) {
-					systemLink = "<button type='button' class='btn btn-primary' onclick='getChecklists(false,\"" + item.system + "\"); return false;'>Open Checklists</button>";
+					systemLink = "<button type='button' title='View all System Checklists' class='btn btn-primary' onclick='getChecklists(false,\"" + item.system + "\"); return false;'>Open Checklists</button>";
 					table.row.add( { "systemLink": systemLink, "system": item.system, "checklistCount": item.checklistCount}).draw();
 				}
 			}
@@ -193,12 +199,13 @@ async function getChecklists(latest, system) {
 		url += "/latest/5";
 
 	// reset the list of systems
-  sessionStorage.removeItem("checklistSystems");
-  let response = await fetch(url, {headers: {
-      'Authorization': 'Bearer ' + keycloak.token
-  }});
+	sessionStorage.removeItem("checklistSystems");
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
-  if (response.ok) {
+	if (response.ok) {
 		var data = await response.json()
 		// hide the system listing
 		$("#divSystemListing").hide();
@@ -212,18 +219,24 @@ async function getChecklists(latest, system) {
 		var checklistLink = "";
 		if (data.length == 0) {
 			$.unblockUI();
-			var alertText = 'There are no STIG checklists uploaded. Please go to the Upload page to add your first.';
-			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-			alertText += '<span aria-hidden="true">&times;</span></button>';
-			$("#divMessaging").html(alertText);
-			$("#divMessaging").show();
+			
+			if (canUpload()) {
+				document.location.href="upload.html?redir=nochecklists";
+			}
+			else {
+				var alertText = 'There are no Checklists uploaded. Please go to the Upload page to add your first.';
+				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+				alertText += '<span aria-hidden="true">&times;</span></button>';
+				$("#divMessaging").html(alertText);
+				$("#divMessaging").show();
+			}
 		}
 		else {
 			$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
 			$("#divMessaging").html('');
 			$("#divMessaging").hide();
 			for (const item of data) {
-				checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '">'
+				checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '" title="View the Checklist Details">'
 				checklistLink += item.title
 				checklistLink += '</a><br /><span class="small">last updated on '
 				if (item.updatedOn) {
@@ -232,6 +245,12 @@ async function getChecklists(latest, system) {
 				else {
 					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
 				}
+				// add a delete link on the listing page
+				if (canDelete() && !latest) {
+					checklistLink += '<br /><span class="small"><a href="javascript:deleteChecklist(\'' + item.internalId + '\')">';
+					checklistLink += 'delete</a>';
+				}
+				checklistLink += "</span>";
 				// now get the score
 				var score = await getScoreForChecklistListing(item.internalId);
 				if (score) {
@@ -341,93 +360,99 @@ async function getChecklistData(id, template) {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
   if (response.ok) {
-			var data = await response.json();
-			var title = data.title;
-			$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
-			var updatedDate = "Last Updated on ";
-			if (data.updatedOn) {
-				updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
-			}
-			else {
-				updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
-			}
-			$("#checklistSystem").html("<b>System:</b> " + data.system);
-			$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
-			$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
-			$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
-			$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
-			$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
-			
-			$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
-			$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
-			$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
-
-			// load updated date
-			$("#chartSeverityUpdated").html(updatedDate);
-			$("#chartCategoryUpdated").html(updatedDate);
-			$("#barChartUpdated").html(updatedDate);
-			$("#checklistLastUpdated").html(updatedDate);
-
-			// update the Template Scoring dynamically
-			if (template) getScoreForTemplateListing(data.rawChecklist);
-
-			await getChecklistSystemsForChecklist();
-			// go ahead and fill in the modal for for upload while we are in here
-			$("#frmChecklistTitle").val(data.title);
-			$("#frmChecklistDescription").val(data.description);
-			$("#frmChecklistType").val(data.type);
-			$("#frmChecklistSystem").val(data.system);
-
-			// load the vulnerabilities into sessionStorage
-			var vulnListing = "";
-			var vulnStatus = "[";
-			var vulnFilter = [];
-			var controlFilter = getParameterByName("ctrl");
-			if (controlFilter) {
-				// only show the relevant Vuln IDs by the artifact ID and the control passed in
-				vulnFilter = await getVulnerabilitiesByControl(id, controlFilter);
-			}
-			if (vulnFilter && vulnFilter.length == 0){
-				$("#divVulnFilter").show();
-				$("#rowControlInformation").hide();
-			}
-			else {
-				$("#divVulnFilter").hide();
-				var controlInfo = await getControlInformation(controlFilter); // see if there is a description
-				if (controlInfo && controlInfo.length >= 1) {
-					$("#checklistControlTitle").html(controlInfo[0].family + ": " + controlInfo[0].number + " - " + controlInfo[0].title);
-					$("#checklistControlGuidance").html(controlInfo[0].supplementalGuidance);
-					$("#rowControlInformation").show();
-				}
-			}
-			for (const vuln of data.checklist.stigs.iSTIG.vuln) {
-				sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
-				// if we are not filtering on the control, print this out
-				// OR
-				// if we are filtering on the control and this Vuln ID is in the list of the filter, print this out
-				if (vulnFilter.length == 0 || (jQuery.inArray(vuln.stiG_DATA[0].attributE_DATA, vulnFilter) > -1)) {
-					// add to the checklistTree
-					// based on one of the status color the background appropriately
-					vulnListing += '<button type="button" class="btn btn-sm ';
-					vulnListing += getVulnerabilityStatusClassName(vuln.status);
-					vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
-					vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
-					vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
-				}
-				// save off a list of all VulnIDs and their status to filter later client side
-				vulnStatus += '{"vulnId" : "' + vuln.stiG_DATA[0].attributE_DATA +  '", "status" : "' + vuln.status + '"},';
-			}
-			// take off the last comma and then close it out
-			vulnStatus = vulnStatus.slice(0,-1) + "]";
-			sessionStorage.setItem("vulnStatus", vulnStatus);
-			// see if there is a control passed in and if so, only show the valid controls
-			$("#checklistTree").html(vulnListing);
+		var data = await response.json();
+		var title = data.title;
+		$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
+		var updatedDate = "Last Updated on ";
+		if (data.updatedOn) {
+			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
 		}
+		else {
+			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+		}
+		$("#checklistSystem").html("<b>System:</b> " + data.system);
+		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
+		$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
+		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
+		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
+		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
+		
+		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
+		$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
+
+		// load updated date
+		$("#chartSeverityUpdated").html(updatedDate);
+		$("#chartCategoryUpdated").html(updatedDate);
+		$("#barChartUpdated").html(updatedDate);
+		$("#checklistLastUpdated").html(updatedDate);
+
+		// update the Template Scoring dynamically
+		if (template) getScoreForTemplateListing(data.rawChecklist);
+
+		await getChecklistSystemsForChecklist();
+		// go ahead and fill in the modal for for upload while we are in here
+		$("#frmChecklistTitle").val(data.title);
+		$("#frmChecklistDescription").val(data.description);
+		$("#frmChecklistType").val(data.type);
+		$("#frmChecklistSystem").val(data.system);
+
+		// load the vulnerabilities into sessionStorage
+		var vulnListing = "";
+		var vulnStatus = "[";
+		var vulnFilter = [];
+		var controlFilter = getParameterByName("ctrl");
+		if (controlFilter) {
+			// only show the relevant Vuln IDs by the artifact ID and the control passed in
+			vulnFilter = await getVulnerabilitiesByControl(id, controlFilter);
+		}
+		if (vulnFilter && vulnFilter.length == 0){
+			$("#divVulnFilter").show();
+			$("#rowControlInformation").hide();
+		}
+		else {
+			$("#divVulnFilter").hide();
+			var controlInfo = await getControlInformation(controlFilter); // see if there is a description
+			if (controlInfo) { 
+				// print out the control information
+				$("#checklistControlTitle").html(controlInfo.family + ": " + controlInfo.number + " - " + controlInfo.title);
+				$("#checklistControlGuidance").html(controlInfo.supplementalGuidance);
+				$("#rowControlInformation").show();
+			}
+		}
+		for (const vuln of data.checklist.stigs.iSTIG.vuln) {
+			sessionStorage.setItem(vuln.stiG_DATA[0].attributE_DATA, JSON.stringify(vuln));
+			// if we are not filtering on the control, print this out
+			// OR
+			// if we are filtering on the control and this Vuln ID is in the list of the filter, print this out
+			if (vulnFilter.length == 0 || (jQuery.inArray(vuln.stiG_DATA[0].attributE_DATA, vulnFilter) > -1)) {
+				// add to the checklistTree
+				// based on one of the status color the background appropriately
+				vulnListing += '<button type="button" class="btn btn-sm ';
+				vulnListing += getVulnerabilityStatusClassName(vuln.status);
+				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
+				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
+				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
+			}
+			// save off a list of all VulnIDs and their status to filter later client side
+			vulnStatus += '{"vulnId" : "' + vuln.stiG_DATA[0].attributE_DATA +  '", "status" : "' + vuln.status + '"},';
+		}
+		// take off the last comma and then close it out
+		vulnStatus = vulnStatus.slice(0,-1) + "]";
+		sessionStorage.setItem("vulnStatus", vulnStatus);
+		// see if there is a control passed in and if so, only show the valid controls
+		$("#checklistTree").html(vulnListing);
+	} else {
+		$("#txtBadChecklistId").text(id);
+		$("#divBadChecklistId").show();
+	}
 }
+
 // based on the checkboxes, filter the Vuln Ids listing
 function updateVulnerabilityListingByFilter() {
 	var status = JSON.parse(sessionStorage.getItem("vulnStatus"));
 	if (status) {
+		clearVulnDetails();
 		var vulnListing = "";
 		for (const vuln of status) {
 			// if we should show it, add it to the HTML listing
@@ -498,6 +523,25 @@ function viewVulnDetails(vulnId) {
 		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
 		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
 	}
+}
+
+// clear the vulnerability details
+function clearVulnDetails() {
+	$("#vulnId").html("Please select a Vulnerability ID to view its details.");
+	$("#vulnStigId").html("");
+	$("#vulnRuleId").html("");
+	$("#vulnRuleName").html("");
+	$("#vulnRuleTitle").html("");
+	$("#vulnCCIId").html("");
+	$("#vulnStatus").html("");
+	$("#vulnClassification").html("");
+	$("#vulnSeverity").html("");
+	$("#vulnDiscussion").html("");
+	$("#vulnCheckText").html("");
+	$("#vulnFixText").html("");
+	$("#vulnReferences").html("");
+	$("#vulnFindingDetails").html("");
+	$("#vulnComments").html("");
 }
 
 // update function on the checklist page showing all the individual checklist data
@@ -665,16 +709,16 @@ async function makeBarChartBreakdown(data) {
 				backgroundColor: [
 					'rgba(255, 99, 132, 0.5)',
 					'rgba(75, 192, 192, 0.5)',
-					'rgba(54, 162, 235, 0.5)',
-					'rgba(150, 150, 150, 0.5)',	
+					'rgba(150, 150, 150, 0.5)',
+					'rgba(54, 162, 235, 0.5)',	
 					'rgba(255, 99, 132, 0.5)',
 					'rgba(75, 192, 192, 0.5)',
-					'rgba(54, 162, 235, 0.5)',
 					'rgba(150, 150, 150, 0.5)',	
+					'rgba(54, 162, 235, 0.5)',
 					'rgba(255, 99, 132, 0.5)',
 					'rgba(75, 192, 192, 0.5)',
-					'rgba(54, 162, 235, 0.5)',
-					'rgba(150, 150, 150, 0.5)'	
+					'rgba(150, 150, 150, 0.5)',
+					'rgba(54, 162, 235, 0.5)'	
 				],
 				borderColor: [
 					'rgba(0,0,0,0.7)',
@@ -773,24 +817,39 @@ async function exportChecklistXLSX(id) {
 
 async function deleteChecklist(id) {
 	if (id && id.length > 10) {
-		if (confirm ("Are you sure you wish to delete this checklist?")) {
-			$.ajax({
+		swal({
+			title: "Deleting this Checklist?",
+			text: "Are you sure you wish to delete this checklist?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
 					url : saveAPI + "/" + id,
 					type : 'DELETE',
 					beforeSend: function(request) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
 					success : function(data){
-						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success");
-						location.href = "checklists.html";
+						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success")
+						.then((value) => {
+							location.href = "checklists.html";
+						});
 					},
 					error : function(data){
 						swal("Your Checklist was not deleted successfully!", "Click OK to continue!", "error");
 					}
-			});
-		}
+			    });
+			  
+			} else {
+			  swal("Canceled the Deletion.");
+			}
+		});
 	}
 }
+
 /************************************ 
  Upload Functions
 ************************************/
@@ -829,9 +888,13 @@ async function getChecklistSystemsForUpload() {
 function uploadChecklist(){
 	var formData = new FormData();
 	if ($("input[id=checklistFile]").length == 0) {
-		alert('You need to upload at least 1 checklist');
+		swal("Error Uploading Checklist", "You need to upload at least one checklist.", "error");
 		return false;
 	}
+	swal("Uploading Checklists...", {
+		buttons: false,
+		timer: 2000,
+	});
 	// could be 1 to 5 of these depending on how they selected the CKL files
 	// can do 1 at a time or in bunches or 5 at once
 	for (i = 0; i < $("input[id=checklistFile]").length; i++) {
@@ -846,7 +909,7 @@ function uploadChecklist(){
 	// if a new system, use it, otherwise select from the list
 	if ($("#checklistSystemText").is(':visible')){
 		if ($("#checklistSystemText").val() && $("#checklistSystemText").val().trim().length ==0) {
-			alert('please fill in the system name');
+			swal("Error Uploading Checklist", "Please fill in the System Name field.", "error");
 			return false;
 		}
 		formData.append("system",$("#checklistSystemText").val().trim());
@@ -876,13 +939,17 @@ function uploadChecklist(){
 				$('#checklistFile').trigger("filer.reset")
 			},
 			error: function() {
-				alert("There was an error uploading the checklist. Try again please!");
+				swal("Error Uploading Checklist", "There was an error uploading the checklist. Please try again.", "error");
 			}
 	});
 
 }
 
 function uploadTemplate(){
+	swal("Uploading Template...", {
+		buttons: false,
+		timer: 2000,
+	});
 	var formData = new FormData();
 	formData.append("type",$("#templateType").val());
 	formData.append("title",$("#templateTitle").val());
@@ -1013,7 +1080,7 @@ async function getComplianceBySystem() {
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
 							checklists += '<li><a href="/single-checklist.html?id=';
-							checklists += record.artifactId + '&ctrl=' + item.control + '" target="' + record.artifactId + '">'; 
+							checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
 							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></li>';
 						}
 					}
@@ -1023,16 +1090,16 @@ async function getComplianceBySystem() {
 				}
 			}
 			else {
-				alert("There are no checklists ready for this compliance report.");
+				swal("Error Generating Compliance", "There are no checklists ready for this compliance report.", "error");
 			}
 		}
 		else { // response was not Ok()
-			alert("There was a problem generating the compliance for that system. Make sure the checklists are valid.");
+			swal("Error Generating Compliance", "There was a problem generating the compliance for that system. Make sure the checklists are valid.", "error");
 		}
 		$.unblockUI();
 	}
 	else {
-		alert('Choose a system first...');
+		swal("Choose a System", "You must first choose a system to generate a Compliance Report.", "info");
 	}
 }
 
