@@ -39,6 +39,7 @@
 		
 		<!-- Custom CSS -->
 		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 
 		<!-- Modernizr -->
 		<script src="assets/js/modernizr.min.js"></script>
@@ -65,64 +66,64 @@
 	<div class="headerbar">
 
 		<!-- LOGO -->
-        <div class="headerbar-left">
-			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.png" /> <span>OpenRMF</span></a>
-        </div>
+      <div class="headerbar-left">
+			  <a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
+      </div>
 
-        <nav class="navbar-custom">
-			<ul class="list-inline float-right mb-0">
-				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-						<i class="fa fa-fw fa-question-circle"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
-						<!-- item-->
-						<div class="dropdown-item noti-title">
-							<h5><small>Help and Support</small></h5>
-						</div>
-
-						<!-- item-->
-						<a target="_blank" href="https://www.github.com/cingulara/openrmf-docs/" class="dropdown-item notify-item">                                    
-							<p class="notify-details ml-0">
-								<b>Do you need documentation on how OpenRMF works?</b>
-								<span>GitHub Readme</span>
-							</p>
-						</a>
-					</div>
-				</li>
-				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" 
-						href="#" role="button" aria-haspopup="false" aria-expanded="false">
-						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
-						class="avatar-rounded">
-					</a>
-					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-						<!-- item-->
-						<div class="dropdown-item noti-title">
-							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
-						</div>
-
-						<!-- item-->
-						<a id="profileAccountURL" href="" class="dropdown-item notify-item">
-							<i class="fa fa-user"></i> <span>Profile</span>
-						</a>
-
-						<!-- item-->
-            <a id="profileLogoutURL" 
-              href="" 
-							class="dropdown-item notify-item">
-							<i class="fa fa-power-off"></i> <span>Logout</span>
-						</a>
-					</div>
-				</li>
-			</ul>            
-      <ul class="list-inline menu-left mb-0">
+      <nav class="navbar-custom">
+        <ul class="list-inline float-right mb-0">
+          <li class="list-inline-item dropdown notif">
+            <a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
+              aria-haspopup="false" aria-expanded="false">
+              <i class="fa fa-fw fa-question-circle"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+              <!-- item-->
+              <div class="dropdown-item noti-title">
+                <h5><small>Help and Support</small></h5>
+              </div>
+    
+              <!-- item-->
+              <a target="_blank" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
+                <p class="notify-details ml-0">
+                  <b>Do you need documentation on how OpenRMF works?</b>
+                  <span>GitHub Pages</span>
+                </p>
+              </a>
+            </div>
+          </li>
+          <li class="list-inline-item dropdown notif">
+            <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
+              href="#" role="button" aria-haspopup="false" aria-expanded="false">
+              <img src="assets/images/avatars/avatar3.png" alt="Profile image" 
+              class="avatar-rounded">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+              <!-- item-->
+              <div class="dropdown-item noti-title">
+                <h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+              </div>
+    
+              <!-- item-->
+              <a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
+                <i class="fa fa-user"></i> <span>Profile</span>
+              </a>
+    
+              <!-- item-->
+              <a id="profileLogoutURL" href="" title="Logout of OpenRMF"
+                class="dropdown-item notify-item"><i class="fa fa-power-off"></i> <span>Logout</span>
+              </a>
+            </div>
+          </li>
+        </ul>
+    
+        <ul class="list-inline menu-left mb-0">
           <li class="float-left">
-              <button class="button-menu-mobile open-left">
-                  <i class="fa fa-fw fa-bars"></i>
-              </button>
+            <button class="button-menu-mobile open-left">
+              <i class="fa fa-fw fa-bars"></i>
+            </button>
           </li>                        
-      </ul>
+        </ul>
     </nav>
 	</div>
 	<!-- End Navigation -->
@@ -131,27 +132,28 @@
 	<div class="left main-sidebar">
 		<div class="sidebar-inner leftscroll">
 			<div id="sidebar-menu">
-			<ul>
-				<li class="submenu">
-					<a href="index.html"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="checklists.html"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="compliance.html"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="templates.html"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
-				</li>
-				<li class="submenu" id="menuUpload" style="display: none;">
-					<a class="active" href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
-				</li>
-            </ul>
-            <div class="clearfix"></div>
+        <ul>
+          <li class="submenu">
+            <a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+          </li>
+          <li class="submenu">
+            <a href="checklists.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
+          </li>
+          <li class="submenu">
+            <a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+          </li>
+          <li class="submenu">
+            <a href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+          </li>
+          <li class="submenu">
+            <a href="charts.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+          </li>
+          <li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
+            <a class="active" href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
+          </li>
+          
+        </ul>
+        <div class="clearfix"></div>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -214,10 +216,10 @@
                     <h3><i class="fa fa-help"></i> Checklist Upload Help</h3>
                 </div>
                 <div class="card-body">
-                  <p>Use this form to upload a new CKL STIG checklist file to the system for scoring, indexing, and managing
-                    your STIG information. Select your system (if any) and then select up to five (5) CKL files to upload at a time.</p>
+                  <p>Use this form to upload a new *.CKL STIG checklist file or SCAP Scan XCCDF *.XML to the system for scoring, indexing, and managing
+                    your DoD STIG information. Select your system (if any) and then select up to five (5) *.CKL or *.XML files to upload at a time.</p>
                   <p>All fields are mandatory.</p>
-                  <p>* Please fill in the <b><i>Host</i></b> field on your CKL! All checklists are named by SYSTEM-HOSTNAME-STIGTYPE-REVISION.</p>
+                  <p>* Please fill in the <b><i>Host</i></b> field on your Checklist file CKL! All checklists are named by SYSTEM-HOSTNAME-STIGTYPE-REVISION.</p>
                   <p>i.e. <i>PAL Platform - ca2335.myorg.navy.mil - Google Chrome Current Windows STIG - Release: 15 Benchmark Date: 25 Jan 2019</i></p>
                 </div><!-- end card body -->							
               </div><!-- end card-->
@@ -259,7 +261,7 @@
                     <h3><i class="fa fa-help"></i> Template Upload Help</h3>
                 </div>
                 <div class="card-body">
-                    <p>Use this form to upload a new CKL STIG checklist template for download and use for any system. 
+                    <p>Use this form to upload a new *.CKL STIG checklist template for download and use for any system. 
                     A template is used as a starting point or a baseline for that checklist that your administrators, 
                     developers, cybersecurity personnel and managers can use to include known statuses and information for 
                     that particular checklist. </p>
@@ -283,7 +285,7 @@
     
 	<footer class="footer">
 		<span class="text-right">
-		&copy; <a target="_blank" href="#">Cingulara 2019</a>
+      &copy; <a target="_blank" href="https://www.cingulara.com/">Cingulara 2019</a>
 		</span>
 		<span class="float-right">
 		Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
@@ -308,7 +310,7 @@
 
 <!-- BEGIN Java Script for this page -->
 <script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="assets/plugins/sweetalert/sweetalert.js"></script>
 <script src="./js/openrmf.js"></script>
 <script src="./js/apis.js"></script>
 <script>
@@ -329,11 +331,25 @@
           $('#checklistFile').filer({
               limit: 5,
               maxSize: 10,
-              extensions: ['ckl'],
+              extensions: ['ckl', 'xml'],
               changeInput: true,
               showThumbs: true,
-              addMore: true
+              addMore: true,
+              captions: {
+                errors: {
+                  filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+                  filesType: "Only Checklist *.CKL and SCAP scan XCCDF *.XML files can be uploaded.",
+                  filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB.",
+                  filesSizeAll: "Files you have chosen are too large! Please upload a file up to {{fi-maxSize}} MB."
+                }
+              }
           });
+
+          var redir = getParameterByName('redir');
+          if (redir) {
+            // redirection on empty checklists so tell them
+            swal("Please Upload a Checklist", "There are currently no checklists for you to view. Please upload at least one checklist to start.", "info");
+          }
         }
         else
         {

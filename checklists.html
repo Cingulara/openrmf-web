@@ -36,6 +36,7 @@
 		
 		<!-- Custom CSS -->
 		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
@@ -62,14 +63,15 @@
 	<div class="headerbar">
 
 		<!-- LOGO -->
-        <div class="headerbar-left">
-			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.png" /> <span>OpenRMF</span></a>
-        </div>
+      <div class="headerbar-left">
+		<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
+	  </div>
 
         <nav class="navbar-custom">
 			<ul class="list-inline float-right mb-0">
 				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
+						aria-haspopup="false" aria-expanded="false">
 						<i class="fa fa-fw fa-question-circle"></i>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
@@ -77,18 +79,18 @@
 						<div class="dropdown-item noti-title">
 							<h5><small>Help and Support</small></h5>
 						</div>
-
+	
 						<!-- item-->
-						<a target="_blank" href="https://www.github.com/cingulara/openrmf-docs/" class="dropdown-item notify-item">                                    
+						<a target="_blank" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
 							<p class="notify-details ml-0">
 								<b>Do you need documentation on how OpenRMF works?</b>
-								<span>GitHub Readme</span>
+								<span>GitHub Pages</span>
 							</p>
 						</a>
 					</div>
 				</li>
 				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" 
+					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
 						href="#" role="button" aria-haspopup="false" aria-expanded="false">
 						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
 						class="avatar-rounded">
@@ -98,21 +100,20 @@
 						<div class="dropdown-item noti-title">
 							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
 						</div>
-
+	
 						<!-- item-->
-						<a id="profileAccountURL" href="" class="dropdown-item notify-item">
+						<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
 							<i class="fa fa-user"></i> <span>Profile</span>
 						</a>
-
+	
 						<!-- item-->
-            <a id="profileLogoutURL" 
-              href="" 
-							class="dropdown-item notify-item">
-							<i class="fa fa-power-off"></i> <span>Logout</span>
+						<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
+							class="dropdown-item notify-item"><i class="fa fa-power-off"></i> <span>Logout</span>
 						</a>
 					</div>
 				</li>
 			</ul>
+	
 			<ul class="list-inline menu-left mb-0">
 				<li class="float-left">
 					<button class="button-menu-mobile open-left">
@@ -130,21 +131,21 @@
 			<div id="sidebar-menu">
 			<ul>
 				<li class="submenu">
-					<a href="index.html"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+					<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
 				</li>
 				<li class="submenu">
-					<a class="active" href="checklists.html"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
+					<a class="active" href="checklists.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="compliance.html"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="templates.html"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					<a href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="charts.html"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+					<a href="charts.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
-				<li class="submenu" id="menuUpload" style="display: none;">
+				<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
 					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
             </ul>
@@ -182,7 +183,7 @@
 									class="btn btn-info btn-sm float-right">List All Systems</button>
 							</div>
 							<div class="card-body">
-								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" role="alert"></div>
+								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
 								<div class="table-responsive"  id="divSystemListing">
 										<table id="tblSystemListing" class="table table-bordered table-hover display">
 												<thead><tr><th></th><th>System Name</th><th># Checklists</th></thead>
@@ -211,7 +212,7 @@
     
 	<footer class="footer">
 		<span class="text-right">
-		&copy; <a target="_blank" href="#">Cingulara 2019</a>
+		&copy; <a target="_blank" href="https://www.cingulara.com/">Cingulara 2019</a>
 		</span>
 		<span class="float-right">
 		Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
@@ -234,6 +235,7 @@
 <script src="assets/js/jquery.nicescroll.js"></script>
 <script src="assets/js/jquery.scrollTo.min.js"></script>
 <script src="assets/plugins/switchery/switchery.min.js"></script>
+<script src="assets/plugins/sweetalert/sweetalert.js"></script>
 
 <!-- App js -->
 <script src="assets/js/pikeadmin.js"></script>
@@ -288,25 +290,25 @@
 				"pageLength": 50, 
 				"columns": [
 				{ 
-								"className":      'details-control',
-								"orderable":      false,
-								"data":           null,
+					"className":      'details-control',
+					"orderable":      false,
+					"data":           null,
 					"defaultContent": ''
 				},
-							{ "data": "title" },
-							{ "data": "totalNaF" },
-							{ "data": "totalNA" },
-							{ "data": "totalOpen" },
-							{ "data": "totalNR" }
+					{ "data": "title" },
+					{ "data": "totalNaF" },
+					{ "data": "totalNA" },
+					{ "data": "totalOpen" },
+					{ "data": "totalNR" }
 				],
 					"columnDefs": [
-							{ "width": "40%", "targets": 1 },
-							{ "className": "tabco2", "width": "14%", "targets": 2 },
-							{ "className": "tabco3", "width": "14%", "targets": 3 },
-							{ "className": "tabco4", "width": "14%", "targets": 4 },
-							{ "className": "tabco5", "width": "14%", "targets": 5 }
+						{ "width": "40%", "targets": 1 },
+						{ "className": "tabco2", "width": "14%", "targets": 2 },
+						{ "className": "tabco3", "width": "14%", "targets": 3 },
+						{ "className": "tabco4", "width": "14%", "targets": 4 },
+						{ "className": "tabco5", "width": "14%", "targets": 5 }
 					]
-					});
+				});
 				// Add event listener for opening and closing details
 				$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
 				var tr = $(this).closest('tr');
@@ -343,16 +345,13 @@
 				});
 			}
 			else {
-				alert('You are not logged in. Please check your setup with Keycloak.');
+				swal("Invalid Login", "You are not logged in. Please check your setup with Keycloak.", "error");
 			}
 		}).error(function() {
-			alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+			swal("Invalid Login", "Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an '*' somewhere?", "error");
 		});
-
-		
 	} );
 </script>
 <!-- END Java Script for this page -->
-
 </body>
 </html>
