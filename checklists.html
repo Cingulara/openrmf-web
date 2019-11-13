@@ -184,11 +184,7 @@
 							</div>
 							<div class="card-body">
 								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
-								<div class="table-responsive"  id="divSystemListing">
-										<table id="tblSystemListing" class="table table-bordered table-hover display">
-												<thead><tr><th></th><th>System Name</th><th># Checklists</th></thead>
-												<tbody></tbody>
-											</table>
+								<div id="divSystemListing" class="systemsList">
 								</div>
 								<div class="table-responsive" id="divChecklistListing" style="display: none;">
 									<table id="tblChecklistListing" class="table table-bordered table-hover display">
@@ -236,6 +232,8 @@
 <script src="assets/js/jquery.scrollTo.min.js"></script>
 <script src="assets/plugins/switchery/switchery.min.js"></script>
 <script src="assets/plugins/sweetalert/sweetalert.js"></script>
+<script src="assets/plugins/chart.js/chart.min.js"></script>
+<script src="assets/plugins/chart.js/chartjs-plugin-labels.min.js"></script>
 
 <!-- App js -->
 <script src="assets/js/pikeadmin.js"></script>
@@ -311,38 +309,21 @@
 				});
 				// Add event listener for opening and closing details
 				$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
-				var tr = $(this).closest('tr');
-				var row = tableChecklist.row( tr );
-			
-				if ( row.child.isShown() ) {
-					// This row is already open - close it
-					row.child.hide();
-					tr.removeClass('shown');
-				}
-				else {
-					// Open this row
-					row.child( format(row.data()) ).show();
-					tr.addClass('shown');
-				}
-			} );
+					var tr = $(this).closest('tr');
+					var row = tableChecklist.row( tr );
+				
+					if ( row.child.isShown() ) {
+						// This row is already open - close it
+						row.child.hide();
+						tr.removeClass('shown');
+					}
+					else {
+						// Open this row
+						row.child( format(row.data()) ).show();
+						tr.addClass('shown');
+					}
+				} );
 
-				// function for setting up the System table
-				var tableSystems = $('#tblSystemListing').DataTable({
-				"pageLength": 10, 
-				"columns": [
-					{ 
-						"orderable":      false,
-						"data":           "systemLink"
-					},
-						{ "data": "system" },
-						{ "data": "checklistCount" }
-				],
-					"columnDefs": [
-						{ "width": "15%", "targets": 0 },
-						{ "width": "65%", "targets": 1 },
-						{ "width": "20%", "targets": 2 }
-					]
-				});
 			}
 			else {
 				swal("Invalid Login", "You are not logged in. Please check your setup with Keycloak.", "error");

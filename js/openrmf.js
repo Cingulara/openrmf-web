@@ -137,42 +137,51 @@ async function getChecklistSystemListing(){
 	$("#txtSystemName").val('');
 
 	// reset the list of systems
-  sessionStorage.removeItem("checklistSystems");
+	sessionStorage.removeItem("checklistSystems");
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
-  if (response.ok) {
-			var data = await response.json()
-			var table = $('#tblSystemListing').DataTable(); // the datatable reference to do a row.add() to
-			table.clear();
-			$("#txtListingTitle").text("Systems");
+	if (response.ok) {
+		var data = await response.json()
+		var systemsListing = "";
+		$("#txtListingTitle").text("Systems");
 
-			if (data.length == 0) {
-				$.unblockUI();
-				if (canUpload()) {
-					document.location.href="upload.html?redir=nochecklists";
-				}
-				else {
-					var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
-					alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-					alertText += '<span aria-hidden="true">&times;</span></button>';
-					$("#divMessaging").html(alertText);
-					$("#divMessaging").show();
-				}
+		if (data.length == 0) {
+			$.unblockUI();
+			if (canUpload()) {
+				document.location.href="upload.html?redir=nochecklists";
 			}
 			else {
-				$.unblockUI();
-				$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
-				$("#divMessaging").html('');
-				$("#divMessaging").hide();
-				// cycle through the systems and add the data
-				var systemLink = "";
-				for (const item of data) {
-					systemLink = "<button type='button' title='View all System Checklists' class='btn btn-primary' onclick='getChecklists(false,\"" + item.system + "\"); return false;'>Open Checklists</button>";
-					table.row.add( { "systemLink": systemLink, "system": item.system, "checklistCount": item.checklistCount}).draw();
-				}
+				var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
+				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+				alertText += '<span aria-hidden="true">&times;</span></button>';
+				$("#divMessaging").html(alertText);
+				$("#divMessaging").show();
 			}
+		}
+		else {
+			$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
+			$("#divMessaging").html('');
+			$("#divMessaging").hide();
+			// cycle through the systems and add the data
+			var chartNumber = 0;
+			// clear the DIV
+			$('#divSystemListing').html("");
+			for (const item of data) {
+				chartNumber = chartNumber + 1;
+				systemsListing = '<div class="systemListing"><div class="systemListTitle">' + item.system + '</div><div class="systemListInfo"><canvas ';
+				systemsListing += 'class="systemChart" id="pieChart' + chartNumber + '"></canvas> ';
+				systemsListing += '<div style="clear: both;"></div><div class="systemViewChecklistsLink"><span><a role="button" class="btn btn-link mb-2" ';
+				systemsListing += 'style="font-size: 12px;" onclick="getChecklists(false,\'' + item.system + '\')" ';
+				systemsListing += 'title="view checklists for this system">View ' + item.checklistCount + ' Checklists</a></span></div></div></div>';
+				$('#divSystemListing').append(systemsListing);
+				var data = await getScoreForSystemChecklistListing(item.system);
+				if (data) 
+					renderSystemPieChart("pieChart" + chartNumber, data); // render the specific data for this system
+			}
+			$.unblockUI();
+		}
 	}
 	else {
 		$.unblockUI();
@@ -183,6 +192,74 @@ async function getChecklistSystemListing(){
 		$("#divMessaging").show();
 	}
 }
+
+// called from above to return the system score for all checklists in a system
+async function getScoreForSystemChecklistListing(systemName) {
+	var url = scoreAPI;
+  try {
+		let responseScore = await fetch(scoreAPI + "/system/" + encodeURIComponent(systemName), {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+		if (responseScore.ok) {
+			var dataScore = await responseScore.json()
+			return dataScore;
+		}
+	}
+	catch (error) {
+		console.error("returning an empty score");
+		return null;
+	}
+}
+
+// get the data for the pie chart in the Systems listing to show
+function renderSystemPieChart(element, data) {
+	var ctx3 = document.getElementById(element).getContext('2d');
+	var chartSeverity = new Chart(ctx3, {
+		type: 'pie',
+		data: {
+			datasets: [{
+				data: [data.totalOpen, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
+				backgroundColor: [
+					'rgba(255,99,132,1)',
+					'rgba(75, 192, 192, 1)',
+					'rgba(150, 150, 150, 1)',
+					'rgba(54, 162, 235, 1)'
+				],
+				label: 'System Severity Breakdown'
+			}],
+			labels: [
+				"Open",
+				"Not a Finding",
+				"N/A",
+				"Not Reviewed"
+			]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			aspectRatio: 1,
+			legend: {
+			  display: true,
+			  position: 'bottom',
+			  labels: {
+				fontSize: 10,
+				padding: 5
+			  }
+			},
+			plugins: {
+			  labels: {
+				render: 'value',
+				fontSize: 14,
+				//fontStyle: 'bold',
+				fontColor: '#000',
+				//position: 'outside',
+				fontFamily: '"Lucida Console", Monaco, monospace'
+			  }
+			}
+		}
+	});
+}
+
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -299,6 +376,7 @@ async function getScoreForChecklistListing(id, template) {
 		return null;
 	}
 }
+
 // the dropdown filter for the checklist listing page
 async function getChecklistSystemsForChecklistFilter() {
 	var data = await getChecklistSystems();
