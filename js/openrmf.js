@@ -460,10 +460,10 @@ async function getChecklistData(id, template) {
 		
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
-		$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
+		//$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
 
 		// load updated date
-		$("#chartSeverityUpdated").html(updatedDate);
+		$("#chartSeverityUpdated").text(updatedDate);
 		$("#chartCategoryUpdated").html(updatedDate);
 		$("#barChartUpdated").html(updatedDate);
 		$("#checklistLastUpdated").html(updatedDate);
@@ -714,27 +714,26 @@ async function makeChartSeverity (data) {
 	var chartSeverity = new Chart(ctx3, {
 		type: 'pie',
 		data: {
-				datasets: [{
-					data: [data.totalOpen, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
-					backgroundColor: [
-						'rgba(255,99,132,1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(150, 150, 150, 1)',
-						'rgba(54, 162, 235, 1)'
-					],
-					label: 'Checklist Severity Breakdown'
-				}],
-				labels: [
-					"Open",
-					"Not a Finding",
-					"Not Applicable",
-					"Not Reviewed"
-				]
-			},
-			options: {
-				responsive: true
-			}
-	 
+			datasets: [{
+				data: [data.totalOpen, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
+				backgroundColor: [
+					'rgba(255,99,132,1)',
+					'rgba(75, 192, 192, 1)',
+					'rgba(150, 150, 150, 1)',
+					'rgba(54, 162, 235, 1)'
+				],
+				label: 'Checklist Severity Breakdown'
+			}],
+			labels: [
+				"Open",
+				"Not a Finding",
+				"Not Applicable",
+				"Not Reviewed"
+			]
+		},
+		options: {
+			responsive: true
+		}	 
   });
 }
 function downloadChart(element) {
