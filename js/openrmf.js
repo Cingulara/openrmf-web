@@ -269,6 +269,9 @@ async function getChecklistsBySystem() {
 }
 async function getChecklists(latest, system) {
 	$.blockUI({ message: "Updating the checklist listing..." }); 
+	// use this to refresh the checklist page if they delete something
+	sessionStorage.setItem("currentSystem", system);
+
 	var url = readAPI;
 	if (system && system != "All")
 		url += "/systems/" + encodeURIComponent(system);
@@ -913,11 +916,15 @@ async function deleteChecklist(id) {
 					success : function(data){
 						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success")
 						.then((value) => {
-							location.href = "checklists.html";
+							var currentChecklist = sessionStorage.getItem("currentSystem");
+							if (currentChecklist)
+								getChecklists(false, currentChecklist);
+							else
+								location.href = "checklists.html";
 						});
 					},
 					error : function(data){
-						swal("Your Checklist was not deleted successfully!", "Click OK to continue!", "error");
+						swal("There was a Problem. Your Checklist was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
 					}
 			    });
 			  
