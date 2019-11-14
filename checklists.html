@@ -255,7 +255,10 @@
 				// see if the upload menu should show
 				verifyUploadMenu();
 				// calls to get the checklist page setup
-				getChecklistSystemListing();
+				if (getParameterByName('rtn'))
+					getChecklistListingBySession();
+				else
+					getChecklistSystemListing();
 
 				// START CODE for Child rows (show extra / detailed information) DATA TABLE 
 				function format ( d ) {

@@ -267,6 +267,16 @@ async function getChecklistsBySystem() {
 	var system = $("#checklistSystemFilter").val();
 	await getChecklists(false, system);
 }
+// if returning from a session delete or an individual checklist, 
+// just load up the checklist listing
+function getChecklistListingBySession(){
+	var currentChecklist = sessionStorage.getItem("currentSystem");
+	if (currentChecklist)
+		getChecklists(false, currentChecklist);
+	else
+		location.href = "checklists.html";
+}
+
 async function getChecklists(latest, system) {
 	$.blockUI({ message: "Updating the checklist listing..." }); 
 	// use this to refresh the checklist page if they delete something
@@ -392,6 +402,12 @@ async function getChecklistSystemsForChecklistFilter() {
 			}));
 		}); 
 	}
+}
+
+// if on a specific checklist page, go back to the Checklist Listing page for that system
+function returnToChecklistListing() {
+	//var currentChecklist = sessionStorage.getItem("currentSystem");
+	location.href = "checklists.html?rtn=1";
 }
 
 async function exportChecklistListingXLSX() {
@@ -594,7 +610,7 @@ function viewVulnDetails(vulnId) {
 		}
 		ccilist = ccilist.substring(0, ccilist.length -2);
 		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
-		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status);
+		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status.replace("NotAFinding","Not a Finding").replace("_"," "));
 		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + (data.stiG_DATA[21].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + (data.stiG_DATA[1].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + (data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
@@ -915,11 +931,7 @@ async function deleteChecklist(id) {
 					success : function(data){
 						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success")
 						.then((value) => {
-							var currentChecklist = sessionStorage.getItem("currentSystem");
-							if (currentChecklist)
-								getChecklists(false, currentChecklist);
-							else
-								location.href = "checklists.html";
+							getChecklistListingBySession();
 						});
 					},
 					error : function(data){
