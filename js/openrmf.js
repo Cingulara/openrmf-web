@@ -489,10 +489,8 @@ async function getChecklistData(id, template) {
 
 		await getChecklistSystemsForChecklist();
 		// go ahead and fill in the modal for for upload while we are in here
-		$("#frmChecklistTitle").val(data.title);
-		$("#frmChecklistDescription").val(data.description);
-		$("#frmChecklistType").val(data.type);
 		$("#frmChecklistSystem").val(data.system);
+		$("#frmChecklistTitle").text(data.title);
 
 		// load the vulnerabilities into sessionStorage
 		var vulnListing = "";
@@ -646,13 +644,8 @@ function updateSingleChecklist(id) {
 	var url = saveAPI;
 	// only if there is a file does this get used uploadAPI
 	var formData = new FormData();
-	// if a new system, use it, otherwise select from the list
- if ($("#frmChecklistSystemText").val() && $("#frmChecklistSystemText").val().trim().length > 0) {
-		formData.append("system",$("#frmChecklistSystemText").val());
-		sessionStorage.removeItem("checklistSystems"); // reset and make it read again
-	}
-	else
-		formData.append("system",$("#frmChecklistSystem").val());
+	// use the system this came with
+	formData.append("system",$("#frmChecklistSystem").val());
 
 	if ($('#checklistFile').val()) {
 		// someone added a file
@@ -660,21 +653,22 @@ function updateSingleChecklist(id) {
 		url = uploadAPI; // include the file contents in the update
 	}
 	$.ajax({
-			url : url + "/" + id,
-			data : formData,
-			type : 'PUT',
-			beforeSend: function(request) {
-			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
-			},
-			processData: false,
-			contentType: false,
-			success : function(data){
-				swal("Your Checklist was updated successfully!", "Click OK to continue!", "success");
-				getChecklistSystemsForChecklist();
-				getChecklistData(id, false);
-			}
+		url : url + "/" + id,
+		data : formData,
+		type : 'PUT',
+		beforeSend: function(request) {
+			request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+		},
+		processData: false,
+		contentType: false,
+		success : function(data){
+			swal("Your Checklist was updated successfully!", "Click OK to continue!", "success");
+			getChecklistSystemsForChecklist();
+			getChecklistData(id, false);
+		}
 	});
 }
+
 // get the list of systems for the update function
 async function getChecklistSystemsForChecklist() {
 	var data = await getChecklistSystems();
