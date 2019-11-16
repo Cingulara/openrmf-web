@@ -662,9 +662,12 @@ function updateSingleChecklist(id) {
 		processData: false,
 		contentType: false,
 		success : function(data){
-			swal("Your Checklist was updated successfully!", "Click OK to continue!", "success");
-			getChecklistSystemsForChecklist();
-			getChecklistData(id, false);
+			swal("Your Checklist was updated successfully!", "Click OK to continue!", "success")
+			.then((value) => {
+				getChecklistSystemsForChecklist();
+				//getChecklistData(id, false);
+				location.reload(true);
+			});
 		}
 	});
 }
