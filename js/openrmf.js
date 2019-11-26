@@ -406,8 +406,8 @@ async function getChecklistSystemsForChecklistFilter() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value.system,
-					text : value.system 
+				value: value.internalId,
+					text : value.title
 			}));
 		}); 
 	}
@@ -475,7 +475,7 @@ async function getChecklistData(id, template) {
 		else {
 			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
 		}
-		$("#checklistSystem").html("<b>System:</b> " + data.system);
+		$("#checklistSystem").html("<b>System:</b> " + data.systemTitle);
 		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
 		$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
 		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
@@ -497,7 +497,7 @@ async function getChecklistData(id, template) {
 
 		await getChecklistSystemsForChecklist();
 		// go ahead and fill in the modal for for upload while we are in here
-		$("#frmChecklistSystem").val(data.system);
+		$("#frmChecklistSystem").val(data.systemGroupId);
 		$("#frmChecklistTitle").text(data.title);
 
 		// load the vulnerabilities into sessionStorage
@@ -653,7 +653,7 @@ function updateSingleChecklist(id) {
 	// only if there is a file does this get used uploadAPI
 	var formData = new FormData();
 	// use the system this came with
-	formData.append("system",$("#frmChecklistSystem").val());
+	formData.append("systemGroupId",$("#frmChecklistSystem").val());
 
 	if ($('#checklistFile').val()) {
 		// someone added a file
@@ -687,8 +687,8 @@ async function getChecklistSystemsForChecklist() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#frmChecklistSystem').append($('<option/>', { 
-					value: value.system,
-					text : value.system
+					value: value.internalId,
+					text : value.title
 			}));
 		}); 
 	}
@@ -979,8 +979,8 @@ async function getChecklistSystemsForUpload() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystem').append($('<option/>', { 
-					value: value.system,
-					text : value.system 
+					value: value.internalId,
+					text : value.title
 			}));
 		}); 
 	}
@@ -1017,10 +1017,7 @@ function uploadChecklist(){
 		// add this new one to the listing, and then reset the form to show this
 		$('#divNewChecklistSystem').show(); 
 		$('#divNewChecklistSystemText').hide();
-		$('#checklistSystem').append($('<option/>', { 
-			value: $("#checklistSystemText").val().trim(),
-			text : $("#checklistSystemText").val().trim() 
-		}));
+		getChecklistSystemsForUpload();
 	}
 	else // grab the Unique ID of the System Group and pass that
 		formData.append("systemGroupId",$("#checklistSystem").val());
@@ -1128,8 +1125,8 @@ async function getChecklistSystemsForReportFilter() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value.system,
-					text : value.system 
+					value: value.internalId,
+					text : value.title 
 			}));
 		}); 
 	}
@@ -1147,8 +1144,8 @@ async function getChecklistSystemsForComplianceFilter() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value.system,
-					text : value.system 
+					value: value.internalId,
+					text : value.title
 			}));
 		}); 
 	}
