@@ -134,7 +134,7 @@
 					<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
 				</li>
 				<li class="submenu">
-					<a class="active" href="checklists.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
+					<a class="active" href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
 				</li>
 				<li class="submenu">
 					<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
@@ -163,10 +163,10 @@
 				<div class="row">
 					<div class="col-xl-12">
 						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">Checklists</h1>
+							<h1 class="main-title float-left">System Checklists</h1>
 							<ol class="breadcrumb float-right">
 								<li class="breadcrumb-item">Home</li>
-								<li class="breadcrumb-item active">Checklists</li>
+								<li class="breadcrumb-item active">System / Checklists</li>
 							</ol>
 							<div class="clearfix"></div>
 						</div>
@@ -178,15 +178,13 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3 class="float-left"><i class="fa fa-table"></i> <span id="txtListingTitle">Systems</span></h3>
-								<button id="btnListAllSystems" onclick="getChecklistSystemListing(); return false;" style="display: none;"
+								<h3 class="float-left"><i class="fa fa-table"></i> <span id="txtListingTitle"></span> Checklists</h3>
+								<button id="btnListAllSystems" onclick="listSystems(); return false;"
 									class="btn btn-info btn-sm float-right">List All Systems</button>
 							</div>
 							<div class="card-body">
 								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
-								<div id="divSystemListing" class="systemsList">
-								</div>
-								<div class="table-responsive" id="divChecklistListing" style="display: none;">
+								<div class="table-responsive" id="divChecklistListing">
 									<table id="tblChecklistListing" class="table table-bordered table-hover display">
 										<thead><tr><th></th><th>Title</th><th>NaF</th><th>N/A</th><th>Open</th><th>N/R</th></tr></thead>
 										<tbody></tbody>
@@ -258,7 +256,7 @@
 				if (getParameterByName('rtn'))
 					getChecklistListingBySession();
 				else
-					getChecklistSystemListing();
+					getChecklists(false, getParameterByName('id'));
 
 				// START CODE for Child rows (show extra / detailed information) DATA TABLE 
 				function format ( d ) {
@@ -303,11 +301,11 @@
 					{ "data": "totalNR" }
 				],
 					"columnDefs": [
-						{ "width": "40%", "targets": 1 },
-						{ "className": "tabco2", "width": "14%", "targets": 2 },
-						{ "className": "tabco3", "width": "14%", "targets": 3 },
-						{ "className": "tabco4", "width": "14%", "targets": 4 },
-						{ "className": "tabco5", "width": "14%", "targets": 5 }
+						{ "width": "60%", "targets": 1 },
+						{ "className": "tabco2", "width": "10%", "targets": 2 },
+						{ "className": "tabco3", "width": "10%", "targets": 3 },
+						{ "className": "tabco4", "width": "10%", "targets": 4 },
+						{ "className": "tabco5", "width": "10%", "targets": 5 }
 					]
 				});
 				// Add event listener for opening and closing details

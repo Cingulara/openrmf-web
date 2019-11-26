@@ -1258,7 +1258,7 @@ a.btn:focus {
   border: solid 2px #dedede;
   border-radius: 3px;
   float: left;
-  height: 355px;
+  min-height: 365px;
   width: 400px;
   font-size: 16px;
   position: relative;
@@ -1281,6 +1281,12 @@ a.btn:focus {
   left: 0;
   position: absolute;
   color: #2688ac;
+}
+.systemDescription {
+  font-weight: normal;
+  font-size: 12px;
+  padding: 2px;
+  color: #333333;
 }
 .systemListingNAF {
   background: #009688;

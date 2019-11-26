@@ -126,14 +126,16 @@ async function getScoreForTemplateListing(xmlChecklist) {
 /*************************************
  * System listing functions
  ************************************/
+function listSystems() {
+	location.href = "systems.html";
+}
+
 async function getChecklistSystemListing(){
 	$.blockUI({ message: "Updating the system listing..." }); 
 	var url = readAPI + "/systems/";
 
 	// setup the table visibility
 	$("#divSystemListing").show();
-	$("#divChecklistListing").hide();	
-	$("#btnListAllSystems").hide();
 	$("#txtSystemName").val('');
 
 	// reset the list of systems
@@ -145,7 +147,6 @@ async function getChecklistSystemListing(){
 	if (response.ok) {
 		var data = await response.json()
 		var systemsListing = "";
-		$("#txtListingTitle").text("Systems");
 
 		if (data.length == 0) {
 			$.unblockUI();
@@ -170,13 +171,19 @@ async function getChecklistSystemListing(){
 			$('#divSystemListing').html("");
 			for (const item of data) {
 				chartNumber = chartNumber + 1;
-				systemsListing = '<div class="systemListing"><div class="systemListTitle">' + item.system + '</div><div class="systemListInfo"><canvas ';
+				systemsListing = '<div class="systemListing"><div class="systemListTitle">' + item.title + '</div><div class="systemDescription">';
+				if (item.description) {
+					systemsListing += item.description;
+				} else {
+					systemsListing += "<i>(No description)</i>"
+				}
+				systemsListing += '</div><div class="systemListInfo"><canvas ';
 				systemsListing += 'class="systemChart" id="pieChart' + chartNumber + '"></canvas> ';
 				systemsListing += '<div style="clear: both;"></div><div class="systemViewChecklistsLink"><span><a role="button" class="btn btn-link mb-2" ';
-				systemsListing += 'style="font-size: 12px;" onclick="getChecklists(false,\'' + item.system + '\')" ';
-				systemsListing += 'title="view checklists for this system">View ' + item.checklistCount + ' Checklists</a></span></div></div></div>';
+				systemsListing += 'style="font-size: 12px;" href="checklists.html?id=' + item.internalId + '" ';
+				systemsListing += 'title="view checklists for this system">View ' + item.numberOfChecklists + ' Checklists</a></span></div></div></div>';
 				$('#divSystemListing').append(systemsListing);
-				var data = await getScoreForSystemChecklistListing(item.system);
+				var data = await getScoreForSystemChecklistListing(item.internalId);
 				if (data) 
 					renderSystemPieChart("pieChart" + chartNumber, data); // render the specific data for this system
 			}
@@ -274,7 +281,7 @@ function getChecklistListingBySession(){
 	if (currentChecklist)
 		getChecklists(false, currentChecklist);
 	else
-		location.href = "checklists.html";
+		location.href = "systems.html";
 }
 
 async function getChecklists(latest, system) {
@@ -303,7 +310,6 @@ async function getChecklists(latest, system) {
 		$("#btnListAllSystems").show();
 		$("#txtSystemName").val(system);
 		
-		$("#txtListingTitle").text(system + " Checklists");
 		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
 		table.clear();
 		var checklistLink = "";
@@ -326,6 +332,9 @@ async function getChecklists(latest, system) {
 			$("#divMessaging").html('');
 			$("#divMessaging").hide();
 			for (const item of data) {
+				if (!$("#txtListingTitle").text())
+					$("#txtListingTitle").text(item.systemTitle);
+
 				checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '" title="View the Checklist Details">'
 				checklistLink += item.title
 				checklistLink += '</a><br /><span class="small">last updated on '
@@ -406,7 +415,6 @@ async function getChecklistSystemsForChecklistFilter() {
 
 // if on a specific checklist page, go back to the Checklist Listing page for that system
 function returnToChecklistListing() {
-	//var currentChecklist = sessionStorage.getItem("currentSystem");
 	location.href = "checklists.html?rtn=1";
 }
 
@@ -977,7 +985,7 @@ async function getChecklistSystemsForUpload() {
 		}); 
 	}
 }
-
+// called from the Upload page to upload one or more checklists
 function uploadChecklist(){
 	var formData = new FormData();
 	if ($("input[id=checklistFile]").length == 0) {
@@ -1014,8 +1022,8 @@ function uploadChecklist(){
 			text : $("#checklistSystemText").val().trim() 
 		}));
 	}
-	else
-		formData.append("system",$("#checklistSystem").val());
+	else // grab the Unique ID of the System Group and pass that
+		formData.append("systemGroupId",$("#checklistSystem").val());
 	$.ajax({
 			url : uploadAPI,
 			data : formData,
