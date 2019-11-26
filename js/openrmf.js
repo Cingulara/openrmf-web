@@ -308,7 +308,7 @@ async function getChecklists(latest, system) {
 		$("#divSystemListing").hide();
 		$("#divChecklistListing").show();
 		$("#btnListAllSystems").show();
-		$("#txtSystemName").val(system);
+		//$("#txtSystemName").val(system);
 		
 		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
 		table.clear();
@@ -332,8 +332,10 @@ async function getChecklists(latest, system) {
 			$("#divMessaging").html('');
 			$("#divMessaging").hide();
 			for (const item of data) {
-				if (!$("#txtListingTitle").text())
+				if (!$("#txtListingTitle").text()) {
 					$("#txtListingTitle").text(item.systemTitle);
+					$("#txtSystemName").val(item.systemTitle);
+				}
 
 				checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '" title="View the Checklist Details">'
 				checklistLink += item.title
@@ -426,7 +428,7 @@ async function exportChecklistListingXLSX() {
 		systemFilter = $("#txtSystemName").val();
 	}
 	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait" }); 
-	var url = readAPI + "/export?system=" + encodeURIComponent(systemFilter);
+	var url = readAPI + "/export?system=" + encodeURIComponent(getParameterByName('id'));
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
