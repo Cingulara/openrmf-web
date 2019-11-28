@@ -200,9 +200,59 @@ async function getChecklistSystemListing(){
 	}
 }
 
+function getSystemRecordBySession(){
+	var currentSystem = sessionStorage.getItem("currentSystem");
+	if (currentSystem)
+		getSystemRecord(currentSystem);
+	else
+		location.href = "systems.html";
+}
+
+async function getSystemRecord(systemGroupId) {
+	var url = readAPI;
+	url += "/system/" + encodeURIComponent(systemGroupId);
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+
+	if (response.ok) {
+		var item = await response.json()
+		if (item.length == 0) {
+			$.unblockUI();			
+			var alertText = 'That is not a valid System. Please return to the Systems page and click on a valid system.';
+			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+			alertText += '<span aria-hidden="true">&times;</span></button>';
+			$("#divMessaging").html(alertText);
+			$("#divMessaging").show();
+		}
+		else {
+			$("#divSystemTitle").html("<b>Title:</b> " + item.title);
+			$("#divSystemDescription").html("<b>Description:</b> " + item.description);
+			$("#divNumberChecklists").html("<b>Checklists:</b> " + item.numberOfChecklists);
+			if (item.rawNessusFile) 
+				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> Yes");
+			else 
+				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> N/A");
+			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
+			if (item.updatedOn) 
+				$("#divSystemUpdated").html("<b>Last Updated:</b> " + moment(item.updatedOn).format('MM/DD/YYYY h:mm a'));
+			else
+				$("#divSystemUpdated").html("<b>Last Updated:</b> N/A");
+			if (item.lastComplianceCheck) 
+				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> " + moment(item.lastComplianceCheck).format('MM/DD/YYYY h:mm a'));
+			else 
+				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> N/A");
+		}
+	}
+	else {
+		$.unblockUI();
+		throw new Error(response.status)
+	}
+}
+
 // called from above to return the system score for all checklists in a system
 async function getScoreForSystemChecklistListing(systemName) {
-	var url = scoreAPI;
+  var url = scoreAPI;
   try {
 		let responseScore = await fetch(scoreAPI + "/system/" + encodeURIComponent(systemName), {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
@@ -455,12 +505,13 @@ async function exportChecklistListingXLSX() {
 	request.send();
 	$.unblockUI();
 }
+
 /*************************************
  * Single Checklist Data functions
  *************************************/
 // get the specific checklist data
 async function getChecklistData(id, template) {
-	var url = readAPI;
+	var url = readAPI + "/artifact";
 	if (template)
 		url = templateAPI;
   let response = await fetch(url + "/" + id, {headers: {

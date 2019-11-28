@@ -163,7 +163,7 @@
 				<div class="row">
 					<div class="col-xl-12">
 						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">System Checklists</h1>
+							<h1 class="main-title float-left">System Information and Checklists</h1>
 							<ol class="breadcrumb float-right">
 								<li class="breadcrumb-item">Home</li>
 								<li class="breadcrumb-item active">System / Checklists</li>
@@ -173,12 +173,45 @@
 					</div>
 				</div>
 				<!-- end row -->
-		
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-info-circle"></i> System Information</h3>
+							</div>
+							<div class="card-body">
+								<div id="divSystemTitle"></div>
+								<div id="divNumberChecklists"></div>
+								<div id="divSystemDescription"></div>
+								<div id="divSystemNessusFile"></div>
+								<div id="divSystemPOAM"><b>Latest POA&amp;M:</b> (future)</div>
+								<div id="divSystemLastRAR"><b>Last Risk Assessment Report:</b> (future)</div>
+							</div>
+						</div><!-- end card-->					
+					</div>
+					
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-shield"></i> Audit Information</h3>
+							</div>
+								
+							<div class="card-body">
+								<div id="divSystemCreated"></div>
+								<div id="divSystemUpdated"></div>
+								<div id="divSystemLastCompliance"></div>
+							</div>
+						</div><!-- end card-->					
+					</div>							
+				</div>
+
+
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3 class="float-left"><i class="fa fa-table"></i> <span id="txtListingTitle"></span> Checklists</h3>
+								<h3 class="float-left"><i class="fa fa-table"></i> Checklists</h3>
 								<button id="btnListAllSystems" onclick="listSystems(); return false;"
 									class="btn btn-info btn-sm float-right">List All Systems</button>
 							</div>
@@ -197,6 +230,7 @@
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
+
             </div>
 			<!-- END container-fluid -->
 		</div>
@@ -253,10 +287,16 @@
 				// see if the upload menu should show
 				verifyUploadMenu();
 				// calls to get the checklist page setup
-				if (getParameterByName('rtn'))
+				if (getParameterByName('rtn')){
+					// get the system record by the session info
+					getSystemRecordBySession();
 					getChecklistListingBySession();
-				else
+				}
+				else {
+					// get the system info from the Id
+					getSystemRecord(getParameterByName('id'));
 					getChecklists(false, getParameterByName('id'));
+				}
 
 				// START CODE for Child rows (show extra / detailed information) DATA TABLE 
 				function format ( d ) {
