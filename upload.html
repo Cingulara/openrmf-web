@@ -233,7 +233,7 @@
                     <h3><i class="fa fa-file"></i> Template Upload </h3>
                 </div>
                 <div class="card-body">
-    						  <form onsubmit="return uploadTemplate();" id="frmTemplateUpload">
+    						  <form id="frmTemplateUpload">
                     <div class="form-group">
                       <label for="templateTitle">Title</label>
                       <input type="text" class="form-control" id="templateTitle" maxlength="100"
@@ -250,7 +250,7 @@
                         <label for="templateFile">Template Checklist File</label><br />
                         <input type="file" id="templateFile" required /> 
                       </div>
-                    <button type="submit" class="btn btn-primary">Upload and Save</button>
+                    <button type="submit" onclick="uploadTemplate();" class="btn btn-primary">Upload and Save</button>
                   </form>
                 </div><!-- end card body -->							
             </div><!-- end card-->

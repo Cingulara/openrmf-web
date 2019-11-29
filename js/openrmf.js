@@ -239,8 +239,17 @@ async function getSystemRecord(systemGroupId) {
 			else 
 				$("#divSystemDescription").html("<b>Description:</b> (no description)");
 			$("#divNumberChecklists").html("<b>Checklists:</b> " + item.numberOfChecklists);
-			if (item.rawNessusFile) 
-				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> Yes");
+			if (item.rawNessusFile) {
+				var nessusHTML = "<b>Nessus Scan:</b> Yes";				
+				if (canDownload()) {
+					nessusHTML += ' <span class="small"><a title="Download the Nessus scan" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
+					nessusHTML += '(xml)</a> ';
+					nessusHTML += ' <span class="small"><a title="Export the Nessus scan to XLSX" href="javascript:exportNessusXML(\'' + item.internalId + '\')">';
+					nessusHTML += '(xlsx)</a>';
+				}
+				// write the HTML
+				$("#divSystemNessusFile").html(nessusHTML);
+			}
 			else 
 				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> N/A");
 			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
@@ -278,9 +287,12 @@ function updateSystem(systemGroupId){
 			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 			},
 			processData: false,
-			contentType: false,
-			success : function(data){
-				swal("Your System was updated successfully!", "Click OK to continue!", "success");
+			contentType: false,			
+			success: function(data){
+				swal("Your System was updated successfully!", "Click OK to continue!", "success")
+				.then((value) => {
+					getSystemRecordBySession();
+				});
 			},
 			error : function(data){
 				swal("There was a Problem. Your System was not updated successfully. Please check with the Application Admin.", "Click OK to continue!", "error");
@@ -288,7 +300,6 @@ function updateSystem(systemGroupId){
 	});
 	return false;
 }
-
 
 // called from above to return the system score for all checklists in a system
 async function getScoreForSystemChecklistListing(systemName) {
@@ -355,6 +366,41 @@ function renderSystemPieChart(element, data) {
 			}
 		}
 	});
+}
+
+// if there is a Nessus scan file for the system, and they have permissions, download it
+async function downloadNessusXML(systemGroupId) {
+	// redirect to the API and it downloads the XML file for the Nessus scan
+	$.blockUI({ message: "Generating the Nessus file...please wait" }); 
+	var url = readAPI + "/system/downloadnessus/" + encodeURIComponent(systemGroupId);
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + ".nessus";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		}
+	};
+	request.send();
+	$.unblockUI();
+}
+
+async function exportNessusXML(systemGroupId) {
+	swal("Coming Soon ... export your Nessus file to an XLSX!", "Click OK to continue!", "success");
 }
 
 /*************************************
@@ -1021,12 +1067,12 @@ async function deleteChecklist(id) {
 		  .then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url : saveAPI + "/" + id,
+					url : saveAPI + "/artifact/" + id,
 					type : 'DELETE',
 					beforeSend: function(request) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
-					success : function(data){
+					success: function(data){
 						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success")
 						.then((value) => {
 							getChecklistListingBySession();
@@ -1127,13 +1173,12 @@ function uploadChecklist(){
 				swal("Your Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmChecklistUpload")[0].reset();
-				$('#checklistFile').trigger("filer.reset")
+				$('#templateFile').trigger("filer.reset")
 			},
 			error: function() {
 				swal("Error Uploading Checklist", "There was an error uploading the checklist. Please try again.", "error");
 			}
 	});
-
 }
 
 function uploadTemplate(){
@@ -1159,9 +1204,12 @@ function uploadTemplate(){
 				swal("Your Template was uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmTemplateUpload")[0].reset();
+				$('#checklistFile').trigger("filer.reset")
+			},
+			error: function() {
+				swal("Error Uploading Template", "There was an error uploading the template. Please try again.", "error");
 			}
 	});
-	return false;
 }
 
 /************************************
