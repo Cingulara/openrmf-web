@@ -476,34 +476,34 @@
 
 <!-- Update Modal -->
 <div class="modal fade customModal" id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModal" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel2">Update <span id="frmChecklistTitle"></span> Checklist</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-				</button>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel2">Update <span id="frmChecklistTitle"></span> Checklist</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="form-group" id="divfrmChecklistSystem">
+				<label for="frmChecklistSystem">System Name (required)</label>
+				<select class="form-control select2" id="frmChecklistSystem">
+						<option value="">Choose one...</option>
+						<option value="None">None</option>
+				</select>
+				<small id="titleHelp" class="form-text text-muted">Select the system this belongs to, or 'None'</small>
 			</div>
-			<div class="modal-body">
-				<div class="form-group" id="divfrmChecklistSystem">
-					<label for="frmChecklistSystem">System Name (required)</label>
-					<select class="form-control select2" id="frmChecklistSystem">
-							<option value="">Choose one...</option>
-							<option value="None">None</option>
-					</select>
-					<small id="titleHelp" class="form-text text-muted">Select the system this belongs to, or 'None'</small>
-				</div>
-				<div class="form-group">
-					<label for="checklistFile">Checklist File (required)</label><br />
-					<input type="file" id="checklistFile" /> 
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" onclick="updateSingleChecklist(getParameterByName('id'));">Save changes</button>
-			</div>
+			<div class="form-group">
+				<label for="checklistFile">Checklist File (required)</label><br />
+				<input type="file" id="checklistFile" /> 
 			</div>
 		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" onclick="updateSingleChecklist(getParameterByName('id'));">Save changes</button>
+		</div>
+		</div>
 	</div>
+</div>
 </body>
 </html>

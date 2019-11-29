@@ -39,6 +39,7 @@
 		<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
+		<link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
     <style>	
@@ -178,7 +179,11 @@
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3><i class="fa fa-info-circle"></i> System Information</h3>
+								<h3 class="float-left"><i class="fa fa-info-circle"></i> System Information</h3>
+								<button id="btnListAllSystems" onclick="listSystems(); return false;"
+									class="btn btn-info btn-sm float-right">List All Systems</button>&nbsp;<a 
+									href="#custom-modal"  id="btnUpdateSystem" style="display: none; margin: 0px 10px;"  class="btn btn-info btn-sm m-r-5 m-b-10 float-right" 
+									data-target="#customModal" data-toggle="modal">Update System</a>
 							</div>
 							<div class="card-body">
 								<div id="divSystemTitle"></div>
@@ -212,8 +217,6 @@
 						<div class="card mb-3">
 							<div class="card-header">
 								<h3 class="float-left"><i class="fa fa-table"></i> Checklists</h3>
-								<button id="btnListAllSystems" onclick="listSystems(); return false;"
-									class="btn btn-info btn-sm float-right">List All Systems</button>
 							</div>
 							<div class="card-body">
 								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
@@ -271,6 +274,7 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
+<script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
 <script src="assets/js/jquery.dataTables.min.js"></script>
 <script src="assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="js/moment.min.js"></script>
@@ -286,6 +290,8 @@
 				setupProfileMenu();
 				// see if the upload menu should show
 				verifyUploadMenu();
+				// see if they can update info on the system
+				verifyUpdateSystem();
 				// calls to get the checklist page setup
 				if (getParameterByName('rtn')){
 					// get the system record by the session info
@@ -365,6 +371,22 @@
 					}
 				} );
 
+				// file setup for the Template Upload
+				$('#frmNessusFile').filer({
+					limit: 1,
+					maxSize: 5,
+					extensions: ['nessus'],
+					changeInput: true,
+					showThumbs: true,
+					addMore: true,
+					captions: {
+						errors: {
+						filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+						filesType: "Only Nessus *.nessus XML-based files can be uploaded.",
+						filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB."
+						}
+					}
+				});
 			}
 			else {
 				swal("Invalid Login", "You are not logged in. Please check your setup with Keycloak.", "error");
@@ -375,5 +397,41 @@
 	} );
 </script>
 <!-- END Java Script for this page -->
+
+<!-- Update Modal -->
+<div class="modal fade customModal" id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModal" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel2">Update <span id="modalSystemTitle"></span> System</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="frmSystemTitle">System Title (required)</label>
+				<input type="text" class="form-control" id="frmSystemTitle" maxlength="100"
+                    aria-describedby="titleHelp" placeholder="Enter a System Name">
+                <small id="titleHelp" class="form-text text-muted">Enter the name or title of your system</small>
+			</div>
+			<div class="form-group">
+			  <label for="frmSystemDescription">Description</label>
+			  <textarea type="text" class="form-control" id="frmSystemDescription" rows="4"
+			  aria-describedby="descriptionHelp" placeholder="Enter a Description" required></textarea>
+			  <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this System</small>
+			</div>
+			<div class="form-group">
+				<label for="checklistFile">Nessus File (if any)</label><br />
+				<input type="file" id="frmNessusFile" /> 
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" onclick="updateSystem(getParameterByName('id'));">Save changes</button>
+		</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>

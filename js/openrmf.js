@@ -171,7 +171,9 @@ async function getChecklistSystemListing(){
 			$('#divSystemListing').html("");
 			for (const item of data) {
 				chartNumber = chartNumber + 1;
-				systemsListing = '<div class="systemListing"><div class="systemListTitle">' + item.title + '</div><div class="systemDescription">';
+				systemsListing = '<div class="systemListing"><div class="systemListTitle"><a href="checklists.html?id=' + item.internalId + '" ';
+				systemsListing += 'title="view system information and checklists for this system" >' + item.title + '</a>';
+				systemsListing += '</div><div class="systemDescription">';
 				if (item.description) {
 					systemsListing += item.description;
 				} else {
@@ -181,7 +183,8 @@ async function getChecklistSystemListing(){
 				systemsListing += 'class="systemChart" id="pieChart' + chartNumber + '"></canvas> ';
 				systemsListing += '<div style="clear: both;"></div><div class="systemViewChecklistsLink"><span><a role="button" class="btn btn-link mb-2" ';
 				systemsListing += 'style="font-size: 12px;" href="checklists.html?id=' + item.internalId + '" ';
-				systemsListing += 'title="view checklists for this system">View ' + item.numberOfChecklists + ' Checklists</a></span></div></div></div>';
+				systemsListing += 'title="view system information and checklists for this system">View System Information and Checklists (' + item.numberOfChecklists + ')</a>';
+				systemsListing += '</span></div></div></div>';
 				$('#divSystemListing').append(systemsListing);
 				var data = await getScoreForSystemChecklistListing(item.internalId);
 				if (data) 
@@ -226,8 +229,15 @@ async function getSystemRecord(systemGroupId) {
 			$("#divMessaging").show();
 		}
 		else {
+			$("#modalSystemTitle").text(item.title);
 			$("#divSystemTitle").html("<b>Title:</b> " + item.title);
-			$("#divSystemDescription").html("<b>Description:</b> " + item.description);
+			$("#frmSystemTitle").val(item.title);
+			if (item.description){
+				$("#divSystemDescription").html("<b>Description:</b> " + item.description);
+				$("#frmSystemDescription").val(item.description);
+			}
+			else 
+				$("#divSystemDescription").html("<b>Description:</b> (no description)");
 			$("#divNumberChecklists").html("<b>Checklists:</b> " + item.numberOfChecklists);
 			if (item.rawNessusFile) 
 				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> Yes");
@@ -249,6 +259,36 @@ async function getSystemRecord(systemGroupId) {
 		throw new Error(response.status)
 	}
 }
+
+// the edit page on the System record page calls this if you have permissions
+function updateSystem(systemGroupId){
+	swal("Updating System...", {
+		buttons: false,
+		timer: 3000,
+	});
+	var formData = new FormData();
+	formData.append("title",$("#frmSystemTitle").val());
+	formData.append("description",$("#frmSystemDescription").val());
+	formData.append('nessusFile',$('#frmNessusFile')[0].files[0]);
+	$.ajax({
+			url : saveAPI + "/system/" + systemGroupId,
+			data : formData,
+			type : 'POST',
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
+			processData: false,
+			contentType: false,
+			success : function(data){
+				swal("Your System was updated successfully!", "Click OK to continue!", "success");
+			},
+			error : function(data){
+				swal("There was a Problem. Your System was not updated successfully. Please check with the Application Admin.", "Click OK to continue!", "error");
+			}
+	});
+	return false;
+}
+
 
 // called from above to return the system score for all checklists in a system
 async function getScoreForSystemChecklistListing(systemName) {
@@ -1047,7 +1087,7 @@ function uploadChecklist(){
 	}
 	swal("Uploading Checklists...", {
 		buttons: false,
-		timer: 2000,
+		timer: 3000,
 	});
 	// could be 1 to 5 of these depending on how they selected the CKL files
 	// can do 1 at a time or in bunches or 5 at once
@@ -1099,7 +1139,7 @@ function uploadChecklist(){
 function uploadTemplate(){
 	swal("Uploading Template...", {
 		buttons: false,
-		timer: 2000,
+		timer: 3000,
 	});
 	var formData = new FormData();
 	formData.append("type",$("#templateType").val());
@@ -1352,6 +1392,11 @@ function verifyDeleteChecklist() {
 function verifyUpdateChecklist() {
 	if (canUpload()) {
 		$("#btnUpdateChecklist").show();
+	}
+}
+function verifyUpdateSystem() {
+	if (canUpload()) {
+		$("#btnUpdateSystem").show();
 	}
 }
 function setupProfileMenu()
