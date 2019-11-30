@@ -172,7 +172,7 @@ async function getChecklistSystemListing(){
 			for (const item of data) {
 				chartNumber = chartNumber + 1;
 				systemsListing = '<div class="systemListing"><div class="systemListTitle"><a href="checklists.html?id=' + item.internalId + '" ';
-				systemsListing += 'title="view system information and checklists for this system" >' + item.title + '</a>';
+				systemsListing += 'title="view system information and checklists for this system" >' + item.title + ' (' + item.numberOfChecklists + ')</a>';
 				systemsListing += '</div><div class="systemDescription">';
 				if (item.description) {
 					systemsListing += item.description;
@@ -181,10 +181,7 @@ async function getChecklistSystemListing(){
 				}
 				systemsListing += '</div><div class="systemListInfo"><canvas ';
 				systemsListing += 'class="systemChart" id="pieChart' + chartNumber + '"></canvas> ';
-				systemsListing += '<div style="clear: both;"></div><div class="systemViewChecklistsLink"><span><a role="button" class="btn btn-link mb-2" ';
-				systemsListing += 'style="font-size: 12px;" href="checklists.html?id=' + item.internalId + '" ';
-				systemsListing += 'title="view system information and checklists for this system">View System Information and Checklists (' + item.numberOfChecklists + ')</a>';
-				systemsListing += '</span></div></div></div>';
+				systemsListing += '<div style="clear: both;"></div></div></div>';
 				$('#divSystemListing').append(systemsListing);
 				var data = await getScoreForSystemChecklistListing(item.internalId);
 				if (data) 
