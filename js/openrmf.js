@@ -1313,11 +1313,29 @@ async function getComplianceBySystem() {
 				table.clear();
 				var checklists = ''; // holds the list of checklists
 				var recordNum = 0;
+				// for each family in item.control.substring 2 (first two letters)
+				// see what the current status is and compare to each record status
+				// each family is sorted so once it changes, you are good to go on to the next one
+				// put the results in divComplianceSummary
+				var currentFamily = "";
+				var currentStatus = "";
+				var complianceSummary = "";
 				for (const item of data.result) {
 					recordNum++;
 					checklists = '<ul>';
+					if (currentFamily != item.control.substring(0,2)) {
+						// print out the info
+						if (currentFamily) {
+							complianceSummary += "<div class='complianceSummaryListing'>";
+							complianceSummary += getComplianceSummaryButton(currentFamily, currentStatus) + "</div>";
+						}
+						currentStatus = ""; // clear it out
+						// get the family control
+						currentFamily = item.control.substring(0,2);
+					}
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
+							currentStatus = getOverallCompliance(currentStatus, record.status);
 							checklists += '<li><a href="/single-checklist.html?id=';
 							checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
 							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></li>';
@@ -1327,6 +1345,10 @@ async function getComplianceBySystem() {
 					// dynamically add to the datatable
 					table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
 				}
+				if (complianceSummary) 
+					$("#divComplianceSummary").html(complianceSummary);
+				else 
+					$("#divComplianceSummary").html("No Summary");
 			}
 			else {
 				swal("Error Generating Compliance", "There are no checklists ready for this compliance report.", "error");
@@ -1369,6 +1391,7 @@ async function getControlInformation(control) {
 		return emptydata;
 	}
 }
+
 function getComplianceTextClassName(status) {
 	if (status.toLowerCase() == 'not_reviewed')
 		return "vulnNotReviewedText";
@@ -1379,6 +1402,37 @@ function getComplianceTextClassName(status) {
 	else // not a finding
 		return "vulnNotAFindingText";
 }
+
+function getOverallCompliance(currentStatus, newStatus) {
+	if (!currentStatus)
+		return newStatus.toLowerCase();
+
+	if (newStatus.toLowerCase() == "open")
+		return newStatus.toLowerCase();
+	else if (currentStatus.toLowerCase() != "open" && currentStatus.toLowerCase() != "not_reviewed") { // otherwise keep it the same
+		// this was already not_reviewed or it was notafinding from being NaF or N/A
+		if (newStatus.toLowerCase() == "not_reviewed")
+			return newStatus.toLowerCase();
+		else
+			return "notafinding"; // catch all cause it is either NaF or N/A
+		}
+	else
+		return currentStatus.toLowerCase(); // was already marked open or not_reviewed
+}
+
+// get the button text for the status summary
+function getComplianceSummaryButton(family, status) {
+	if (status == "open") {
+		return "<button class='btn btn-danger'><i class='fa fa-times'> " + family + "</i></button>";
+	} else if (status == "notafinding" || status == "not_applicable")  {
+		return "<button class='btn btn-success'><i class='fa fa-check'>" + family + "</i></button>";
+	} else if (status == "not_reviewed")  {
+		return "<button class='btn btn-primary'><i class='fa fa-eye-slash'> " + family + "</i></button>";
+	} else {
+		return "<button class='btn btn-outline-secondary'><i class='fa fa-ban'> " + family + "</i></button>";
+	}
+}
+
 /************************************ 
  Generic Functions
 ************************************/

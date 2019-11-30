@@ -1306,3 +1306,9 @@ a.btn:focus {
 .systemChart {
   height: 270px;
 }
+
+.complianceSummaryListing {
+  float: left;
+  width: 100px;
+  height: 50px;
+}
