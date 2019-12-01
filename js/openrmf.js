@@ -1072,7 +1072,7 @@ async function deleteChecklist(id) {
 					success: function(data){
 						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success")
 						.then((value) => {
-							getChecklistListingBySession();
+							getSystemRecordBySession();
 						});
 					},
 					error : function(data){
@@ -1170,7 +1170,7 @@ function uploadChecklist(){
 				swal("Your Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmChecklistUpload")[0].reset();
-				$('#templateFile').trigger("filer.reset")
+				$('#checklistFile').trigger("filer.reset")
 			},
 			error: function() {
 				swal("Error Uploading Checklist", "There was an error uploading the checklist. Please try again.", "error");
@@ -1201,7 +1201,7 @@ function uploadTemplate(){
 				swal("Your Template was uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
 				$("#frmTemplateUpload")[0].reset();
-				$('#checklistFile').trigger("filer.reset")
+				$('#templateFile').trigger("filer.reset")
 			},
 			error: function() {
 				swal("Error Uploading Template", "There was an error uploading the template. Please try again.", "error");
