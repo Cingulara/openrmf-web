@@ -133,7 +133,7 @@
 					<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="checklists.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
+					<a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
 				</li>
 				<li class="submenu">
 					<a class="active" href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
@@ -235,11 +235,25 @@
 				</div><!-- end row-->
 
 				<div class="row">
-				
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3><i class="fa fa-table"></i> Compliance Results</h3>
+								<h3><i class="fa fa-list-alt"></i> Compliance Summary</h3>
+								Summary per family for your System Compliance. Details are below in the next section. <br />
+								<i class='fa fa-check'></i> Green = Not A Finding / Not Applicable. <i class='fa fa-eye-slash'></i> Blue = Not Reviewed. 
+								<i class='fa fa-times'></i> Red = Open.
+							</div>
+							<div class="card-body">
+								<div id="divComplianceSummary"></div>
+							</div>
+						</div><!-- end card-->					
+					</div>
+			    </div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-table"></i> Compliance Details</h3>
 								Below find the results. Green = Not A Finding / Not Applicable. Blue = Not Reviewed. Red = Open.
 							</div>
 							<div class="card-body">
@@ -252,8 +266,8 @@
 							</div>
 						</div><!-- end card-->					
 					</div>
-			  </div>
-      </div>
+			    </div>
+      		</div>
 			<!-- END container-fluid -->
 		</div>
 		<!-- END content -->
@@ -306,15 +320,15 @@
 				verifyUploadMenu();
 				// calls to get the compliance page setup
 				getChecklistSystemsForComplianceFilter();
-        $('#tblCompliance').DataTable({
-				"pageLength": 50, 
-			  "columnDefs": [
-				  { "width": "2%", "targets": 0 },
-				  { "width": "8%", "targets": 1 },
-					{ "width": "40%", "targets": 2 },
-					{ "width": "50%", "targets": 3 }
-  			]
-			});
+		        $('#tblCompliance').DataTable({
+					"pageLength": 50, 
+				    "columnDefs": [
+						{ "width": "2%", "targets": 0 },
+						{ "width": "8%", "targets": 1 },
+						{ "width": "40%", "targets": 2 },
+						{ "width": "50%", "targets": 3 }
+  			        ]
+			    });
 			}
 			else {
 				alert('You are not logged in. Please check your setup with Keycloak.');
