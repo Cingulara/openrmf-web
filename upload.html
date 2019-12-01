@@ -137,7 +137,7 @@
             <a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
           </li>
           <li class="submenu">
-            <a href="checklists.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Checklists </span> </a>
+            <a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
           </li>
           <li class="submenu">
             <a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
@@ -233,7 +233,7 @@
                     <h3><i class="fa fa-file"></i> Template Upload </h3>
                 </div>
                 <div class="card-body">
-    						  <form onsubmit="return uploadTemplate();" id="frmTemplateUpload">
+    						  <form id="frmTemplateUpload">
                     <div class="form-group">
                       <label for="templateTitle">Title</label>
                       <input type="text" class="form-control" id="templateTitle" maxlength="100"
@@ -250,7 +250,7 @@
                         <label for="templateFile">Template Checklist File</label><br />
                         <input type="file" id="templateFile" required /> 
                       </div>
-                    <button type="submit" class="btn btn-primary">Upload and Save</button>
+                    <button type="submit" onclick="uploadTemplate();" class="btn btn-primary">Upload and Save</button>
                   </form>
                 </div><!-- end card body -->							
             </div><!-- end card-->
@@ -327,7 +327,8 @@
           verifyUploadMenu();
           // get the list of systems
           getChecklistSystemsForUpload();
-              
+            
+          // file setup for the 5-max Checklist file upload
           $('#checklistFile').filer({
               limit: 5,
               maxSize: 10,
@@ -344,7 +345,23 @@
                 }
               }
           });
-
+          // file setup for the Template Upload
+          $('#templateFile').filer({
+              limit: 1,
+              maxSize: 5,
+              extensions: ['ckl'],
+              changeInput: true,
+              showThumbs: true,
+              addMore: true,
+              captions: {
+                errors: {
+                  filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+                  filesType: "Only Checklist *.CKL files can be uploaded.",
+                  filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB."
+                }
+              }
+          });
+          
           var redir = getParameterByName('redir');
           if (redir) {
             // redirection on empty checklists so tell them

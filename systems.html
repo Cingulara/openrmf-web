@@ -4,8 +4,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>OpenRMF - Template Record</title>
-		<meta name="description" content="OpenRMF Template">
+		<title>OpenRMF - System Listing</title>
+		<meta name="description" content="OpenRMF Checklists Dashboard">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
 		<!-- Favicon -->
@@ -36,19 +36,27 @@
 		
 		<!-- Custom CSS -->
 		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
 		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
-		<!-- END CSS for this page -->
+    <style>	
+      td.details-control {
+        background: url('assets/plugins/datatables/img/details_open.png') no-repeat center center;
+        cursor: pointer;
+      }
+      tr.shown td.details-control {
+        background: url('assets/plugins/datatables/img/details_close.png') no-repeat center center;
+      }
+    </style>
+    <!-- END CSS for this page -->
 </head>
 
 <body class="adminbody">
-
 	<script src="assets/js/keycloak.min.js"></script>
 	<script src="./js/auth.js"></script>
-
-<div id="main">
+    <div id="main">
 
 	<!-- top bar navigation -->
 	<div class="headerbar">
@@ -104,6 +112,7 @@
 					</div>
 				</li>
 			</ul>
+	
 			<ul class="list-inline menu-left mb-0">
 				<li class="float-left">
 					<button class="button-menu-mobile open-left">
@@ -114,6 +123,7 @@
         </nav>
 	</div>
 	<!-- End Navigation -->
+ 
 	<!-- Left Sidebar -->
 	<div class="left main-sidebar">
 		<div class="sidebar-inner leftscroll">
@@ -123,13 +133,13 @@
 					<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
+					<a class="active" href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
 				</li>
 				<li class="submenu">
 					<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
 				</li>
 				<li class="submenu">
-					<a class="active" href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					<a href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
 					<a href="charts.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
@@ -144,6 +154,7 @@
 		</div>
 	</div>
 	<!-- End Sidebar -->
+
     <div class="content-page">	
 		<!-- Start content -->
         <div class="content">            
@@ -151,144 +162,31 @@
 				<div class="row">
 					<div class="col-xl-12">
 						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">My Template</h1>
+							<h1 class="main-title float-left">Systems</h1>
 							<ol class="breadcrumb float-right">
 								<li class="breadcrumb-item">Home</li>
-								<li class="breadcrumb-item active">Checklist</li>
+								<li class="breadcrumb-item active">Systems</li>
 							</ol>
 							<div class="clearfix"></div>
 						</div>
 					</div>
 				</div>
-				<!-- end row -->		
+				<!-- end row -->
+		
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3 id="checklistTitle"> </h3>
-							</div>								
+								<h3 class="float-left"><i class="fa fa-table"></i> My Systems</h3>
+							</div>
 							<div class="card-body">
-								<div style="display: none;" id="divBadChecklistId" 
-									class="alert alert-danger alert-dismissible fade show" role="alert">The Template ID passed in 
-									(<span id="txtBadChecklistId"></span>) is not valid. Please return to the page listing the Template 
-									and try again. If this continues please contact your application administrator.
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-									</button>
+								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
+								<div id="divSystemListing" class="systemsList">
 								</div>
-								<table class="table table-condensed table-hover table-bordered table-responsive-md">
-								<thead>
-								<tr>
-									<th class="tabco2">Not a Finding</th>
-									<th class="tabco3">Not Applicable</th>
-									<th class="tabco4">Open</th>
-									<th class="tabco5">Not Reviewed</th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr>
-									<td class="tabco2"><i class="fa" aria-hidden="true"></i><span id="checklistNotAFindingCount"></span></td>
-									<td class="tabco3"><i class="fa" aria-hidden="true"></i><span id="checklistNotApplicableCount"></span></td>
-									<td class="tabco4"><i class="fa" aria-hidden="true"></i><span id="checklistOpenCount"></span></td>
-									<td class="tabco5"><i class="fa" aria-hidden="true"></i><span id="checklistNotReviewedCount"></span></td>
-								</tr>
-								</tbody>
-								</table>
-								<div id="checklistType"></div>
-								<div id="checklistDescription"></div>
-								<div class="small" id="checklistLastUpdated"></div><br />
-								<button type="button" id="btnDownloadTemplate" style="display: none;" 
-									onclick="downloadChecklistFile(getParameterByName('id'), true);" 
-									class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
 							</div><!-- end card body -->															
 						</div><!-- end card-->					
 					</div>		
 				</div><!-- end row-->
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 col-xl-2">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-folder-open-o"></i> VULN IDs</h3>
-							</div>
-							<div class="card-body">
-								<div id="checklistTree" class="vulnListing scrollableDiv">
-								</div>
-							</div>
-						</div>
-					</div><!-- end card-->
-					<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-folder-open-o"></i> Vulnerability Details</h3>
-							</div>
-							<div class="card-body">
-								<div class="vulnListing scrollableDiv">
-									<div class="vulnSpacing" id="vulnId">Select a Vulnerability ID to view details</div>
-									<div class="vulnSpacing" id="vulnStigId"></div>
-									<div class="vulnSpacing" id="vulnStatus"></div>
-									<div class="vulnSpacing" id="vulnSeverity"></div>
-									<div class="vulnSpacing" id="vulnRuleId"></div>
-									<div class="vulnSpacing" id="vulnRuleName"></div>
-									<div class="vulnSpacing" id="vulnCCIId"></div>
-									<div class="vulnSpacing" id="vulnRuleTitle"></div>
-									<div class="vulnSpacing" id="vulnClassification"></div>
-									<div class="vulnSpacing" id="vulnDiscussion"></div>
-									<div class="vulnSpacing" id="vulnCheckText"></div>
-									<div class="vulnSpacing" id="vulnFixText"></div>
-									<div class="vulnSpacing" id="vulnFindingDetails"></div>
-									<div class="vulnSpacing" id="vulnComments"></div>
-									<div class="vulnSpacing" id="vulnReferences"></div>
-								</div>
-							</div>
-						</div>
-					</div><!-- end card-->
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-						<div class="card mb-3">
-							<div class="card-header">
-								<i class="fa fa-table"></i> Severity Breakdown
-							</div>								
-							<div class="card-body">
-								<canvas id="chartSeverity"></canvas>
-							</div>
-							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('chartSeverity');" style="width: 200px;"
-								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-						<div class="card mb-3">
-							<div class="card-header">
-								<i class="fa fa-table"></i> Category Breakdown
-							</div>
-								
-							<div class="card-body">
-								<canvas id="chartCategory"></canvas>
-							</div>
-							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('chartCategory');" style="width: 200px;"
-								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->					
-					</div>							
-				</div>				
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
-						<div class="card mb-3">
-							<div class="card-header">
-								<i class="fa fa-table"></i> Checklist Score Breakdown
-							</div>
-								
-							<div class="card-body">
-								<canvas id="barChart"></canvas>
-							</div>							
-							<div id="barChartUpdated" class="card-footer small text-muted"></div>
-							<button type="button" onclick="downloadChart('barChart');" style="width: 200px;"
-								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->					
-					</div>
-				</div>
-
             </div>
 			<!-- END container-fluid -->
 		</div>
@@ -298,7 +196,7 @@
     
 	<footer class="footer">
 		<span class="text-right">
-			&copy; <a target="_blank" href="https://www.cingulara.com/">Cingulara 2019</a>
+		&copy; <a target="_blank" href="https://www.cingulara.com/">Cingulara 2019</a>
 		</span>
 		<span class="float-right">
 		Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
@@ -321,15 +219,20 @@
 <script src="assets/js/jquery.nicescroll.js"></script>
 <script src="assets/js/jquery.scrollTo.min.js"></script>
 <script src="assets/plugins/switchery/switchery.min.js"></script>
+<script src="assets/plugins/sweetalert/sweetalert.js"></script>
+<script src="assets/plugins/chart.js/chart.min.js"></script>
+<script src="assets/plugins/chart.js/chartjs-plugin-labels.min.js"></script>
 
 <!-- App js -->
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="js/moment.min.js"></script>
 <script src="./js/openrmf.js"></script>
 <script src="./js/apis.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="js/jquery.blockUI.js"></script>
 <script>
 	$(document).ready(function() {
 		// authentication first
@@ -339,18 +242,87 @@
 				setupProfileMenu();
 				// see if the upload menu should show
 				verifyUploadMenu();
-				// see if they can download
-				verifyDownloadTemplate();
-				// calls to get the checklist data from the API
-				getChecklistData(getParameterByName('id'), true);
+				// calls to get the checklist page setup
+				if (getParameterByName('rtn'))
+					getChecklistListingBySession();
+				else
+					getChecklistSystemListing();
+
+				// START CODE for Child rows (show extra / detailed information) DATA TABLE 
+				function format ( d ) {
+				// `d` is the original data object for the row
+				return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
+					'<tr>'+
+					'<td style="width: 60%; text-align: right;">CAT 1:</td>'+
+					'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
+					'<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
+					'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
+					'<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
+					'</tr>'+
+					'<tr>'+
+					'<td style="width: 60%; text-align: right;">CAT 2:</td>'+
+					'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
+					'<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
+					'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat2+'</td>'+
+					'<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
+					'</tr>'+
+					'<tr>'+
+					'<td style="width: 60%; text-align: right;">CAT 3:</td>'+
+					'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
+					'<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
+					'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat3+'</td>'+
+					'<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
+					'</tr>'+
+				'</table>';
+				}
+				var tableChecklist = $('#tblChecklistListing').DataTable({
+				"pageLength": 50, 
+				"columns": [
+				{ 
+					"className":      'details-control',
+					"orderable":      false,
+					"data":           null,
+					"defaultContent": ''
+				},
+					{ "data": "title" },
+					{ "data": "totalNaF" },
+					{ "data": "totalNA" },
+					{ "data": "totalOpen" },
+					{ "data": "totalNR" }
+				],
+					"columnDefs": [
+						{ "width": "40%", "targets": 1 },
+						{ "className": "tabco2", "width": "14%", "targets": 2 },
+						{ "className": "tabco3", "width": "14%", "targets": 3 },
+						{ "className": "tabco4", "width": "14%", "targets": 4 },
+						{ "className": "tabco5", "width": "14%", "targets": 5 }
+					]
+				});
+				// Add event listener for opening and closing details
+				$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {
+					var tr = $(this).closest('tr');
+					var row = tableChecklist.row( tr );
+				
+					if ( row.child.isShown() ) {
+						// This row is already open - close it
+						row.child.hide();
+						tr.removeClass('shown');
+					}
+					else {
+						// Open this row
+						row.child( format(row.data()) ).show();
+						tr.addClass('shown');
+					}
+				} );
+
 			}
 			else {
-				alert('You are not logged in. Please check your setup with Keycloak.');
+				swal("Invalid Login", "You are not logged in. Please check your setup with Keycloak.", "error");
 			}
 		}).error(function() {
-			alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+			swal("Invalid Login", "Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an '*' somewhere?", "error");
 		});
-	});
+	} );
 </script>
 <!-- END Java Script for this page -->
 </body>

@@ -128,7 +128,6 @@ img {
 	border-radius: 0;
 }
 
-
 ::-webkit-scrollbar
 {
   width: 12px;  /* for vertical scrollbars */
@@ -578,8 +577,6 @@ body.adminbody .main-sidebar.left {
 #main.enlarged #sidebar-menu ul ul li.active a {
   color: #0f9df7; }
 
-
-
 .notif {
 	margin-left: 0 !important;
 }
@@ -787,7 +784,6 @@ body.adminbody .main-sidebar.left {
 		display: none !important;
 	}
 }
-
 
 body.adminbody-void {
   min-height: 1170px; }
@@ -1095,8 +1091,6 @@ a.btn:focus {
 	background-color: #171515 !important;
 }
 
-
-
 .pull-right {
 	float: right;
 }
@@ -1174,7 +1168,6 @@ a.btn:focus {
     top: 2px;
 }
 
-
 .custom-modal .modal-header {    
     padding: 10px !important;
     border-radius: 0;
@@ -1205,11 +1198,9 @@ a.btn:focus {
     background-color: #5bc0de;
 }
 
-
 /*************************
-* openSTIG Tool Extra CSS
+* OpenRMF Tool Extra CSS
 **************************/
-
 .clickable {
   cursor: pointer;
 }
@@ -1260,4 +1251,64 @@ a.btn:focus {
 }
 .checklistSystemsListLabel {
   margin: 3px;
+}
+.systemListing {
+  margin: 5px;
+  padding: 0px;
+  border: solid 2px #dedede;
+  border-radius: 3px;
+  float: left;
+  min-height: 365px;
+  width: 400px;
+  font-size: 16px;
+  position: relative;
+}
+.systemsList {
+  padding: 4px;
+}
+.systemListTitle {
+  font-weight: 500;
+  font-size: 18px;
+  color: #5a5a5a;
+  width: 100%;
+  background-color: #dedede;
+  margin: 0px;
+  padding: 2px 5px 5px 5px;
+}
+.systemViewChecklistsLink span {
+  padding: 3px 0px 0px 3px;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  color: #2688ac;
+}
+.systemDescription {
+  font-weight: normal;
+  font-size: 12px;
+  padding: 2px;
+  color: #333333;
+}
+.systemListingNAF {
+  background: #009688;
+}
+.systemListingNA {
+  background: silver;
+}
+.systemListingOpen {
+  background: #EF5350;
+}
+.systemListingNR {
+	background: #039BE5;
+}
+.systemListInfo {
+  padding: 2px 5px 2px 5px;
+}
+.systemChart {
+  height: 270px;
+}
+
+.complianceSummaryListing {
+  float: left;
+  width: 100px;
+  height: 50px;
 }
