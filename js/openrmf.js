@@ -208,6 +208,14 @@ function getSystemRecordBySession(){
 		location.href = "systems.html";
 }
 
+function reloadSystemRecordBySession() {
+	var currentSystem = sessionStorage.getItem("currentSystem");
+	if (currentSystem)
+		location.href = "checklists.html?id=" + currentSystem;
+	else
+		location.href = "systems.html";
+}
+
 async function getSystemRecord(systemGroupId) {
 	var url = readAPI;
 	url += "/system/" + encodeURIComponent(systemGroupId);
@@ -1072,7 +1080,7 @@ async function deleteChecklist(id) {
 					success: function(data){
 						swal("Your Checklist was deleted successfully!", "Click OK to continue!", "success")
 						.then((value) => {
-							getSystemRecordBySession();
+							reloadSystemRecordBySession();
 						});
 					},
 					error : function(data){
