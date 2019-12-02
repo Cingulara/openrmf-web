@@ -210,10 +210,10 @@ function getSystemRecordBySession(){
 
 function reloadSystemRecordBySession() {
 	var currentSystem = sessionStorage.getItem("currentSystem");
-	if (currentSystem)
+	if (currentSystem && currentSystem != "undefined")
 		location.href = "checklists.html?id=" + currentSystem;
 	else
-		location.href = "systems.html";
+		location.href = "index.html";
 }
 
 async function getSystemRecord(systemGroupId) {
