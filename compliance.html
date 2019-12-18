@@ -319,7 +319,8 @@
 				// see if the upload menu should show
 				verifyUploadMenu();
 				// calls to get the compliance page setup
-				getChecklistSystemsForComplianceFilter();
+				getChecklistSystemsForComplianceFilter(getParameterByName('id'));
+				// setup the datatable format
 		        $('#tblCompliance').DataTable({
 					"pageLength": 50, 
 				    "columnDefs": [

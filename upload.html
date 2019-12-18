@@ -326,7 +326,7 @@
           // see if the upload menu should show
           verifyUploadMenu();
           // get the list of systems
-          getChecklistSystemsForUpload();
+          getChecklistSystemsForUpload(getParameterByName('id'));
             
           // file setup for the 5-max Checklist file upload
           $('#checklistFile').filer({

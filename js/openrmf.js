@@ -407,7 +407,19 @@ async function downloadNessusXML(systemGroupId) {
 async function exportNessusXML(systemGroupId) {
 	swal("Coming Soon ... export your Nessus file to an XLSX!", "Click OK to continue!", "success");
 }
-
+// buttons to redirect with the System ID in the URL
+function runComplianceFromSystem(id) {
+	if (id)
+		location.href = "compliance.html?id=" + id;
+	else 
+		location.href = "compliance.html?id=" + sessionStorage.getItem("currentSystem");;
+}
+function uploadFromSystem(id) {
+	if (id)
+		location.href = "upload.html?id=" + id;
+	else 
+		location.href = "upload.html?id=" + sessionStorage.getItem("currentSystem");;
+}
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -1116,16 +1128,17 @@ async function getChecklistSystems() {
 	}
 }
 // get the list of systems for the upload function
-async function getChecklistSystemsForUpload() {
+async function getChecklistSystemsForUpload(id) {
 	sessionStorage.removeItem("checklistSystems");
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
 	if (data) {
 		$.each(data, function (index, value) {
-			$('#checklistSystem').append($('<option/>', { 
-					value: value.internalId,
-					text : value.title
-			}));
+			if (id && value.internalId == id)
+				optionString = '<option selected value="' + value.internalId + '">' + value.title + '</option>';
+			else 
+				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+			$('#checklistSystem').append(optionString); 
 		}); 
 	}
 }
@@ -1284,15 +1297,17 @@ async function getReportsBySystem() {
  Compliance Functions
 ************************************/
 // the system dropdown on the Compliance page
-async function getChecklistSystemsForComplianceFilter() {
+async function getChecklistSystemsForComplianceFilter(id) {
 	var data = await getChecklistSystems();
 	// for each data add to the compliance checklistSystem
 	if (data) {
+		var optionString = '';
 		$.each(data, function (index, value) {
-			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value.internalId,
-					text : value.title
-			}));
+			if (id && value.internalId == id)
+				optionString = '<option selected value="' + value.internalId + '">' + value.title + '</option>';
+			else 
+				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+			$('#checklistSystemFilter').append(optionString); 
 		}); 
 	}
 }
@@ -1466,6 +1481,11 @@ function getRandomColor() {
 function verifyUploadMenu() {
 	if (canUpload()) {
     	$("#menuUpload").show();
+	}
+}
+function verifyUploadFromSystem() {
+	if (canUpload()) {
+    	$("#btnUploadChecklist").show();
 	}
 }
 function canDownload() {
