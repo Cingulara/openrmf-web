@@ -1,6 +1,7 @@
 .tabco1 {
 	background: #fff;
 	padding: 10px !important;
+	vertical-align: middle !important;
 }
 th.tabco1 {
 	background: #fff;
@@ -11,24 +12,26 @@ th.tabco1 {
 	vertical-align: middle !important;
 }
 .tabco2 {
-	background: #009688;
+	background: #50cc83;
 	text-align: center;
 	color: #fff;
+	vertical-align: middle !important;
 }
 th.tabco2 {
-	background: #50cc83;
+	background: #009688;
 	padding: 20px 5px !important;
 	font-size: 18px;
 	text-transform: uppercase;
 	vertical-align: middle !important;
 }
 .tabco3 {
-	background: silver;	
+	background: silver;
 	text-align: center;
 	color: #fff;
+	vertical-align: middle !important;
 }
 th.tabco3 {
-	background: silver;	
+	background: rgb(130, 129, 129);		
 	padding: 20px 10px !important;
 	font-size: 18px;
 	text-transform: uppercase;
@@ -38,6 +41,7 @@ th.tabco3 {
 	background: #EF5350;
 	text-align: center;
 	color: #fff;
+	vertical-align: middle !important;
 }
 th.tabco4 {
 	background: #E53935;	
@@ -47,12 +51,40 @@ th.tabco4 {
 	vertical-align: middle !important;
 }
 .tabco5 {
-	background: #039BE5;
+	background: #fafafa;
+	color: black;
 	text-align: center;
-	color: #fff;
+	vertical-align: middle !important;
 }
 th.tabco5 {
-	background: #039BE5;
+	background: #222222;
+	color: white;
+	padding: 20px 10px !important;
+	font-size: 18px;
+	text-transform: uppercase;
+	vertical-align: middle !important;
+}
+.tabco6 {
+	background: orange;
+	text-align: center;
+	color: #fff;
+	vertical-align: middle !important;
+}
+th.tabco6 {
+	background: orange;
+	padding: 20px 10px !important;
+	font-size: 18px;
+	text-transform: uppercase;
+	vertical-align: middle !important;
+}
+.tabco7 {
+	background: rgba(225, 225, 43, 0.851);
+	text-align: center;
+	color: #fff;
+	vertical-align: middle !important;
+}
+th.tabco7 {
+	background: yellow;
 	padding: 20px 10px !important;
 	font-size: 18px;
 	text-transform: uppercase;
