@@ -269,6 +269,39 @@ async function getSystemRecord(systemGroupId) {
 	}
 }
 
+// the add page on the System record page calls this if you have permissions
+function addSystem(){
+	swal("Adding System...", {
+		buttons: false,
+		timer: 3000,
+	});
+	var formData = new FormData();
+	formData.append("title",$("#frmSystemTitle").val());
+	formData.append("description",$("#frmSystemDescription").val());
+	formData.append('nessusFile',$('#frmNessusFile')[0].files[0]);
+	$.ajax({
+			url : saveAPI + "/system/",
+			data : formData,
+			type : 'POST',
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
+			processData: false,
+			contentType: false,			
+			success: function(data){
+				swal("Your System was created successfully!", "Click OK to continue!", "success")
+				.then((value) => {
+					// reload the page
+					location.href = "systems.html";
+				});
+			},
+			error : function(data){
+				swal("There was a Problem. Your System was not created successfully. Please verify all required fields are filled in.", "Click OK to continue!", "error");
+			}
+	});
+	return false;
+}
+
 // the edit page on the System record page calls this if you have permissions
 function updateSystem(systemGroupId){
 	swal("Updating System...", {
@@ -282,7 +315,7 @@ function updateSystem(systemGroupId){
 	$.ajax({
 			url : saveAPI + "/system/" + systemGroupId,
 			data : formData,
-			type : 'POST',
+			type : 'PUT',
 			beforeSend: function(request) {
 			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 			},
@@ -1543,6 +1576,11 @@ function verifyDownloadSingleChecklist() {
 		$("#btnDownloadChartSeverity").show();
 		$("#btnDownloadChartCategory").show();
 		$("#btnDownloadBarChart").show();
+	}
+}
+function verifyAddSystem() {
+	if (canUpload()) {
+		$("#btnAddSystem").show();
 	}
 }
 function verifyDownloadTemplate() {
