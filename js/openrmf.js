@@ -2,8 +2,21 @@
  * Dashboard functions
  ************************************/
 // fill in the # of total checklists in the system on the dashboard page top right
+async function getSystemTotalCount() {
+	let response = await fetch(readAPI + "/count/systems", {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {
+			var data = await response.json()
+			$("#numberSystemsTotal").html(data);
+			$("#numberNewSystemsTotal").text(data);
+	}
+	else 
+		throw new Error(response.status)
+}
+// fill in the # of total checklists in the system on the dashboard page top right
 async function getChecklistTotalCount() {
-	let response = await fetch(readAPI + "/count", {headers: {
+	let response = await fetch(readAPI + "/count/artifacts", {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
@@ -14,7 +27,19 @@ async function getChecklistTotalCount() {
 	else 
 		throw new Error(response.status)
 }
-
+// fill in the # of total checklists in the system on the dashboard page top right
+async function getTemplateTotalCount() {
+	let response = await fetch(templateAPI + "/count/templates", {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {
+			var data = await response.json()
+			$("#numberTemplatesTotal").html(data);
+			$("#numberNewTemplatesTotal").text(data);
+	}
+	else 
+		throw new Error(response.status)
+}
 /*************************************
  * Template listing functions
  ************************************/

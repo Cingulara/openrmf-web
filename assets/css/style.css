@@ -78,6 +78,8 @@ img {
 .bg-default {
   background-color: #64b0f2 !important; }
 
+.bg-gray {
+    background-color: #888888 !important; }
   
 .text-overflow {
   overflow: hidden;
