@@ -1234,6 +1234,7 @@ a.btn:focus {
 .vulnNotReviewed {
   background-color: #222222;
   margin: 3px 0px 3px 0px;
+  color: white;
 }
 .vulnOpenText {
   color: #E53935;
