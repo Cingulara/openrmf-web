@@ -233,9 +233,8 @@ function reloadSystemRecordBySession() {
 	if (currentSystem && currentSystem != "undefined")
 		location.href = "checklists.html?id=" + currentSystem;
 	else
-		location.href = "index.html";
+		location.href = "systems.html";
 }
-
 async function getSystemRecord(systemGroupId) {
 	var url = readAPI;
 	url += "/system/" + encodeURIComponent(systemGroupId);
@@ -360,10 +359,10 @@ function updateSystem(systemGroupId){
 }
 
 // called from above to return the system score for all checklists in a system
-async function getScoreForSystemChecklistListing(systemName) {
+async function getScoreForSystemChecklistListing(systemId) {
   var url = scoreAPI;
   try {
-		let responseScore = await fetch(scoreAPI + "/system/" + encodeURIComponent(systemName), {headers: {
+		let responseScore = await fetch(scoreAPI + "/system/" + encodeURIComponent(systemId), {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
 		if (responseScore.ok) {
@@ -508,6 +507,22 @@ async function deleteSystem(id) {
 		});
 	}
 }
+// get the system score pie chart by session on the system record page
+function getSystemScoreChartBySession(){
+	var currentSystem = sessionStorage.getItem("currentSystem");
+	if (currentSystem)
+		getSystemRecord(currentSystem);
+	else
+		location.href = "systems.html";
+}
+// get the system score pie chart by session on the system record page
+async function getSystemScoreChart(id) {
+	// chartSystemScore
+	var data = await getScoreForSystemChecklistListing(id);
+	if (data) 
+		renderSystemPieChart("chartSystemScore", data); // render the specific data for this system
+}
+
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -1000,7 +1015,7 @@ function downloadChart(element) {
 	//location.href = url;
 	var element = document.createElement('a');
 	element.setAttribute('href', img);
-	element.setAttribute('download', "openSTIGChart.jpg");
+	element.setAttribute('download', "OpenRMFChart.jpg");
 	element.style.display = 'none';
 	document.body.appendChild(element);
 	element.click();
@@ -1629,6 +1644,13 @@ function verifyUpdateSystem() {
 		$("#btnDeleteSystem").show();
 	}
 }
+function verifyDownloadSystemChart() {
+	if (canDownload()){
+		$("#btnDownloadChartSystemScore").show();
+	}
+}
+
+
 function setupProfileMenu()
 {
 	// use the person's first name

@@ -190,6 +190,10 @@
 								<div id="divSystemNessusFile"></div>
 								<div id="divSystemPOAM"><b>Latest POA&amp;M:</b> (future)</div>
 								<div id="divSystemLastRAR"><b>Last Risk Assessment Report:</b> (future)</div><br />
+								<h5>Audit Information:</h3>
+								<div id="divSystemCreated"></div>
+								<div id="divSystemUpdated"></div>
+								<div id="divSystemLastCompliance"></div><br />
 								<a href="#custom-modal"  id="btnUpdateSystem" style="display: none;" 
 									class="btn btn-primary btn-sm m-r-5 m-b-10" data-target="#customModal" data-toggle="modal"><span 
 									class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
@@ -206,15 +210,15 @@
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3><i class="fa fa-shield"></i> Audit Information</h3>
+								<h3><i class="fa fa-shield"></i> System Status</h3>
 							</div>
-								
 							<div class="card-body">
-								<div id="divSystemCreated"></div>
-								<div id="divSystemUpdated"></div>
-								<div id="divSystemLastCompliance"></div>
+								<canvas id="chartSystemScore"></canvas>
 							</div>
-						</div><!-- end card-->					
+							<div id="chartSystemScoreUpdated" class="card-footer small text-muted"></div>
+							<button type="button" id="btnDownloadChartSystemScore" style="display: none;" onclick="downloadChart('chartSystemScore');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+						</div><!-- end card-->
 					</div>							
 				</div>
 
@@ -299,16 +303,20 @@
 				// see if they can update info on the system
 				verifyUpdateSystem();
 				verifyUploadFromSystem();
+				// see if they can download chart information
+				verifyDownloadSystemChart();
 				// calls to get the checklist page setup
 				if (getParameterByName('rtn')){
 					// get the system record by the session info
 					getSystemRecordBySession();
 					getChecklistListingBySession();
+					getSystemScoreChartBySession();
 				}
 				else {
 					// get the system info from the Id
 					getSystemRecord(getParameterByName('id'));
 					getChecklists(false, getParameterByName('id'));
+					getSystemScoreChart(getParameterByName('id'));
 				}
 
 				// START CODE for Child rows (show extra / detailed information) DATA TABLE 
