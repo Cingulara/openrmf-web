@@ -1130,6 +1130,8 @@ async function getChecklistSystems() {
 // get the list of systems for the upload function
 async function getChecklistSystemsForUpload(id) {
 	sessionStorage.removeItem("checklistSystems");
+	// clear the options
+	$('#checklistSystem').children().remove().end();
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
 	if (data) {
@@ -1146,7 +1148,7 @@ async function getChecklistSystemsForUpload(id) {
 function uploadChecklist(){
 	var formData = new FormData();
 	if ($("input[id=checklistFile]").length == 0) {
-		swal("Error Uploading Checklist", "You need to upload at least one checklist.", "error");
+		swal("Error on the Upload", "You need to upload at least one checklist or DoD SCAP XCCDF file.", "error");
 		return false;
 	}
 	swal("Uploading Checklists...", {
@@ -1167,17 +1169,16 @@ function uploadChecklist(){
 	// if a new system, use it, otherwise select from the list
 	if ($("#checklistSystemText").is(':visible')){
 		if ($("#checklistSystemText").val() && $("#checklistSystemText").val().trim().length ==0) {
-			swal("Error Uploading Checklist", "Please fill in the System Name field.", "error");
+			swal("Error on the Upload", "Please fill in the new System Name field.", "error");
 			return false;
 		}
+		// add this new one to the listing
 		formData.append("system",$("#checklistSystemText").val().trim());
-		// add this new one to the listing, and then reset the form to show this
-		$('#divNewChecklistSystem').show(); 
-		$('#divNewChecklistSystemText').hide();
-		getChecklistSystemsForUpload();
 	}
 	else // grab the Unique ID of the System Group and pass that
 		formData.append("systemGroupId",$("#checklistSystem").val());
+
+	// send the data up to the API
 	$.ajax({
 			url : uploadAPI,
 			data : formData,
@@ -1188,9 +1189,17 @@ function uploadChecklist(){
 			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 			},
 			success : function(data){
+				// refresh the list of systems
+				if ($("#checklistSystemText").is(':visible')){
+					getChecklistSystemsForUpload();
+					//$('#checklistSystem option').filter(function() { return $.trim( $(this).text() ) == ; })​​​​​​​​.attr('selected','selected');
+					$("#checklistSystem option:contains($('#checklistSystemText').val().trim())").attr('selected', 'selected');
+					$("#checklistSystemText").val();
+					$('#divNewChecklistSystemText').hide();
+					$('#divNewChecklistSystem').show();
+				}
 				swal("Your Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
-				$("#frmChecklistUpload")[0].reset();
 				$('#checklistFile').trigger("filer.reset")
 			},
 			error: function() {
