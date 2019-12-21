@@ -150,16 +150,11 @@ async function getChecklistSystemListing(){
 
 		if (data.length == 0) {
 			$.unblockUI();
-			if (canUpload()) {
-				document.location.href="upload.html?redir=nochecklists";
-			}
-			else {
-				var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
-				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-				alertText += '<span aria-hidden="true">&times;</span></button>';
-				$("#divMessaging").html(alertText);
-				$("#divMessaging").show();
-			}
+			var alertText = 'There are no Systems in here. Please add your first System or Upload your first checklist to get started.';
+			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+			alertText += '<span aria-hidden="true">&times;</span></button>';
+			$("#divMessaging").html(alertText);
+			$("#divMessaging").show();
 		}
 		else {
 			$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
@@ -420,6 +415,41 @@ function uploadFromSystem(id) {
 	else 
 		location.href = "upload.html?id=" + sessionStorage.getItem("currentSystem");;
 }
+// delete a system, its checklists, and its scores records
+async function deleteSystem(id) {
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete an Entire System",
+			text: "Are you sure you wish to delete this system and all its checklists and files?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : saveAPI + "/system/" + id,
+					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your System was deleted successfully!", "Click OK to continue!", "success")
+						.then((value) => {
+							location.href = "systems.html";
+						});
+					},
+					error : function(data){
+						swal("There was a Problem. Your System was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the System Deletion.");
+			}
+		});
+	}
+}
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -467,18 +497,12 @@ async function getChecklists(latest, system) {
 		table.clear();
 		var checklistLink = "";
 		if (data.length == 0) {
-			$.unblockUI();
-			
-			if (canUpload()) {
-				document.location.href="upload.html?redir=nochecklists";
-			}
-			else {
-				var alertText = 'There are no Checklists uploaded. Please go to the Upload page to add your first.';
-				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-				alertText += '<span aria-hidden="true">&times;</span></button>';
-				$("#divMessaging").html(alertText);
-				$("#divMessaging").show();
-			}
+			$.unblockUI();			
+			var alertText = 'There are no Checklists uploaded. Please Upload your first.';
+			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+			alertText += '<span aria-hidden="true">&times;</span></button>';
+			$("#divMessaging").html(alertText);
+			$("#divMessaging").show();
 		}
 		else {
 			$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
@@ -1071,11 +1095,11 @@ async function exportChecklistXLSX(id) {
 		};
 		request.send();
 }
-
+// delete a single checklist
 async function deleteChecklist(id) {
 	if (id && id.length > 10) {
 		swal({
-			title: "Deleting this Checklist?",
+			title: "Delete this Checklist?",
 			text: "Are you sure you wish to delete this checklist?",
 			icon: "warning",
 			buttons: true,
@@ -1533,6 +1557,7 @@ function verifyUpdateChecklist() {
 function verifyUpdateSystem() {
 	if (canUpload()) {
 		$("#btnUpdateSystem").show();
+		$("#btnDeleteSystem").show();
 	}
 }
 function setupProfileMenu()
