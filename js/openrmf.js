@@ -1159,13 +1159,19 @@ async function getChecklistSystemsForUpload(id) {
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
 	if (data) {
-		$.each(data, function (index, value) {
-			if (id && value.internalId == id)
-				optionString = '<option selected value="' + value.internalId + '">' + value.title + '</option>';
-			else 
-				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
-			$('#checklistSystem').append(optionString); 
-		}); 
+		if (data.length > 0) {
+			$.each(data, function (index, value) {
+				if (id && value.internalId == id)
+					optionString = '<option selected value="' + value.internalId + '">' + value.title + '</option>';
+				else 
+					optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+				$('#checklistSystem').append(optionString); 
+			}); 
+		} else {
+			// there are no systems as of yet, so lets just make the "add new system" highlighted and go
+			$('#divNewChecklistSystem').hide(); 
+			$('#divNewChecklistSystemText').show(); 
+		}
 	}
 }
 // called from the Upload page to upload one or more checklists
