@@ -1559,7 +1559,7 @@ function getComplianceSummaryButton(family, status) {
 	} else if (status == "notafinding" || status == "not_applicable")  {
 		return "<button class='btn btn-success'><i class='fa fa-check'>" + family + "</i></button>";
 	} else if (status == "not_reviewed")  {
-		return "<button class='btn btn-primary'><i class='fa fa-eye-slash'> " + family + "</i></button>";
+		return "<button class='btn btn-dark'><i class='fa fa-eye-slash'> " + family + "</i></button>";
 	} else {
 		return "<button class='btn btn-outline-secondary'><i class='fa fa-ban'> " + family + "</i></button>";
 	}
