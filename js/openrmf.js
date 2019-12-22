@@ -40,6 +40,46 @@ async function getTemplateTotalCount() {
 	else 
 		throw new Error(response.status)
 }
+// get list of systems for dashboard
+async function getSystemsForDashboard() {
+	sessionStorage.removeItem("checklistSystems");
+	// clear the options
+	$('#checklistSystem').children().remove().end();
+	$('#checklistSystem').append('<option value="">[Choose a System]</option>');
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	if (data) {
+		$.each(data, function (index, value) {
+				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+			$('#checklistSystem').append(optionString); 
+		}); 
+	}
+}
+async function getSystemOpenItemsForDashboard(){
+	var systemId = $('#checklistSystem').val();
+	if (systemId) {
+		$("#divSystemCategoryDashboard").show();
+		var data = await getScoreForSystemChecklistListing(systemId);
+		if (data) {
+			// set the three values of the boxes and show the DIV
+			$("#numberCAT1Open").html(data.totalCat1Open);
+			$("#numberCAT1OpenItems").text(data.totalCat1Open);
+			$("#numberCAT2Open").html(data.totalCat2Open);
+			$("#numberCAT2OpenItems").text(data.totalCat2Open);
+			$("#numberCAT3Open").html(data.totalCat3Open);
+			$("#numberCAT3OpenItems").text(data.totalCat3Open);
+		}
+	}
+	else {
+		// tell them to pick a system
+		$("#divSystemCategoryDashboard").hide();
+	}
+}
+function loadSystemFromDashboardCategory(type) {
+	var systemId = $('#checklistSystem').val();
+	if (systemId) 
+		location.href="checklists.html?id=" + systemId + "&category=" + type;
+}
 /*************************************
  * Template listing functions
  ************************************/
@@ -129,7 +169,6 @@ async function getTemplates(latest) {
 		throw new Error(response.status)
 	}
 }
-
 // called from template listing, calls the POST to the scoring API to get back a score dynamically
 async function getScoreForTemplateListing(xmlChecklist) {
 	var formData = new FormData();
