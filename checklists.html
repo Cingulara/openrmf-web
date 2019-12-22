@@ -41,6 +41,7 @@
 		<!-- BEGIN CSS for this page -->
 		<link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+		<!-- <link rel="stylesheet" type="text/css" href="assets/css/select.dataTables.min.css"/> -->
 		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
     <style>	
       td.details-control {
@@ -232,13 +233,15 @@
 								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
 								<div class="table-responsive" id="divChecklistListing">
 									<table id="tblChecklistListing" class="table table-bordered table-hover display">
-										<thead><tr><th></th><th>Title</th><th>Open</th><th>NaF</th><th>N/A</th><th>N/R</th></tr></thead>
+										<thead><tr><th></th><th></th><th>Title</th><th>Open</th><th>NaF</th><th>N/A</th><th>N/R</th></tr></thead>
 										<tbody></tbody>
 									</table>
 									<button id="btnExportListToExcel" type="button" onclick="exportChecklistListingXLSX();"
 										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export to Excel</button>
 									<button type="button" id="btnDeleteSystemChecklists" style="display: none;" onclick="deleteSystemChecklists(getParameterByName('id'), false);" 
-										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete All Checklists</button>
+										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete Selected</button>
+									<button type="button" id="btnDeleteAllSystemChecklists" style="display: none;" onclick="deleteAllSystemChecklists(getParameterByName('id'), false);" 
+										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete All</button>
 									<input type="hidden" id="txtSystemName" value="" />
 								</div>
 							</div><!-- end card body -->															
@@ -288,6 +291,7 @@
 <!-- BEGIN Java Script for this page -->
 <script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
 <script src="assets/js/jquery.dataTables.min.js"></script>
+<!-- <script src="assets/js/dataTables.select.min.js"></script> -->
 <script src="assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="js/moment.min.js"></script>
 <script src="./js/openrmf.js"></script>
@@ -351,12 +355,23 @@
 				var tableChecklist = $('#tblChecklistListing').DataTable({
 				"pageLength": 50, 
 				"columns": [
-				{ 
-					"className":      'details-control',
-					"orderable":      false,
-					"data":           null,
-					"defaultContent": ''
-				},
+					{ 
+						"className":      'details-control',
+						"orderable":      false,
+						"data":           null,
+						"defaultContent": '',
+						"targets": 		  0
+					},
+					{ 
+						"className":      'dt-body-center',
+						"orderable":      false,
+						"data":           null,
+						"defaultContent": '',
+						"targets":        1,
+						"render": function (data, type, full, meta){
+							return '<input type="checkbox" id="checklistId[]" value="' + $('<div/>').text(data.id).html() + '">';
+						}
+					},					
 					{ "data": "title" },
 					{ "data": "totalOpen" },
 					{ "data": "totalNaF" },
@@ -364,12 +379,13 @@
 					{ "data": "totalNR" }
 				],
 					"columnDefs": [
-						{ "width": "60%", "targets": 1 },
-						{ "className": "tabco4", "width": "10%", "targets": 2 },
-						{ "className": "tabco2", "width": "10%", "targets": 3 },
-						{ "className": "tabco3", "width": "10%", "targets": 4 },
-						{ "className": "tabco5", "width": "10%", "targets": 5 }
-					]
+						{ "width": "60%", "targets": 2 },
+						{ "className": "tabco4", "width": "10%", "targets": 3 },
+						{ "className": "tabco2", "width": "10%", "targets": 4 },
+						{ "className": "tabco3", "width": "10%", "targets": 5 },
+						{ "className": "tabco5", "width": "10%", "targets": 6 }
+					],
+        			order: [[ 2, 'asc' ]]
 				});
 				// Add event listener for opening and closing details
 				$('#tblChecklistListing tbody').on('click', 'td.details-control', function () {

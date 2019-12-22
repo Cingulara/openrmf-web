@@ -524,11 +524,54 @@ async function getSystemScoreChart(id) {
 }
 // delete all checklists for a system, but keep the system structure
 async function deleteSystemChecklists(id){
+	var formData = new FormData();
+	// put all the checked items into the form data
+	var idSelector = function() { return this.value; };
+	var checklists = $(":checkbox:checked").map(idSelector).get();
+	formData.append("checklistIds", checklists);
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete Selected System Checklists",
+			text: "Are you sure you wish to delete the selected System Checklists?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : saveAPI + "/system/" + id + "/artifacts",
+					type : 'DELETE',
+					data: formData,
+					processData: false,
+					contentType: false,
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
+						.then((value) => {
+							location.reload();
+						});
+					},
+					error : function(data){
+						swal("There was a Problem. Your System Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the System Checklist Deletion.");
+			}
+		});
+	}
+}
+// delete all checklists for a system, but keep the system structure
+async function deleteAllSystemChecklists(id){
 	// system/{id}/artifacts
 
 	if (id && id.length > 10) {
 		swal({
-			title: "Delete all System Checklists",
+			title: "Delete All System Checklists",
 			text: "Are you sure you wish to delete all the System Checklists?",
 			icon: "warning",
 			buttons: true,
@@ -642,7 +685,7 @@ async function getChecklists(latest, system) {
 				var score = await getScoreForChecklistListing(item.internalId);
 				if (score) {
 					// dynamically add to the datatable but only show main data, click the + for extra data
-					table.row.add( { "title": checklistLink, 
+					table.row.add( { "title": checklistLink, "id": item.internalId,
 						"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
 						"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
 						"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
@@ -650,7 +693,7 @@ async function getChecklists(latest, system) {
 					}).draw();
 				}
 				else {
-					table.row.add( { "title": checklistLink, 
+					table.row.add( { "title": checklistLink, "id": item.internalId,
 						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
 						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
 						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
@@ -1678,6 +1721,7 @@ function verifyUpdateSystem() {
 	if (canUpload()) {
 		$("#btnUpdateSystem").show();
 		$("#btnDeleteSystem").show();
+		$("#btnDeleteAllSystemChecklists").show();
 		$("#btnDeleteSystemChecklists").show();
 	}
 }
