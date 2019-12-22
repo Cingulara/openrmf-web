@@ -237,6 +237,8 @@
 									</table>
 									<button id="btnExportListToExcel" type="button" onclick="exportChecklistListingXLSX();"
 										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export to Excel</button>
+									<button type="button" id="btnDeleteSystemChecklists" style="display: none;" onclick="deleteSystemChecklists(getParameterByName('id'), false);" 
+										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete All Checklists</button>
 									<input type="hidden" id="txtSystemName" value="" />
 								</div>
 							</div><!-- end card body -->															

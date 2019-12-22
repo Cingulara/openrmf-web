@@ -522,7 +522,43 @@ async function getSystemScoreChart(id) {
 	if (data) 
 		renderSystemPieChart("chartSystemScore", data); // render the specific data for this system
 }
+// delete all checklists for a system, but keep the system structure
+async function deleteSystemChecklists(id){
+	// system/{id}/artifacts
 
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete all System Checklists",
+			text: "Are you sure you wish to delete all the System Checklists?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : saveAPI + "/system/" + id + "/artifacts",
+					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
+						.then((value) => {
+							location.href = "systems.html";
+						});
+					},
+					error : function(data){
+						swal("There was a Problem. Your System Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the System Checklist Deletion.");
+			}
+		});
+	}
+}
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -1642,6 +1678,7 @@ function verifyUpdateSystem() {
 	if (canUpload()) {
 		$("#btnUpdateSystem").show();
 		$("#btnDeleteSystem").show();
+		$("#btnDeleteSystemChecklists").show();
 	}
 }
 function verifyDownloadSystemChart() {
