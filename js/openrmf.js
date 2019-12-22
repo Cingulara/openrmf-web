@@ -588,7 +588,7 @@ async function deleteAllSystemChecklists(id){
 					success: function(data){
 						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
 						.then((value) => {
-							location.href = "systems.html";
+							location.reload();
 						});
 					},
 					error : function(data){
