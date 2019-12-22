@@ -1124,7 +1124,27 @@ async function makeChartSeverity (data) {
 			]
 		},
 		options: {
-			responsive: true
+			responsive: true,
+			maintainAspectRatio: false,
+			aspectRatio: 1,
+			legend: {
+			  display: true,
+			  position: 'bottom',
+			  labels: {
+				fontSize: 10,
+				padding: 5
+			  }
+			},
+			plugins: {
+			  labels: {
+				render: 'value',
+				fontSize: 14,
+				//fontStyle: 'bold',
+				fontColor: '#000',
+				//position: 'outside',
+				fontFamily: '"Lucida Console", Monaco, monospace'
+			  }
+			}
 		}	 
   });
 }
@@ -1161,7 +1181,27 @@ async function makeChartCategory (data) {
 				]
 			},
 			options: {
-				responsive: true
+				responsive: true,
+				maintainAspectRatio: false,
+				aspectRatio: 1,
+				legend: {
+				display: true,
+				position: 'bottom',
+				labels: {
+					fontSize: 10,
+					padding: 5
+				}
+				},
+				plugins: {
+				labels: {
+					render: 'value',
+					fontSize: 14,
+					//fontStyle: 'bold',
+					fontColor: '#000',
+					//position: 'outside',
+					fontFamily: '"Lucida Console", Monaco, monospace'
+				}
+				}
 			}
   });
 }
