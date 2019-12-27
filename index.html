@@ -1,5 +1,5 @@
 <!-- 
-	// Copyright (c) Cingulara 2019. All rights reserved.
+	// Copyright (c) Cingulara LLC 2019 and Tutela LLC 2019. All rights reserved.
 	// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
 -->
 <!DOCTYPE html>
@@ -235,35 +235,34 @@
 						<div class="card mb-3">
 							<div class="card-header">
 								<h3><i class="fa fa-table"></i> Critical and High Findings</h3>
-							</div>								
+							</div>			
 							<div class="card-body">
 								<div class="small">Choose a system to display its ACAS Scan Item Dashboard</div>
 								<select class="form-control" style="width: 50%;" id="checklistACASSystem" onchange="getSystemACASItemsForDashboard();">
 									<option value="">[Choose a System]</option>
 								</select>
 								<br />
+								<div id="divNessusStatus" style="display: none;" class="alert alert-warning alert-dismissible fade show" role="alert"></div>
 								<div class="row" id="divSystemACASPatchListing" style="display: none;">
 									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
 										<div class="card-box noradius noborder tabco4">
-											<i class="fa fa-exclamation float-right text-white"></i>
+											<i class="fa fa-times-circle float-right text-white"></i>
 											<h6 class="text-white text-uppercase m-b-20">Critical</h6>
 											<h1 id="numberCriticalOpen" class="m-b-20 text-white"></h1>
 											<span class="text-white"><span id="numberCriticalOpenItems"></span> Open Critical</span>
 										</div>
-									</div>
-				
+									</div>				
 									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
 										<div class="card-box noradius noborder tabco4">
-											<i class="fa fa-exclamation-triangle float-right text-white"></i>
+											<i class="fa fa-exclamation float-right text-white"></i>
 											<h6 class="text-white text-uppercase m-b-20">High</h6>
 											<h1 id="numberHighOpen" class="m-b-20 text-white"></h1>
 											<span class="text-white"><span id="numberHighOpenItems"></span> Open High</span>
 										</div>
-									</div>
-				
+									</div>				
 									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
 										<div class="card-box noradius noborder tabco6">
-											<i class="fa fa-bell float-right text-white"></i>
+											<i class="fa fa-exclamation-triangle float-right text-white"></i>
 											<h6 class="text-white text-uppercase m-b-20">Medium</h6>
 											<h1 id="numberMediumOpen" class="m-b-20 text-white"></h1>
 											<span class="text-white"><span id="numberMediumOpenItems"></span> Open Medium</span>

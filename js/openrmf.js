@@ -1,4 +1,4 @@
-// Copyright (c) Cingulara 2019. All rights reserved.
+// Copyright (c) Cingulara LLC 2019 and Tutela LLC 2019. All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
 /*************************************
  * Dashboard functions
@@ -91,21 +91,30 @@ function loadSystemFromDashboardCategory(type) {
 async function getSystemACASItemsForDashboard() {
 	var systemId = $('#checklistACASSystem').val();
 	if (systemId) {
-		$("#divSystemACASPatchListing").show();
 		var data = await getNessusFileSummaryData(systemId);
 		if (data) {
+			$("#divSystemACASPatchListing").show();
+			$("#divNessusStatus").hide();
 			// set the three values of the boxes and show the DIV
-			$("#numberCriticalOpen").html(data.totalCat1Open);
-			$("#numberCriticalOpenItems").text(data.totalCat1Open);
-			$("#numberHighOpen").html(data.totalCat2Open);
-			$("#numbeHighOpenItems").text(data.totalCat2Open);
-			$("#numberMediumOpen").html(data.totalCat3Open);
-			$("#numberMediumOpenItems").text(data.totalCat3Open);
+			$("#numberCriticalOpen").html(data.totalCriticalOpen);
+			$("#numberCriticalOpenItems").text(data.totalCriticalOpen);
+			$("#numberHighOpen").html(data.totalHighOpen);
+			$("#numbeHighOpenItems").text(data.totalHighOpen);
+			$("#numberMediumOpen").html(data.totalMediumOpen);
+			$("#numberMediumOpenItems").text(data.totalMediumOpen);
+		}
+		else {
+			// tell them there is no ACAS Nessus file
+			$("#divSystemACASPatchListing").hide();
+			$("#divNessusStatus").html("There is no current Nessus patch file loaded for this <a href='checklists.html?id=" + systemId + "'>system</a>.");
+			$("#divNessusStatus").show();
 		}
 	}
 	else {
 		// tell them to pick a system
 		$("#divSystemACASPatchListing").hide();
+		$("#divNessusStatus").html("There is no current valid Nessus patch file loaded for this system.");
+		$("#divNessusStatus").show();
 	}
 }
 /*************************************
@@ -496,7 +505,7 @@ function renderSystemPieChart(element, data) {
 async function downloadNessusXML(systemGroupId) {
 	// redirect to the API and it downloads the XML file for the Nessus scan
 	$.blockUI({ message: "Generating the Nessus file...please wait" }); 
-	var url = readAPI + "/system/downloadnessus/" + encodeURIComponent(systemGroupId);
+	var url = readAPI + "/system/" + encodeURIComponent(systemGroupId) + "/downloadnessus/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -524,7 +533,23 @@ async function downloadNessusXML(systemGroupId) {
 }
 // get back the list of Critical and High Nessus Patch data
 async function getNessusFileSummaryData(systemGroupId) {
-
+	var url = readAPI;
+	try {
+		  let responsePatches = await fetch(readAPI + "/system/" + encodeURIComponent(systemGroupId) + "/nessuspatchsummary/", {headers: {
+			  'Authorization': 'Bearer ' + keycloak.token
+		  }});
+		  if (responsePatches.ok) {
+			  var dataPatches = await responsePatches.json()
+			  return dataPatches;
+		  } else if (responsePatches.statusText == "Not Found") {
+			  // hide the section and tell them there is no Patch file uploaded for that system
+			  return null;
+		  }
+	  }
+	  catch (error) {
+		  console.error("returning an empty summary of patches");
+		  return null;
+	  }
 }
 
 // export Nessus scan to XLSX for easier viewing
