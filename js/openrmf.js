@@ -48,16 +48,20 @@ async function getSystemsForDashboard() {
 	// clear the options
 	$('#checklistSystem').children().remove().end();
 	$('#checklistSystem').append('<option value="">[Choose a System]</option>');
+	$('#checklistACASSystem').children().remove().end();
+	$('#checklistACASSystem').append('<option value="">[Choose a System]</option>');
 	var data = await getChecklistSystems();
-	// for each data add to the upload checklistSystem
+	// for each data add to the system listings on the dashboard independently
 	if (data) {
 		$.each(data, function (index, value) {
 				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
-			$('#checklistSystem').append(optionString); 
+			$('#checklistSystem').append(optionString);
+			$('#checklistACASSystem').append(optionString);
 		}); 
 	}
 }
-async function getSystemOpenItemsForDashboard(){
+// get the item count for Cat 1, 2, 3 from the dashboard to display
+async function getSystemOpenItemsForDashboard() {
 	var systemId = $('#checklistSystem').val();
 	if (systemId) {
 		$("#divSystemCategoryDashboard").show();
@@ -77,10 +81,32 @@ async function getSystemOpenItemsForDashboard(){
 		$("#divSystemCategoryDashboard").hide();
 	}
 }
+// from the dashboard items listing, if you click on a system or checklist listing you view the system record for that ID
 function loadSystemFromDashboardCategory(type) {
 	var systemId = $('#checklistSystem').val();
 	if (systemId) 
 		location.href="checklists.html?id=" + systemId + "&category=" + type;
+}
+// get the Nessus scan critical and high items to display here
+async function getSystemACASItemsForDashboard() {
+	var systemId = $('#checklistACASSystem').val();
+	if (systemId) {
+		$("#divSystemACASPatchListing").show();
+		var data = await getNessusFileSummaryData(systemId);
+		if (data) {
+			// set the three values of the boxes and show the DIV
+			$("#numberCriticalOpen").html(data.totalCat1Open);
+			$("#numberCriticalOpenItems").text(data.totalCat1Open);
+			$("#numberHighOpen").html(data.totalCat2Open);
+			$("#numbeHighOpenItems").text(data.totalCat2Open);
+			$("#numberMediumOpen").html(data.totalCat3Open);
+			$("#numberMediumOpenItems").text(data.totalCat3Open);
+		}
+	}
+	else {
+		// tell them to pick a system
+		$("#divSystemACASPatchListing").hide();
+	}
 }
 /*************************************
  * Template listing functions
@@ -496,7 +522,12 @@ async function downloadNessusXML(systemGroupId) {
 	request.send();
 	$.unblockUI();
 }
+// get back the list of Critical and High Nessus Patch data
+async function getNessusFileSummaryData(systemGroupId) {
 
+}
+
+// export Nessus scan to XLSX for easier viewing
 async function exportNessusXML(systemGroupId) {
 	swal("Coming Soon ... export your Nessus file to an XLSX!", "Click OK to continue!", "success");
 }

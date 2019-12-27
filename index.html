@@ -223,7 +223,7 @@
 				<div class="row">
 					<div class="col-xl-12">
 						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">Nessus Patch Scans</h1>
+							<h1 class="main-title float-left">Nessus ACAS Patch Scans</h1>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -234,10 +234,42 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3><i class="fa fa-table"></i> System Critical and High Findings</h3>
+								<h3><i class="fa fa-table"></i> Critical and High Findings</h3>
 							</div>								
 							<div class="card-body">
-								(in progress...)								
+								<div class="small">Choose a system to display its ACAS Scan Item Dashboard</div>
+								<select class="form-control" style="width: 50%;" id="checklistACASSystem" onchange="getSystemACASItemsForDashboard();">
+									<option value="">[Choose a System]</option>
+								</select>
+								<br />
+								<div class="row" id="divSystemACASPatchListing" style="display: none;">
+									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+										<div class="card-box noradius noborder tabco4">
+											<i class="fa fa-exclamation float-right text-white"></i>
+											<h6 class="text-white text-uppercase m-b-20">Critical</h6>
+											<h1 id="numberCriticalOpen" class="m-b-20 text-white"></h1>
+											<span class="text-white"><span id="numberCriticalOpenItems"></span> Open Critical</span>
+										</div>
+									</div>
+				
+									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+										<div class="card-box noradius noborder tabco4">
+											<i class="fa fa-exclamation-triangle float-right text-white"></i>
+											<h6 class="text-white text-uppercase m-b-20">High</h6>
+											<h1 id="numberHighOpen" class="m-b-20 text-white"></h1>
+											<span class="text-white"><span id="numberHighOpenItems"></span> Open High</span>
+										</div>
+									</div>
+				
+									<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4">
+										<div class="card-box noradius noborder tabco6">
+											<i class="fa fa-bell float-right text-white"></i>
+											<h6 class="text-white text-uppercase m-b-20">Medium</h6>
+											<h1 id="numberMediumOpen" class="m-b-20 text-white"></h1>
+											<span class="text-white"><span id="numberMediumOpenItems"></span> Open Medium</span>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>		
@@ -247,7 +279,7 @@
 				<div class="row">
 					<div class="col-xl-12">
 						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">DISA SCAP Scans &amp; Checklists</h1>
+							<h1 class="main-title float-left">SCAP Scans &amp; Checklists</h1>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -260,7 +292,7 @@
 								<h3><i class="fa fa-exclamation"></i> High, Medium &amp; Low Open Items</h3>
 							</div>								
 							<div class="card-body">
-								<div class="small" id="checklistLastUpdated">Choose a system to display its Open Item Dashboard</div>
+								<div class="small">Choose a system to display its Open Item Dashboard</div>
 								<select class="form-control" style="width: 50%;" id="checklistSystem" onchange="getSystemOpenItemsForDashboard();">
 									<option value="">[Choose a System]</option>
 								</select>
@@ -289,10 +321,10 @@
 											<i class="fa fa-bell float-right text-white"></i>
 											<h6 class="text-white text-uppercase m-b-20">Low</h6>
 											<h1 id="numberCAT3Open" class="m-b-20 text-white"></h1>
-											<span class="text-white"><span id="numberCAT3OpenItems"></span> Open Medium (CAT 3)</span>
+											<span class="text-white"><span id="numberCAT3OpenItems"></span> Open Low (CAT 3)</span>
 										</div>
 									</div>
-								</div>		
+								</div>
 							</div>
 						</div>
 					</div>		
