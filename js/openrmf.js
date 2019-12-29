@@ -99,7 +99,7 @@ async function getSystemACASItemsForDashboard() {
 			$("#numberCriticalOpen").html(data.totalCriticalOpen);
 			$("#numberCriticalOpenItems").text(data.totalCriticalOpen);
 			$("#numberHighOpen").html(data.totalHighOpen);
-			$("#numbeHighOpenItems").text(data.totalHighOpen);
+			$("#numberHighOpenItems").text(data.totalHighOpen);
 			$("#numberMediumOpen").html(data.totalMediumOpen);
 			$("#numberMediumOpenItems").text(data.totalMediumOpen);
 		}
@@ -361,7 +361,7 @@ async function getSystemRecord(systemGroupId) {
 				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> " + moment(item.lastComplianceCheck).format('MM/DD/YYYY h:mm a'));
 			else 
 				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> N/A");
-		}
+1		}
 	}
 	else {
 		$.unblockUI();
@@ -554,7 +554,32 @@ async function getNessusFileSummaryData(systemGroupId) {
 
 // export Nessus scan to XLSX for easier viewing
 async function exportNessusXML(systemGroupId) {
-	swal("Coming Soon ... export your Nessus file to an XLSX!", "Click OK to continue!", "success");
+	$.blockUI({ message: "Generating the Nessus Excel export ...please wait" }); 
+	var url = readAPI + "/system/" + systemGroupId + "/exportnessus";
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-NessusScanSummary.xlsx";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		}
+	};
+	request.send();
+	$.unblockUI();
 }
 // buttons to redirect with the System ID in the URL
 function runComplianceFromSystem(id) {
@@ -894,6 +919,8 @@ async function getChecklistData(id, template) {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
   if (response.ok) {
+		clearSessionData();
+		// now get the data set
 		var data = await response.json();
 		var title = data.title;
 		$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
@@ -1867,7 +1894,16 @@ function verifyDownloadSystemChart() {
 		$("#btnDownloadChartSystemScore").show();
 	}
 }
-
+function clearSessionData() {
+	var currentSystem = sessionStorage.getItem("currentSystem");
+	var currentSystemsList = sessionStorage.getItem("checklistSystems");
+	// clear out everything
+	sessionStorage.clear();
+	if (currentSystem && currentSystem != "undefined")
+		sessionStorage.setItem("currentSystem", currentSystem);
+	if (currentSystemsList && currentSystemsList != "undefined")
+		sessionStorage.setItem("checklistSystems", currentSystemsList);
+}
 
 function setupProfileMenu()
 {
