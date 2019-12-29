@@ -102,6 +102,8 @@ async function getSystemACASItemsForDashboard() {
 			$("#numberHighOpenItems").text(data.totalHighOpen);
 			$("#numberMediumOpen").html(data.totalMediumOpen);
 			$("#numberMediumOpenItems").text(data.totalMediumOpen);
+			$("#numberLowOpen").html(data.totalLowOpen);
+			$("#numberLowOpenItems").text(data.totalLowOpen);
 		}
 		else {
 			// tell them there is no ACAS Nessus file
