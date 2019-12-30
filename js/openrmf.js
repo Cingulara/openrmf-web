@@ -338,12 +338,14 @@ async function getSystemRecord(systemGroupId) {
 				$("#divSystemDescription").html("<b>Description:</b> (no description)");
 			$("#divNumberChecklists").html("<b>Checklists:</b> " + item.numberOfChecklists);
 			if (item.rawNessusFile) {
-				var nessusHTML = "<b>Nessus Scan:</b> Yes";				
+				var nessusHTML = "<b>Nessus Scan:</b>";				
 				if (canDownload()) {
-					nessusHTML += ' <span class="small"><a title="Download the Nessus scan" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
-					nessusHTML += '(xml)</a> ';
-					nessusHTML += ' <span class="small"><a title="Export the Nessus scan to XLSX" href="javascript:exportNessusXML(\'' + item.internalId + '\')">';
-					nessusHTML += '(xlsx)</a>';
+					nessusHTML += ' &nbsp; <span class="small"><a title="Download the Nessus scan" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
+					nessusHTML += 'Download</a> ';
+					nessusHTML += ' | <span class="small"><a title="Export the Nessus scan Summary to XLSX" href="javascript:exportNessusXML(\'' + item.internalId + '\', true)">';
+					nessusHTML += 'Summary Export</a> ';
+					nessusHTML += ' | <span class="small"><a title="Export the Nessus scan to XLSX by Host" href="javascript:exportNessusXML(\'' + item.internalId + '\', false)">';
+					nessusHTML += 'Host Export</a> ';
 				}
 				// write the HTML
 				$("#divSystemNessusFile").html(nessusHTML);
@@ -551,9 +553,9 @@ async function getNessusFileSummaryData(systemGroupId) {
 }
 
 // export Nessus scan to XLSX for easier viewing
-async function exportNessusXML(systemGroupId) {
+async function exportNessusXML(systemGroupId, summaryView) {
 	$.blockUI({ message: "Generating the Nessus Excel export ...please wait" }); 
-	var url = readAPI + "/system/" + systemGroupId + "/exportnessus";
+	var url = readAPI + "/system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -569,7 +571,10 @@ async function exportNessusXML(systemGroupId) {
 				var downloadLink = window.document.createElement('a');
 				var contentTypeHeader = request.getResponseHeader("Content-Type");
 				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
-				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-NessusScanSummary.xlsx";
+				if (summaryView)
+					downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-NessusScanSummary.xlsx";
+				else 
+					downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-NessusScanSummaryByHost.xlsx";
 				document.body.appendChild(downloadLink);
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
