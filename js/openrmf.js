@@ -229,7 +229,7 @@ function listSystems() {
 	location.href = "systems.html";
 }
 
-async function getChecklistSystemListing(){
+async function getSystemListing(){
 	$.blockUI({ message: "Updating the system listing..." }); 
 	var url = readAPI + "/systems/";
 
@@ -636,7 +636,7 @@ async function deleteSystem(id) {
 function getSystemScoreChartBySession(){
 	var currentSystem = sessionStorage.getItem("currentSystem");
 	if (currentSystem)
-		getSystemRecord(currentSystem);
+		getSystemScoreChart(currentSystem);
 	else
 		location.href = "systems.html";
 }

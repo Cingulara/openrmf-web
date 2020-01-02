@@ -1315,3 +1315,40 @@ a.btn:focus {
   width: 100px;
   height: 50px;
 }
+
+/***************************
+ Reporting CSS
+****************************/
+.reportListing {
+  margin: 5px 10px 5px 10px;
+  padding: 0px;
+  border: solid 2px #dedede;
+  border-radius: 3px;
+  float: left;
+  min-height: 265px;
+  width: 300px;
+  font-size: 16px;
+  position: relative;
+}
+.reportsList {
+  padding: 8px;
+}
+.reportListTitle {
+  font-weight: 500;
+  font-size: 18px;
+  color: #5a5a5a;
+  width: 100%;
+  background-color: #dedede;
+  margin: 0px;
+  padding: 2px 5px 5px 5px;
+}
+.reporticon {
+  padding: 5px;
+  font-size: 9em;
+  margin: 0 auto;
+  color: rgba(44, 94, 188, 0.687);
+}
+.reportListingDescription {
+  width: 100%;
+  text-align: center;
+}
