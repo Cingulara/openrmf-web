@@ -1517,7 +1517,7 @@ function uploadChecklist(){
 	}
 	// if a new system, use it, otherwise select from the list
 	if ($("#checklistSystemText").is(':visible')){
-		if ($("#checklistSystemText").val() && $("#checklistSystemText").val().trim().length ==0) {
+		if ($("#checklistSystemText").val().trim().length ==0) {
 			swal("Error on the Upload", "Please fill in the new System Name field.", "error");
 			return false;
 		}
