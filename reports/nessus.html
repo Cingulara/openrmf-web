@@ -39,10 +39,21 @@
 		<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 		
 		<!-- Custom CSS -->
-		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />		
+		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+
+		<style>	
+			td.details-control {
+			  background: url('/assets/plugins/datatables/img/details_open.png') no-repeat center center;
+			  cursor: pointer;
+			}
+			tr.shown td.details-control {
+			  background: url('/assets/plugins/datatables/img/details_close.png') no-repeat center center;
+			}
+		</style>
 		<!-- END CSS for this page -->
 		
 </head>
@@ -181,17 +192,30 @@
 								<form class="form-inline">
 									<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
 									<select class="form-control" id="checklistSystemFilter" onchange="getReportsBySystem();">
-										<option value="">[Choose a System]</option>
-                                    </select>
-                                </form>
-                                <br /><br />
-                                <table id="tableNessus" style="width: 100%;" class="table table-bordered table-hover display">
-                                    <thead><tr><th>Host</th><th>Plugin Id</th><th>Plugin Name</th><th>Family</th><th>Severity</th>
-                                        <th>Host Total</th><th>Total</th></tr></thead>
+										<option value="">[ Choose a System ]</option>
+									</select> &nbsp; &nbsp; 
+									<button type="button" class="btn btn-sm btn-primary" onclick="getNessusPatchScanReport();">Run Report</button>
+								</form>
+							</div>
+						</div><!-- end card body -->					
+					</div><!-- end card-->					
+				</div>		
+			</div><!-- end row-->
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+					<div class="card mb-3">
+						<div class="card-header">
+							<h3 id="reportNessusReportName"></h3>
+						</div>
+						<div class="card-body">
+							<div>
+                                <table id="tblReportNessus" style="width: 100%;" class="table table-bordered table-hover display">
+                                    <thead><tr><th></th><th>Host</th><th>Plugin Id</th><th>Plugin Name</th><th>Family</th><th>Severity</th>
+                                        </tr></thead>
                                     <tbody></tbody>
                                 </table>
 							</div>
-						</div><!-- end card body -->															
+						</div><!-- end card body -->					
 					</div><!-- end card-->					
 				</div>		
 			</div><!-- end row-->
@@ -236,6 +260,7 @@
 <script src="/assets/js/jquery.dataTables.min.js"></script>
 <!-- <script src="/assets/js/dataTables.select.min.js"></script> -->
 <script src="/assets/js/dataTables.bootstrap4.min.js"></script>
+<script src="/assets/plugins/sweetalert/sweetalert.js"></script>
 
 <!-- BEGIN Java Script for this page -->
 	
@@ -250,28 +275,59 @@
 					verifyUploadMenu();
                     getChecklistSystemsForReportFilter();
                         
-                    var tableNessus = $('#tableNessus').DataTable({
+					// format the extra row data
+					function format ( d ) {
+						// `d` is the original data object for the row
+						return "<div><h6>Synopsis</h6>" + d.synopsis + "</div>" + 
+						"<div><h6>Description</h6>" + d.description + "</div>" + 
+						"<div><h6>Plugin Type</h6>" + d.pluginType + "</div>" + 
+						"<div><h6>Publication Date</h6>" + d.publicationDate + "</div>";
+					}
+
+					// setup the table
+					var tableNessus = $('#tblReportNessus').DataTable({
                     "pageLength": 50, 
                     "columns": [
+						{ 
+							"className":      'details-control',
+							"orderable":      false,
+							"data":           null,
+							"defaultContent": '',
+							"targets": 		  0
+						},
                         { "data": "hostname" },
                         { "data": "pluginId" },
                         { "data": "pluginName" },
                         { "data": "family" },
-                        { "data": "severity" },
-                        { "data": "hostTotal" },
-                        { "data": "total" }
+                        { "data": "severity" }
                     ],
                         "columnDefs": [
+							{ "width": "5%", "targets": 0 },
                             { "width": "10%", "targets": 1 },
                             { "width": "10%", "targets": 2 },
                             { "width": "40%", "targets": 3 },
-                            { "width": "10%", "targets": 4 },
-                            { "width": "10%", "targets": 5 },
-                            { "width": "10%", "targets": 6 },
-                            { "width": "10%", "targets": 7 }
+                            { "width": "20%", "targets": 4 },
+                            { "width": "10%", "targets": 5 }
                         ],
                         order: [[ 5, 'desc' ]]
-                    });
+					});
+					
+					// Add event listener for opening and closing details
+					$('#tblReportNessus tbody').on('click', 'td.details-control', function () {
+						var tr = $(this).closest('tr');
+						var row = tableNessus.row( tr );
+					
+						if ( row.child.isShown() ) {
+							// This row is already open - close it
+							row.child.hide();
+							tr.removeClass('shown');
+						}
+						else {
+							// Open this row
+							row.child( format(row.data()) ).show();
+							tr.addClass('shown');
+						}
+					} );
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');

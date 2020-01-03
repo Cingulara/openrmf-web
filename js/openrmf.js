@@ -1600,18 +1600,18 @@ async function getChecklistTypeBreakdown(system) {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
   if (response.ok) {
-			var data = await response.json()
-			var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
-			var chartSeverity = new Chart(ctx3, {
-				type: 'pie',
-				data: {
-						datasets: [{
-							label: 'Checklists by Type'
-						}]
-					},
-					options: {
-						responsive: true
-					}
+		var data = await response.json()
+		var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
+		var chartSeverity = new Chart(ctx3, {
+			type: 'pie',
+			data: {
+					datasets: [{
+						label: 'Checklists by Type'
+					}]
+				},
+				options: {
+					responsive: true
+				}
 		});
 		// cycle through the real data
 		var myData = [];
@@ -1650,6 +1650,46 @@ async function getChecklistSystemsForReportFilter() {
 }
 async function getReportsBySystem() {
 	await getChecklistTypeBreakdown($("#checklistSystemFilter").val());
+}
+async function getNessusPatchScanReport() {
+	var systemGroupId = $("#checklistSystemFilter").val();
+	if (!systemGroupId || systemGroupId.length == 0)
+	{
+		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	// call the read API /reports/nessus/xxxxxxxxxxxx
+	$.blockUI({ message: "Generating the Nessus Patch Report ...please wait" }); 
+	var url = readAPI + "/report/nessus/" + systemGroupId;
+	// get back the data
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {				
+		// put into a datatable like the others
+		var table = $('#tblReportNessus').DataTable(); // the datatable reference to do a row.add() to
+		table.clear();
+		var data = await response.json();
+		if (data && data.reportName.length > 0 && data.summary.length > 0) {
+			// use the Report Name
+			$("#reportNessusReportName").html("Nessus Scan Report: " + data.reportName);
+		}
+		for (const item of data.summary) {
+			// dynamically add to the datatable but only show main data, click the + for extra data
+			table.row.add( { "hostname": item.hostname, "pluginId": item.pluginId,
+				"pluginName": item.pluginName, "severity": item.severity + ' - ' + item.severityName, 
+				"hostTotal": item.hostTotal, "total": item.total, "family": item.family, 
+				"description": item.description, "publicationDate": item.publicationDate, 
+				"pluginType": item.pluginType, "riskFactor": item.riskFactor, "synopsis": item.synopsis
+			}).draw();
+		}
+		$.unblockUI();
+	}
+	else {
+		$.unblockUI();
+		swal("There was a problem running your report. Please check with the Application Administrator to see if all services are running.", "Click OK to continue!", "error");
+		throw new Error(response.status)
+	}
 }
 /************************************ 
  Compliance Functions
