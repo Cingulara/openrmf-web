@@ -129,22 +129,22 @@
 			<div id="sidebar-menu">
 			<ul>
 				<li class="submenu">
-					<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+					<a href="/index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
+					<a href="/systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					<a href="/compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="templates.html"  title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					<a href="/templates.html"  title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
 					<a class="active" href="/reports/index.html"  title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
 				<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
-					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
+					<a href="/upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
             </ul>
             <div class="clearfix"></div>
@@ -178,12 +178,13 @@
 							<h3><i class="fa fa-filter"></i> Filters</h3>
 						</div>
 						<div class="card-body">
-							<div class="checklistSystemsList">
+							<div>
 								<form class="form-inline">
 									<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
-									<select class="form-control" id="checklistSystemFilter" onchange="getReportsBySystem();">
-										<option value="All">All</option>
-									</select>
+									<select class="form-control" id="checklistSystemFilter">
+										<option value="">[ Choose System ]</option>
+									</select> &nbsp; &nbsp; 
+									<button type="button" class="btn btn-sm btn-primary" onclick="getSystemTotalsByTypeReport();">Run Report</button>
 								</form>
 							</div>
 						</div><!-- end card body -->															
@@ -192,34 +193,19 @@
 			</div><!-- end row-->
 
 			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">						
 					<div class="card mb-3">
 						<div class="card-header">
-							<i class="fa fa-table"></i> Checklist Type Breakdown
+							<h3><i class="fa fa-pie-chart"></i> System Totals by Type</h3>
 						</div>
 							
 						<div class="card-body">
-							<canvas id="chartChecklistTypeBreakdown"></canvas>
+							<canvas id="chartReportSystemTotalsBreakdown"></canvas>
 						</div>
-						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-						<button type="button" onclick="downloadChart('chartChecklistTypeBreakdown');" style="width: 200px;"
+						<button type="button" onclick="downloadChart('chartReportSystemTotalsBreakdown');" style="width: 100%; text-align: center;"
 							class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 					</div><!-- end card-->		
-				</div>
-				
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-					<div class="card mb-3">
-						<div class="card-header">
-							<i class="fa fa-table"></i> Resource Usage
-						</div>
-							
-						<div class="card-body">
-							Coming Soon in a future release...
-							<!-- <canvas id="chartCategory"></canvas> -->
-						</div>
-						<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-					</div><!-- end card-->					
-				</div>							
+				</div>					
 			</div>
 			<!-- end row -->
 
@@ -263,7 +249,8 @@
 <script src="/assets/plugins/sweetalert/sweetalert.js"></script>
 
 <!-- BEGIN Java Script for this page -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="/assets/plugins/chart.js/chart.min.js"></script>
+<script src="/assets/plugins/chart.js/chartjs-plugin-labels.min.js"></script>
 	
 	<script>
 		$(document).ready(function() {
@@ -275,7 +262,6 @@
 					// see if the upload menu should show
 					verifyUploadMenu();
 					getChecklistSystemsForReportFilter();
-					getChecklistTypeBreakdown();
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');

@@ -459,17 +459,21 @@ function renderSystemPieChart(element, data) {
 		type: 'pie',
 		data: {
 			datasets: [{
-				data: [data.totalOpen, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
+				data: [data.totalCat1Open, data.totalCat2Open, data.totalCat3Open, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
 				backgroundColor: [
-					'rgba(255,99,132,1)',
-					'rgba(75, 192, 192, 1)',
+					'rgba(255, 99, 132, 1)',
+					'rgba(255, 153, 0, 1)',
+					'rgba(216, 216, 14, 1)',
+					'rgba(0, 204, 0, 1)',
 					'rgba(150, 150, 150, 1)',
-					'rgba(54, 162, 235, 1)'
+					'rgba(242, 242, 242, 1)'
 				],
 				label: 'System Severity Breakdown'
 			}],
 			labels: [
-				"Open",
+				"CAT 1 Open",
+				"CAT 2 Open",
+				"CAT 3 Open",
 				"Not a Finding",
 				"N/A",
 				"Not Reviewed"
@@ -1651,6 +1655,7 @@ async function getChecklistSystemsForReportFilter() {
 async function getReportsBySystem() {
 	await getChecklistTypeBreakdown($("#checklistSystemFilter").val());
 }
+// run the Nessus report
 async function getNessusPatchScanReport() {
 	var systemGroupId = $("#checklistSystemFilter").val();
 	if (!systemGroupId || systemGroupId.length == 0)
@@ -1690,6 +1695,70 @@ async function getNessusPatchScanReport() {
 		swal("There was a problem running your report. Please check with the Application Administrator to see if all services are running.", "Click OK to continue!", "error");
 		throw new Error(response.status)
 	}
+}
+// run the area chart report by system
+async function getSystemTotalsByTypeReport() {
+	var systemGroupId = $("#checklistSystemFilter").val();
+	if (!systemGroupId || systemGroupId.length == 0)
+	{
+		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	var data = await getScoreForSystemChecklistListing(systemGroupId);
+	if (data) 
+		renderSystemReportPieChart("chartReportSystemTotalsBreakdown", data); // render the specific data for this system
+}
+// Reports:  get the data for the pie chart in the Systems listing to show
+function renderSystemReportPieChart(element, data) {
+	var ctx3 = document.getElementById(element).getContext('2d');
+	var chartSeverity = new Chart(ctx3, {
+		type: 'pie',
+		data: {
+			datasets: [{
+				data: [data.totalCat1Open, data.totalCat2Open, data.totalCat3Open, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
+				backgroundColor: [
+					'rgba(255, 99, 132, 1)',
+					'rgba(255, 153, 0, 1)',
+					'rgba(216, 216, 14, 1)',
+					'rgba(0, 204, 0, 1)',
+					'rgba(150, 150, 150, 1)',
+					'rgba(242, 242, 242, 1)'
+				],
+				label: 'System Severity Breakdown'
+			}],
+			labels: [
+				"CAT 1 Open",
+				"CAT 2 Open",
+				"CAT 3 Open",
+				"Not a Finding",
+				"N/A",
+				"Not Reviewed"
+			]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: true,
+			aspectRatio: 1,
+			legend: {
+			  display: true,
+			  position: 'bottom',
+			  labels: {
+				fontSize: 10,
+				padding: 5
+			  }
+			},
+			plugins: {
+			  labels: {
+				render: 'value',
+				fontSize: 14,
+				//fontStyle: 'bold',
+				fontColor: '#000',
+				//position: 'outside',
+				fontFamily: '"Lucida Console", Monaco, monospace'
+			  }
+			}
+		}
+	});
 }
 /************************************ 
  Compliance Functions

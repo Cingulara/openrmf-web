@@ -1261,8 +1261,8 @@ a.btn:focus {
   border: solid 2px #dedede;
   border-radius: 3px;
   float: left;
-  min-height: 365px;
-  width: 400px;
+  min-height: 450px;
+  width: 500px;
   font-size: 16px;
   position: relative;
 }
@@ -1307,7 +1307,7 @@ a.btn:focus {
   padding: 2px 5px 2px 5px;
 }
 .systemChart {
-  height: 270px;
+  height: 400px;
 }
 
 .complianceSummaryListing {
