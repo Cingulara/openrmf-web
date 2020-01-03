@@ -1837,23 +1837,26 @@ async function getSystemChecklistReport() {
 		
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
-
+		
+		var strStatus = "";
 		for (const item of data.checklist.stigs.iSTIG.vuln) {
+			if (item.status == "NotAFinding") 
+				strStatus = "Not a Finding";
+			else if (item.status == "Not_Reviewed") 
+				strStatus = "Not Reviewed";
+			else if (item.status == "Not_Applicable	") 
+				strStatus = "Not Applicable";
+			else 
+				strStatus = item.status;
+
 			// dynamically add to the datatable but only show main data, click the + for extra data
 			table.row.add( { "vulnid": item.stiG_DATA[0].attributE_DATA, "severity": item.stiG_DATA[1].attributE_DATA,
 				"ruleid": item.stiG_DATA[3].attributE_DATA, "stigid": item.stiG_DATA[4].attributE_DATA, 
-				"status": item.status, "title": item.stiG_DATA[5].attributE_DATA, "cci": item.stiG_DATA[24].attributE_DATA, 
+				"status": strStatus, "title": item.stiG_DATA[5].attributE_DATA, "cci": item.stiG_DATA[24].attributE_DATA, 
 				"discussion": item.stiG_DATA[6].attributE_DATA, "checkContent": item.stiG_DATA[8].attributE_DATA, 
 				"fixText": item.stiG_DATA[9].attributE_DATA, "comments": item.comments, "findingDetails": item.findinG_DETAILS
 			}).draw();
 		}
-		// based on one of the status color the background appropriately
-		// vulnListing += '<button type="button" class="btn btn-sm ';
-		// vulnListing += getVulnerabilityStatusClassName(vuln.status);
-		// vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
-		// vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
-		// vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
-
 	} else {
 		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
 	}
