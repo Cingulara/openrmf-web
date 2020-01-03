@@ -931,10 +931,10 @@ async function getChecklistData(id, template) {
 	var url = readAPI + "/artifact";
 	if (template)
 		url = templateAPI;
-  let response = await fetch(url + "/" + id, {headers: {
-		'Authorization': 'Bearer ' + keycloak.token
-	}});
-  if (response.ok) {
+	let response = await fetch(url + "/" + id, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
 		clearSessionData();
 		// now get the data set
 		var data = await response.json();
@@ -1768,6 +1768,95 @@ function renderSystemReportPieChart(element, data) {
 			}
 		}
 	});
+}
+async function updateChecklistFilter() {
+	var systemGroupId = $("#checklistSystemFilter").val();
+	if (!systemGroupId || systemGroupId.length == 0)
+	{
+		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	// clear the options
+	$('#checklistFilter').empty();
+
+	// get the list of checklists
+	var url = readAPI + "/systems/" + encodeURIComponent(systemGroupId);
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+
+	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
+	if (response.ok) {
+		var data = await response.json();
+		if (data) {
+			$.each(data, function (index, value) {
+				$('#checklistFilter').append($('<option/>', { 
+						value: value.internalId,
+						text : value.title 
+				}));
+			}); 
+		}
+	}
+}
+// Reports: list out vulnerabilities for a particular checklist
+async function getSystemChecklistReport() {
+	var id = $("#checklistFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a checklist for the report.", "Click OK to continue!", "error");
+		return;
+	}
+
+	// call the API to get the checklist data
+	var url = readAPI + "/artifact";
+	let response = await fetch(url + "/" + id, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
+		clearSessionData();
+		// now get the data set
+		var data = await response.json();
+		//var title = data.title;
+		var updatedDate = "Last Updated on ";
+		if (data.updatedOn) {
+			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
+		}
+		else {
+			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+		}
+
+		var table = $('#tblReportSystemChecklist').DataTable();
+		table.clear();
+
+		$("#checklistSystem").html("<b>System:</b> " + data.systemTitle);
+		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
+		$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
+		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
+		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
+		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
+		
+		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
+
+		for (const item of data.checklist.stigs.iSTIG.vuln) {
+			// dynamically add to the datatable but only show main data, click the + for extra data
+			table.row.add( { "vulnid": item.stiG_DATA[0].attributE_DATA, "severity": item.stiG_DATA[1].attributE_DATA,
+				"ruleid": item.stiG_DATA[3].attributE_DATA, "stigid": item.stiG_DATA[4].attributE_DATA, 
+				"status": item.status, "title": item.stiG_DATA[5].attributE_DATA, "cci": item.stiG_DATA[24].attributE_DATA, 
+				"discussion": item.stiG_DATA[6].attributE_DATA, "checkContent": item.stiG_DATA[8].attributE_DATA, 
+				"fixText": item.stiG_DATA[9].attributE_DATA, "comments": item.comments, "findingDetails": item.findinG_DETAILS
+			}).draw();
+		}
+		// based on one of the status color the background appropriately
+		// vulnListing += '<button type="button" class="btn btn-sm ';
+		// vulnListing += getVulnerabilityStatusClassName(vuln.status);
+		// vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
+		// vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
+		// vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
+
+	} else {
+		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
+	}
 }
 /************************************ 
  Compliance Functions

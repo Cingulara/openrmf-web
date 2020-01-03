@@ -8,8 +8,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">		
 		
-		<title>OpenRMF Reports</title>
-		<meta name="description" content="OpenRMF Charts Dashboard">
+		<title>OpenRMF System Checklist Report</title>
+		<meta name="description" content="OpenRMF System Checklist Report">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
 		<!-- Favicon -->
@@ -44,6 +44,16 @@
 		
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+
+		<style>	
+			td.details-control {
+			  background: url('/assets/plugins/datatables/img/details_open.png') no-repeat center center;
+			  cursor: pointer;
+			}
+			tr.shown td.details-control {
+			  background: url('/assets/plugins/datatables/img/details_close.png') no-repeat center center;
+			}
+		</style>
 		<!-- END CSS for this page -->
 		
 </head>
@@ -161,7 +171,7 @@
 			<div class="row">
 					<div class="col-xl-12">
 							<div class="breadcrumb-holder">
-									<h1 class="main-title float-left">Reports</h1>
+									<h1 class="main-title float-left">Reports - Checklist Report</h1>
 									<ol class="breadcrumb float-right">
 										<li class="breadcrumb-item">Home</li>
 										<li class="breadcrumb-item active">Reports</li>
@@ -172,59 +182,73 @@
 			</div>
 			<!-- end row -->
 			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
 					<div class="card mb-3">
 						<div class="card-header">
 							<h3><i class="fa fa-filter"></i> Filters</h3>
 						</div>
 						<div class="card-body">
-							<div class="checklistSystemsList">
-								<form class="form-inline">
-									<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
-									<select class="form-control" id="checklistSystemFilter" onchange="getReportsBySystem();">
-										<option value="All">All</option>
-									</select>
+							<div>
+								<form>									
+									<div class="form-group">
+										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
+										<select class="form-control" id="checklistSystemFilter" onchange="updateChecklistFilter();">
+											<option value="">[ Choose a System ]</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label class="checklistSystemListLabel" id="checklistListLabel" for="checklistFilter">Checklist</label>
+										<select class="form-control" id="checklistFilter">
+											<option value="">[ Choose a Checklist ]</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<button type="button" class="btn btn-sm btn-primary" onclick="getSystemChecklistReport();">Run Report</button>
+									</div>
 								</form>
 							</div>
-						</div><!-- end card body -->															
+						</div><!-- end card body -->					
+					</div><!-- end card-->					
+				</div>				
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+					<div class="card mb-3">
+						<div class="card-header">
+							<h3 class="float-left"><i class="fa fa-info-circle"></i> Asset Information</h3>
+						</div>								
+						<div class="card-body">
+							<div id="checklistSystem"></div>
+							<div id="checklistHost"></div>
+							<div id="checklistSTIGTitle"></div>
+							<div id="checklistSTIGReleaseInfo"></div>
+							<div id="checklistFQDN"></div>
+							<div id="checklistTechArea"></div>
+							<div id="checklistAssetType"></div>
+							<div id="checklistRole"></div>
+							<br />
+							<div class="small" id="checklistLastUpdated"></div><br />
+						</div>
+					</div><!-- end card-->
+				</div>
+			</div><!-- end row-->
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+					<div class="card mb-3">
+						<div class="card-header">
+							<h3 id="reportNessusReportName"></h3>
+						</div>
+						<div class="card-body">
+							<div>
+                                <table id="tblReportSystemChecklist" style="width: 100%;" class="table table-bordered table-hover display">
+									<thead><tr><th></th><th>Vuln ID</th><th>Severity</th><th>Rule ID</th><th>STIG ID</th><th>Status</th>
+										<th>Title</th><th>CCI</th></tr></thead>
+                                    <tbody></tbody>
+                                </table>
+							</div>
+						</div><!-- end card body -->					
 					</div><!-- end card-->					
 				</div>		
 			</div><!-- end row-->
-		
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
-					<div class="card mb-3">
-						<div class="card-header">
-							<h3><i class="fa fa-area-chart"></i> Available Reports</h3>
-						</div>
-							
-						<div class="card-body">
-							<div class="reportsList">
-                                <!-- Nessus ACAS Scan Report -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        Nessus Patch Listing
-                                    </div>
-                                </div>
-                                <!-- System Total Score Chart -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        System Pie Charts
-                                    </div>
-                                </div>
-                                <!-- System Checklist with Score Listing -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        System Checklist Listing
-                                    </div>
-                                </div>
-                            </div>
-						</div>							
-						<div class="card-footer small text-muted"></div>
-					</div><!-- end card-->					
-				</div>
-			</div>
-			<!-- end row -->
 
         </div>
 		<!-- END container-fluid -->
@@ -263,10 +287,12 @@
 <script src="/assets/js/pikeadmin.js"></script>
 <script src="/js/openrmf.js"></script>
 <script src="/js/apis.js"></script>
+<script src="/assets/js/jquery.dataTables.min.js"></script>
+<!-- <script src="/assets/js/dataTables.select.min.js"></script> -->
+<script src="/assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="/assets/plugins/sweetalert/sweetalert.js"></script>
 
 <!-- BEGIN Java Script for this page -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	
 	<script>
 		$(document).ready(function() {
@@ -278,7 +304,65 @@
 					// see if the upload menu should show
 					verifyUploadMenu();
                     getChecklistSystemsForReportFilter();
-                    
+                        
+					// format the extra row data
+					function format ( d ) {
+						// `d` is the original data object for the row
+						return "<div><h6>Discussion</h6>" + d.discussion + "</div><br />" + 
+						"<div><h6>Check Content</h6>" + d.checkContent + "</div><br />" + 
+						"<div><h6>Fix Text</h6>" + d.fixText + "</div><br />" + 
+						"<div><h6>Comments</h6>" + d.comments + "</div><br />" + 
+						"<div><h6>Finding Details</h6>" + d.findingDetails + "</div>";
+					}
+
+					// setup the table
+					var tableSystemChecklist = $('#tblReportSystemChecklist').DataTable({
+                    "pageLength": 50, 
+                    "columns": [
+						{ 
+							"className":      'details-control',
+							"orderable":      false,
+							"data":           null,
+							"defaultContent": '',
+							"targets": 		  0
+						},
+                        { "data": "vulnid" },
+                        { "data": "severity" },
+                        { "data": "ruleid" },
+                        { "data": "stigid" },
+						{ "data": "status" },
+						{ "data": "title" },
+						{ "data": "cci" }
+                    ],
+                        "columnDefs": [
+							{ "width": "5%", "targets": 0 },
+                            { "width": "10%", "targets": 1 },
+                            { "width": "10%", "targets": 2 },
+                            { "width": "10%", "targets": 3 },
+                            { "width": "10%", "targets": 4 },
+                            { "width": "10%", "targets": 5 },
+                            { "width": "30%", "targets": 6 },
+                            { "width": "10%", "targets": 7 }
+                        ],
+                        order: [[ 2, 'desc' ]]
+					});
+					
+					// Add event listener for opening and closing details
+					$('#tblReportSystemChecklist tbody').on('click', 'td.details-control', function () {
+						var tr = $(this).closest('tr');
+						var row = tableSystemChecklist.row( tr );
+					
+						if ( row.child.isShown() ) {
+							// This row is already open - close it
+							row.child.hide();
+							tr.removeClass('shown');
+						}
+						else {
+							// Open this row
+							row.child( format(row.data()) ).show();
+							tr.addClass('shown');
+						}
+					} );
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');
