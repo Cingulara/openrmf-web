@@ -346,12 +346,21 @@ async function getSystemRecord(systemGroupId) {
 					nessusHTML += 'Summary Export</a> ';
 					nessusHTML += ' | <span class="small"><a title="Export the Nessus scan to XLSX by Host" href="javascript:exportNessusXML(\'' + item.internalId + '\', false)">';
 					nessusHTML += 'Host Export</a> ';
+				} else { // they can only know we have one
+					nessusHTML += " Yes";
 				}
 				// write the HTML
 				$("#divSystemNessusFile").html(nessusHTML);
 			}
-			else 
+			else { 
+				if (canUpload()) {
+					var strNessus = '<b>Nessus Scan:</b> <a href="#custom-modal"  id="btnUpdateSystem" ' +
+									' data-target="#customModal" data-toggle="modal"><span class="small">(click to upload)</span></a>';
+					$("#divSystemNessusFile").html(strNessus);
+				} 
+				else 
 				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> N/A");
+			}
 			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
 			if (item.updatedOn) 
 				$("#divSystemUpdated").html("<b>Last Updated:</b> " + moment(item.updatedOn).format('MM/DD/YYYY h:mm a'));
