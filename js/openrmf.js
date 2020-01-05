@@ -1861,6 +1861,39 @@ async function getSystemChecklistReport() {
 		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
 	}
 }
+
+/************************************ 
+ Audit List Functions
+************************************/
+async function getAuditRecords() {
+	// call the API to get the checklist data
+	var url = auditAPI;
+	$.blockUI({ message: "Generating the Audit Listing...please wait" }); 
+	let response = await fetch(url + "/", {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
+		// now get the data set
+		var data = await response.json();
+
+		var table = $('#tblAuditRecords').DataTable(); // the datatable reference to do a row.add() to
+		table.clear();
+		for (const item of data) {
+			// dynamically add to the datatable but only show main data, click the + for extra data
+			table.row.add( { "auditId": item.auditId, "program": item.program,
+				"created": moment(item.created).format('MM/DD/YYYY h:mm a'), "action": item.action, 
+				"userid": item.userid, "username": item.username, "fullname": item.fullname, 
+				"email": item.email, "url": item.url, 
+				"message": item.message
+			}).draw();
+		}
+		$.unblockUI();
+	} else {
+		$.unblockUI();
+		swal("There was a problem listing the audit records. Please contact your Application Administrator.", "Click OK to continue!", "error");
+	}
+}
+
 /************************************ 
  Compliance Functions
 ************************************/
@@ -2055,6 +2088,9 @@ function verifyUploadFromSystem() {
 	if (canUpload()) {
     	$("#btnUploadChecklist").show();
 	}
+}
+function isAdministrator() {
+	return (keycloak.hasRealmRole("Administrator"));
 }
 function canDownload() {
 	return (keycloak.hasRealmRole("Download") || keycloak.hasRealmRole("Administrator"));

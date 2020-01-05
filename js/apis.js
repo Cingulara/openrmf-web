@@ -18,8 +18,9 @@ if (window.location.port == 9080) {
     var templateAPI = root + ':9088'
     var complianceAPI = root + ':9092'
     var controlAPI = root + ':9094'
+    var auditAPI = root + ':9096'
 } 
-// if this is the stack.yml, web, k8s, or other configuration use the real one
+// if this is the normal stack, web, k8s, or other configuration use the real one
 else { 
     var root = 'http://' + document.location.hostname
     var readAPI = root + ':8084'
@@ -29,4 +30,5 @@ else {
     var templateAPI = root + ':8088'
     var complianceAPI = root + ':8092'
     var controlAPI = root + ':8094'
+    var auditAPI = root + ':8096'
 }
