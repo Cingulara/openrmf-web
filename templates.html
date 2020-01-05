@@ -150,6 +150,9 @@
 				<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
 					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
+				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
+					<a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
+				</li>
             </ul>
             <div class="clearfix"></div>
 			</div>
@@ -244,7 +247,7 @@
 				// setup the profile account and logout menu
 				setupProfileMenu();
 				// see if the upload menu should show
-				verifyUploadMenu();
+				verifyMenus();
 				// calls to get the checklist data from the API
 				getTemplates(false);
 				// START CODE FOR Child rows (show extra / detailed information) DATA TABLE 

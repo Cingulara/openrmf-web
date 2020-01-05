@@ -2079,9 +2079,12 @@ function getRandomColor() {
 /************************************ 
  Permission and User Login Functions
 ************************************/
-function verifyUploadMenu() {
+function verifyMenus() {
 	if (canUpload()) {
     	$("#menuUpload").show();
+	}
+	if (isAdministrator()) {
+    	$("#menuAudit").show();
 	}
 }
 function verifyUploadFromSystem() {
