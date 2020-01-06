@@ -5,47 +5,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">		
-		
-		<title>OpenRMF Reports</title>
-		<meta name="description" content="OpenRMF Reports Dashboard">
-		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">		
+	
+	<title>OpenRMF Reports</title>
+	<meta name="description" content="OpenRMF Reports Dashboard">
+	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
-		<!-- Favicon -->
-		<link rel="shortcut icon" href="/assets/images/favicon.ico">
-		<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
-		<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
-		<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
-		<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
-		<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
-		<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
-		<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
-		<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
-		<link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicons/android-icon-192x192.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
-		<link rel="manifest" href="/assets/favicons/manifest.json">
-		<meta name="msapplication-TileColor" content="#ffffff">
-		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-		<meta name="theme-color" content="#ffffff">
-		
-		<!-- Bootstrap CSS -->
-		<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-		
-		<!-- Font Awesome CSS -->
-		<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-		
-		<!-- Custom CSS -->
-		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
-		<link href="/assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-		
-		<!-- BEGIN CSS for this page -->
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
-		<!-- END CSS for this page -->
-		
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
+	<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+	<link rel="manifest" href="/assets/favicons/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	
+	<!-- Bootstrap CSS -->
+	<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	
+	<!-- Font Awesome CSS -->
+	<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	
+	<!-- Custom CSS -->
+	<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+	
+	<!-- BEGIN CSS for this page -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+	<!-- END CSS for this page -->		
 </head>
 
 <body class="adminbody">
@@ -189,7 +188,7 @@
                                         Nessus Patch Listing
                                     </div>
                                     <div class="reportListingDescription">
-                                        <i class="fa fa-table reporticon"></i><br />
+                                        <i class="fa fa-wrench reporticon"></i><br />
                                         <button type="button" id="btnRunNessusReport" onclick="location.href = 'nessus.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
@@ -201,7 +200,7 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-pie-chart reporticon"></i><br />
-                                        <button type="button" id="btnRunNessusReport" onclick="location.href = 'charts.html';" 
+                                        <button type="button" id="btnRunSystemCharts" onclick="location.href = 'charts.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
@@ -212,7 +211,18 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-check-square reporticon"></i><br />
-                                        <button type="button" id="btnRunNessusReport" onclick="location.href = 'checklists.html';" 
+                                        <button type="button" id="btnRunChecklistReport" onclick="location.href = 'checklists.html';" 
+									        class="btn btn-success">Run Report</button>
+                                    </div>
+                                </div>
+                                <!-- System Checklist with Score Listing -->
+                                <div class="reportListing">
+                                    <div class="reportListTitle">
+                                        RMF Controls Listing
+                                    </div>
+                                    <div class="reportListingDescription">
+                                        <i class="fa fa-table reporticon"></i><br />
+                                        <button type="button" id="btnRunControlsReport" onclick="location.href = 'controls.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
