@@ -13,8 +13,14 @@ async function getSystemTotalCount() {
 			$("#numberSystemsTotal").html(data);
 			$("#numberNewSystemsTotal").text(data);
 	}
-	else 
-		throw new Error(response.status)
+	else {
+		$("#numberSystemsTotal").html("error");
+		$("#numberNewSystemsTotal").text("error");
+		if (response.status == 401)
+			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
+		else if (response.status == 401)
+			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
+	}
 }
 // fill in the # of total checklists in the system on the dashboard page top right
 async function getChecklistTotalCount() {
@@ -26,8 +32,14 @@ async function getChecklistTotalCount() {
 			$("#numberChecklistsTotal").html(data);
 			$("#numberNewChecklistsTotal").text(data);
 	}
-	else 
-		throw new Error(response.status)
+	else {
+		$("#numberChecklistsTotal").html("error");
+		$("#numberNewChecklistsTotal").text("error");
+		if (response.status == 401)
+			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
+		else if (response.status == 401)
+			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
+	}
 }
 // fill in the # of total checklists in the system on the dashboard page top right
 async function getTemplateTotalCount() {
@@ -39,8 +51,14 @@ async function getTemplateTotalCount() {
 			$("#numberTemplatesTotal").html(data);
 			$("#numberNewTemplatesTotal").text(data);
 	}
-	else 
-		throw new Error(response.status)
+	else {
+		$("#numberTemplatesTotal").html("error");
+		$("#numberNewTemplatesTotal").text("error");
+		if (response.status == 401)
+			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
+		else if (response.status == 401)
+			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
+	}
 }
 // get list of systems for dashboard
 async function getSystemsForDashboard() {
@@ -201,6 +219,10 @@ async function getTemplates(latest) {
 	}
 	else {
 		$.unblockUI();
+		if (response.status == 401)
+			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
+		else if (response.status == 401)
+			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
 		throw new Error(response.status)
 	}
 }
