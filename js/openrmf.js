@@ -1105,7 +1105,7 @@ function viewVulnDetails(vulnId) {
 		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
 		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
 		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
-		for(i = 24; i < data.stiG_DATA.length; i++) { 
+		for(i = 25; i < data.stiG_DATA.length; i++) { 
 			ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
 		}
 		ccilist = ccilist.substring(0, ccilist.length -2);
