@@ -1735,9 +1735,12 @@ async function getSystemTotalsByTypeReport() {
 		swal("Please choose a system for the report.", "Click OK to continue!", "error");
 		return;
 	}
+	$.blockUI({ message: "Generating the System Totals Chart...please wait" }); 
 	var data = await getScoreForSystemChecklistListing(systemGroupId);
 	if (data) 
 		renderSystemReportPieChart("chartReportSystemTotalsBreakdown", data); // render the specific data for this system
+
+	$.unblockUI();
 }
 // Reports:  get the data for the pie chart in the Systems listing to show
 function renderSystemReportPieChart(element, data) {
@@ -1829,6 +1832,7 @@ async function getSystemChecklistReport() {
 		return;
 	}
 
+	$.blockUI({ message: "Generating the Checklist Report ...please wait" }); 
 	// call the API to get the checklist data
 	var url = readAPI + "/artifact";
 	let response = await fetch(url + "/" + id, {headers: {
@@ -1879,7 +1883,9 @@ async function getSystemChecklistReport() {
 				"fixText": item.stiG_DATA[9].attributE_DATA, "comments": item.comments, "findingDetails": item.findinG_DETAILS
 			}).draw();
 		}
+		$.unblockUI();
 	} else {
+		$.unblockUI();
 		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
 	}
 }
