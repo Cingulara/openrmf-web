@@ -1878,7 +1878,7 @@ async function getSystemChecklistReport() {
 			// dynamically add to the datatable but only show main data, click the + for extra data
 			table.row.add( { "vulnid": item.stiG_DATA[0].attributE_DATA, "severity": item.stiG_DATA[1].attributE_DATA,
 				"ruleid": item.stiG_DATA[3].attributE_DATA, "stigid": item.stiG_DATA[4].attributE_DATA, 
-				"status": strStatus, "title": item.stiG_DATA[5].attributE_DATA, "cci": item.stiG_DATA[24].attributE_DATA, 
+				"status": strStatus, "title": item.stiG_DATA[5].attributE_DATA, "cci": item.stiG_DATA[25].attributE_DATA, 
 				"discussion": item.stiG_DATA[6].attributE_DATA, "checkContent": item.stiG_DATA[8].attributE_DATA, 
 				"fixText": item.stiG_DATA[9].attributE_DATA, "comments": item.comments, "findingDetails": item.findinG_DETAILS
 			}).draw();
