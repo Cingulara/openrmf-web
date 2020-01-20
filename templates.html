@@ -1,3 +1,7 @@
+<!-- 
+	// Copyright (c) Cingulara LLC 2019 and Tutela LLC 2019. All rights reserved.
+	// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -141,10 +145,13 @@
 					<a class="active" href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
 				</li>
 				<li class="submenu">
-					<a href="charts.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+					<a href="/reports/index.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
 				</li>
 				<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
 					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
+				</li>
+				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
+					<a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
 				</li>
             </ul>
             <div class="clearfix"></div>
@@ -182,7 +189,7 @@
 								<div id="divMessaging" style="display: none;" class="alert alert-warning alert-dismissible fade show" role="alert"></div>
 								<div class="table-responsive" id="divChecklistListing">
 									<table id="tblChecklistListing" class="table table-bordered table-hover display">
-										<thead><tr><th></th><th>Title</th><th>NaF</th><th>N/A</th><th>Open</th><th>N/R</th></tr></thead>
+										<thead><tr><th></th><th>Title</th><th>Open</th><th>NaF</th><th>N/A</th><th>N/R</th></tr></thead>
 										<tbody></tbody>
 									</table>
 								</div>							
@@ -240,7 +247,7 @@
 				// setup the profile account and logout menu
 				setupProfileMenu();
 				// see if the upload menu should show
-				verifyUploadMenu();
+				verifyMenus();
 				// calls to get the checklist data from the API
 				getTemplates(false);
 				// START CODE FOR Child rows (show extra / detailed information) DATA TABLE 
@@ -249,23 +256,23 @@
 					return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
 						'<tr>'+
 						'<td style="width: 60%; text-align: right;">CAT 1:</td>'+
+						'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
 						'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
 						'<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
-						'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
 						'<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
 						'</tr>'+
 						'<tr>'+
 						'<td style="width: 60%; text-align: right;">CAT 2:</td>'+
+						'<td style="width: 10%;" class="tabco6">'+d.totalOpenCat2+'</td>'+
 						'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
 						'<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
-						'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat2+'</td>'+
 						'<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
 						'</tr>'+
 						'<tr>'+
 						'<td style="width: 60%; text-align: right;">CAT 3:</td>'+
+						'<td style="width: 10%;" class="tabco7">'+d.totalOpenCat3+'</td>'+
 						'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
 						'<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
-						'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat3+'</td>'+
 						'<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
 						'</tr>'+
 					'</table>';
@@ -280,16 +287,16 @@
 							"defaultContent": ''
 						},
 						{ "data": "title" },
+						{ "data": "totalOpen" },
 						{ "data": "totalNaF" },
 						{ "data": "totalNA" },
-						{ "data": "totalOpen" },
 						{ "data": "totalNR" }
 					],
 					"columnDefs": [
 						{ "width": "40%", "targets": 1 },
-						{ "className": "tabco2", "width": "14%", "targets": 2 },
-						{ "className": "tabco3", "width": "14%", "targets": 3 },
-						{ "className": "tabco4", "width": "14%", "targets": 4 },
+						{ "className": "tabco4", "width": "14%", "targets": 2 },
+						{ "className": "tabco2", "width": "14%", "targets": 3 },
+						{ "className": "tabco3", "width": "14%", "targets": 4 },
 						{ "className": "tabco5", "width": "14%", "targets": 5 }
 					]
 				});

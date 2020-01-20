@@ -78,6 +78,8 @@ img {
 .bg-default {
   background-color: #64b0f2 !important; }
 
+.bg-gray {
+    background-color: #888888 !important; }
   
 .text-overflow {
   overflow: hidden;
@@ -1230,8 +1232,9 @@ a.btn:focus {
   margin: 3px 0px 3px 0px;
 }
 .vulnNotReviewed {
-  background-color: #039BE5;
+  background-color: #222222;
   margin: 3px 0px 3px 0px;
+  color: white;
 }
 .vulnOpenText {
   color: #E53935;
@@ -1243,7 +1246,7 @@ a.btn:focus {
   color: #50cc83;
 }
 .vulnNotReviewedText {
-  color: #039BE5;
+  color: #222222;
 }
 .checklistSystemsList {
   margin: 3px 0px 10px 0px;
@@ -1258,8 +1261,8 @@ a.btn:focus {
   border: solid 2px #dedede;
   border-radius: 3px;
   float: left;
-  min-height: 365px;
-  width: 400px;
+  min-height: 450px;
+  width: 500px;
   font-size: 16px;
   position: relative;
 }
@@ -1304,11 +1307,48 @@ a.btn:focus {
   padding: 2px 5px 2px 5px;
 }
 .systemChart {
-  height: 270px;
+  height: 400px;
 }
 
 .complianceSummaryListing {
   float: left;
   width: 100px;
   height: 50px;
+}
+
+/***************************
+ Reporting CSS
+****************************/
+.reportListing {
+  margin: 5px 10px 5px 10px;
+  padding: 0px;
+  border: solid 2px #dedede;
+  border-radius: 3px;
+  float: left;
+  min-height: 265px;
+  width: 300px;
+  font-size: 16px;
+  position: relative;
+}
+.reportsList {
+  padding: 8px;
+}
+.reportListTitle {
+  font-weight: 500;
+  font-size: 18px;
+  color: #5a5a5a;
+  width: 100%;
+  background-color: #dedede;
+  margin: 0px;
+  padding: 2px 5px 5px 5px;
+}
+.reporticon {
+  padding: 5px;
+  font-size: 9em;
+  margin: 0 auto;
+  color: rgba(44, 94, 188, 0.687);
+}
+.reportListingDescription {
+  width: 100%;
+  text-align: center;
 }

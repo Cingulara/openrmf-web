@@ -1,9 +1,30 @@
+// Copyright (c) Cingulara LLC 2019 and Tutela LLC 2019. All rights reserved.
+// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
 /*************************************
  * Dashboard functions
  ************************************/
 // fill in the # of total checklists in the system on the dashboard page top right
+async function getSystemTotalCount() {
+	let response = await fetch(readAPI + "/count/systems", {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {
+			var data = await response.json()
+			$("#numberSystemsTotal").html(data);
+			$("#numberNewSystemsTotal").text(data);
+	}
+	else {
+		$("#numberSystemsTotal").html("error");
+		$("#numberNewSystemsTotal").text("error");
+		if (response.status == 401)
+			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
+		else if (response.status == 401)
+			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
+	}
+}
+// fill in the # of total checklists in the system on the dashboard page top right
 async function getChecklistTotalCount() {
-	let response = await fetch(readAPI + "/count", {headers: {
+	let response = await fetch(readAPI + "/count/artifacts", {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
@@ -11,10 +32,107 @@ async function getChecklistTotalCount() {
 			$("#numberChecklistsTotal").html(data);
 			$("#numberNewChecklistsTotal").text(data);
 	}
-	else 
-		throw new Error(response.status)
+	else {
+		$("#numberChecklistsTotal").html("error");
+		$("#numberNewChecklistsTotal").text("error");
+		if (response.status == 401)
+			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
+		else if (response.status == 401)
+			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
+	}
 }
-
+// fill in the # of total checklists in the system on the dashboard page top right
+async function getTemplateTotalCount() {
+	let response = await fetch(templateAPI + "/count/templates", {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {
+			var data = await response.json()
+			$("#numberTemplatesTotal").html(data);
+			$("#numberNewTemplatesTotal").text(data);
+	}
+	else {
+		$("#numberTemplatesTotal").html("error");
+		$("#numberNewTemplatesTotal").text("error");
+		if (response.status == 401)
+			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
+		else if (response.status == 401)
+			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
+	}
+}
+// get list of systems for dashboard
+async function getSystemsForDashboard() {
+	sessionStorage.removeItem("checklistSystems");
+	// clear the options
+	$('#checklistSystem').children().remove().end();
+	$('#checklistSystem').append('<option value="">[Choose a System]</option>');
+	$('#checklistACASSystem').children().remove().end();
+	$('#checklistACASSystem').append('<option value="">[Choose a System]</option>');
+	var data = await getChecklistSystems();
+	// for each data add to the system listings on the dashboard independently
+	if (data) {
+		$.each(data, function (index, value) {
+				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+			$('#checklistSystem').append(optionString);
+			$('#checklistACASSystem').append(optionString);
+		}); 
+	}
+}
+// get the item count for Cat 1, 2, 3 from the dashboard to display
+async function getSystemOpenItemsForDashboard() {
+	var systemId = $('#checklistSystem').val();
+	if (systemId) {
+		$("#divSystemCategoryDashboard").show();
+		var data = await getScoreForSystemChecklistListing(systemId);
+		if (data) {
+			// set the three values of the boxes and show the DIV
+			$("#numberCAT1Open").html(data.totalCat1Open);
+			$("#numberCAT1OpenItems").text(data.totalCat1Open);
+			$("#numberCAT2Open").html(data.totalCat2Open);
+			$("#numberCAT2OpenItems").text(data.totalCat2Open);
+			$("#numberCAT3Open").html(data.totalCat3Open);
+			$("#numberCAT3OpenItems").text(data.totalCat3Open);
+		}
+	}
+	else {
+		// tell them to pick a system
+		$("#divSystemCategoryDashboard").hide();
+	}
+}
+// from the dashboard items listing, if you click on a system or checklist listing you view the system record for that ID
+function loadSystemFromDashboardCategory(type) {
+	var systemId = $('#checklistSystem').val();
+	if (systemId) 
+		location.href="checklists.html?id=" + systemId + "&category=" + type;
+}
+// get the Nessus scan critical and high items to display here
+async function getSystemACASItemsForDashboard() {
+	var systemId = $('#checklistACASSystem').val();
+	if (systemId) {
+		var data = await getNessusFileSummaryData(systemId);
+		if (data) {
+			$("#divSystemACASPatchListing").show();
+			$("#divNessusStatus").hide();
+			// set the three values of the boxes and show the DIV
+			$("#numberCriticalOpen").html(data.totalCriticalOpen);
+			$("#numberHighOpen").html(data.totalHighOpen);
+			$("#numberMediumOpen").html(data.totalMediumOpen);
+			$("#numberLowOpen").html(data.totalLowOpen);
+		}
+		else {
+			// tell them there is no ACAS Nessus file
+			$("#divSystemACASPatchListing").hide();
+			$("#divNessusStatus").html("There is no current Nessus patch file loaded for this <a href='checklists.html?id=" + systemId + "'>system</a>.");
+			$("#divNessusStatus").show();
+		}
+	}
+	else {
+		// tell them to pick a system
+		$("#divSystemACASPatchListing").hide();
+		$("#divNessusStatus").html("There is no current valid Nessus patch file loaded for this system.");
+		$("#divNessusStatus").show();
+	}
+}
 /*************************************
  * Template listing functions
  ************************************/
@@ -101,10 +219,13 @@ async function getTemplates(latest) {
 	}
 	else {
 		$.unblockUI();
+		if (response.status == 401)
+			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
+		else if (response.status == 401)
+			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
 		throw new Error(response.status)
 	}
 }
-
 // called from template listing, calls the POST to the scoring API to get back a score dynamically
 async function getScoreForTemplateListing(xmlChecklist) {
 	var formData = new FormData();
@@ -130,7 +251,7 @@ function listSystems() {
 	location.href = "systems.html";
 }
 
-async function getChecklistSystemListing(){
+async function getSystemListing(){
 	$.blockUI({ message: "Updating the system listing..." }); 
 	var url = readAPI + "/systems/";
 
@@ -150,16 +271,11 @@ async function getChecklistSystemListing(){
 
 		if (data.length == 0) {
 			$.unblockUI();
-			if (canUpload()) {
-				document.location.href="upload.html?redir=nochecklists";
-			}
-			else {
-				var alertText = 'There are no systems setup. Please go to the Upload page to add your first system and checklist.';
-				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-				alertText += '<span aria-hidden="true">&times;</span></button>';
-				$("#divMessaging").html(alertText);
-				$("#divMessaging").show();
-			}
+			var alertText = 'There are no Systems in here. Please add your first System or Upload your first checklist to get started.';
+			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+			alertText += '<span aria-hidden="true">&times;</span></button>';
+			$("#divMessaging").html(alertText);
+			$("#divMessaging").show();
 		}
 		else {
 			$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
@@ -210,12 +326,11 @@ function getSystemRecordBySession(){
 
 function reloadSystemRecordBySession() {
 	var currentSystem = sessionStorage.getItem("currentSystem");
-	if (currentSystem)
+	if (currentSystem && currentSystem != "undefined")
 		location.href = "checklists.html?id=" + currentSystem;
 	else
 		location.href = "systems.html";
 }
-
 async function getSystemRecord(systemGroupId) {
 	var url = readAPI;
 	url += "/system/" + encodeURIComponent(systemGroupId);
@@ -245,18 +360,29 @@ async function getSystemRecord(systemGroupId) {
 				$("#divSystemDescription").html("<b>Description:</b> (no description)");
 			$("#divNumberChecklists").html("<b>Checklists:</b> " + item.numberOfChecklists);
 			if (item.rawNessusFile) {
-				var nessusHTML = "<b>Nessus Scan:</b> Yes";				
+				var nessusHTML = "<b>Nessus Scan:</b>";				
 				if (canDownload()) {
-					nessusHTML += ' <span class="small"><a title="Download the Nessus scan" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
-					nessusHTML += '(xml)</a> ';
-					nessusHTML += ' <span class="small"><a title="Export the Nessus scan to XLSX" href="javascript:exportNessusXML(\'' + item.internalId + '\')">';
-					nessusHTML += '(xlsx)</a>';
+					nessusHTML += ' &nbsp; <span class="small"><a title="Download the Nessus scan" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
+					nessusHTML += 'Download</a> ';
+					nessusHTML += ' | <span class="small"><a title="Export the Nessus scan Summary to XLSX" href="javascript:exportNessusXML(\'' + item.internalId + '\', true)">';
+					nessusHTML += 'Summary Export</a> ';
+					nessusHTML += ' | <span class="small"><a title="Export the Nessus scan to XLSX by Host" href="javascript:exportNessusXML(\'' + item.internalId + '\', false)">';
+					nessusHTML += 'Host Export</a> ';
+				} else { // they can only know we have one
+					nessusHTML += " Yes";
 				}
 				// write the HTML
 				$("#divSystemNessusFile").html(nessusHTML);
 			}
-			else 
+			else { 
+				if (canUpload()) {
+					var strNessus = '<b>Nessus Scan:</b> <a href="#custom-modal"  id="btnUpdateSystem" ' +
+									' data-target="#customModal" data-toggle="modal"><span class="small">(click to upload)</span></a>';
+					$("#divSystemNessusFile").html(strNessus);
+				} 
+				else 
 				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> N/A");
+			}
 			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
 			if (item.updatedOn) 
 				$("#divSystemUpdated").html("<b>Last Updated:</b> " + moment(item.updatedOn).format('MM/DD/YYYY h:mm a'));
@@ -266,12 +392,45 @@ async function getSystemRecord(systemGroupId) {
 				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> " + moment(item.lastComplianceCheck).format('MM/DD/YYYY h:mm a'));
 			else 
 				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> N/A");
-		}
+1		}
 	}
 	else {
 		$.unblockUI();
 		throw new Error(response.status)
 	}
+}
+
+// the add page on the System record page calls this if you have permissions
+function addSystem(){
+	swal("Adding System...", {
+		buttons: false,
+		timer: 3000,
+	});
+	var formData = new FormData();
+	formData.append("title",$("#frmSystemTitle").val());
+	formData.append("description",$("#frmSystemDescription").val());
+	formData.append('nessusFile',$('#frmNessusFile')[0].files[0]);
+	$.ajax({
+			url : saveAPI + "/system/",
+			data : formData,
+			type : 'POST',
+			beforeSend: function(request) {
+			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+			},
+			processData: false,
+			contentType: false,			
+			success: function(data){
+				swal("Your System was created successfully!", "Click OK to continue!", "success")
+				.then((value) => {
+					// reload the page
+					location.href = "systems.html";
+				});
+			},
+			error : function(data){
+				swal("There was a Problem. Your System was not created successfully. Please verify all required fields are filled in.", "Click OK to continue!", "error");
+			}
+	});
+	return false;
 }
 
 // the edit page on the System record page calls this if you have permissions
@@ -287,7 +446,7 @@ function updateSystem(systemGroupId){
 	$.ajax({
 			url : saveAPI + "/system/" + systemGroupId,
 			data : formData,
-			type : 'POST',
+			type : 'PUT',
 			beforeSend: function(request) {
 			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 			},
@@ -307,10 +466,10 @@ function updateSystem(systemGroupId){
 }
 
 // called from above to return the system score for all checklists in a system
-async function getScoreForSystemChecklistListing(systemName) {
+async function getScoreForSystemChecklistListing(systemId) {
   var url = scoreAPI;
   try {
-		let responseScore = await fetch(scoreAPI + "/system/" + encodeURIComponent(systemName), {headers: {
+		let responseScore = await fetch(scoreAPI + "/system/" + encodeURIComponent(systemId), {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
 		if (responseScore.ok) {
@@ -331,17 +490,21 @@ function renderSystemPieChart(element, data) {
 		type: 'pie',
 		data: {
 			datasets: [{
-				data: [data.totalOpen, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
+				data: [data.totalCat1Open, data.totalCat2Open, data.totalCat3Open, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
 				backgroundColor: [
-					'rgba(255,99,132,1)',
-					'rgba(75, 192, 192, 1)',
+					'rgba(255, 99, 132, 1)',
+					'rgba(255, 153, 0, 1)',
+					'rgba(216, 216, 14, 1)',
+					'rgba(0, 204, 0, 1)',
 					'rgba(150, 150, 150, 1)',
-					'rgba(54, 162, 235, 1)'
+					'rgba(242, 242, 242, 1)'
 				],
 				label: 'System Severity Breakdown'
 			}],
 			labels: [
-				"Open",
+				"CAT 1 Open",
+				"CAT 2 Open",
+				"CAT 3 Open",
 				"Not a Finding",
 				"N/A",
 				"Not Reviewed"
@@ -377,7 +540,7 @@ function renderSystemPieChart(element, data) {
 async function downloadNessusXML(systemGroupId) {
 	// redirect to the API and it downloads the XML file for the Nessus scan
 	$.blockUI({ message: "Generating the Nessus file...please wait" }); 
-	var url = readAPI + "/system/downloadnessus/" + encodeURIComponent(systemGroupId);
+	var url = readAPI + "/system/" + encodeURIComponent(systemGroupId) + "/downloadnessus/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -403,11 +566,202 @@ async function downloadNessusXML(systemGroupId) {
 	request.send();
 	$.unblockUI();
 }
-
-async function exportNessusXML(systemGroupId) {
-	swal("Coming Soon ... export your Nessus file to an XLSX!", "Click OK to continue!", "success");
+// get back the list of Critical and High Nessus Patch data
+async function getNessusFileSummaryData(systemGroupId) {
+	var url = readAPI;
+	try {
+		  let responsePatches = await fetch(readAPI + "/system/" + encodeURIComponent(systemGroupId) + "/nessuspatchsummary/", {headers: {
+			  'Authorization': 'Bearer ' + keycloak.token
+		  }});
+		  if (responsePatches.ok) {
+			  var dataPatches = await responsePatches.json()
+			  return dataPatches;
+		  } else if (responsePatches.statusText == "Not Found") {
+			  // hide the section and tell them there is no Patch file uploaded for that system
+			  return null;
+		  }
+	  }
+	  catch (error) {
+		  console.error("returning an empty summary of patches");
+		  return null;
+	  }
 }
 
+// export Nessus scan to XLSX for easier viewing
+async function exportNessusXML(systemGroupId, summaryView) {
+	$.blockUI({ message: "Generating the Nessus Excel export ...please wait" }); 
+	var url = readAPI + "/system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				if (summaryView)
+					downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-NessusScanSummary.xlsx";
+				else 
+					downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-NessusScanSummaryByHost.xlsx";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		}
+	};
+	request.send();
+	$.unblockUI();
+}
+// buttons to redirect with the System ID in the URL
+function runComplianceFromSystem(id) {
+	if (id)
+		location.href = "compliance.html?id=" + id;
+	else 
+		location.href = "compliance.html?id=" + sessionStorage.getItem("currentSystem");;
+}
+function uploadFromSystem(id) {
+	if (id)
+		location.href = "upload.html?id=" + id;
+	else 
+		location.href = "upload.html?id=" + sessionStorage.getItem("currentSystem");;
+}
+// delete a system, its checklists, and its scores records
+async function deleteSystem(id) {
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete an Entire System",
+			text: "Are you sure you wish to delete this system and all its checklists and files?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : saveAPI + "/system/" + id,
+					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your System was deleted successfully!", "Click OK to continue!", "success")
+						.then((value) => {
+							location.href = "systems.html";
+						});
+					},
+					error : function(data){
+						swal("There was a Problem. Your System was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the System Deletion.");
+			}
+		});
+	}
+}
+// get the system score pie chart by session on the system record page
+function getSystemScoreChartBySession(){
+	var currentSystem = sessionStorage.getItem("currentSystem");
+	if (currentSystem)
+		getSystemScoreChart(currentSystem);
+	else
+		location.href = "systems.html";
+}
+// get the system score pie chart by session on the system record page
+async function getSystemScoreChart(id) {
+	// chartSystemScore
+	var data = await getScoreForSystemChecklistListing(id);
+	if (data) 
+		renderSystemPieChart("chartSystemScore", data); // render the specific data for this system
+}
+// delete all checklists for a system, but keep the system structure
+async function deleteSystemChecklists(id){
+	var formData = new FormData();
+	// put all the checked items into the form data
+	var idSelector = function() { return this.value; };
+	var checklists = $(":checkbox:checked").map(idSelector).get();
+	formData.append("checklistIds", checklists);
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete Selected System Checklists",
+			text: "Are you sure you wish to delete the selected System Checklists?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : saveAPI + "/system/" + id + "/artifacts",
+					type : 'DELETE',
+					data: formData,
+					processData: false,
+					contentType: false,
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
+						.then((value) => {
+							location.reload();
+						});
+					},
+					error : function(data){
+						swal("There was a Problem. Your System Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the System Checklist Deletion.");
+			}
+		});
+	}
+}
+// delete all checklists for a system, but keep the system structure
+async function deleteAllSystemChecklists(id){
+	// system/{id}/artifacts
+
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete All System Checklists",
+			text: "Are you sure you wish to delete all the System Checklists?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : saveAPI + "/system/" + id + "/artifacts",
+					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
+						.then((value) => {
+							location.reload();
+						});
+					},
+					error : function(data){
+						swal("There was a Problem. Your System Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the System Checklist Deletion.");
+			}
+		});
+	}
+}
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -455,18 +809,12 @@ async function getChecklists(latest, system) {
 		table.clear();
 		var checklistLink = "";
 		if (data.length == 0) {
-			$.unblockUI();
-			
-			if (canUpload()) {
-				document.location.href="upload.html?redir=nochecklists";
-			}
-			else {
-				var alertText = 'There are no Checklists uploaded. Please go to the Upload page to add your first.';
-				alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-				alertText += '<span aria-hidden="true">&times;</span></button>';
-				$("#divMessaging").html(alertText);
-				$("#divMessaging").show();
-			}
+			$.unblockUI();			
+			var alertText = 'There are no Checklists uploaded. Please Upload your first.';
+			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+			alertText += '<span aria-hidden="true">&times;</span></button>';
+			$("#divMessaging").html(alertText);
+			$("#divMessaging").show();
 		}
 		else {
 			$('#btnExportListToExcel').prop('disabled', false); // allow the Export to Excel button to be live
@@ -497,7 +845,7 @@ async function getChecklists(latest, system) {
 				var score = await getScoreForChecklistListing(item.internalId);
 				if (score) {
 					// dynamically add to the datatable but only show main data, click the + for extra data
-					table.row.add( { "title": checklistLink, 
+					table.row.add( { "title": checklistLink, "id": item.internalId,
 						"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
 						"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
 						"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
@@ -505,7 +853,7 @@ async function getChecklists(latest, system) {
 					}).draw();
 				}
 				else {
-					table.row.add( { "title": checklistLink, 
+					table.row.add( { "title": checklistLink, "id": item.internalId,
 						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
 						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
 						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
@@ -605,10 +953,12 @@ async function getChecklistData(id, template) {
 	var url = readAPI + "/artifact";
 	if (template)
 		url = templateAPI;
-  let response = await fetch(url + "/" + id, {headers: {
-		'Authorization': 'Bearer ' + keycloak.token
-	}});
-  if (response.ok) {
+	let response = await fetch(url + "/" + id, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
+		clearSessionData();
+		// now get the data set
 		var data = await response.json();
 		var title = data.title;
 		$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
@@ -755,7 +1105,7 @@ function viewVulnDetails(vulnId) {
 		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
 		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
 		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
-		for(i = 24; i < data.stiG_DATA.length; i++) { 
+		for(i = 25; i < data.stiG_DATA.length; i++) { 
 			ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
 		}
 		ccilist = ccilist.substring(0, ccilist.length -2);
@@ -897,7 +1247,27 @@ async function makeChartSeverity (data) {
 			]
 		},
 		options: {
-			responsive: true
+			responsive: true,
+			maintainAspectRatio: false,
+			aspectRatio: 1,
+			legend: {
+			  display: true,
+			  position: 'bottom',
+			  labels: {
+				fontSize: 10,
+				padding: 5
+			  }
+			},
+			plugins: {
+			  labels: {
+				render: 'value',
+				fontSize: 14,
+				//fontStyle: 'bold',
+				fontColor: '#000',
+				//position: 'outside',
+				fontFamily: '"Lucida Console", Monaco, monospace'
+			  }
+			}
 		}	 
   });
 }
@@ -906,7 +1276,7 @@ function downloadChart(element) {
 	//location.href = url;
 	var element = document.createElement('a');
 	element.setAttribute('href', img);
-	element.setAttribute('download', "openSTIGChart.jpg");
+	element.setAttribute('download', "OpenRMFChart.jpg");
 	element.style.display = 'none';
 	document.body.appendChild(element);
 	element.click();
@@ -934,7 +1304,27 @@ async function makeChartCategory (data) {
 				]
 			},
 			options: {
-				responsive: true
+				responsive: true,
+				maintainAspectRatio: false,
+				aspectRatio: 1,
+				legend: {
+				display: true,
+				position: 'bottom',
+				labels: {
+					fontSize: 10,
+					padding: 5
+				}
+				},
+				plugins: {
+				labels: {
+					render: 'value',
+					fontSize: 14,
+					//fontStyle: 'bold',
+					fontColor: '#000',
+					//position: 'outside',
+					fontFamily: '"Lucida Console", Monaco, monospace'
+				}
+				}
 			}
   });
 }
@@ -1059,11 +1449,11 @@ async function exportChecklistXLSX(id) {
 		};
 		request.send();
 }
-
+// delete a single checklist
 async function deleteChecklist(id) {
 	if (id && id.length > 10) {
 		swal({
-			title: "Deleting this Checklist?",
+			title: "Delete this Checklist?",
 			text: "Are you sure you wish to delete this checklist?",
 			icon: "warning",
 			buttons: true,
@@ -1116,24 +1506,33 @@ async function getChecklistSystems() {
 	}
 }
 // get the list of systems for the upload function
-async function getChecklistSystemsForUpload() {
+async function getChecklistSystemsForUpload(id) {
 	sessionStorage.removeItem("checklistSystems");
+	// clear the options
+	$('#checklistSystem').children().remove().end();
 	var data = await getChecklistSystems();
 	// for each data add to the upload checklistSystem
 	if (data) {
-		$.each(data, function (index, value) {
-			$('#checklistSystem').append($('<option/>', { 
-					value: value.internalId,
-					text : value.title
-			}));
-		}); 
+		if (data.length > 0) {
+			$.each(data, function (index, value) {
+				if (id && value.internalId == id)
+					optionString = '<option selected value="' + value.internalId + '">' + value.title + '</option>';
+				else 
+					optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+				$('#checklistSystem').append(optionString); 
+			}); 
+		} else {
+			// there are no systems as of yet, so lets just make the "add new system" highlighted and go
+			$('#divNewChecklistSystem').hide(); 
+			$('#divNewChecklistSystemText').show(); 
+		}
 	}
 }
 // called from the Upload page to upload one or more checklists
 function uploadChecklist(){
 	var formData = new FormData();
 	if ($("input[id=checklistFile]").length == 0) {
-		swal("Error Uploading Checklist", "You need to upload at least one checklist.", "error");
+		swal("Error on the Upload", "You need to upload at least one checklist or DoD SCAP XCCDF file.", "error");
 		return false;
 	}
 	swal("Uploading Checklists...", {
@@ -1153,18 +1552,17 @@ function uploadChecklist(){
 	}
 	// if a new system, use it, otherwise select from the list
 	if ($("#checklistSystemText").is(':visible')){
-		if ($("#checklistSystemText").val() && $("#checklistSystemText").val().trim().length ==0) {
-			swal("Error Uploading Checklist", "Please fill in the System Name field.", "error");
+		if ($("#checklistSystemText").val().trim().length ==0) {
+			swal("Error on the Upload", "Please fill in the new System Name field.", "error");
 			return false;
 		}
+		// add this new one to the listing
 		formData.append("system",$("#checklistSystemText").val().trim());
-		// add this new one to the listing, and then reset the form to show this
-		$('#divNewChecklistSystem').show(); 
-		$('#divNewChecklistSystemText').hide();
-		getChecklistSystemsForUpload();
 	}
 	else // grab the Unique ID of the System Group and pass that
 		formData.append("systemGroupId",$("#checklistSystem").val());
+
+	// send the data up to the API
 	$.ajax({
 			url : uploadAPI,
 			data : formData,
@@ -1175,9 +1573,17 @@ function uploadChecklist(){
 			  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 			},
 			success : function(data){
+				// refresh the list of systems
+				if ($("#checklistSystemText").is(':visible')){
+					getChecklistSystemsForUpload();
+					//$('#checklistSystem option').filter(function() { return $.trim( $(this).text() ) == ; })​​​​​​​​.attr('selected','selected');
+					$("#checklistSystem option:contains($('#checklistSystemText').val().trim())").attr('selected', 'selected');
+					$("#checklistSystemText").val();
+					$('#divNewChecklistSystemText').hide();
+					$('#divNewChecklistSystem').show();
+				}
 				swal("Your Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				// reset the form
-				$("#frmChecklistUpload")[0].reset();
 				$('#checklistFile').trigger("filer.reset")
 			},
 			error: function() {
@@ -1229,18 +1635,18 @@ async function getChecklistTypeBreakdown(system) {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
   if (response.ok) {
-			var data = await response.json()
-			var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
-			var chartSeverity = new Chart(ctx3, {
-				type: 'pie',
-				data: {
-						datasets: [{
-							label: 'Checklists by Type'
-						}]
-					},
-					options: {
-						responsive: true
-					}
+		var data = await response.json()
+		var ctx3 = document.getElementById("chartChecklistTypeBreakdown").getContext('2d');
+		var chartSeverity = new Chart(ctx3, {
+			type: 'pie',
+			data: {
+					datasets: [{
+						label: 'Checklists by Type'
+					}]
+				},
+				options: {
+					responsive: true
+				}
 		});
 		// cycle through the real data
 		var myData = [];
@@ -1280,19 +1686,301 @@ async function getChecklistSystemsForReportFilter() {
 async function getReportsBySystem() {
 	await getChecklistTypeBreakdown($("#checklistSystemFilter").val());
 }
+// run the Nessus report
+async function getNessusPatchScanReport() {
+	var systemGroupId = $("#checklistSystemFilter").val();
+	if (!systemGroupId || systemGroupId.length == 0)
+	{
+		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	// call the read API /reports/nessus/xxxxxxxxxxxx
+	$.blockUI({ message: "Generating the Nessus Patch Report ...please wait" }); 
+	var url = readAPI + "/report/nessus/" + systemGroupId;
+	// get back the data
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {				
+		// put into a datatable like the others
+		var table = $('#tblReportNessus').DataTable(); // the datatable reference to do a row.add() to
+		table.clear();
+		var data = await response.json();
+		if (data && data.reportName.length > 0 && data.summary.length > 0) {
+			// use the Report Name
+			$("#reportNessusReportName").html("Nessus Scan Report: " + data.reportName);
+		}
+		for (const item of data.summary) {
+			// dynamically add to the datatable but only show main data, click the + for extra data
+			table.row.add( { "hostname": item.hostname, "pluginId": item.pluginId,
+				"pluginName": item.pluginName, "severity": item.severity + ' - ' + item.severityName, 
+				"hostTotal": item.hostTotal, "total": item.total, "family": item.family, 
+				"description": item.description, "publicationDate": item.publicationDate, 
+				"pluginType": item.pluginType, "riskFactor": item.riskFactor, "synopsis": item.synopsis
+			}).draw();
+		}
+		$.unblockUI();
+	}
+	else {
+		$.unblockUI();
+		swal("There was a problem running your report. Please check with the Application Administrator to see if all services are running.", "Click OK to continue!", "error");
+		throw new Error(response.status)
+	}
+}
+// run the area chart report by system
+async function getSystemTotalsByTypeReport() {
+	var systemGroupId = $("#checklistSystemFilter").val();
+	if (!systemGroupId || systemGroupId.length == 0)
+	{
+		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	$.blockUI({ message: "Generating the System Totals Chart...please wait" }); 
+	var data = await getScoreForSystemChecklistListing(systemGroupId);
+	if (data) 
+		renderSystemReportPieChart("chartReportSystemTotalsBreakdown", data); // render the specific data for this system
+
+	$.unblockUI();
+}
+// Reports:  get the data for the pie chart in the Systems listing to show
+function renderSystemReportPieChart(element, data) {
+	var ctx3 = document.getElementById(element).getContext('2d');
+	var chartSeverity = new Chart(ctx3, {
+		type: 'pie',
+		data: {
+			datasets: [{
+				data: [data.totalCat1Open, data.totalCat2Open, data.totalCat3Open, data.totalNotAFinding, data.totalNotApplicable, data.totalNotReviewed],
+				backgroundColor: [
+					'rgba(255, 99, 132, 1)',
+					'rgba(255, 153, 0, 1)',
+					'rgba(216, 216, 14, 1)',
+					'rgba(0, 204, 0, 1)',
+					'rgba(150, 150, 150, 1)',
+					'rgba(242, 242, 242, 1)'
+				],
+				label: 'System Severity Breakdown'
+			}],
+			labels: [
+				"CAT 1 Open",
+				"CAT 2 Open",
+				"CAT 3 Open",
+				"Not a Finding",
+				"N/A",
+				"Not Reviewed"
+			]
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: true,
+			aspectRatio: 1,
+			legend: {
+			  display: true,
+			  position: 'bottom',
+			  labels: {
+				fontSize: 10,
+				padding: 5
+			  }
+			},
+			plugins: {
+			  labels: {
+				render: 'value',
+				fontSize: 14,
+				//fontStyle: 'bold',
+				fontColor: '#000',
+				//position: 'outside',
+				fontFamily: '"Lucida Console", Monaco, monospace'
+			  }
+			}
+		}
+	});
+}
+async function updateChecklistFilter() {
+	var systemGroupId = $("#checklistSystemFilter").val();
+	if (!systemGroupId || systemGroupId.length == 0)
+	{
+		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	// clear the options
+	$('#checklistFilter').empty();
+
+	// get the list of checklists
+	var url = readAPI + "/systems/" + encodeURIComponent(systemGroupId);
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+
+	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
+	if (response.ok) {
+		var data = await response.json();
+		if (data) {
+			$.each(data, function (index, value) {
+				$('#checklistFilter').append($('<option/>', { 
+						value: value.internalId,
+						text : value.title 
+				}));
+			}); 
+		}
+	}
+}
+// Reports: list out vulnerabilities for a particular checklist
+async function getSystemChecklistReport() {
+	var id = $("#checklistFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a checklist for the report.", "Click OK to continue!", "error");
+		return;
+	}
+
+	$.blockUI({ message: "Generating the Checklist Report ...please wait" }); 
+	// call the API to get the checklist data
+	var url = readAPI + "/artifact";
+	let response = await fetch(url + "/" + id, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
+		clearSessionData();
+		// now get the data set
+		var data = await response.json();
+		//var title = data.title;
+		var updatedDate = "Last Updated on ";
+		if (data.updatedOn) {
+			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
+		}
+		else {
+			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+		}
+
+		var table = $('#tblReportSystemChecklist').DataTable();
+		table.clear();
+
+		$("#checklistSystem").html("<b>System:</b> " + data.systemTitle);
+		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
+		$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
+		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
+		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
+		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
+		
+		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
+		
+		var strStatus = "";
+		for (const item of data.checklist.stigs.iSTIG.vuln) {
+			if (item.status == "NotAFinding") 
+				strStatus = "Not a Finding";
+			else if (item.status == "Not_Reviewed") 
+				strStatus = "Not Reviewed";
+			else if (item.status == "Not_Applicable	") 
+				strStatus = "Not Applicable";
+			else 
+				strStatus = item.status;
+
+			// dynamically add to the datatable but only show main data, click the + for extra data
+			table.row.add( { "vulnid": item.stiG_DATA[0].attributE_DATA, "severity": item.stiG_DATA[1].attributE_DATA,
+				"ruleid": item.stiG_DATA[3].attributE_DATA, "stigid": item.stiG_DATA[4].attributE_DATA, 
+				"status": strStatus, "title": item.stiG_DATA[5].attributE_DATA, "cci": item.stiG_DATA[25].attributE_DATA, 
+				"discussion": item.stiG_DATA[6].attributE_DATA, "checkContent": item.stiG_DATA[8].attributE_DATA, 
+				"fixText": item.stiG_DATA[9].attributE_DATA, "comments": item.comments, "findingDetails": item.findinG_DETAILS
+			}).draw();
+		}
+		$.unblockUI();
+	} else {
+		$.unblockUI();
+		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
+	}
+}
+
+async function getControlsReport() {
+	var pii = $('#checklistPrivacyFilter')[0].checked;
+	var url = controlAPI + "/?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
+	$.blockUI({ message: "Generating the Controls Report ...please wait" }); 
+	let response = await fetch(url, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
+		// now get the data set
+		var data = await response.json();
+
+		var table = $('#tblReportControls').DataTable();
+		table.clear();
+		var impactLevel = "";
+		for (const item of data) {
+			if (item.status == "NotAFinding") 
+				strStatus = "Not a Finding";
+			else if (item.status == "Not_Reviewed") 
+				strStatus = "Not Reviewed";
+			else if (item.status == "Not_Applicable	") 
+				strStatus = "Not Applicable";
+			else 
+				strStatus = item.status;
+
+			if (item.highimpact)
+				impactLevel = "High";
+			else if (item.moderateimpact)
+				impactLevel = "Moderate";
+			else if (item.lowimpact)
+				impactLevel = "Low";
+			else
+				impactLevel = "N/A";
+			// dynamically add to the datatable but only show main data, click the + for extra data
+			table.row.add( { "family": item.family,"number": item.number,"title": item.title,"priority": item.priority,
+				"impactlevel": impactLevel,"supplementalGuidance": item.supplementalGuidance, 
+				"subControlDescription": item.subControlDescription, "subControlNumber": item.subControlNumber
+			}).draw();
+		}
+		$.unblockUI();
+	} else {
+		$.unblockUI();
+		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
+	}
+}
+/************************************ 
+ Audit List Functions
+************************************/
+async function getAuditRecords() {
+	// call the API to get the checklist data
+	var url = auditAPI;
+	$.blockUI({ message: "Generating the Audit Listing...please wait" }); 
+	let response = await fetch(url + "/", {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
+		// now get the data set
+		var data = await response.json();
+
+		var table = $('#tblAuditRecords').DataTable(); // the datatable reference to do a row.add() to
+		table.clear();
+		for (const item of data) {
+			// dynamically add to the datatable but only show main data, click the + for extra data
+			table.row.add( { "auditId": item.auditId, "program": item.program,
+				"created": moment(item.created).format('MM/DD/YYYY h:mm a'), "action": item.action, 
+				"userid": item.userid, "username": item.username, "fullname": item.fullname, 
+				"email": item.email, "url": item.url, 
+				"message": item.message
+			}).draw();
+		}
+		$.unblockUI();
+	} else {
+		$.unblockUI();
+		swal("There was a problem listing the audit records. Please contact your Application Administrator.", "Click OK to continue!", "error");
+	}
+}
+
 /************************************ 
  Compliance Functions
 ************************************/
 // the system dropdown on the Compliance page
-async function getChecklistSystemsForComplianceFilter() {
+async function getChecklistSystemsForComplianceFilter(id) {
 	var data = await getChecklistSystems();
 	// for each data add to the compliance checklistSystem
 	if (data) {
+		var optionString = '';
 		$.each(data, function (index, value) {
-			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value.internalId,
-					text : value.title
-			}));
+			if (id && value.internalId == id)
+				optionString = '<option selected value="' + value.internalId + '">' + value.title + '</option>';
+			else 
+				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+			$('#checklistSystemFilter').append(optionString); 
 		}); 
 	}
 }
@@ -1432,7 +2120,7 @@ function getComplianceSummaryButton(family, status) {
 	} else if (status == "notafinding" || status == "not_applicable")  {
 		return "<button class='btn btn-success'><i class='fa fa-check'>" + family + "</i></button>";
 	} else if (status == "not_reviewed")  {
-		return "<button class='btn btn-primary'><i class='fa fa-eye-slash'> " + family + "</i></button>";
+		return "<button class='btn btn-dark'><i class='fa fa-eye-slash'> " + family + "</i></button>";
 	} else {
 		return "<button class='btn btn-outline-secondary'><i class='fa fa-ban'> " + family + "</i></button>";
 	}
@@ -1463,10 +2151,21 @@ function getRandomColor() {
 /************************************ 
  Permission and User Login Functions
 ************************************/
-function verifyUploadMenu() {
+function verifyMenus() {
 	if (canUpload()) {
     	$("#menuUpload").show();
 	}
+	if (isAdministrator()) {
+    	$("#menuAudit").show();
+	}
+}
+function verifyUploadFromSystem() {
+	if (canUpload()) {
+    	$("#btnUploadChecklist").show();
+	}
+}
+function isAdministrator() {
+	return (keycloak.hasRealmRole("Administrator"));
 }
 function canDownload() {
 	return (keycloak.hasRealmRole("Download") || keycloak.hasRealmRole("Administrator"));
@@ -1484,6 +2183,11 @@ function verifyDownloadSingleChecklist() {
 		$("#btnDownloadChartSeverity").show();
 		$("#btnDownloadChartCategory").show();
 		$("#btnDownloadBarChart").show();
+	}
+}
+function verifyAddSystem() {
+	if (canUpload()) {
+		$("#btnAddSystem").show();
 	}
 }
 function verifyDownloadTemplate() {
@@ -1504,8 +2208,27 @@ function verifyUpdateChecklist() {
 function verifyUpdateSystem() {
 	if (canUpload()) {
 		$("#btnUpdateSystem").show();
+		$("#btnDeleteSystem").show();
+		$("#btnDeleteAllSystemChecklists").show();
+		$("#btnDeleteSystemChecklists").show();
 	}
 }
+function verifyDownloadSystemChart() {
+	if (canDownload()){
+		$("#btnDownloadChartSystemScore").show();
+	}
+}
+function clearSessionData() {
+	var currentSystem = sessionStorage.getItem("currentSystem");
+	var currentSystemsList = sessionStorage.getItem("checklistSystems");
+	// clear out everything
+	sessionStorage.clear();
+	if (currentSystem && currentSystem != "undefined")
+		sessionStorage.setItem("currentSystem", currentSystem);
+	if (currentSystemsList && currentSystemsList != "undefined")
+		sessionStorage.setItem("checklistSystems", currentSystemsList);
+}
+
 function setupProfileMenu()
 {
 	// use the person's first name
