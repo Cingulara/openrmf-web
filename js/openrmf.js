@@ -1105,8 +1105,9 @@ function viewVulnDetails(vulnId) {
 		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
 		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
 		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
-		for(i = 25; i < data.stiG_DATA.length; i++) { 
-			ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
+		for(i = 24; i < data.stiG_DATA.length; i++) { 
+			if (data.stiG_DATA[i].vulN_ATTRIBUTE == "CCI_REF")
+				ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
 		}
 		ccilist = ccilist.substring(0, ccilist.length -2);
 		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
@@ -1865,6 +1866,7 @@ async function getSystemChecklistReport() {
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
 		
 		var strStatus = "";
+		var ccilist = "";
 		for (const item of data.checklist.stigs.iSTIG.vuln) {
 			if (item.status == "NotAFinding") 
 				strStatus = "Not a Finding";
@@ -1874,11 +1876,19 @@ async function getSystemChecklistReport() {
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
+			
+			// set this list to empty
+			ccilist = "";
+			for(i = 24; i < item.stiG_DATA.length; i++) { 
+				if (item.stiG_DATA[i].vulN_ATTRIBUTE == "CCI_REF")
+					ccilist += item.stiG_DATA[i].attributE_DATA + ", ";
+			}
+			ccilist = ccilist.substring(0, ccilist.length -2);
 
 			// dynamically add to the datatable but only show main data, click the + for extra data
 			table.row.add( { "vulnid": item.stiG_DATA[0].attributE_DATA, "severity": item.stiG_DATA[1].attributE_DATA,
 				"ruleid": item.stiG_DATA[3].attributE_DATA, "stigid": item.stiG_DATA[4].attributE_DATA, 
-				"status": strStatus, "title": item.stiG_DATA[5].attributE_DATA, "cci": item.stiG_DATA[25].attributE_DATA, 
+				"status": strStatus, "title": item.stiG_DATA[5].attributE_DATA, "cci": ccilist, 
 				"discussion": item.stiG_DATA[6].attributE_DATA, "checkContent": item.stiG_DATA[8].attributE_DATA, 
 				"fixText": item.stiG_DATA[9].attributE_DATA, "comments": item.comments, "findingDetails": item.findinG_DETAILS
 			}).draw();
