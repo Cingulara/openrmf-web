@@ -978,6 +978,8 @@ async function getChecklistData(id, template) {
 		
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
+		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
+		// template should use its uploaded description
 		//$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
 
 		// load updated date
@@ -1864,6 +1866,7 @@ async function getSystemChecklistReport() {
 		
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
+		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
 		
 		var strStatus = "";
 		var ccilist = "";
