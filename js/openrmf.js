@@ -908,7 +908,11 @@ async function getChecklistSystemsForChecklistFilter() {
 function returnToChecklistListing() {
 	location.href = "checklists.html?rtn=1";
 }
-
+// go back to the template listing from a single template page
+function returnToTemplateListing() {
+	location.href = "templates.html";
+}
+// save the checklist listing as a downloaded XLSX file
 async function exportChecklistListingXLSX() {
 	// redirect to the API and it downloads the XLSX file of all Checklist Listings
 	// if we have a specific system selected only export the ones for that system
@@ -980,7 +984,8 @@ async function getChecklistData(id, template) {
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
 		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
 		// template should use its uploaded description
-		//$("#checklistSTIGDescription").html("<b>Description:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[4].siD_DATA);
+		if (template && data.description)
+			$("#templateDescription").html("<b>Description:</b> " + data.description);
 
 		// load updated date
 		$("#chartSeverityUpdated").text(updatedDate);
