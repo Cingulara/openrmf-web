@@ -1620,7 +1620,7 @@ function uploadTemplate(){
 			processData: false,
 			contentType: false,
 			success : function(data){
-				swal("Your Template was uploaded successfully!", "Click OK to continue!", "success");
+				swal("Your Template was uploaded successfully!", data.title + " is ready to use. Click OK to continue!", "success");
 				// reset the form
 				$("#frmTemplateUpload")[0].reset();
 				$('#templateFile').trigger("filer.reset")
