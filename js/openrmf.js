@@ -868,11 +868,6 @@ async function getChecklists(latest, system) {
 				else {
 					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
 				}
-				// add a delete link on the listing page
-				if (canDelete() && !latest) {
-					checklistLink += '<br /><span class="small"><a href="javascript:deleteChecklist(\'' + item.internalId + '\')">';
-					checklistLink += 'delete</a>';
-				}
 				checklistLink += "</span>";
 				// now get the score
 				var score = await getScoreForChecklistListing(item.internalId);
@@ -1617,7 +1612,6 @@ function uploadChecklist(){
 				// refresh the list of systems
 				if ($("#checklistSystemText").is(':visible')){
 					getChecklistSystemsForUpload();
-					//$('#checklistSystem option').filter(function() { return $.trim( $(this).text() ) == ; })​​​​​​​​.attr('selected','selected');
 					$("#checklistSystem option:contains($('#checklistSystemText').val().trim())").attr('selected', 'selected');
 					$("#checklistSystemText").val();
 					$('#divNewChecklistSystemText').hide();
@@ -1627,8 +1621,9 @@ function uploadChecklist(){
 				// reset the form
 				$('#checklistFile').trigger("filer.reset")
 			},
-			error: function() {
-				swal("Error Uploading Checklist", "There was an error uploading the checklist. Please try again.", "error");
+			error: function(data) {
+				//show any that did not work right specifically, the rest worked correctly
+				swal("Error Uploading Checklist", "There was an error uploading some of your checklists. Please try again.", "error");
 			}
 	});
 }
