@@ -1617,7 +1617,17 @@ function uploadChecklist(){
 					$('#divNewChecklistSystemText').hide();
 					$('#divNewChecklistSystem').show();
 				}
-				swal("Your Checklists were uploaded successfully!", "Click OK to continue!", "success");
+				if (data.failed == 0)
+					swal("Your " + data.successful + " Checklists were uploaded successfully!", "Click OK to continue!", "success");
+				else {
+					var message = "There were " + data.failed + " failed checklists. ( "; 
+					$.each(data.failedUploads, function (index, value) {
+						if (index > 0) message += "; ";
+						message += value;
+					});
+					message += " ) Click OK to continue!";
+					swal("You had " + data.successful + " Checklists uploaded successfully!", message, "error");
+				}
 				// reset the form
 				$('#checklistFile').trigger("filer.reset")
 			},
