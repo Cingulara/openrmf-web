@@ -422,8 +422,8 @@ function addSystem(){
 			success: function(data){
 				swal("Your System was created successfully!", "Click OK to continue!", "success")
 				.then((value) => {
-					// reload the page
-					location.href = "systems.html";
+					// load the new system
+					location.href = "checklists.html?id=" + data.internalId;
 				});
 			},
 			error : function(data){
