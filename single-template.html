@@ -40,6 +40,7 @@
 		
 		<!-- Custom CSS -->
 		<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+		<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
@@ -188,13 +189,13 @@
 								<div id="checklistRole"></div>
 								<br />
 								<div class="small" id="checklistLastUpdated"></div><br />
-								<a href="#custom-modal"  id="btnUpdateChecklist" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10" 
+								<a href="#custom-modal"  id="btnUpdateTemplate" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10" 
 									  data-target="#customModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
 								<button type="button" id="btnDownloadTemplate" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), true);" 
 									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
-								<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
+								<button type="button" id="btnExportTemplate" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
 									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
-								<button type="button" id="btnDeleteChecklist" style="display: none;" onclick="deleteChecklist(getParameterByName('id'), false);" 
+								<button type="button" id="btnDeleteTemplate" style="display: none;" onclick="deleteTemplate(getParameterByName('id'), false);" 
 									class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
 							</div>
 						</div><!-- end card-->
@@ -375,6 +376,7 @@
 <script src="assets/js/jquery.nicescroll.js"></script>
 <script src="assets/js/jquery.scrollTo.min.js"></script>
 <script src="assets/plugins/switchery/switchery.min.js"></script>
+<script src="assets/plugins/sweetalert/sweetalert.js"></script>
 
 <!-- App js -->
 <script src="assets/js/pikeadmin.js"></script>
@@ -396,6 +398,8 @@
 				verifyMenus();
 				// see if they can download
 				verifyDownloadTemplate();
+				// see if they can delete
+				verifyDeleteTemplate();
 				// calls to get the checklist data from the API
 				getChecklistData(getParameterByName('id'), true);
 			}

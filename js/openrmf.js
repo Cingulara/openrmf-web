@@ -243,7 +243,40 @@ async function getScoreForTemplateListing(xmlChecklist) {
 			displayChecklistScores(data);
 		}});
 }
-
+async function deleteTemplate(id) {
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete this Template?",
+			text: "Are you sure you wish to delete this template?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : templateAPI + "/" + id,
+					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your Template was deleted successfully!", "Click OK to continue!", "success")
+						.then((value) => {
+							location.href = "templates.html"; // reload the list of templates
+						});
+					},
+					error : function(data){
+						swal("There was a Problem. Your Template was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the Deletion.");
+			}
+		});
+	}
+}
 /*************************************
  * System listing functions
  ************************************/
@@ -2211,6 +2244,11 @@ function verifyAddSystem() {
 function verifyDownloadTemplate() {
 	if (canDownload()){
 		$("#btnDownloadTemplate").show();
+	}
+}
+function verifyDeleteTemplate() {
+	if (canDelete()) {
+		$("#btnDeleteTemplate").show();
 	}
 }
 function verifyDeleteChecklist() {
