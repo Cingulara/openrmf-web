@@ -395,11 +395,11 @@ async function getSystemRecord(systemGroupId) {
 			if (item.rawNessusFile) {
 				var nessusHTML = "<b>Nessus Scan:</b>";				
 				if (canDownload()) {
-					nessusHTML += ' &nbsp; <span class="small"><a title="Download the Nessus scan" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
+					nessusHTML += ' &nbsp; <span><a title="Download the Nessus scan" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
 					nessusHTML += 'Download</a> ';
-					nessusHTML += ' | <span class="small"><a title="Export the Nessus scan Summary to XLSX" href="javascript:exportNessusXML(\'' + item.internalId + '\', true)">';
+					nessusHTML += ' | <span><a title="Export the Nessus scan Summary to XLSX" href="javascript:exportNessusXML(\'' + item.internalId + '\', true)">';
 					nessusHTML += 'Summary Export</a> ';
-					nessusHTML += ' | <span class="small"><a title="Export the Nessus scan to XLSX by Host" href="javascript:exportNessusXML(\'' + item.internalId + '\', false)">';
+					nessusHTML += ' | <span><a title="Export the Nessus scan to XLSX by Host" href="javascript:exportNessusXML(\'' + item.internalId + '\', false)">';
 					nessusHTML += 'Host Export</a> ';
 				} else { // they can only know we have one
 					nessusHTML += " Yes";
@@ -410,12 +410,20 @@ async function getSystemRecord(systemGroupId) {
 			else { 
 				if (canUpload()) {
 					var strNessus = '<b>Nessus Scan:</b> <a href="#custom-modal"  id="btnUpdateSystem" ' +
-									' data-target="#customModal" data-toggle="modal"><span class="small">(click to upload)</span></a>';
+									' data-target="#customModal" data-toggle="modal"><span>(click to upload)</span></a>';
 					$("#divSystemNessusFile").html(strNessus);
 				} 
 				else 
 				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> N/A");
 			}
+			// generate the test plan link
+			if (canDownload()) {
+				var testplanHTML = "<b>Test Plan:</b>";				
+				testplanHTML += ' &nbsp; <span><a title="Download the Test Plan in MS Excel" href="javascript:exportTestPlan(\'' + item.internalId + '\')">';
+				testplanHTML += 'Generate Excel File</a> ';
+				$("#divSystemTestPlan").html(testplanHTML);
+			}
+			// created date and updated date
 			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
 			if (item.updatedOn) 
 				$("#divSystemUpdated").html("<b>Last Updated:</b> " + moment(item.updatedOn).format('MM/DD/YYYY h:mm a'));
@@ -622,7 +630,7 @@ async function getNessusFileSummaryData(systemGroupId) {
 
 // export Nessus scan to XLSX for easier viewing
 async function exportNessusXML(systemGroupId, summaryView) {
-	$.blockUI({ message: "Generating the Nessus Excel export ...please wait" }); 
+	$.blockUI({ message: "Generating the Nessus Excel export...please wait" }); 
 	var url = readAPI + "/system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -652,6 +660,38 @@ async function exportNessusXML(systemGroupId, summaryView) {
 	request.send();
 	$.unblockUI();
 }
+
+// export Test Plan to XLSX for easier viewing
+async function exportTestPlan(systemGroupId) {
+	$.blockUI({ message: "Generating the System Test Plan Excel export...please wait" }); 
+	var url = readAPI + "/system/" + systemGroupId + "/testplanexport/";
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				var strDate = "";
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-TestPlan-" + strDate + ".xlsx";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		}
+	};
+	request.send();
+	$.unblockUI();
+}
+
 // buttons to redirect with the System ID in the URL
 function runComplianceFromSystem(id) {
 	if (id)
