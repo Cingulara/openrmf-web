@@ -395,11 +395,15 @@ async function getSystemRecord(systemGroupId) {
 			if (item.rawNessusFile) {
 				var nessusHTML = "<b>Nessus Scan:</b>";				
 				if (canDownload()) {
-					nessusHTML += ' &nbsp; <span><a title="Download the Nessus scan" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
+					var nessusFilename = "latest upload";
+					if (item.nessusFilename) 
+						nessusFilename = item.nessusFilename;
+
+					nessusHTML += ' &nbsp; <span><a title="Download the Nessus Scan (' + nessusFilename + ')" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
 					nessusHTML += 'Download</a> ';
-					nessusHTML += ' | <span><a title="Export the Nessus scan Summary to XLSX" href="javascript:exportNessusXML(\'' + item.internalId + '\', true)">';
+					nessusHTML += ' | <span><a title="Export the Nessus scan Summary to XLSX (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalId + '\', true)">';
 					nessusHTML += 'Summary Export</a> ';
-					nessusHTML += ' | <span><a title="Export the Nessus scan to XLSX by Host" href="javascript:exportNessusXML(\'' + item.internalId + '\', false)">';
+					nessusHTML += ' | <span><a title="Export the Nessus scan to XLSX by Host (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalId + '\', false)">';
 					nessusHTML += 'Host Export</a> ';
 				} else { // they can only know we have one
 					nessusHTML += " Yes";
@@ -680,7 +684,10 @@ async function exportTestPlan(systemGroupId) {
 				var downloadLink = window.document.createElement('a');
 				var contentTypeHeader = request.getResponseHeader("Content-Type");
 				var strDate = "";
+				var d = new Date();
+				strDate = d.getFullYear().toString() + d.getMonth().toString() + d.getDate().toString()+ d.getHours().toString()+d.getMinutes().toString()+d.getSeconds().toString();
 				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+
 				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-TestPlan-" + strDate + ".xlsx";
 				document.body.appendChild(downloadLink);
 				downloadLink.click();
