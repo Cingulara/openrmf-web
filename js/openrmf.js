@@ -484,6 +484,9 @@ function updateSystem(systemGroupId){
 		buttons: false,
 		timer: 3000,
 	});
+	if (!systemGroupId) // get it from the session
+		systemGroupId = sessionStorage.getItem("currentSystem");
+
 	var formData = new FormData();
 	formData.append("title",$("#frmSystemTitle").val());
 	formData.append("description",$("#frmSystemDescription").val());
@@ -583,6 +586,8 @@ function renderSystemPieChart(element, data) {
 
 // if there is a Nessus scan file for the system, and they have permissions, download it
 async function downloadNessusXML(systemGroupId) {
+	if (!systemGroupId) // get it from the session
+		systemGroupId = sessionStorage.getItem("currentSystem");
 	// redirect to the API and it downloads the XML file for the Nessus scan
 	$.blockUI({ message: "Generating the Nessus file...please wait" }); 
 	var url = readAPI + "/system/" + encodeURIComponent(systemGroupId) + "/downloadnessus/";
@@ -613,6 +618,8 @@ async function downloadNessusXML(systemGroupId) {
 }
 // get back the list of Critical and High Nessus Patch data
 async function getNessusFileSummaryData(systemGroupId) {
+	if (!systemGroupId) // get it from the session
+		systemGroupId = sessionStorage.getItem("currentSystem");
 	var url = readAPI;
 	try {
 		  let responsePatches = await fetch(readAPI + "/system/" + encodeURIComponent(systemGroupId) + "/nessuspatchsummary/", {headers: {
@@ -634,7 +641,10 @@ async function getNessusFileSummaryData(systemGroupId) {
 
 // export Nessus scan to XLSX for easier viewing
 async function exportNessusXML(systemGroupId, summaryView) {
-	$.blockUI({ message: "Generating the Nessus Excel export...please wait" }); 
+	if (!systemGroupId) // get it from the session
+		systemGroupId = sessionStorage.getItem("currentSystem");
+
+		$.blockUI({ message: "Generating the Nessus Excel export...please wait" }); 
 	var url = readAPI + "/system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -667,6 +677,8 @@ async function exportNessusXML(systemGroupId, summaryView) {
 
 // export Test Plan to XLSX for easier viewing
 async function exportTestPlan(systemGroupId) {
+	if (!systemGroupId) // get it from the session
+		systemGroupId = sessionStorage.getItem("currentSystem");
 	$.blockUI({ message: "Generating the System Test Plan Excel export...please wait" }); 
 	var url = readAPI + "/system/" + systemGroupId + "/testplanexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
@@ -714,6 +726,8 @@ function uploadFromSystem(id) {
 }
 // delete a system, its checklists, and its scores records
 async function deleteSystem(id) {
+	if (!id) // get it from the session
+		id = sessionStorage.getItem("currentSystem");
 	if (id && id.length > 10) {
 		swal({
 			title: "Delete an Entire System",
@@ -757,13 +771,16 @@ function getSystemScoreChartBySession(){
 }
 // get the system score pie chart by session on the system record page
 async function getSystemScoreChart(id) {
-	// chartSystemScore
+	if (!id) // get it from the session
+		id = sessionStorage.getItem("currentSystem");
 	var data = await getScoreForSystemChecklistListing(id);
 	if (data) 
 		renderSystemPieChart("chartSystemScore", data); // render the specific data for this system
 }
 // delete all checklists for a system, but keep the system structure
 async function deleteSystemChecklists(id){
+	if (!id) // get it from the session
+		id = sessionStorage.getItem("currentSystem");
 	var formData = new FormData();
 	// put all the checked items into the form data
 	var idSelector = function() { return this.value; };
@@ -807,8 +824,8 @@ async function deleteSystemChecklists(id){
 }
 // delete all checklists for a system, but keep the system structure
 async function deleteAllSystemChecklists(id){
-	// system/{id}/artifacts
-
+	if (!id) // get it from the session
+		id = sessionStorage.getItem("currentSystem");
 	if (id && id.length > 10) {
 		swal({
 			title: "Delete All System Checklists",
@@ -996,7 +1013,11 @@ async function exportChecklistListingXLSX() {
 		systemFilter = $("#txtSystemName").val();
 	}
 	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait" }); 
-	var url = readAPI + "/export?system=" + encodeURIComponent(getParameterByName('id'));
+	var url = readAPI;
+	if (getParameterByName('id')) 
+		url += "/export?system=" + encodeURIComponent(getParameterByName('id'));
+	else // session
+		url += "/export?system=" + encodeURIComponent(sessionStorage.getItem("currentSystem"));
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
