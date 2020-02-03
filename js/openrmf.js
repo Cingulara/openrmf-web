@@ -685,10 +685,10 @@ async function exportTestPlan(systemGroupId) {
 				var contentTypeHeader = request.getResponseHeader("Content-Type");
 				var strDate = "";
 				var d = new Date();
-				strDate = d.getFullYear().toString() + d.getMonth().toString() + d.getDate().toString()+ d.getHours().toString()+d.getMinutes().toString()+d.getSeconds().toString();
+				strDate = d.getFullYear().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getDate().toString() + "-" + d.getHours().toString() + "-" + d.getMinutes().toString() + "-" + d.getSeconds().toString();
 				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
 
-				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-TestPlan-" + strDate + ".xlsx";
+				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-TestPlanSummary-" + strDate + ".xlsx";
 				document.body.appendChild(downloadLink);
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
