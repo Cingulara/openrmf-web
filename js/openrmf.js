@@ -422,7 +422,7 @@ async function getSystemRecord(systemGroupId) {
 			}
 			// generate the test plan link
 			if (canDownload()) {
-				var testplanHTML = "<b>Test Plan:</b>";				
+				var testplanHTML = "<b>Test Plan Summary:</b>";				
 				testplanHTML += ' &nbsp; <span><a title="Download the Test Plan in MS Excel" href="javascript:exportTestPlan(\'' + item.internalId + '\')">';
 				testplanHTML += 'Generate Excel File</a> ';
 				$("#divSystemTestPlan").html(testplanHTML);
@@ -1129,7 +1129,7 @@ async function getChecklistData(id, template) {
 				// add to the checklistTree
 				// based on one of the status color the background appropriately
 				vulnListing += '<button type="button" class="btn btn-sm ';
-				vulnListing += getVulnerabilityStatusClassName(vuln.status);
+				vulnListing += getVulnerabilityStatusClassName(vuln.status, vuln.stiG_DATA[1].attributE_DATA);
 				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
 				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
 				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
@@ -1159,7 +1159,7 @@ function updateVulnerabilityListingByFilter() {
 			if (showVulnId(vuln)) {
 				// parse them base on the above booleans and print them out
 				vulnListing += '<button type="button" class="btn btn-sm ';
-				vulnListing += getVulnerabilityStatusClassName(vuln.status);
+				vulnListing += getVulnerabilityStatusClassName(vuln.status, vuln.stiG_DATA[1].attributE_DATA);
 				vulnListing += '" title="' + vuln.vulnId + '" ';
 				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.vulnId + '\'); return false;">'
 				vulnListing += vuln.vulnId + '</button><br />';
@@ -1187,11 +1187,17 @@ function showVulnId(vuln){
 		return false;
 }
 // get the color coding of the class based on vulnerability status
-function getVulnerabilityStatusClassName (status) {
+function getVulnerabilityStatusClassName (status, severity) {
 	if (status.toLowerCase() == 'not_reviewed')
 		return "vulnNotReviewed";
-	else if (status.toLowerCase() == 'open')
-		return "vulnOpen";
+	else if (status.toLowerCase() == 'open') {
+		if (severity.toLowerCase() == "high")
+			return "vulnOpenCAT1";
+		else if (severity.toLowerCase() == "medium")
+			return "vulnOpenCAT2";
+		else if (severity.toLowerCase() == "low")
+			return "vulnOpenCAT3";
+	}
 	else if (status.toLowerCase() == 'not_applicable')
 		return "vulnNotApplicable";
 	else // not a finding
@@ -2213,7 +2219,7 @@ function getComplianceTextClassName(status) {
 	if (status.toLowerCase() == 'not_reviewed')
 		return "vulnNotReviewedText";
 	else if (status.toLowerCase() == 'open')
-		return "vulnOpenText";
+		return "vulnOpenCAT1Text";
 	else if (status.toLowerCase() == 'not_applicable')
 		return "vulnNotApplicableText";
 	else // not a finding
