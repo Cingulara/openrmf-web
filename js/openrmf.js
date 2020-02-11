@@ -1180,22 +1180,49 @@ function updateVulnerabilityListingByFilter() {
 		severity = "";
 	}
 }
+// see if the vulnerability filters allow showing this vulnerability in the listing
 function showVulnId(vuln){
+	// status checkboxes
 	var bOpen = $('#chkVulnOpen').prop('checked');
 	var bNaF  = $('#chkVulnNaF').prop('checked');
 	var bNA   = $('#chkVulnNA').prop('checked');
 	var bNR   = $('#chkVulnNR').prop('checked');
-	// check status and boolean
-	if (vuln.status.toLowerCase() == 'not_reviewed' && bNR)
-		return true;
-	else if (vuln.status.toLowerCase() == 'open' && bOpen)
-		return true;
-  else if (vuln.status.toLowerCase() == 'not_applicable' && bNA)
-		return true;
-	else if (vuln.status.toLowerCase() == 'notafinding' && bNaF)
-		return true;
-	else 
-		return false;
+	// severity checkboxes
+	var bCat1  = $('#chkVulnCAT1').prop('checked');
+	var bCat2  = $('#chkVulnCAT2').prop('checked');
+	var bCat3  = $('#chkVulnCAT3').prop('checked');
+	// grab the pertinent values
+	var status = vuln.status.toLowerCase();
+	var severity = "high";
+	var vulnRecord = JSON.parse(sessionStorage.getItem(vuln.vulnId));
+	if (vulnRecord)	
+		severity = vulnRecord.stiG_DATA[1].attributE_DATA.toLowerCase();
+	var value = false;
+
+	// now we can check status and boolean
+	if (status == 'not_reviewed' && bNR)
+		value = true;
+	else if (status == 'open' && bOpen)
+		value = true;
+    else if (status == 'not_applicable' && bNA)
+		value = true;
+	else if (status == 'notafinding' && bNaF)
+		value = true;
+
+	// check the severity as well to make sure we are good
+	// only do this check if one of the items above was set to true
+	if (value) {
+		if (severity == 'high' && bCat1)
+			value = true;
+		else if (severity == 'medium' && bCat2)
+			value = true;
+		else if (severity == 'low' && bCat3)
+			value = true;
+		else
+			value = false; // only if no severity is checked, which is not smart
+	}
+
+	return value;
 }
 // get the color coding of the class based on vulnerability status
 function getVulnerabilityStatusClassName (status, severity) {
