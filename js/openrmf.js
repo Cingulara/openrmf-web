@@ -1147,6 +1147,43 @@ async function getChecklistData(id, template) {
 		$("#divBadChecklistId").show();
 	}
 }
+// set the vulnerability filter off the Score table, then scroll down to it
+function setVulnerabilityFilter(status, severity) {
+	// clear all checkboxes
+	$('#chkVulnNaF').prop('checked', false);
+	$('#chkVulnOpen').prop('checked', false);
+	$('#chkVulnNA').prop('checked', false);
+	$('#chkVulnNR').prop('checked', false);
+	$('#chkVulnCAT1').prop('checked', false);
+	$('#chkVulnCAT2').prop('checked', false);
+	$('#chkVulnCAT3').prop('checked', false);
+	// set the status checkboxes correctly
+	if (status == "open") 
+		$('#chkVulnOpen').prop('checked', true);
+	else if (status == "naf") 
+		$('#chkVulnNaF').prop('checked', true);
+	else if (status == "nr") 
+		$('#chkVulnNR').prop('checked', true);
+	else if (status == "na") 
+		$('#chkVulnNA').prop('checked', true);
+
+	// set the severity checkboxes correctly
+	// top row of the score = severity of all
+	if (severity == "cat1" || severity == "all") 
+		$('#chkVulnCAT1').prop('checked', true);
+	else if (severity == "cat2" || severity == "all") 
+		$('#chkVulnCAT2').prop('checked', true);
+	else if (severity == "cat3" || severity == "all") 
+		$('#chkVulnCAT3').prop('checked', true);
+
+	// call the update
+	updateVulnerabilityListingByFilter();
+
+	// scroll down to it
+	var elmnt = document.getElementById("divVulnerabilities");
+	if (elmnt) 
+		elmnt.scrollIntoView();
+}
 
 // based on the checkboxes, filter the Vuln Ids listing
 function updateVulnerabilityListingByFilter() {
@@ -1345,22 +1382,22 @@ async function getChecklistScore(id) {
 }
 async function displayChecklistScores(data) {
 	if (data) {
-		$("#checklistNotAFindingCount").text(data.totalNotAFinding.toString());
-		$("#checklistNotApplicableCount").text(data.totalNotApplicable.toString());
-		$("#checklistOpenCount").text(data.totalOpen.toString());
-		$("#checklistNotReviewedCount").text(data.totalNotReviewed.toString());
-		$("#cat1NotAFindingCount").text(data.totalCat1NotAFinding.toString());
-		$("#cat1NotApplicableCount").text(data.totalCat1NotApplicable.toString());
-		$("#cat1OpenCount").text(data.totalCat1Open.toString());
-		$("#cat1NotReviewedCount").text(data.totalCat1NotReviewed.toString());
-		$("#cat2NotAFindingCount").text(data.totalCat2NotAFinding.toString());
-		$("#cat2NotApplicableCount").text(data.totalCat2NotApplicable.toString());
-		$("#cat2OpenCount").text(data.totalCat2Open.toString());
-		$("#cat2NotReviewedCount").text(data.totalCat2NotReviewed.toString());
-		$("#cat3NotAFindingCount").text(data.totalCat3NotAFinding.toString());
-		$("#cat3NotApplicableCount").text(data.totalCat3NotApplicable.toString());
-		$("#cat3OpenCount").text(data.totalCat3Open.toString());
-		$("#cat3NotReviewedCount").text(data.totalCat3NotReviewed.toString());
+		$("#checklistNotAFindingCount").html("<a style='color: white;' href='javascript:setVulnerabilityFilter(\"naf\",\"all\")'>" + data.totalNotAFinding.toString() + "</a>");
+		$("#checklistNotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"all\")'>" + data.totalNotApplicable.toString() + "</a>");
+		$("#checklistOpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"all\")'>" + data.totalOpen.toString() + "</a>");
+		$("#checklistNotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"all\")'>" + data.totalNotReviewed.toString() + "</a>");
+		$("#cat1NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat1\")'>" + data.totalCat1NotAFinding.toString() + "</a>");
+		$("#cat1NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat1\")'>" + data.totalCat1NotApplicable.toString() + "</a>");
+		$("#cat1OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat1\")'>" + data.totalCat1Open.toString() + "</a>");
+		$("#cat1NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat1\")'>" + data.totalCat1NotReviewed.toString() + "</a>");
+		$("#cat2NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat2\")'>" + data.totalCat2NotAFinding.toString() + "</a>");
+		$("#cat2NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat2\")'>" + data.totalCat2NotApplicable.toString() + "</a>");
+		$("#cat2OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat2\")'>" + data.totalCat2Open.toString() + "</a>");
+		$("#cat2NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat2\")'>" + data.totalCat2NotReviewed.toString() + "</a>");
+		$("#cat3NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat3\")'>" + data.totalCat3NotAFinding.toString() + "</a>");
+		$("#cat3NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat3\")'>" + data.totalCat3NotApplicable.toString() + "</a>");
+		$("#cat3OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat3\")'>" + data.totalCat3Open.toString() + "</a>");
+		$("#cat3NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat3\")'>" + data.totalCat3NotReviewed.toString() + "</a>");
 		
 		// show the charts with the same data
 		makeChartSeverity(data);
