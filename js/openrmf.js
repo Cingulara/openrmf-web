@@ -1171,9 +1171,9 @@ function setVulnerabilityFilter(status, severity) {
 	// top row of the score = severity of all
 	if (severity == "cat1" || severity == "all") 
 		$('#chkVulnCAT1').prop('checked', true);
-	else if (severity == "cat2" || severity == "all") 
+	if (severity == "cat2" || severity == "all") 
 		$('#chkVulnCAT2').prop('checked', true);
-	else if (severity == "cat3" || severity == "all") 
+	if (severity == "cat3" || severity == "all") 
 		$('#chkVulnCAT3').prop('checked', true);
 
 	// call the update
