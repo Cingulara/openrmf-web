@@ -1327,6 +1327,7 @@ function clearVulnDetails() {
 	$("#vulnReferences").html("");
 	$("#vulnFindingDetails").html("");
 	$("#vulnComments").html("");
+	$("#vulnSeverityOverrideGuidance").html("");
 }
 
 // update function on the checklist page showing all the individual checklist data
