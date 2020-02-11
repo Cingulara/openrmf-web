@@ -1154,12 +1154,20 @@ function updateVulnerabilityListingByFilter() {
 	if (status) {
 		clearVulnDetails();
 		var vulnListing = "";
+		var vulnRecord = "";
+		var severity = "";
 		for (const vuln of status) {
 			// if we should show it, add it to the HTML listing
 			if (showVulnId(vuln)) {
+				var vulnRecord = JSON.parse(sessionStorage.getItem(vuln.vulnId));
+				if (vulnRecord) {
+					severity = vulnRecord.stiG_DATA[1].attributE_DATA;
+				} else {
+					severity = "high"; // default catch all answer
+				}
 				// parse them base on the above booleans and print them out
 				vulnListing += '<button type="button" class="btn btn-sm ';
-				vulnListing += getVulnerabilityStatusClassName(vuln.status, vuln.stiG_DATA[1].attributE_DATA);
+				vulnListing += getVulnerabilityStatusClassName(vuln.status, severity);
 				vulnListing += '" title="' + vuln.vulnId + '" ';
 				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.vulnId + '\'); return false;">'
 				vulnListing += vuln.vulnId + '</button><br />';
@@ -1167,6 +1175,9 @@ function updateVulnerabilityListingByFilter() {
 		}
 		// rewrite the listing
 		$("#checklistTree").html(vulnListing);
+		vulnListing = "";
+		vulnRecord = "";
+		severity = "";
 	}
 }
 function showVulnId(vuln){
