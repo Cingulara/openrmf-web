@@ -1229,6 +1229,9 @@ function viewVulnDetails(vulnId) {
 		$("#vulnReferences").html();
 		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
 		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
+		if (data.stiG_DATA[18].attributE_DATA) {
+			$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (data.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
+		}
 	}
 }
 
