@@ -229,6 +229,45 @@
 					</div>							
 				</div>
 
+				<!-- Filter for the checklists -->
+				
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-folder-open-o"></i> Checklist Filter</h3>
+							</div>
+							<div class="card-body">				
+								<div class="row" id="divChecklistFilter">
+									<div class="col-xl-12">
+										<div>
+											<div class="row">
+												<div class="col-xl-6"><b>Status:</b>&nbsp;
+													<input id="chkVulnNaF" type="checkbox" checked="true"> <span class="vulnNotAFindingText">Not a Finding</span>
+													<input id="chkVulnOpen" type="checkbox" checked="true"> <span class="vulnOpenCAT1Text">Open</span> &nbsp;
+													<input id="chkVulnNA" type="checkbox" checked="true"> <span class="vulnNotApplicableText">N/A</span> &nbsp;
+													<input id="chkVulnNR" type="checkbox" checked="true"> <span class="vulnNotReviewedText">Not Reviewed</span> &nbsp;
+												</div>
+												<div class="col-xl-6"><b>Severity:</b>&nbsp;
+													<input id="chkVulnCAT1" type="checkbox" checked="true"> High (CAT 1) &nbsp;
+													<input id="chkVulnCAT2" type="checkbox" checked="true"> Medium (CAT 2) &nbsp;  
+													<input id="chkVulnCAT3" type="checkbox" checked="true"> Low (CAT 3)
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-xl-12"><br />
+													<button id="btnSetVulnFilter" class="btn btn-primary btn-sm m-r-5 m-b-10" 
+														onclick="getChecklistsByFilter(); return false;">Apply</button>
+												</div>
+											</div>											
+										</div>
+									</div>
+								</div>			
+							</div>
+						</div>
+					</div><!-- end card-->
+				</div>
+
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
@@ -327,7 +366,7 @@
 				else {
 					// get the system info from the Id
 					getSystemRecord(getParameterByName('id'));
-					getChecklists(false, getParameterByName('id'));
+					getChecklists(getParameterByName('id'));
 					getSystemScoreChart(getParameterByName('id'));
 				}
 

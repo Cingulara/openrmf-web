@@ -864,28 +864,31 @@ async function deleteAllSystemChecklists(id){
  ************************************/
 async function getChecklistsBySystem() {
 	var system = $("#checklistSystemFilter").val();
-	await getChecklists(false, system);
+	await getChecklists(system);
 }
 // if returning from a session delete or an individual checklist, 
 // just load up the checklist listing
 function getChecklistListingBySession(){
 	var currentChecklist = sessionStorage.getItem("currentSystem");
 	if (currentChecklist)
-		getChecklists(false, currentChecklist);
+		getChecklists(currentChecklist);
 	else
 		location.href = "systems.html";
 }
 
-async function getChecklists(latest, system) {
+async function getChecklists(system) {
 	$.blockUI({ message: "Updating the checklist listing..." }); 
 	// use this to refresh the checklist page if they delete something
 	sessionStorage.setItem("currentSystem", system);
 
-	var url = readAPI;
-	if (system && system != "All")
-		url += "/systems/" + encodeURIComponent(system);
-	else if (latest) // get the top 5
-		url += "/latest/5";
+	var url = readAPI + "/systems/" + encodeURIComponent(system);
+	url += "/?naf=" + $("#chkVulnNaF").is(':checked');
+	url += "&open=" + $("#chkVulnOpen").is(':checked');
+	url += "&na="   + $("#chkVulnNA").is(':checked');
+	url += "&nr="   + $("#chkVulnNR").is(':checked');
+	url += "&cat1=" + $("#chkVulnCAT1").is(':checked');
+	url += "&cat2=" + $("#chkVulnCAT2").is(':checked');
+	url += "&cat3=" + $("#chkVulnCAT3").is(':checked');
 
 	// reset the list of systems
 	sessionStorage.removeItem("checklistSystems");
@@ -962,6 +965,7 @@ async function getChecklists(latest, system) {
 		throw new Error(response.status)
 	}
 }
+
 // called from above to return the checklist score
 async function getScoreForChecklistListing(id, template) {
 	var url = scoreAPI;
