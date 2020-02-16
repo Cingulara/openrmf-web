@@ -2098,7 +2098,7 @@ async function getSystemChecklistReport() {
 		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
 	}
 }
-
+// Reports: listing of the controls
 async function getControlsReport() {
 	var pii = $('#checklistPrivacyFilter')[0].checked;
 	var url = controlAPI + "/?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
@@ -2143,6 +2143,72 @@ async function getControlsReport() {
 		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
 	}
 }
+
+// Reports: list out a vulnerability by host
+async function getHostVulnerabilityReport() {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	var vulnid = $("#vulnerabilityId").val();
+	if (!vulnid || vulnid.length < 5)
+	{
+		swal("Please enter a Vulnerability Id for the report.", "Click OK to continue!", "error");
+		return;
+	} else if (!vulnid.toLowerCase().startsWith("v-")) { // if it does not start with V-
+		swal("Please enter a valid Vulnerability Id for the report that begins with V-.", "Click OK to continue!", "error");
+		return;
+	}
+
+	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" }); 
+	// call the API to get the checklist data
+	var url = readAPI + "/report/system/" + id + "/vulnid/" + vulnid;
+	let response = await fetch(url, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
+		clearSessionData();
+		// now get the data set
+		var data = await response.json();
+		var table = $('#tblReportVulnerability').DataTable();
+		table.clear();
+		
+		var strStatus = "";
+		var ccilist = "";
+		for (const item of data.checklist.stigs.iSTIG.vuln) {
+			if (item.status == "NotAFinding") 
+				strStatus = "Not a Finding";
+			else if (item.status == "Not_Reviewed") 
+				strStatus = "Not Reviewed";
+			else if (item.status == "Not_Applicable	") 
+				strStatus = "Not Applicable";
+			else 
+				strStatus = item.status;
+			
+			// set this list to empty
+			ccilist = "";
+			for(const cci of item.cciList) { 
+				ccilist += cci + ", ";
+			}
+			if (ccilist > 0) ccilist = ccilist.substring(0, ccilist.length -2);
+
+			// dynamically add to the datatable but only show main data, click the + for extra data
+			table.row.add( { "vulnid": vulnid, "severity": item.severity,
+				"ruleTitle": item.ruleTitle, "status": strStatus, "cci": ccilist, 
+				"discussion": item.discussion, "checkContent": item.checkContent,
+				"type": item.checklistType, "release": item.checklistRelease, "version": item.checklistVersion,
+				"fixText": item.fixText, "comments": item.comments, "findingDetails": item.details
+			}).draw();
+		}
+		$.unblockUI();
+	} else {
+		$.unblockUI();
+		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
+	}
+}
+
 /************************************ 
  Audit List Functions
 ************************************/
