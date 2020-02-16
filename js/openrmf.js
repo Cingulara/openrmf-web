@@ -2177,7 +2177,7 @@ async function getHostVulnerabilityReport() {
 		
 		var strStatus = "";
 		var ccilist = "";
-		for (const item of data.checklist.stigs.iSTIG.vuln) {
+		for (const item of data) {
 			if (item.status == "NotAFinding") 
 				strStatus = "Not a Finding";
 			else if (item.status == "Not_Reviewed") 
@@ -2192,14 +2192,14 @@ async function getHostVulnerabilityReport() {
 			for(const cci of item.cciList) { 
 				ccilist += cci + ", ";
 			}
-			if (ccilist > 0) ccilist = ccilist.substring(0, ccilist.length -2);
+			if (ccilist.length > 0) ccilist = ccilist.substring(0, ccilist.length -2);
 
 			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "vulnid": vulnid, "severity": item.severity,
+			table.row.add( { "vulnid": vulnid, "severity": item.severity, "hostname": item.hostname,
 				"ruleTitle": item.ruleTitle, "status": strStatus, "cci": ccilist, 
 				"discussion": item.discussion, "checkContent": item.checkContent,
 				"type": item.checklistType, "release": item.checklistRelease, "version": item.checklistVersion,
-				"fixText": item.fixText, "comments": item.comments, "findingDetails": item.details
+				"fixText": item.fixText, "comments": item.comments, "details": item.details
 			}).draw();
 		}
 		$.unblockUI();
