@@ -252,6 +252,8 @@
 				// see if the upload menu should show
 				verifyMenus();
 				verifyAddSystem();
+				// remove the system filter when listing all systems again
+				sessionStorage.removeItem("systemFilter");
 				// calls to get the checklist page setup
 				if (getParameterByName('rtn'))
 					getChecklistListingBySession();
