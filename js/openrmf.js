@@ -875,7 +875,15 @@ function getChecklistListingBySession(){
 	else
 		location.href = "systems.html";
 }
-
+function getChecklistsByFilter() {
+	if (getParameterByName('rtn')){
+		getChecklistListingBySession();
+	}
+	else {
+		// get the system info from the Id
+		getChecklists(getParameterByName('id'));
+	}
+}
 async function getChecklists(system) {
 	$.blockUI({ message: "Updating the checklist listing..." }); 
 	// use this to refresh the checklist page if they delete something
