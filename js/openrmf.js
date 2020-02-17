@@ -146,7 +146,7 @@ async function getTemplates(latest) {
   if (response.ok) {
 		var data = await response.json()
 		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
-		table.clear();
+		table.clear().draw();
 		var checklistLink = "";
 		if (data.length == 0) {
 			$.unblockUI();
@@ -876,6 +876,9 @@ function getChecklistListingBySession(){
 		location.href = "systems.html";
 }
 function getChecklistsByFilter() {
+	// set the system checklist
+	setSystemChecklistFilter();
+	// get the listing and display it
 	if (getParameterByName('rtn')){
 		getChecklistListingBySession();
 	}
@@ -884,6 +887,33 @@ function getChecklistsByFilter() {
 		getChecklists(getParameterByName('id'));
 	}
 }
+// get the system checklist filter settings for the page load to set them
+function getSystemChecklistFilter() {
+	if (sessionStorage.getItem("systemFilter") != null) {
+		var systemFilter = JSON.parse(sessionStorage.getItem("systemFilter"));
+		$("#chkVulnNaF").prop('checked', systemFilter.naf);
+		$("#chkVulnOpen").prop('checked', systemFilter.open);
+		$("#chkVulnNA").prop('checked', systemFilter.na);
+		$("#chkVulnNR").prop('checked', systemFilter.nr);
+		$("#chkVulnCAT1").prop('checked', systemFilter.cat1);
+		$("#chkVulnCAT2").prop('checked', systemFilter.cat2);
+		$("#chkVulnCAT3").prop('checked', systemFilter.cat3);
+	}
+}
+// set the system checklist filter settings on the page before retrieving the listing
+function setSystemChecklistFilter() {
+	var systemFilter = {
+		"naf"  : $("#chkVulnNaF").is(':checked'),
+		"open" : $("#chkVulnOpen").is(':checked'),
+		"na"   : $("#chkVulnNA").is(':checked'),
+		"nr"   : $("#chkVulnNR").is(':checked'),
+		"cat1" : $("#chkVulnCAT1").is(':checked'),
+		"cat2" : $("#chkVulnCAT2").is(':checked'),
+		"cat3" : $("#chkVulnCAT3").is(':checked')
+	}
+	sessionStorage.setItem("systemFilter", JSON.stringify(systemFilter));
+}
+// main listing of checklists on the system record page
 async function getChecklists(system) {
 	$.blockUI({ message: "Updating the checklist listing..." }); 
 	// use this to refresh the checklist page if they delete something
@@ -914,7 +944,7 @@ async function getChecklists(system) {
 		//$("#txtSystemName").val(system);
 		
 		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
-		table.clear();
+		table.clear().draw();
 		var checklistLink = "";
 		if (data.length == 0) {
 			$.unblockUI();			
@@ -2511,14 +2541,19 @@ function verifyDownloadSystemChart() {
 	}
 }
 function clearSessionData() {
+	// keep these settings
 	var currentSystem = sessionStorage.getItem("currentSystem");
 	var currentSystemsList = sessionStorage.getItem("checklistSystems");
-	// clear out everything
+	var currentSystemFilter = sessionStorage.getItem("systemFilter");
+	// clear out everything else
 	sessionStorage.clear();
+	// reset the ones I want to keep
 	if (currentSystem && currentSystem != "undefined")
 		sessionStorage.setItem("currentSystem", currentSystem);
 	if (currentSystemsList && currentSystemsList != "undefined")
 		sessionStorage.setItem("checklistSystems", currentSystemsList);
+	if (currentSystemFilter && currentSystemFilter != "undefined")
+		sessionStorage.setItem("systemFilter", currentSystemFilter);
 }
 
 function setupProfileMenu()

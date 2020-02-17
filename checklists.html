@@ -356,6 +356,8 @@
 				verifyUploadFromSystem();
 				// see if they can download chart information
 				verifyDownloadSystemChart();
+				// set the filter fields on the page 
+				getSystemChecklistFilter();
 				// calls to get the checklist page setup
 				if (getParameterByName('rtn')){
 					// get the system record by the session info
