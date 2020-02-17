@@ -784,7 +784,7 @@ async function deleteSystemChecklists(id){
 	var formData = new FormData();
 	// put all the checked items into the form data
 	var idSelector = function() { return this.value; };
-	var checklists = $(":checkbox:checked").map(idSelector).get();
+	var checklists = $("#tblChecklistListing :checkbox:checked").map(idSelector).get();
 	formData.append("checklistIds", checklists);
 	if (id && id.length > 10) {
 		swal({
