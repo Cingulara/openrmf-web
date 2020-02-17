@@ -1057,9 +1057,18 @@ async function exportChecklistListingXLSX() {
 	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait" }); 
 	var url = readAPI;
 	if (getParameterByName('id')) 
-		url += "/export?system=" + encodeURIComponent(getParameterByName('id'));
+		url += "/system/export/" + encodeURIComponent(getParameterByName('id'));
 	else // session
-		url += "/export?system=" + encodeURIComponent(sessionStorage.getItem("currentSystem"));
+		url += "/system/export/" + encodeURIComponent(sessionStorage.getItem("currentSystem"));
+	// add in the system filter for the export
+	url += "/?naf=" + $("#chkVulnNaF").is(':checked');
+	url += "&open=" + $("#chkVulnOpen").is(':checked');
+	url += "&na="   + $("#chkVulnNA").is(':checked');
+	url += "&nr="   + $("#chkVulnNR").is(':checked');
+	url += "&cat1=" + $("#chkVulnCAT1").is(':checked');
+	url += "&cat2=" + $("#chkVulnCAT2").is(':checked');
+	url += "&cat3=" + $("#chkVulnCAT3").is(':checked');
+
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
