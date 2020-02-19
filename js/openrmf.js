@@ -2341,7 +2341,7 @@ async function getComplianceBySystem() {
 				var complianceSummary = "";
 				for (const item of data.result) {
 					recordNum++;
-					checklists = '<ul>';
+					checklists = '';
 					if (currentFamily != item.control.substring(0,2)) {
 						// print out the info
 						if (currentFamily) {
@@ -2354,15 +2354,19 @@ async function getComplianceBySystem() {
 					}
 					if (item.complianceRecords.length > 0) {
 						for (const record of item.complianceRecords){
+							checklists = '';
+							recordNum++;
 							currentStatus = getOverallCompliance(currentStatus, record.status);
-							checklists += '<li><a href="/single-checklist.html?id=';
+							checklists += '<a href="/single-checklist.html?id=';
 							checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
-							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></li>';
+							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span>';
+							// dynamically add to the datatable a row per checklist returned
+							table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
 						}
+					} else {
+						// dynamically add to the datatable
+						table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
 					}
-					checklists += "</ul>";
-					// dynamically add to the datatable
-					table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
 				}
 				if (complianceSummary) 
 					$("#divComplianceSummary").html(complianceSummary);
