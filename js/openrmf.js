@@ -1147,6 +1147,10 @@ async function getChecklistData(id, template) {
 		// go ahead and fill in the modal for for upload while we are in here
 		$("#frmChecklistSystem").val(data.systemGroupId);
 		$("#frmChecklistTitle").text(data.title);
+		$("#frmChecklistHost").val(data.checklist.asset.hosT_NAME);
+		$("#frmChecklistFQDN").val(data.checklist.asset.hosT_FQDN);
+		$("#frmChecklistTechArea").val(data.checklist.asset.tecH_AREA);
+		$("#frmChecklistAssetType").val(data.checklist.asset.asseT_TYPE);
 
 		// load the vulnerabilities into sessionStorage
 		var vulnListing = "";
@@ -1383,19 +1387,24 @@ function clearVulnDetails() {
 
 // update function on the checklist page showing all the individual checklist data
 function updateSingleChecklist(id) {
-	var url = saveAPI;
+	var url = saveAPI + "/artifact/" + id;
 	// only if there is a file does this get used uploadAPI
 	var formData = new FormData();
 	// use the system this came with
 	formData.append("systemGroupId",$("#frmChecklistSystem").val());
+	formData.append("hostname",$("#frmChecklistHost").val());
+	formData.append("domainname",$("#frmChecklistFQDN").val());
+	formData.append("techarea",$("#frmChecklistTechArea").val());
+	formData.append("assettype",$("#frmChecklistAssetType").val());
+	formData.append("machinerole",$("#frmChecklistRole").val());
 
 	if ($('#checklistFile').val()) {
 		// someone added a file
 		formData.append('checklistFile',$('#checklistFile')[0].files[0]);
-		url = uploadAPI; // include the file contents in the update
+		url = uploadAPI + "/" + id; // include the file contents in the update
 	}
 	$.ajax({
-		url : url + "/" + id,
+		url : url,
 		data : formData,
 		type : 'PUT',
 		beforeSend: function(request) {
@@ -1407,7 +1416,6 @@ function updateSingleChecklist(id) {
 			swal("Your Checklist was updated successfully!", "Click OK to continue!", "success")
 			.then((value) => {
 				getChecklistSystemsForChecklist();
-				//getChecklistData(id, false);
 				location.reload(true);
 			});
 		}
