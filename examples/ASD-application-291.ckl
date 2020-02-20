@@ -184,8 +184,8 @@ If the application is not configured to limit the number of logon sessions per u
 				<STATUS>Open</STATUS>
 				<FINDING_DETAILS>finding details</FINDING_DETAILS>
 				<COMMENTS>No comments here!</COMMENTS>
-				<SEVERITY_OVERRIDE>low</SEVERITY_OVERRIDE>
-				<SEVERITY_JUSTIFICATION>booooooooo</SEVERITY_JUSTIFICATION>
+				<SEVERITY_OVERRIDE>medium</SEVERITY_OVERRIDE>
+				<SEVERITY_JUSTIFICATION>dafasfa fadsf adfasdfasdf</SEVERITY_JUSTIFICATION>
 			</VULN>
 			<VULN>
 				<STIG_DATA>

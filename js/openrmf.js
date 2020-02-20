@@ -1422,6 +1422,38 @@ function updateSingleChecklist(id) {
 	});
 }
 
+// update function on the checklist page showing all the individual checklist data
+function updateSingleChecklistVulnerability(artifactid, vulnid) {
+	var url = saveAPI + "/artifact/" + artifactid + "/vulnid/" + vulnid;
+	var formData = new FormData();
+	// use the system this came with
+	formData.append("systemGroupId",$("#frmChecklistSystem").val());
+	formData.append("vulnid",vulnid);
+	formData.append("status",$("#frmVulnerabilityStatus").val());
+	formData.append("comments",$("#frmVulnerabilityComments").val());
+	formData.append("details",$("#frmVulnerabilityDetails").val());
+	formData.append("severityoverride",$("#frmVulnerabilityOverride").val());
+	formData.append("justification",$("#frmVulnerabilityJustification").val());
+	
+	$.ajax({
+		url : url,
+		data : formData,
+		type : 'PUT',
+		beforeSend: function(request) {
+			request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+		},
+		processData: false,
+		contentType: false,
+		success : function(data){
+			swal("Your Vulnerability was updated successfully!", "Click OK to continue!", "success")
+			.then((value) => {
+				getChecklistSystemsForChecklist();
+				location.reload(true);
+			});
+		}
+	});
+}
+
 // get the list of systems for the update function
 async function getChecklistSystemsForChecklist() {
 	var data = await getChecklistSystems();
