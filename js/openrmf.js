@@ -1183,7 +1183,7 @@ async function getChecklistData(id, template) {
 			if (vulnFilter.length == 0 || (jQuery.inArray(vuln.stiG_DATA[0].attributE_DATA, vulnFilter) > -1)) {
 				// add to the checklistTree
 				// based on one of the status color the background appropriately
-				vulnListing += '<button type="button" class="btn btn-sm ';
+				vulnListing += '<button id="btnVulnerability-'+ vuln.stiG_DATA[0].attributE_DATA + '" type="button" class="btn btn-sm ';
 				vulnListing += getVulnerabilityStatusClassName(vuln.status, vuln.stiG_DATA[1].attributE_DATA);
 				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
 				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
@@ -1258,7 +1258,8 @@ function updateVulnerabilityListingByFilter() {
 					severity = "high"; // default catch all answer
 				}
 				// parse them base on the above booleans and print them out
-				vulnListing += '<button type="button" class="btn btn-sm ';
+				vulnListing += '<button id="btnVulnerability-'+ vuln.vulnId + '" ';
+				vulnListing += ' type="button" class="btn btn-sm ';
 				vulnListing += getVulnerabilityStatusClassName(vuln.status, severity);
 				vulnListing += '" title="' + vuln.vulnId + '" ';
 				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.vulnId + '\'); return false;">'
@@ -1344,6 +1345,7 @@ function viewVulnDetails(vulnId) {
 		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
 		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
 		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
+		var severityOverride = '';
 		for(i = 24; i < data.stiG_DATA.length; i++) { 
 			if (data.stiG_DATA[i].vulN_ATTRIBUTE == "CCI_REF")
 				ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
@@ -1361,6 +1363,29 @@ function viewVulnDetails(vulnId) {
 		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
 		if (data.stiG_DATA[18].attributE_DATA) {
 			$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (data.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
+		}
+		if (data.severitY_OVERRIDE && data.severitY_OVERRIDE.length > 0) {
+			if (data.severitY_OVERRIDE.toLowerCase() == "low") 
+				severityOverride = "CAT III / Low";
+			else if (data.severitY_OVERRIDE.toLowerCase() == "medium") 
+				severityOverride = "CAT II / Medium";
+			else if (data.severitY_OVERRIDE.toLowerCase() == "high") 
+				severityOverride = "CAT I / High";
+			$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
+			$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (data.severitY_JUSTIFICATION).replace(/\n/g, "<br />"));
+		}
+		// set the form values if they can edit
+		if (canUpload()) { // fill in the values of the form
+			$("#frmVulnIDTitle").text(vulnId);
+			$("#frmVulnStatus").val(data.status);
+			$("#frmVulnDetails").val(data.findinG_DETAILS);
+			$("#frmVulnComments").val(data.comments);
+			$("#frmVulnSecurityOverride").val(data.severitY_OVERRIDE);
+			$("#frmVulnSecurityJustification").val(data.severitY_JUSTIFICATION);
+			$("#btnUpdateVulnerability").show();
+		}
+		else {
+			$("#btnUpdateVulnerability").hide(); // always default to hide this
 		}
 	}
 }
@@ -1382,6 +1407,8 @@ function clearVulnDetails() {
 	$("#vulnReferences").html("");
 	$("#vulnFindingDetails").html("");
 	$("#vulnComments").html("");
+	$("#vulnSeverityOverride").html("");
+	$("#vulnSeverityJustification").html("");
 	$("#vulnSeverityOverrideGuidance").html("");
 }
 
@@ -1418,23 +1445,31 @@ function updateSingleChecklist(id) {
 				getChecklistSystemsForChecklist();
 				location.reload(true);
 			});
+		},
+		error: function() {
+			swal("Your Checklist was not updated. Please check all values and try again.", "Click OK to continue!", "error");
 		}
 	});
 }
 
 // update function on the checklist page showing all the individual checklist data
-function updateSingleChecklistVulnerability(artifactid, vulnid) {
+function updateSingleChecklistVulnerability(artifactid) {
+	var vulnid = $("#frmVulnIDTitle").text();
+	if (!vulnid || vulnid.length < 4) {
+		swal("Your Vulnerability was not updated. Please refresh the page and try again.", "Click OK to continue!", "success")
+		return false;
+	}
 	var url = saveAPI + "/artifact/" + artifactid + "/vulnid/" + vulnid;
 	var formData = new FormData();
 	// use the system this came with
 	formData.append("systemGroupId",$("#frmChecklistSystem").val());
 	formData.append("vulnid",vulnid);
-	formData.append("status",$("#frmVulnerabilityStatus").val());
-	formData.append("comments",$("#frmVulnerabilityComments").val());
-	formData.append("details",$("#frmVulnerabilityDetails").val());
-	formData.append("severityoverride",$("#frmVulnerabilityOverride").val());
-	formData.append("justification",$("#frmVulnerabilityJustification").val());
-	
+	formData.append("status",$("#frmVulnStatus").val());
+	formData.append("comments",$("#frmVulnComments").val());
+	formData.append("details",$("#frmVulnDetails").val());
+	formData.append("severityoverride",$("#frmVulnSecurityOverride").val());
+	formData.append("justification",$("#frmVulnSecurityJustification").val());
+
 	$.ajax({
 		url : url,
 		data : formData,
@@ -1447,9 +1482,45 @@ function updateSingleChecklistVulnerability(artifactid, vulnid) {
 		success : function(data){
 			swal("Your Vulnerability was updated successfully!", "Click OK to continue!", "success")
 			.then((value) => {
-				getChecklistSystemsForChecklist();
-				location.reload(true);
+				// update the session storage for this vulnerability
+				var vulnItem = JSON.parse(sessionStorage.getItem(vulnid));
+				if (vulnItem){ // set all the data
+					// remove the old class for the button color
+					$("#btnVulnerability-"+ vulnid).removeClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
+					vulnItem.status = $("#frmVulnStatus").val();
+					vulnItem.findinG_DETAILS = $("#frmVulnDetails").val();
+					vulnItem.comments = $("#frmVulnComments").val();
+					vulnItem.severitY_OVERRIDE = $("#frmVulnSecurityOverride").val();
+					vulnItem.severitY_JUSTIFICATION = $("#frmVulnSecurityJustification").val();
+					// store the changes back
+					sessionStorage.setItem(vulnid, JSON.stringify(vulnItem));
+					var severityOverride = '';
+
+					$("#vulnStatus").html("<b>Status:</b>&nbsp;" + vulnItem.status.replace("NotAFinding","Not a Finding").replace("_"," "));
+					$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (vulnItem.findinG_DETAILS).replace(/\n/g, "<br />"));
+					$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (vulnItem.comments).replace(/\n/g, "<br />"));
+					if (vulnItem.stiG_DATA[18].attributE_DATA) {
+						$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (vulnItem.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
+					}
+					if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
+						if (vulnItem.severitY_OVERRIDE.toLowerCase() == "low") 
+							severityOverride = "CAT III / Low";
+						else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "medium") 
+							severityOverride = "CAT II / Medium";
+						else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "high") 
+							severityOverride = "CAT I / High";
+						$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
+						$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (vulnItem.severitY_JUSTIFICATION).replace(/\n/g, "<br />"));
+					}
+				}
+				// color the button correctly for this
+				$("#btnVulnerability-"+ vulnid).addClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
+				// refresh the score listing for this checklist
+
 			});
+		},
+		error: function() {
+			swal("Your Vulnerability was not updated. Please check all values and try again.", "Click OK to continue!", "error");
 		}
 	});
 }

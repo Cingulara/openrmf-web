@@ -387,13 +387,18 @@
 					<div class="col-xs-12 col-sm-12 col-md-8 col-lg-4 col-xl-4">
 						<div class="card mb-3">
 							<div class="card-header">
-								<h3><i class="fa fa-folder-open-o"></i> Findings &amp; Comments</h3>
+								<h3 class="float-left"><i class="fa fa-folder-open-o"></i> Status &amp; Comments</h3>
+								<a href="#vulnerability-modal"  id="btnUpdateVulnerability" style="display: none;" 
+									class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
+                  					data-target="#vulnerabilityModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
 							</div>
 							<div class="card-body">
 								<div class="vulnListingDetail scrollableDiv">
 									<div class="vulnSpacing" id="vulnStatus"></div>
 									<div class="vulnSpacing" id="vulnFindingDetails"></div>
 									<div class="vulnSpacing" id="vulnComments"></div>
+									<div class="vulnSpacing" id="vulnSeverityOverride"></div>
+									<div class="vulnSpacing" id="vulnSeverityJustification"></div>
 								</div>
 							</div>
 						</div>
@@ -586,6 +591,65 @@
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			<button type="button" class="btn btn-primary" onclick="updateSingleChecklist(getParameterByName('id'));">Save changes</button>
+		</div>
+		</div>
+	</div>
+</div>
+
+<!-- Update Modal -->
+<div class="modal fade customModal" id="vulnerabilityModal" tabindex="-1" role="dialog" aria-labelledby="vulnerabilityModal" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel2">Update <span id="frmVulnIDTitle"></span> Vulnerability</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="frmVulnStatus">Status (required)</label>
+				<select class="form-control select2" id="frmVulnStatus">
+						<option value="Open">Open</option>
+						<option value="NotAFinding">Not a Finding</option>
+						<option value="Not_Reviewed">Not Reviewed</option>
+						<option value="Not_Applicable">Not Applicable</option>
+				</select>
+				<small id="titleStatus" class="form-text text-muted">Select the current status for this vulnerability</small>
+			</div>
+			<div class="form-group">
+			  <label for="frmVulnDetails">Finding Details</label>
+			  <textarea class="form-control" id="frmVulnDetails" cols="40" rows="3"
+			  	aria-describedby="titleDetails" placeholder="Enter the Finding Details"></textarea>
+			  <small id="titleDetails" class="form-text text-muted">Enter the finding details for this vulnerability</small>
+			</div>
+			<div class="form-group">
+			  <label for="frmVulnComments">Comments</label>
+			  <textarea class="form-control" id="frmVulnComments" cols="40" rows="3"
+			  	aria-describedby="titleComments" placeholder="Enter any Comments"></textarea>
+			  <small id="titleComments" class="form-text text-muted">Enter any comments for this vulnerability</small>
+			</div>
+			<div class="form-group">
+				<label for="frmVulnSecurityOverride">Security Override</label>
+				<select class="form-control select2" id="frmVulnSecurityOverride">
+						<option value="">Choose one...</option>
+						<option value="high">CAT I / High</option>
+						<option value="medium">CAT II / Medium</option>
+						<option value="low">CAT III / Low</option>
+				</select>
+				<small id="titleSecurityOverride" class="form-text text-muted">Select the current security override (if any) for this vulnerability</small>
+			</div>
+			<div class="form-group">
+			  <label for="frmVulnSecurityJustification">Security Override Justification</label>
+			  <textarea class="form-control" id="frmVulnSecurityJustification" cols="40" rows="4"
+			  	aria-describedby="titleSecurityJustification" placeholder="Enter any Comments"></textarea>
+			  <small id="titleSecurityJustification" class="form-text text-muted">Enter the justification on the override for this vulnerability</small>
+			</div>
+			
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-primary" onclick="updateSingleChecklistVulnerability(getParameterByName('id'));">Save changes</button>
 		</div>
 		</div>
 	</div>
