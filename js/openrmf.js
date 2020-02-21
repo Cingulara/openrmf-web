@@ -452,8 +452,8 @@ function addSystem(){
 		timer: 3000,
 	});
 	var formData = new FormData();
-	formData.append("title",$("#frmSystemTitle").val());
-	formData.append("description",$("#frmSystemDescription").val());
+	formData.append("title",htmlEscape($("#frmSystemTitle").val()));
+	formData.append("description",htmlEscape($("#frmSystemDescription").val()));
 	formData.append('nessusFile',$('#frmNessusFile')[0].files[0]);
 	$.ajax({
 			url : saveAPI + "/system/",
@@ -488,8 +488,8 @@ function updateSystem(systemGroupId){
 		systemGroupId = sessionStorage.getItem("currentSystem");
 
 	var formData = new FormData();
-	formData.append("title",$("#frmSystemTitle").val());
-	formData.append("description",$("#frmSystemDescription").val());
+	formData.append("title",htmlEscape($("#frmSystemTitle").val()));
+	formData.append("description",htmlEscape($("#frmSystemDescription").val()));
 	formData.append('nessusFile',$('#frmNessusFile')[0].files[0]);
 	$.ajax({
 			url : saveAPI + "/system/" + systemGroupId,
@@ -1488,17 +1488,17 @@ function updateSingleChecklistVulnerability(artifactid) {
 					// remove the old class for the button color
 					$("#btnVulnerability-"+ vulnid).removeClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
 					vulnItem.status = $("#frmVulnStatus").val();
-					vulnItem.findinG_DETAILS = $("#frmVulnDetails").val();
-					vulnItem.comments = $("#frmVulnComments").val();
+					vulnItem.findinG_DETAILS = htmlEscape($("#frmVulnDetails").val());
+					vulnItem.comments = htmlEscape($("#frmVulnComments").val());
 					vulnItem.severitY_OVERRIDE = $("#frmVulnSecurityOverride").val();
-					vulnItem.severitY_JUSTIFICATION = $("#frmVulnSecurityJustification").val();
+					vulnItem.severitY_JUSTIFICATION = htmlEscape($("#frmVulnSecurityJustification").val());
 					// store the changes back
 					sessionStorage.setItem(vulnid, JSON.stringify(vulnItem));
 					var severityOverride = '';
 
 					$("#vulnStatus").html("<b>Status:</b>&nbsp;" + vulnItem.status.replace("NotAFinding","Not a Finding").replace("_"," "));
-					$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (vulnItem.findinG_DETAILS).replace(/\n/g, "<br />"));
-					$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (vulnItem.comments).replace(/\n/g, "<br />"));
+					$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (htmlEscape(vulnItem.findinG_DETAILS)).replace(/\n/g, "<br />"));
+					$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (htmlEscape(vulnItem.comments)).replace(/\n/g, "<br />"));
 					if (vulnItem.stiG_DATA[18].attributE_DATA) {
 						$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (vulnItem.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
 					}
@@ -1510,7 +1510,7 @@ function updateSingleChecklistVulnerability(artifactid) {
 						else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "high") 
 							severityOverride = "CAT I / High";
 						$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
-						$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (vulnItem.severitY_JUSTIFICATION).replace(/\n/g, "<br />"));
+						$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (htmlEscape(vulnItem.severitY_JUSTIFICATION)).replace(/\n/g, "<br />"));
 					}
 				}
 				// color the button correctly for this
@@ -1964,8 +1964,8 @@ function uploadTemplate(){
 	});
 	var formData = new FormData();
 	formData.append("type",$("#templateType").val());
-	formData.append("title",$("#templateTitle").val());
-	formData.append("description",$("#templateDescription").val());
+	formData.append("title",htmlEscape($("#templateTitle").val()));
+	formData.append("description",htmlEscape($("#templateDescription").val()));
 	formData.append('checklistFile',$('#templateFile')[0].files[0]);
 	$.ajax({
 			url : templateAPI,
