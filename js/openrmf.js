@@ -1419,8 +1419,8 @@ function updateSingleChecklist(id) {
 	var formData = new FormData();
 	// use the system this came with
 	formData.append("systemGroupId",$("#frmChecklistSystem").val());
-	formData.append("hostname",$("#frmChecklistHost").val());
-	formData.append("domainname",$("#frmChecklistFQDN").val());
+	formData.append("hostname",htmlEscape($("#frmChecklistHost").val()));
+	formData.append("domainname",htmlEscape($("#frmChecklistFQDN").val()));
 	formData.append("techarea",$("#frmChecklistTechArea").val());
 	formData.append("assettype",$("#frmChecklistAssetType").val());
 	formData.append("machinerole",$("#frmChecklistRole").val());
@@ -1465,10 +1465,10 @@ function updateSingleChecklistVulnerability(artifactid) {
 	formData.append("systemGroupId",$("#frmChecklistSystem").val());
 	formData.append("vulnid",vulnid);
 	formData.append("status",$("#frmVulnStatus").val());
-	formData.append("comments",$("#frmVulnComments").val());
-	formData.append("details",$("#frmVulnDetails").val());
+	formData.append("comments",htmlEscape($("#frmVulnComments").val()));
+	formData.append("details",htmlEscape($("#frmVulnDetails").val()));
 	formData.append("severityoverride",$("#frmVulnSecurityOverride").val());
-	formData.append("justification",$("#frmVulnSecurityJustification").val());
+	formData.append("justification",htmlEscape($("#frmVulnSecurityJustification").val()));
 
 	$.ajax({
 		url : url,
@@ -2592,6 +2592,14 @@ function getRandomColor() {
   color += (Math.floor(Math.random() * (255 - 0 + 1)) + 0).toString();
 	color +=", 0.7)";
   return color;
+}
+function htmlEscape(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
 }
 /************************************ 
  Permission and User Login Functions
