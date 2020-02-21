@@ -1515,8 +1515,12 @@ function updateSingleChecklistVulnerability(artifactid) {
 				}
 				// color the button correctly for this
 				$("#btnVulnerability-"+ vulnid).addClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
-				// refresh the score listing for this checklist
-
+				// refresh the status of this VULN in the listing for this checklist
+				var vulnStatus = JSON.parse(sessionStorage.getItem("vulnStatus"));
+				// set the record we need in the vulnStatus object -- get vulnId set status
+				vulnStatus.find(function(e){return e.vulnId == vulnid}).status = vulnItem.status;
+				// put it back into the sessionStorage
+				sessionStorage.setItem("vulnStatus", JSON.stringify(vulnStatus));
 			});
 		},
 		error: function() {
