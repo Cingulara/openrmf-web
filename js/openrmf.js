@@ -1151,6 +1151,7 @@ async function getChecklistData(id, template) {
 		$("#frmChecklistFQDN").val(data.checklist.asset.hosT_FQDN);
 		$("#frmChecklistTechArea").val(data.checklist.asset.tecH_AREA);
 		$("#frmChecklistAssetType").val(data.checklist.asset.asseT_TYPE);
+		$("#frmChecklistRole").val(data.checklist.asset.role);
 
 		// load the vulnerabilities into sessionStorage
 		var vulnListing = "";
