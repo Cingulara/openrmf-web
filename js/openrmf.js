@@ -898,6 +898,7 @@ function getSystemChecklistFilter() {
 		$("#chkVulnCAT1").prop('checked', systemFilter.cat1);
 		$("#chkVulnCAT2").prop('checked', systemFilter.cat2);
 		$("#chkVulnCAT3").prop('checked', systemFilter.cat3);
+		$("#chkVulnHostname").val(systemFilter.hostname);
 	}
 }
 // set the system checklist filter settings on the page before retrieving the listing
@@ -909,7 +910,8 @@ function setSystemChecklistFilter() {
 		"nr"   : $("#chkVulnNR").is(':checked'),
 		"cat1" : $("#chkVulnCAT1").is(':checked'),
 		"cat2" : $("#chkVulnCAT2").is(':checked'),
-		"cat3" : $("#chkVulnCAT3").is(':checked')
+		"cat3" : $("#chkVulnCAT3").is(':checked'),
+		"hostname" : $("#chkVulnHostname").val()
 	}
 	sessionStorage.setItem("systemFilter", JSON.stringify(systemFilter));
 }
@@ -927,6 +929,7 @@ async function getChecklists(system) {
 	url += "&cat1=" + $("#chkVulnCAT1").is(':checked');
 	url += "&cat2=" + $("#chkVulnCAT2").is(':checked');
 	url += "&cat3=" + $("#chkVulnCAT3").is(':checked');
+	url += "&hostname=" + $("#chkVulnHostname").val();
 
 	// reset the list of systems
 	sessionStorage.removeItem("checklistSystems");
