@@ -2073,7 +2073,7 @@ async function getNessusPatchScanReport() {
 	if (response.ok) {				
 		// put into a datatable like the others
 		var table = $('#tblReportNessus').DataTable(); // the datatable reference to do a row.add() to
-		table.clear();
+		table.clear().draw();
 		var data = await response.json();
 		if (data && data.reportName.length > 0 && data.summary.length > 0) {
 			// use the Report Name
@@ -2221,7 +2221,7 @@ async function getSystemChecklistReport() {
 		}
 
 		var table = $('#tblReportSystemChecklist').DataTable();
-		table.clear();
+		table.clear().draw();
 
 		$("#checklistSystem").html("<b>System:</b> " + data.systemTitle);
 		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
@@ -2281,7 +2281,7 @@ async function getControlsReport() {
 		var data = await response.json();
 
 		var table = $('#tblReportControls').DataTable();
-		table.clear();
+		table.clear().draw();
 		var impactLevel = "";
 		for (const item of data) {
 			if (item.status == "NotAFinding") 
@@ -2343,7 +2343,7 @@ async function getHostVulnerabilityReport() {
 		// now get the data set
 		var data = await response.json();
 		var table = $('#tblReportVulnerability').DataTable();
-		table.clear();
+		table.clear().draw();
 		
 		var strStatus = "";
 		var ccilist = "";
@@ -2379,6 +2379,80 @@ async function getHostVulnerabilityReport() {
 	}
 }
 
+// generate a list of controls for the control for host report
+async function getControlsListing(){
+	let response = await fetch(controlAPI + "/majorcontrols/", {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {
+			var data = await response.json();
+			$.each(data, function (index, value) {
+					optionString = '<option value="' + value.number + '">' + value.number + ' - ' + value.title + '</option>';
+				$('#rmfControl').append(optionString); 
+			}); 
+	}
+}
+
+// run the report for listing our hosts that have a control referencing them
+async function getRMFControlForHostReport() {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	var control = $("#rmfControl").val();
+	if (!control || control.length == 0)
+	{
+		swal("Please choose an RMF Control for the report.", "Click OK to continue!", "error");
+		return;
+	} 
+
+	$.blockUI({ message: "Updating the Hosts for Control listing...this may take a minute" }); 
+	// is the PII checked? This is returned as an array even if just one
+	var url = complianceAPI + "/system/" + encodeURIComponent(id) + "/?pii=true&filter=high&majorcontrol=" + control;
+
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {
+		var data = await response.json()
+		if (data.result.length > 0) {
+			// cycle through all data and display a data table
+			// add to the datatable JS
+			// for each control print out the information
+			var table = $('#tblReportControlHost').DataTable();
+			table.clear().draw();
+			var checklists = ''; // holds the list of checklists
+			var currentStatus = "";
+			for (const item of data.result) {
+				checklists = '';
+				if (item.complianceRecords.length > 0) {
+					for (const record of item.complianceRecords){
+						checklists = '';
+						currentStatus = getOverallCompliance(currentStatus, record.status);
+						checklists += '<a href="/single-checklist.html?id=';
+						checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
+						checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span>';
+						// dynamically add to the datatable a row per checklist returned
+						table.row.add( [record.hostName, checklists] ).draw();
+					}
+				} else {
+					// dynamically add to the datatable
+					table.row.add( [record.hostName, checklists] ).draw();
+				}
+			}
+		}
+		else {
+			swal("Error Generating Hosts for Control", "There are no checklists ready for this compliance report.", "error");
+		}
+	}
+	else { // response was not Ok()
+		swal("Error Generating Hosts for Control", "There was a problem generating the compliance for that system. Make sure the checklists are valid.", "error");
+	}
+	$.unblockUI();
+}
+
 /************************************ 
  Audit List Functions
 ************************************/
@@ -2394,7 +2468,7 @@ async function getAuditRecords() {
 		var data = await response.json();
 
 		var table = $('#tblAuditRecords').DataTable(); // the datatable reference to do a row.add() to
-		table.clear();
+		table.clear().draw();
 		for (const item of data) {
 			// dynamically add to the datatable but only show main data, click the + for extra data
 			table.row.add( { "auditId": item.auditId, "program": item.program,
@@ -2429,6 +2503,7 @@ async function getChecklistSystemsForComplianceFilter(id) {
 		}); 
 	}
 }
+
 async function getComplianceBySystem() {
 	var system = $("#checklistSystemFilter").val();
 	// if they pass in the system use it after encoding it
@@ -2448,7 +2523,7 @@ async function getComplianceBySystem() {
 				// for each control print out the information
 				// control/category, checklist, vulnID, status, description
 				var table = $('#tblCompliance').DataTable();
-				table.clear();
+				table.clear().draw();
 				var checklists = ''; // holds the list of checklists
 				var recordNum = 0;
 				// for each family in item.control.substring 2 (first two letters)

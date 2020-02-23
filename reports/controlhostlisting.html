@@ -8,8 +8,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">		
 		
-		<title>OpenRMF Vulnerability Listing by Host</title>
-		<meta name="description" content="OpenRMF Vulnerability Listing by Host">
+		<title>OpenRMF Hosts for Control Report</title>
+		<meta name="description" content="OpenRMF Hosts for Control Report">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 
 		<!-- Favicon -->
@@ -174,7 +174,7 @@
 			<div class="row">
 					<div class="col-xl-12">
 							<div class="breadcrumb-holder">
-									<h1 class="main-title float-left">Reports - Host Vulnerability Report</h1>
+									<h1 class="main-title float-left">Reports - RMF Controls for Host</h1>
 									<ol class="breadcrumb float-right">
 										<li class="breadcrumb-item">Home</li>
 										<li class="breadcrumb-item active">Reports</li>
@@ -197,16 +197,18 @@
 										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System</label>
 										<select class="form-control" id="checklistSystemFilter">
 											<option value="">[ Choose a System ]</option>
-										</select>
+                                        </select>
+                                        <small id="titleSystem" class="form-text text-muted">Specify the System</small>
 									</div>
 									<div class="form-group">
-										<label id="vulnerabilityIdLabel" for="vulnerabilityId">Vulnerability</label>
-										<input type="text" class="form-control" id="vulnerabilityId" maxlength="7"
-											aria-describedby="titleHelp" placeholder="Enter Vulnerability starting with V-" required>
-										<small id="titleHelp" class="form-text text-muted">Specify the Vulnerability Id/Number</small>
+										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="rmfControl">RMF Control</label>
+										<select class="form-control" id="rmfControl">
+											<option value="">[ Choose a Control ]</option>
+                                        </select>
+                                        <small id="titleSystem" class="form-text text-muted">Specify the RMF Control</small>
 									</div>
 									<div class="form-group">
-										<button type="button" class="btn btn-sm btn-primary" onclick="getHostVulnerabilityReport();">Run Report</button>
+										<button type="button" class="btn btn-sm btn-primary" onclick="getRMFControlForHostReport();">Run Report</button>
 									</div>
 								</form>
 							</div>
@@ -219,12 +221,15 @@
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 					<div class="card mb-3">
 						<div class="card-header">
-							<h3>Host Vulnerability Listing</h3>
+                            <h3>Host Listing</h3>
+                            Host Names / Servers that have checklists containing this RMF Control. <br />
+                            <i class='fa fa-check'></i> Green = Not A Finding / Not Applicable. <i class='fa fa-eye-slash'></i> Black = Not Reviewed. 
+                            <i class='fa fa-times'></i> Red = Open.
 						</div>
 						<div class="card-body">
 							<div>
-                                <table id="tblReportVulnerability" style="width: 100%;" class="table table-bordered table-hover display">
-									<thead><tr><th></th><th>Vuln ID</th><th>Host Name</th><th>Severity</th><th>Status</th><th>Type</th></tr></thead>
+                                <table id="tblReportControlHost" style="width: 100%;" class="table table-bordered table-hover display">
+									<thead><tr><th></th><th>Host Name</th><th>Checklist</th></tr></thead>
                                     <tbody></tbody>
                                 </table>
 							</div>
@@ -285,65 +290,21 @@
 					// setup the profile account and logout menu
 					setupProfileMenu();
 					// see if the upload menu should show
-					verifyMenus();
+                    verifyMenus();
+                    // get the list of systems
                     getChecklistSystemsForReportFilter();
-                        
-					// format the extra row data
-					function format ( d ) {
-						// `d` is the original data object for the row
-						return "<div><h6>Version</h6>" + d.version + "</div><br />" + 
-						"<div><h6>Release</h6>" + d.release + "</div><br />" + 
-						"<div><h6>Discussion</h6>" + d.discussion + "</div><br />" + 
-						"<div><h6>Check Content</h6>" + d.checkContent + "</div><br />" + 
-						"<div><h6>Fix Text</h6>" + d.fixText + "</div><br />" + 
-						"<div><h6>Comments</h6>" + d.comments + "</div><br />" + 
-						"<div><h6>Finding Details</h6>" + d.details + "</div>";
-					}
+                    // get the list of controls
+                    getControlsListing();
 
 					// setup the table
-					var tableHostVulnerability = $('#tblReportVulnerability').DataTable({
-                    "pageLength": 50, 
-                    "columns": [
-						{ 
-							"className":      'details-control',
-							"orderable":      false,
-							"data":           null,
-							"defaultContent": '',
-							"targets": 		  0
-						},
-                        { "data": "vulnid" },
-                        { "data": "hostname" },
-                        { "data": "severity" },
-                        { "data": "status" },
-						{ "data": "type" }
-                    ],
+					var tableControlHost = $('#tblReportControlHost').DataTable({
+                    "pageLength": 25, 
                         "columnDefs": [
-							{ "width": "5%", "targets": 0 },
-                            { "width": "15%", "targets": 1 },
-                            { "width": "10%", "targets": 2 },
-                            { "width": "10%", "targets": 3 },
-                            { "width": "10%", "targets": 4 },
-                            { "width": "40%", "targets": 5 }
+                            { "width": "40%", "targets": 1 },
+                            { "width": "60%", "targets": 2 }
                         ],
-                        order: [[ 2, 'desc' ]]
+                        order: [[ 0, 'desc' ]]
 					});
-					
-					// Add event listener for opening and closing details
-					$('#tblReportVulnerability tbody').on('click', 'td.details-control', function () {
-						var tr = $(this).closest('tr');
-						var row = tableHostVulnerability.row( tr );
-					
-						if ( row.child.isShown() ) {
-							// This row is already open - close it
-							row.child.hide();
-							tr.removeClass('shown');
-						}
-						else {
-							// Open this row
-							row.child( format(row.data()) ).show();
-							tr.addClass('shown');
-						}
-					} );
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');
