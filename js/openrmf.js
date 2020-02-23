@@ -422,10 +422,15 @@ async function getSystemRecord(systemGroupId) {
 			}
 			// generate the test plan link
 			if (canDownload()) {
-				var testplanHTML = "<b>Test Plan Summary:</b>";				
+				var testplanHTML = "<b>Test Plan Summary:</b>";
 				testplanHTML += ' &nbsp; <span><a title="Download the Test Plan in MS Excel" href="javascript:exportTestPlan(\'' + item.internalId + '\')">';
 				testplanHTML += 'Generate Excel File</a> ';
 				$("#divSystemTestPlan").html(testplanHTML);
+				var poamHTML = "<b>Latest POA&amp;M:</b>";
+				poamHTML += ' &nbsp; <span><a title="Download the POAM in MS Excel" href="javascript:exportPOAM(\'' + item.internalId + '\')">';
+				poamHTML += 'Generate Excel File</a> ';
+				$("#divSystemPOAM").html(poamHTML);
+				
 			}
 			// created date and updated date
 			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
@@ -701,6 +706,42 @@ async function exportTestPlan(systemGroupId) {
 				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
 
 				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-TestPlanSummary-" + strDate + ".xlsx";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		}
+	};
+	request.send();
+	$.unblockUI();
+}
+
+// export Test Plan to XLSX for easier viewing
+async function exportPOAM(systemGroupId) {
+	if (!systemGroupId) // get it from the session
+		systemGroupId = sessionStorage.getItem("currentSystem");
+	$.blockUI({ message: "Generating the POA&amp;M Excel export...please wait" }); 
+	var url = readAPI + "/system/" + systemGroupId + "/poamexport/";
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				var strDate = "";
+				var d = new Date();
+				strDate = d.getFullYear().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getDate().toString() + "-" + d.getHours().toString() + "-" + d.getMinutes().toString() + "-" + d.getSeconds().toString();
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+
+				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-POAM-" + strDate + ".xlsx";
 				document.body.appendChild(downloadLink);
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
