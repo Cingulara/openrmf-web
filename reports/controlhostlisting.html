@@ -229,7 +229,7 @@
 						<div class="card-body">
 							<div>
                                 <table id="tblReportControlHost" style="width: 100%;" class="table table-bordered table-hover display">
-									<thead><tr><th></th><th>Host Name</th><th>Checklist</th></tr></thead>
+									<thead><tr><th>Host Name</th><th>Checklist</th></tr></thead>
                                     <tbody></tbody>
                                 </table>
 							</div>
@@ -300,8 +300,8 @@
 					var tableControlHost = $('#tblReportControlHost').DataTable({
                     "pageLength": 25, 
                         "columnDefs": [
-                            { "width": "40%", "targets": 1 },
-                            { "width": "60%", "targets": 2 }
+                            { "width": "40%", "targets": 0 },
+                            { "width": "60%", "targets": 1 }
                         ],
                         order: [[ 0, 'desc' ]]
 					});

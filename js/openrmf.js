@@ -2433,13 +2433,10 @@ async function getRMFControlForHostReport() {
 						currentStatus = getOverallCompliance(currentStatus, record.status);
 						checklists += '<a href="/single-checklist.html?id=';
 						checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
-						checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span>';
+						checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></a>';
 						// dynamically add to the datatable a row per checklist returned
 						table.row.add( [record.hostName, checklists] ).draw();
 					}
-				} else {
-					// dynamically add to the datatable
-					table.row.add( [record.hostName, checklists] ).draw();
 				}
 			}
 		}
@@ -2553,7 +2550,7 @@ async function getComplianceBySystem() {
 							currentStatus = getOverallCompliance(currentStatus, record.status);
 							checklists += '<a href="/single-checklist.html?id=';
 							checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
-							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span>';
+							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></a>';
 							// dynamically add to the datatable a row per checklist returned
 							table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
 						}
