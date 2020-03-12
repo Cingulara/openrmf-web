@@ -183,7 +183,7 @@
 				<!-- end row -->
 
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
 						<div class="card mb-3">
 							<div class="card-header">
 								<h3 class="float-left"><i class="fa fa-info-circle"></i> System Information</h3>
@@ -191,26 +191,37 @@
 									class="btn btn-info btn-sm float-right">List All Systems</button>
 							</div>
 							<div class="card-body">
-								<div id="divSystemTitle"></div>
-								<div id="divNumberChecklists"></div>
-								<div id="divSystemDescription"></div>
-								<div id="divSystemNessusFile"></div>
-								<div id="divSystemTestPlan"></div>
-								<div id="divSystemPOAM"></div>
-								<div id="divSystemLastRAR"></div><br />
-								<h5>Audit Information:</h3>
-								<div id="divSystemCreated"></div>
-								<div id="divSystemUpdated"></div>
-								<div id="divSystemLastCompliance"></div><br />
-								<a href="#custom-modal"  id="btnUpdateSystem" style="display: none;" 
-									class="btn btn-primary btn-sm m-r-5 m-b-10" data-target="#customModal" data-toggle="modal"><span 
-									class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
-								<button type="button" id="btnRunCompliance" onclick="runComplianceFromSystem(getParameterByName('id'), false);" 
-									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-check-square-o"></i></span> Compliance</button>
-								<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromSystem(getParameterByName('id'), false);" 
-									class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Upload</button>
-								<button type="button" id="btnDeleteSystem" style="display: none;" onclick="deleteSystem(getParameterByName('id'), false);" 
-									class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+										<div id="divSystemTitle"></div>
+										<div id="divNumberChecklists"></div>
+										<div id="divSystemDescription"></div>
+										<div id="divSystemNessusFile"></div>
+									</div>
+									<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+										<div id="divSystemTestPlan"></div>
+										<div id="divSystemPOAM"></div>
+										<div id="divSystemLastRAR"></div><br />
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+										<h5>Audit Information:</h3>
+										<div id="divSystemCreated"></div>
+										<div id="divSystemUpdated"></div>
+										<div id="divSystemLastCompliance"></div><br />
+										<a href="#custom-modal"  id="btnUpdateSystem" style="display: none;" 
+											class="btn btn-primary btn-sm m-r-5 m-b-10" data-target="#customModal" data-toggle="modal"><span 
+											class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
+										<button type="button" id="btnRunCompliance" onclick="runComplianceFromSystem(getParameterByName('id'), false);" 
+											class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-check-square-o"></i></span> Compliance</button>
+										<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromSystem(getParameterByName('id'), false);" 
+											class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Upload</button>
+										<button type="button" id="btnDeleteSystem" style="display: none;" onclick="deleteSystem(getParameterByName('id'), false);" 
+											class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
+									</div>
+								</div>
+
 							</div>
 						</div><!-- end card-->
 					</div>

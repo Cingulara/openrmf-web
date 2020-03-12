@@ -422,17 +422,17 @@ async function getSystemRecord(systemGroupId) {
 			}
 			// generate the test plan link
 			if (canDownload()) {
-				var testplanHTML = "<b>Test Plan Summary:</b>";
-				testplanHTML += ' &nbsp; <span><a title="Download the Test Plan in MS Excel" href="javascript:exportTestPlan(\'' + item.internalId + '\')">';
-				testplanHTML += 'Generate Excel File</a> ';
+				var testplanHTML = '<button style="margin: 2px; width: 100%; text-align: left;" type="button" id="btnGenerateTestPlanSummary" onclick="exportTestPlan(getParameterByName(\'id\'), false);" ';
+				testplanHTML += ' title="Generate the Test Plan Summary in MS Excel" '
+				testplanHTML += 'class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-clipboard"></i></span> Generate Test Plan</button>';
 				$("#divSystemTestPlan").html(testplanHTML);
-				var poamHTML = "<b>Latest POA&amp;M:</b>";
-				poamHTML += ' &nbsp; <span><a title="Download the POAM in MS Excel" href="javascript:exportPOAM(\'' + item.internalId + '\')">';
-				poamHTML += 'Generate Excel File</a> ';
+				var poamHTML = '<button style="margin: 2px; width: 100%; text-align: left;" type="button" id="btnGeneratePOAM" onclick="exportPOAM(getParameterByName(\'id\'), false);" ';
+				poamHTML += ' title="Generate the POAM in MS Excel" '
+				poamHTML += 'class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-calendar"></i></span> Generate POAM</button>';
 				$("#divSystemPOAM").html(poamHTML);
-				var rarHTML = "<b>Risk Assessment Report:</b>";
-				rarHTML += ' &nbsp; <span><a title="Download the Risk Assessment Report in MS Excel" href="javascript:exportRAR(\'' + item.internalId + '\')">';
-				rarHTML += 'Generate Excel File</a> ';
+				var rarHTML = '<button style="margin: 2px; width: 100%; text-align: left;" type="button" id="btnGeneratePOAM" onclick="exportRAR(getParameterByName(\'id\'), false);" ';
+				rarHTML += ' title="Generate the Risk Assessment Report in MS Excel" '
+				rarHTML += 'class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-bullseye"></i></span> Generate RAR</button>';
 				$("#divSystemLastRAR").html(rarHTML);
 				
 			}
