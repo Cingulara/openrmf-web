@@ -653,7 +653,7 @@ async function exportNessusXML(systemGroupId, summaryView) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
 
-		$.blockUI({ message: "Generating the Nessus Excel export...please wait" }); 
+	$.blockUI({ message: "Generating the Nessus Excel export...please wait" }); 
 	var url = readAPI + "/system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -678,6 +678,9 @@ async function exportNessusXML(systemGroupId, summaryView) {
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
 			}
+		} else {
+			alert("There was a problem exporting your report.")
+			$.unblockUI();		
 		}
 	};
 	request.send();
@@ -714,6 +717,9 @@ async function exportTestPlan(systemGroupId) {
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
 			}
+		} else {
+			alert("There was a problem exporting your report.")
+			$.unblockUI();		
 		}
 	};
 	request.send();
@@ -750,6 +756,9 @@ async function exportPOAM(systemGroupId) {
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
 			}
+		} else {
+			alert("There was a problem exporting your report.")
+			$.unblockUI();		
 		}
 	};
 	request.send();
@@ -786,6 +795,9 @@ async function exportRAR(systemGroupId) {
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
 			}
+		} else {
+			alert("There was a problem exporting your report.")
+			$.unblockUI();		
 		}
 	};
 	request.send();
@@ -1210,9 +1222,20 @@ async function getChecklistData(id, template) {
 		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
 		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
 		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
+		$("#divMessaging").html(""); // clear this just in case
+
+		if (!template) { // check the version and release # of the checklist
+			var newRelease = await newChecklistAvailable(data.systemGroupId, data.internalId);
+			if (newRelease != null) {
+				var updatedChecklist = "ATTN: There is an updated checklist release for your checklist: V";
+				updatedChecklist += newRelease.version + " " + newRelease.stigRelease;
+				$("#divMessaging").html(updatedChecklist);
+				$("#divMessaging").show();
+			}
+		}
 		
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
-		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
+		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA.replace("Release: ",""));
 		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
 		// template should use its uploaded description
 		if (template && data.description)
@@ -1285,6 +1308,22 @@ async function getChecklistData(id, template) {
 	} else {
 		$("#txtBadChecklistId").text(id);
 		$("#divBadChecklistId").show();
+	}
+}
+
+// see if there is a new version or release of the current checklist we are using
+async function newChecklistAvailable(systemGroupId, artifactId) {
+	var url = templateAPI + "/checklistupdate/system/" + systemGroupId + "/artifact/" + artifactId;
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	var data;
+	if (response.ok) {
+		data = await response.json();
+		return data;
+	} else {
+		return null;
 	}
 }
 // set the vulnerability filter off the Score table, then scroll down to it
