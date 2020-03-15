@@ -1219,8 +1219,16 @@ a.btn:focus {
 .vulnSpacing {
   padding: 5px 0px 5px 0px;
 }
-.vulnOpen {
+.vulnOpenCAT1 {
   background-color: #E53935;
+  margin: 3px 0px 3px 0px;
+}
+.vulnOpenCAT2 {
+  background-color: orange;
+  margin: 3px 0px 3px 0px;
+}
+.vulnOpenCAT3 {
+  background-color: rgba(216, 216, 14, 0.797);
   margin: 3px 0px 3px 0px;
 }
 .vulnNotApplicable {
@@ -1236,8 +1244,14 @@ a.btn:focus {
   margin: 3px 0px 3px 0px;
   color: white;
 }
-.vulnOpenText {
+.vulnOpenCAT1Text {
   color: #E53935;
+}
+.vulnOpenCAT2Text {
+  color: orange;
+}
+.vulnOpenCAT3Text {
+  color: rgba(216, 216, 14, 0.797);
 }
 .vulnNotApplicableText {
   color: silver;
