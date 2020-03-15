@@ -1227,8 +1227,12 @@ async function getChecklistData(id, template) {
 		if (!template) { // check the version and release # of the checklist
 			var newRelease = await newChecklistAvailable(data.systemGroupId, data.internalId);
 			if (newRelease != null) {
-				var updatedChecklist = "ATTN: There is an updated checklist release for your checklist: V";
-				updatedChecklist += newRelease.version + " " + newRelease.stigRelease;
+				var updatedChecklist = 'ATTN: There is an updated checklist release for your checklist: V';
+				updatedChecklist += newRelease.version + ' ' + newRelease.stigRelease;
+				if (canUpload()) {
+					updatedChecklist += ' &nbsp; &nbsp; <button type="button" id="btnUpgradeChecklist" onclick="upgradeChecklist(getParameterByName(\'id\'), false);" ';
+					updatedChecklist += ' class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-long-arrow-up"></i></span> Upgrade</button>';
+				}
 				$("#divMessaging").html(updatedChecklist);
 				$("#divMessaging").show();
 			}
@@ -1462,6 +1466,11 @@ function getVulnerabilityStatusClassName (status, severity) {
 // display the vulnerability information by the Vulnerability Id
 function viewVulnDetails(vulnId) {
 	var data = JSON.parse(sessionStorage.getItem(vulnId));
+	$("#vulnStatus").html("");
+	$("#vulnFindingDetails").html("");
+	$("#vulnComments").html("");
+	$("#vulnSeverityOverride").html("");
+	$("#vulnSeverityJustification").html("");
 	if (data) {
 		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
 		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
@@ -1671,6 +1680,7 @@ async function getChecklistScore(id) {
 	var data = await getScoreForChecklistListing(id);
 	displayChecklistScores(data);
 }
+
 async function displayChecklistScores(data) {
 	if (data) {
 		$("#checklistNotAFindingCount").html("<a style='color: white;' href='javascript:setVulnerabilityFilter(\"naf\",\"all\")'>" + data.totalNotAFinding.toString() + "</a>");
@@ -1962,6 +1972,44 @@ async function deleteChecklist(id) {
 			}
 		});
 	}
+}
+
+// upgrade the current checklist data to a new template release
+function upgradeChecklist(id) {
+	var currentSystem = sessionStorage.getItem("currentSystem");
+	if (currentSystem == null) 
+		location.reload();
+
+		swal({
+			title: "Upgrade this Checklist?",
+			text: "Are you sure you wish to upgrade this checklist to the latest release?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willUpgrade) => {
+			if (willUpgrade) {
+				$.ajax({
+					url : saveAPI + "/upgradechecklist/system/" + currentSystem + "/artifact/" + id,
+					type : 'POST',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your Checklist was upgraded successfully!", "Click OK to continue!", "success")
+						.then((value) => {
+							location.reload(); // reload the page
+						});
+					},
+					error : function(data){
+						swal("There was a Problem. Your checklist was not updated successfully. Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the Upgrade.");
+			}
+		});
 }
 
 /************************************ 
