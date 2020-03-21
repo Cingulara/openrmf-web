@@ -208,7 +208,11 @@
 										<input type="checkbox" class="form-control" id="checklistPrivacyFilter">
 										</div>
 										<div class="form-group">
-											<button onclick="getComplianceBySystem(); return false;" class="btn btn-primary btn-sm">Generate</button>
+											<button onclick="getComplianceBySystem(); return false;" 
+												class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-check-square-o"></i></span> Generate</button>
+											<button onclick="getComplianceBySystemExport(); return false;" 
+												id="btnComplianceExport" style="display: none;"
+												class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
 										</div>
 									</form>
 								</div>
@@ -325,6 +329,8 @@
 				setupProfileMenu();
 				// see if the upload menu should show
 				verifyMenus();
+				// see if someone should see the Export Compliance button
+				verifyDownloadCompliance();
 				// calls to get the compliance page setup
 				getChecklistSystemsForComplianceFilter(getParameterByName('id'));
 				// setup the datatable format

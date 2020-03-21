@@ -2776,6 +2776,50 @@ async function getComplianceBySystem() {
 	}
 }
 
+// Compliance Report downloaded to XLSX
+async function getComplianceBySystemExport() {
+	var system = $("#checklistSystemFilter").val();
+	// if they pass in the system use it after encoding it
+	if (system && system.length > 0) {
+		$.blockUI({ message: "Generating the compliance export...this may take a minute" }); 
+		// is the PII checked? This is returned as an array even if just one
+		var pii = $('#checklistPrivacyFilter')[0].checked;
+		var url = complianceAPI + "/system/" + encodeURIComponent(system) + "/export/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
+
+		// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+		var request = new XMLHttpRequest();
+		request.open('GET', url, true);
+		request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+		request.responseType = 'blob';	
+		request.onload = function(e) {
+			if (this.status === 200) {
+				var blob = this.response;
+				if(window.navigator.msSaveOrOpenBlob) {
+					window.navigator.msSaveBlob(blob, fileName);
+				}
+				else{
+					var downloadLink = window.document.createElement('a');
+					var contentTypeHeader = request.getResponseHeader("Content-Type");
+					var strDate = "";
+					var d = new Date();
+					strDate = d.getFullYear().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getDate().toString() + "-" + d.getHours().toString() + "-" + d.getMinutes().toString() + "-" + d.getSeconds().toString();
+					downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+	
+					downloadLink.download = $.trim($("#checklistSystemFilter option:selected").text().replace(" ", "-")) + "-Compliance-" + strDate + ".xlsx";
+					document.body.appendChild(downloadLink);
+					downloadLink.click();
+					document.body.removeChild(downloadLink);
+				}
+			} else {
+				alert("There was a problem exporting your report.")
+				$.unblockUI();		
+			}
+		};
+		request.send();
+		$.unblockUI();
+	} // if system and system.length
+}
+
 async function getVulnerabilitiesByControl(id, control) {
 	let response = await fetch(readAPI + "/" + id + "/control/" + encodeURIComponent(control), {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -2930,6 +2974,11 @@ function verifyDeleteTemplate() {
 function verifyDeleteChecklist() {
 	if (canDelete()) {
 		$("#btnDeleteChecklist").show();
+	}
+}
+function verifyDownloadCompliance() {
+	if (canDownload()){
+		$("#btnComplianceExport").show();
 	}
 }
 function verifyUpdateChecklist() {
