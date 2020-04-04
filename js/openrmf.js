@@ -1464,7 +1464,7 @@ function getVulnerabilityStatusClassName (status, severity) {
 }
 
 // display the vulnerability information by the Vulnerability Id
-function viewVulnDetails(vulnId) {
+async function viewVulnDetails(vulnId) {
 	var data = JSON.parse(sessionStorage.getItem(vulnId));
 	$("#vulnStatus").html("");
 	$("#vulnFindingDetails").html("");
@@ -1477,21 +1477,12 @@ function viewVulnDetails(vulnId) {
 		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
 		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
 		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
-		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
-		var severityOverride = '';
-		for(i = 24; i < data.stiG_DATA.length; i++) { 
-			if (data.stiG_DATA[i].vulN_ATTRIBUTE == "CCI_REF")
-				ccilist += data.stiG_DATA[i].attributE_DATA + ", ";
-		}
-		ccilist = ccilist.substring(0, ccilist.length -2);
-		$("#vulnCCIId").html("<b>CCI ID:</b>&nbsp;" + ccilist);
 		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status.replace("NotAFinding","Not a Finding").replace("_"," "));
 		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + (data.stiG_DATA[21].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + (data.stiG_DATA[1].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + (data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA.replace(/\n/g, "<br />"));
 		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA.replace(/\n/g, "<br />"));
-		$("#vulnReferences").html();
 		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
 		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
 		if (data.stiG_DATA[18].attributE_DATA) {
@@ -1507,6 +1498,28 @@ function viewVulnDetails(vulnId) {
 			$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
 			$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (data.severitY_JUSTIFICATION).replace(/\n/g, "<br />"));
 		}
+		// get the CCI Listing and any references
+		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
+		var severityOverride = '';
+		var cciInfo;
+		for(i = 24; i < data.stiG_DATA.length; i++) { 
+			if (data.stiG_DATA[i].vulN_ATTRIBUTE == "CCI_REF"){
+				ccilist += "<b>" + data.stiG_DATA[i].attributE_DATA + "</b>: ";
+				cciInfo = await getCCIItemRecord(data.stiG_DATA[i].attributE_DATA );
+				if (cciInfo != null > 0) {
+					ccilist += cciInfo.definition + "<br /><ul>";
+					// foreach of the references spit them out
+					for(const reference of cciInfo.references){
+						ccilist += "<li>" + reference.title + " :: " + reference.index + "</li>";
+					}
+					ccilist += "</ul>";
+				}
+			}
+		}
+		ccilist = ccilist.substring(0, ccilist.length -2);
+		$("#vulnCCIId").html(ccilist);
+		// for each one we need to call complianceAPI with /cci/{cciid} and pass it in to get back the record
+
 		// set the form values if they can edit
 		if (canUpload()) { // fill in the values of the form
 			$("#frmVulnIDTitle").text(vulnId);
@@ -1523,6 +1536,24 @@ function viewVulnDetails(vulnId) {
 	}
 }
 
+// called from above to return the CCI Item information
+async function getCCIItemRecord(cciid) {
+	var url = complianceAPI;
+  	try {
+		let responseCCI = await fetch(complianceAPI + "/cci/" + cciid, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+		if (responseCCI.ok) {
+			var cciItem = await responseCCI.json()
+			return cciItem;
+		} else 
+			return null;
+	}
+	catch (error) {
+		console.error("returning an empty CCI Item");
+		return null;
+	}
+}
 // clear the vulnerability details
 function clearVulnDetails() {
 	$("#vulnId").html("Please select a Vulnerability ID to view its details.");
@@ -1537,7 +1568,6 @@ function clearVulnDetails() {
 	$("#vulnDiscussion").html("");
 	$("#vulnCheckText").html("");
 	$("#vulnFixText").html("");
-	$("#vulnReferences").html("");
 	$("#vulnFindingDetails").html("");
 	$("#vulnComments").html("");
 	$("#vulnSeverityOverride").html("");
@@ -2746,6 +2776,50 @@ async function getComplianceBySystem() {
 	}
 }
 
+// Compliance Report downloaded to XLSX
+async function getComplianceBySystemExport() {
+	var system = $("#checklistSystemFilter").val();
+	// if they pass in the system use it after encoding it
+	if (system && system.length > 0) {
+		$.blockUI({ message: "Generating the compliance export...this may take a minute" }); 
+		// is the PII checked? This is returned as an array even if just one
+		var pii = $('#checklistPrivacyFilter')[0].checked;
+		var url = complianceAPI + "/system/" + encodeURIComponent(system) + "/export/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
+
+		// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+		var request = new XMLHttpRequest();
+		request.open('GET', url, true);
+		request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+		request.responseType = 'blob';	
+		request.onload = function(e) {
+			if (this.status === 200) {
+				var blob = this.response;
+				if(window.navigator.msSaveOrOpenBlob) {
+					window.navigator.msSaveBlob(blob, fileName);
+				}
+				else{
+					var downloadLink = window.document.createElement('a');
+					var contentTypeHeader = request.getResponseHeader("Content-Type");
+					var strDate = "";
+					var d = new Date();
+					strDate = d.getFullYear().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getDate().toString() + "-" + d.getHours().toString() + "-" + d.getMinutes().toString() + "-" + d.getSeconds().toString();
+					downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+	
+					downloadLink.download = $.trim($("#checklistSystemFilter option:selected").text().replace(" ", "-")) + "-Compliance-" + strDate + ".xlsx";
+					document.body.appendChild(downloadLink);
+					downloadLink.click();
+					document.body.removeChild(downloadLink);
+				}
+			} else {
+				alert("There was a problem exporting your report.")
+				$.unblockUI();		
+			}
+		};
+		request.send();
+		$.unblockUI();
+	} // if system and system.length
+}
+
 async function getVulnerabilitiesByControl(id, control) {
 	let response = await fetch(readAPI + "/" + id + "/control/" + encodeURIComponent(control), {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -2900,6 +2974,11 @@ function verifyDeleteTemplate() {
 function verifyDeleteChecklist() {
 	if (canDelete()) {
 		$("#btnDeleteChecklist").show();
+	}
+}
+function verifyDownloadCompliance() {
+	if (canDownload()){
+		$("#btnComplianceExport").show();
 	}
 }
 function verifyUpdateChecklist() {
