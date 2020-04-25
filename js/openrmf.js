@@ -1224,20 +1224,6 @@ async function getChecklistData(id, template) {
 		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
 		$("#divMessaging").html(""); // clear this just in case
 
-		if (!template) { // check the version and release # of the checklist
-			var newRelease = await newChecklistAvailable(data.systemGroupId, data.internalId);
-			if (newRelease != null) {
-				var updatedChecklist = 'ATTN: There is an updated checklist release for your checklist: V';
-				updatedChecklist += newRelease.version + ' ' + newRelease.stigRelease;
-				if (canUpload()) {
-					updatedChecklist += ' &nbsp; &nbsp; <button type="button" id="btnUpgradeChecklist" onclick="upgradeChecklist(getParameterByName(\'id\'), false);" ';
-					updatedChecklist += ' class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-long-arrow-up"></i></span> Upgrade</button>';
-				}
-				$("#divMessaging").html(updatedChecklist);
-				$("#divMessaging").show();
-			}
-		}
-		
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA.replace("Release: ",""));
 		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
@@ -1309,6 +1295,20 @@ async function getChecklistData(id, template) {
 		sessionStorage.setItem("vulnStatus", vulnStatus);
 		// see if there is a control passed in and if so, only show the valid controls
 		$("#checklistTree").html(vulnListing);
+
+		if (!template) { // check the version and release # of the checklist
+			var newRelease = await newChecklistAvailable(data.systemGroupId, data.internalId);
+			if (newRelease != null) {
+				var updatedChecklist = 'ATTN: There is an updated checklist release for your checklist: V';
+				updatedChecklist += newRelease.version + ' ' + newRelease.stigRelease;
+				if (canUpload()) {
+					updatedChecklist += ' &nbsp; &nbsp; <button type="button" id="btnUpgradeChecklist" onclick="upgradeChecklist(getParameterByName(\'id\'), false);" ';
+					updatedChecklist += ' class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-long-arrow-up"></i></span> Upgrade</button>';
+				}
+				$("#divMessaging").html(updatedChecklist);
+				$("#divMessaging").show();
+			}
+		}
 	} else {
 		$("#txtBadChecklistId").text(id);
 		$("#divBadChecklistId").show();
