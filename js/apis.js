@@ -19,6 +19,7 @@ if (window.location.port == 9080) {
     var complianceAPI = root + ':9092'
     var controlAPI = root + ':9094'
     var auditAPI = root + ':9096'
+    var reportAPI = root + ':9098'
 } 
 // if this is the normal stack, web, k8s, or other configuration use the real one
 else { 
@@ -31,4 +32,5 @@ else {
     var complianceAPI = root + ':8092'
     var controlAPI = root + ':8094'
     var auditAPI = root + ':8096'
+    var reportAPI = root + ':8096'
 }
