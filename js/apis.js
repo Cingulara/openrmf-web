@@ -32,5 +32,5 @@ else {
     var complianceAPI = root + ':8092'
     var controlAPI = root + ':8094'
     var auditAPI = root + ':8096'
-    var reportAPI = root + ':8096'
+    var reportAPI = root + ':8098'
 }
