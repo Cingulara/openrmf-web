@@ -2261,9 +2261,9 @@ async function getNessusPatchScanReport() {
 		swal("Please choose a system for the report.", "Click OK to continue!", "error");
 		return;
 	}
-	// call the read API /reports/nessus/xxxxxxxxxxxx
-	$.blockUI({ message: "Generating the Nessus Patch Report ...please wait" }); 
-	var url = readAPI + "/report/nessus/" + systemGroupId;
+	// call the report API /reports/nessus/xxxxxxxxxxxx
+	$.blockUI({ message: "Generating the Nessus ACAS Patch Report ...please wait" }); 
+	var url = reportAPI + "/system/" + systemGroupId + "/acaspatchdata";
 	// get back the data
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -2273,11 +2273,11 @@ async function getNessusPatchScanReport() {
 		var table = $('#tblReportNessus').DataTable(); // the datatable reference to do a row.add() to
 		table.clear().draw();
 		var data = await response.json();
-		if (data && data.reportName.length > 0 && data.summary.length > 0) {
+		if (data && data.length > 0) {
 			// use the Report Name
-			$("#reportNessusReportName").html("Nessus Scan Report: " + data.reportName);
+			$("#reportNessusReportName").html("Nessus Scan Report: " + data[0].reportName);
 		}
-		for (const item of data.summary) {
+		for (const item of data) {
 			// dynamically add to the datatable but only show main data, click the + for extra data
 			table.row.add( { "hostname": item.hostname, "pluginId": item.pluginId,
 				"pluginName": item.pluginName, "severity": item.severity + ' - ' + item.severityName, 
