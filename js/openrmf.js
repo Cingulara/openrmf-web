@@ -2532,7 +2532,7 @@ async function getHostVulnerabilityReport() {
 
 	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" }); 
 	// call the API to get the checklist data
-	var url = readAPI + "/report/system/" + id + "/vulnid/" + vulnid;
+	var url = reportAPI + "/system/" + id + "/vulnid/" + vulnid;
 	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
