@@ -2648,6 +2648,68 @@ async function getRMFControlForHostReport() {
 	$.unblockUI();
 }
 
+// refresh the Nessus ACAS Patch Data
+async function reloadNessusPatchData() {
+	swal({
+		title: "Update all Nessus Data",
+		text: "Are you sure you wish to update all Nessus ACAS Patch Data across all Systems?",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+		})
+		.then((willDelete) => {
+		if (willDelete) {
+			$.ajax({
+				url : reportAPI + "/reloaddata/?datatype=nessusacas",
+				type : 'PUT',
+				beforeSend: function(request) {
+					request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+				},
+				success: function(data){
+					swal("Your Refresh of Data was initiated. Please give time for the old data to be removed and new data generated.", "Click OK to continue!", "success");
+				},
+				error : function(data){
+					swal("There was a Problem. Your Nessus ACAS Patch data was not refreshed successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+				}
+			});
+			
+		} else {
+			swal("Canceled the Data Refresh.");
+		}
+	});
+}
+
+// refresh the Checklist Vulnerability Data
+async function reloadVulnerabilityData() {
+	swal({
+		title: "Update all System Vulnerability Data",
+		text: "Are you sure you wish to update all Vulnerability Data across all Systems?",
+		icon: "warning",
+		buttons: true,
+		dangerMode: true,
+		})
+		.then((willDelete) => {
+		if (willDelete) {
+			$.ajax({
+				url : reportAPI + "/reloaddata/?datatype=vulnerability",
+				type : 'PUT',
+				beforeSend: function(request) {
+					request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+				},
+				success: function(data){
+					swal("Your Refresh of Data was initiated. Please give time for the old data to be removed and new data generated.", "Click OK to continue!", "success");
+				},
+				error : function(data){
+					swal("There was a Problem. Your Vulnerability data was not refreshed successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+				}
+			});
+			
+		} else {
+			swal("Canceled the Data Refresh.");
+		}
+	});
+}
+
 /************************************ 
  Audit List Functions
 ************************************/
@@ -2999,6 +3061,13 @@ function verifyDownloadSystemChart() {
 		$("#btnDownloadChartSystemScore").show();
 	}
 }
+function verifyReportRefreshData() {
+	if (isAdministrator()) {
+		$("#btnReloadNessusData").show();
+		$("#btnReloadVulnerabilityData").show();
+	}
+}
+
 function clearSessionData() {
 	// keep these settings
 	var currentSystem = sessionStorage.getItem("currentSystem");
