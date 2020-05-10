@@ -2666,7 +2666,7 @@ async function reloadNessusPatchData() {
 					request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 				},
 				success: function(data){
-					swal("Your Refresh of Data was initiated. Please give time for the old data to be removed and new data generated.", "Click OK to continue!", "success");
+					swal("Your Refresh of Nessus Patch Data was initiated. Please give time for the old data to be removed and new data generated.", "Click OK to continue!", "success");
 				},
 				error : function(data){
 					swal("There was a Problem. Your Nessus ACAS Patch data was not refreshed successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
@@ -2697,7 +2697,7 @@ async function reloadVulnerabilityData() {
 					request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 				},
 				success: function(data){
-					swal("Your Refresh of Data was initiated. Please give time for the old data to be removed and new data generated.", "Click OK to continue!", "success");
+					swal("Your Refresh of Vulnerability Data was initiated. Please give time for the old data to be removed and new data generated.", "Click OK to continue!", "success");
 				},
 				error : function(data){
 					swal("There was a Problem. Your Vulnerability data was not refreshed successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
