@@ -5,7 +5,7 @@
 // using a configmap in k8s and openshift to set these dynamically works better
 // will be set in the template or xxxxx-configmap.yml file
 
-    var root = 'http://' + document.location.host;
+    var root = document.location.protocol + '//' + document.location.host;
     var readAPI = root + '/api/read/';
     var scoreAPI = root + '/api/scoring/';
     var saveAPI = root + '/api/save/';
