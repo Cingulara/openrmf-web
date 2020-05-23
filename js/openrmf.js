@@ -1690,6 +1690,7 @@ function updateSingleChecklistVulnerability(artifactid) {
 				vulnStatus.find(function(e){return e.vulnId == vulnid}).status = vulnItem.status;
 				// put it back into the sessionStorage
 				sessionStorage.setItem("vulnStatus", JSON.stringify(vulnStatus));
+				getChecklistScore(artifactid);
 			});
 		},
 		error: function() {
