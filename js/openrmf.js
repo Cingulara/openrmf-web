@@ -1,11 +1,11 @@
-// Copyright (c) Cingulara LLC 2019 and Tutela LLC 2019. All rights reserved.
+// Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
 /*************************************
  * Dashboard functions
  ************************************/
 // fill in the # of total checklists in the system on the dashboard page top right
 async function getSystemTotalCount() {
-	let response = await fetch(readAPI + "/count/systems", {headers: {
+	let response = await fetch(readAPI + "count/systems", {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
@@ -24,7 +24,7 @@ async function getSystemTotalCount() {
 }
 // fill in the # of total checklists in the system on the dashboard page top right
 async function getChecklistTotalCount() {
-	let response = await fetch(readAPI + "/count/artifacts", {headers: {
+	let response = await fetch(readAPI + "count/artifacts", {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
@@ -43,7 +43,7 @@ async function getChecklistTotalCount() {
 }
 // fill in the # of total checklists in the system on the dashboard page top right
 async function getTemplateTotalCount() {
-	let response = await fetch(templateAPI + "/count/templates", {headers: {
+	let response = await fetch(templateAPI + "count/templates", {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
@@ -255,7 +255,7 @@ async function deleteTemplate(id) {
 		  .then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url : templateAPI + "/" + id,
+					url : templateAPI + id,
 					type : 'DELETE',
 					beforeSend: function(request) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
@@ -286,7 +286,7 @@ function listSystems() {
 
 async function getSystemListing(){
 	$.blockUI({ message: "Updating the system listing..." }); 
-	var url = readAPI + "/systems/";
+	var url = readAPI + "systems/";
 
 	// setup the table visibility
 	$("#divSystemListing").show();
@@ -366,7 +366,7 @@ function reloadSystemRecordBySession() {
 }
 async function getSystemRecord(systemGroupId) {
 	var url = readAPI;
-	url += "/system/" + encodeURIComponent(systemGroupId);
+	url += "system/" + encodeURIComponent(systemGroupId);
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
@@ -465,7 +465,7 @@ function addSystem(){
 	formData.append("description",htmlEscape($("#frmSystemDescription").val()));
 	formData.append('nessusFile',$('#frmNessusFile')[0].files[0]);
 	$.ajax({
-			url : saveAPI + "/system/",
+			url : saveAPI + "system/",
 			data : formData,
 			type : 'POST',
 			beforeSend: function(request) {
@@ -501,7 +501,7 @@ function updateSystem(systemGroupId){
 	formData.append("description",htmlEscape($("#frmSystemDescription").val()));
 	formData.append('nessusFile',$('#frmNessusFile')[0].files[0]);
 	$.ajax({
-			url : saveAPI + "/system/" + systemGroupId,
+			url : saveAPI + "system/" + systemGroupId,
 			data : formData,
 			type : 'PUT',
 			beforeSend: function(request) {
@@ -526,7 +526,7 @@ function updateSystem(systemGroupId){
 async function getScoreForSystemChecklistListing(systemId) {
   var url = scoreAPI;
   try {
-		let responseScore = await fetch(scoreAPI + "/system/" + encodeURIComponent(systemId), {headers: {
+		let responseScore = await fetch(scoreAPI + "system/" + encodeURIComponent(systemId), {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
 		if (responseScore.ok) {
@@ -599,7 +599,7 @@ async function downloadNessusXML(systemGroupId) {
 		systemGroupId = sessionStorage.getItem("currentSystem");
 	// redirect to the API and it downloads the XML file for the Nessus scan
 	$.blockUI({ message: "Generating the Nessus file...please wait" }); 
-	var url = readAPI + "/system/" + encodeURIComponent(systemGroupId) + "/downloadnessus/";
+	var url = readAPI + "system/" + encodeURIComponent(systemGroupId) + "/downloadnessus/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -631,7 +631,7 @@ async function getNessusFileSummaryData(systemGroupId) {
 		systemGroupId = sessionStorage.getItem("currentSystem");
 	var url = readAPI;
 	try {
-		  let responsePatches = await fetch(readAPI + "/system/" + encodeURIComponent(systemGroupId) + "/nessuspatchsummary/", {headers: {
+		  let responsePatches = await fetch(readAPI + "system/" + encodeURIComponent(systemGroupId) + "/nessuspatchsummary/", {headers: {
 			  'Authorization': 'Bearer ' + keycloak.token
 		  }});
 		  if (responsePatches.ok) {
@@ -654,7 +654,7 @@ async function exportNessusXML(systemGroupId, summaryView) {
 		systemGroupId = sessionStorage.getItem("currentSystem");
 
 	$.blockUI({ message: "Generating the Nessus Excel export...please wait" }); 
-	var url = readAPI + "/system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
+	var url = readAPI + "system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -692,7 +692,7 @@ async function exportTestPlan(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
 	$.blockUI({ message: "Generating the System Test Plan Excel export...please wait" }); 
-	var url = readAPI + "/system/" + systemGroupId + "/testplanexport/";
+	var url = readAPI + "system/" + systemGroupId + "/testplanexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -731,7 +731,7 @@ async function exportPOAM(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
 	$.blockUI({ message: "Generating the POA&amp;M Excel export...please wait" }); 
-	var url = readAPI + "/system/" + systemGroupId + "/poamexport/";
+	var url = readAPI + "system/" + systemGroupId + "/poamexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -770,7 +770,7 @@ async function exportRAR(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
 	$.blockUI({ message: "Generating the Risk Assessment Report export...please wait" }); 
-	var url = readAPI + "/system/" + systemGroupId + "/rarexport/";
+	var url = readAPI + "system/" + systemGroupId + "/rarexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
@@ -832,7 +832,7 @@ async function deleteSystem(id) {
 		  .then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url : saveAPI + "/system/" + id,
+					url : saveAPI + "system/" + id,
 					type : 'DELETE',
 					beforeSend: function(request) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
@@ -890,7 +890,7 @@ async function deleteSystemChecklists(id){
 		  .then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url : saveAPI + "/system/" + id + "/artifacts",
+					url : saveAPI + "system/" + id + "/artifacts",
 					type : 'DELETE',
 					data: formData,
 					processData: false,
@@ -930,7 +930,7 @@ async function deleteAllSystemChecklists(id){
 		  .then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url : saveAPI + "/system/" + id + "/artifacts",
+					url : saveAPI + "system/" + id + "/artifacts",
 					type : 'DELETE',
 					beforeSend: function(request) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
@@ -1014,7 +1014,7 @@ async function getChecklists(system) {
 	// use this to refresh the checklist page if they delete something
 	sessionStorage.setItem("currentSystem", system);
 
-	var url = readAPI + "/systems/" + encodeURIComponent(system);
+	var url = readAPI + "systems/" + encodeURIComponent(system);
 	url += "/?naf=" + $("#chkVulnNaF").is(':checked');
 	url += "&open=" + $("#chkVulnOpen").is(':checked');
 	url += "&na="   + $("#chkVulnNA").is(':checked');
@@ -1106,7 +1106,7 @@ async function getScoreForChecklistListing(id, template) {
 	if (template)
 		url = templateAPI;
   try {
-		let responseScore = await fetch(scoreAPI + "/artifact/" + id, {headers: {
+		let responseScore = await fetch(scoreAPI + "artifact/" + id, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
 		if (responseScore.ok) {
@@ -1153,9 +1153,9 @@ async function exportChecklistListingXLSX() {
 	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait" }); 
 	var url = readAPI;
 	if (getParameterByName('id')) 
-		url += "/system/export/" + encodeURIComponent(getParameterByName('id'));
+		url += "system/export/" + encodeURIComponent(getParameterByName('id'));
 	else // session
-		url += "/system/export/" + encodeURIComponent(sessionStorage.getItem("currentSystem"));
+		url += "system/export/" + encodeURIComponent(sessionStorage.getItem("currentSystem"));
 	// add in the system filter for the export
 	url += "/?naf=" + $("#chkVulnNaF").is(':checked');
 	url += "&open=" + $("#chkVulnOpen").is(':checked');
@@ -1197,7 +1197,7 @@ async function exportChecklistListingXLSX() {
  *************************************/
 // get the specific checklist data
 async function getChecklistData(id, template) {
-	var url = readAPI + "/artifact";
+	var url = readAPI + "artifact";
 	if (template)
 		url = templateAPI;
 	let response = await fetch(url + "/" + id, {headers: {
@@ -1307,7 +1307,13 @@ async function getChecklistData(id, template) {
 				}
 				$("#divMessaging").html(updatedChecklist);
 				$("#divMessaging").show();
+			} else {
+				$("#divMessaging").html("");
+				$("#divMessaging").hide();
 			}
+		} else {
+			$("#divMessaging").html("");
+			$("#divMessaging").hide();
 		}
 	} else {
 		$("#txtBadChecklistId").text(id);
@@ -1317,7 +1323,7 @@ async function getChecklistData(id, template) {
 
 // see if there is a new version or release of the current checklist we are using
 async function newChecklistAvailable(systemGroupId, artifactId) {
-	var url = templateAPI + "/checklistupdate/system/" + systemGroupId + "/artifact/" + artifactId;
+	var url = templateAPI + "checklistupdate/system/" + systemGroupId + "/artifact/" + artifactId;
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -1540,7 +1546,7 @@ async function viewVulnDetails(vulnId) {
 async function getCCIItemRecord(cciid) {
 	var url = complianceAPI;
   	try {
-		let responseCCI = await fetch(complianceAPI + "/cci/" + cciid, {headers: {
+		let responseCCI = await fetch(complianceAPI + "cci/" + cciid, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
 		if (responseCCI.ok) {
@@ -1577,7 +1583,7 @@ function clearVulnDetails() {
 
 // update function on the checklist page showing all the individual checklist data
 function updateSingleChecklist(id) {
-	var url = saveAPI + "/artifact/" + id;
+	var url = saveAPI + "artifact/" + id;
 	// only if there is a file does this get used uploadAPI
 	var formData = new FormData();
 	// use the system this came with
@@ -1591,7 +1597,7 @@ function updateSingleChecklist(id) {
 	if ($('#checklistFile').val()) {
 		// someone added a file
 		formData.append('checklistFile',$('#checklistFile')[0].files[0]);
-		url = uploadAPI + "/" + id; // include the file contents in the update
+		url = uploadAPI + "" + id; // include the file contents in the update
 	}
 	$.ajax({
 		url : url,
@@ -1622,7 +1628,7 @@ function updateSingleChecklistVulnerability(artifactid) {
 		swal("Your Vulnerability was not updated. Please refresh the page and try again.", "Click OK to continue!", "success")
 		return false;
 	}
-	var url = saveAPI + "/artifact/" + artifactid + "/vulnid/" + vulnid;
+	var url = saveAPI + "artifact/" + artifactid + "/vulnid/" + vulnid;
 	var formData = new FormData();
 	// use the system this came with
 	formData.append("systemGroupId",$("#frmChecklistSystem").val());
@@ -1909,7 +1915,7 @@ async function downloadChecklistFile(id, template){
 	if (template)
 		url = templateAPI;
 
-	let response = await fetch(url + "/download/" + id, {headers: {
+	let response = await fetch(url + "download/" + id, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
@@ -1928,7 +1934,7 @@ async function downloadChecklistFile(id, template){
 async function exportChecklistXLSX(id) {
 	// redirect to the API and it downloads the XLSX file
 	// pass in bool nf, bool open, bool na, bool nr to see if the filters are checked or
-	var url = readAPI + "/export/" + id + "/";
+	var url = readAPI + "export/" + id + "/";
 
 	// get the proper URL to parse and get back the XLSX file
     if (getParameterByName('ctrl')) { // this is from the Compliance Report so export with the linked VULNs
@@ -1981,7 +1987,7 @@ async function deleteChecklist(id) {
 		  .then((willDelete) => {
 			if (willDelete) {
 				$.ajax({
-					url : saveAPI + "/artifact/" + id,
+					url : saveAPI + "artifact/" + id,
 					type : 'DELETE',
 					beforeSend: function(request) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
@@ -2020,7 +2026,7 @@ function upgradeChecklist(id) {
 		  .then((willUpgrade) => {
 			if (willUpgrade) {
 				$.ajax({
-					url : saveAPI + "/upgradechecklist/system/" + currentSystem + "/artifact/" + id,
+					url : saveAPI + "upgradechecklist/system/" + currentSystem + "/artifact/" + id,
 					type : 'POST',
 					beforeSend: function(request) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
@@ -2028,7 +2034,9 @@ function upgradeChecklist(id) {
 					success: function(data){
 						swal("Your Checklist was upgraded successfully!", "Click OK to continue!", "success")
 						.then((value) => {
-							location.reload(); // reload the page
+							$("#divMessaging").html("");
+							$("#divMessaging").hide();
+							location.reload(true); // reload the page
 						});
 					},
 					error : function(data){
@@ -2052,7 +2060,7 @@ async function getChecklistSystems() {
 	if (data) 
 		return data;
 	else {
-		let response = await fetch(readAPI + "/systems", {headers: {
+		let response = await fetch(readAPI + "systems", {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
 		if (response.ok) {
@@ -2194,7 +2202,7 @@ function uploadTemplate(){
  * Reports Functions
  ***********************************/
 async function getChecklistTypeBreakdown(system) {
-	var url = readAPI + "/counttype";
+	var url = readAPI + "counttype";
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0 && system != "All")
 		url += "?system=" + encodeURIComponent(system);
@@ -2263,7 +2271,7 @@ async function getNessusPatchScanReport() {
 	}
 	// call the report API /reports/nessus/xxxxxxxxxxxx
 	$.blockUI({ message: "Generating the Nessus ACAS Patch Report ...please wait" }); 
-	var url = reportAPI + "/system/" + systemGroupId + "/acaspatchdata";
+	var url = reportAPI + "system/" + systemGroupId + "/acaspatchdata";
 	// get back the data
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -2372,7 +2380,7 @@ async function updateChecklistFilter() {
 	$('#checklistFilter').empty();
 
 	// get the list of checklists
-	var url = readAPI + "/systems/" + encodeURIComponent(systemGroupId);
+	var url = readAPI + "systems/" + encodeURIComponent(systemGroupId);
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
@@ -2401,7 +2409,7 @@ async function getSystemChecklistReport() {
 
 	$.blockUI({ message: "Generating the Checklist Report ...please wait" }); 
 	// call the API to get the checklist data
-	var url = readAPI + "/artifact";
+	var url = readAPI + "artifact";
 	let response = await fetch(url + "/" + id, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2469,7 +2477,7 @@ async function getSystemChecklistReport() {
 // Reports: listing of the controls
 async function getControlsReport() {
 	var pii = $('#checklistPrivacyFilter')[0].checked;
-	var url = controlAPI + "/?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
+	var url = controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
 	$.blockUI({ message: "Generating the Controls Report ...please wait" }); 
 	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
@@ -2532,7 +2540,7 @@ async function getHostVulnerabilityReport() {
 
 	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" }); 
 	// call the API to get the checklist data
-	var url = reportAPI + "/system/" + id + "/vulnid/" + vulnid;
+	var url = reportAPI + "system/" + id + "/vulnid/" + vulnid;
 	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2579,7 +2587,7 @@ async function getHostVulnerabilityReport() {
 
 // generate a list of controls for the control for host report
 async function getControlsListing(){
-	let response = await fetch(controlAPI + "/majorcontrols/", {headers: {
+	let response = await fetch(controlAPI + "majorcontrols/", {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
@@ -2608,7 +2616,7 @@ async function getRMFControlForHostReport() {
 
 	$.blockUI({ message: "Updating the Hosts for Control listing...this may take a minute" }); 
 	// is the PII checked? This is returned as an array even if just one
-	var url = complianceAPI + "/system/" + encodeURIComponent(id) + "/?pii=true&filter=high&majorcontrol=" + control;
+	var url = complianceAPI + "system/" + encodeURIComponent(id) + "/?pii=true&filter=high&majorcontrol=" + control;
 
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -2660,7 +2668,7 @@ async function reloadNessusPatchData() {
 		.then((willDelete) => {
 		if (willDelete) {
 			$.ajax({
-				url : reportAPI + "/reloaddata/?datatype=nessusacas",
+				url : reportAPI + "reloaddata/?datatype=nessusacas",
 				type : 'PUT',
 				beforeSend: function(request) {
 					request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
@@ -2691,7 +2699,7 @@ async function reloadVulnerabilityData() {
 		.then((willDelete) => {
 		if (willDelete) {
 			$.ajax({
-				url : reportAPI + "/reloaddata/?datatype=vulnerability",
+				url : reportAPI + "reloaddata/?datatype=vulnerability",
 				type : 'PUT',
 				beforeSend: function(request) {
 					request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
@@ -2717,7 +2725,7 @@ async function getAuditRecords() {
 	// call the API to get the checklist data
 	var url = auditAPI;
 	$.blockUI({ message: "Generating the Audit Listing...please wait" }); 
-	let response = await fetch(url + "/", {headers: {
+	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
 	if (response.ok) {
@@ -2768,7 +2776,7 @@ async function getComplianceBySystem() {
 		$.blockUI({ message: "Updating the compliance listing...this may take a minute" }); 
 		// is the PII checked? This is returned as an array even if just one
 		var pii = $('#checklistPrivacyFilter')[0].checked;
-		var url = complianceAPI + "/system/" + encodeURIComponent(system) + "/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
+		var url = complianceAPI + "system/" + encodeURIComponent(system) + "/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
 		let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2846,7 +2854,7 @@ async function getComplianceBySystemExport() {
 		$.blockUI({ message: "Generating the compliance export...this may take a minute" }); 
 		// is the PII checked? This is returned as an array even if just one
 		var pii = $('#checklistPrivacyFilter')[0].checked;
-		var url = complianceAPI + "/system/" + encodeURIComponent(system) + "/export/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
+		var url = complianceAPI + "system/" + encodeURIComponent(system) + "/export/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
 
 		// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 		var request = new XMLHttpRequest();
@@ -2883,7 +2891,7 @@ async function getComplianceBySystemExport() {
 }
 
 async function getVulnerabilitiesByControl(id, control) {
-	let response = await fetch(readAPI + "/" + id + "/control/" + encodeURIComponent(control), {headers: {
+	let response = await fetch(readAPI + "" + id + "/control/" + encodeURIComponent(control), {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
@@ -2897,7 +2905,7 @@ async function getVulnerabilitiesByControl(id, control) {
 }
 
 async function getControlInformation(control) {
-	let response = await fetch(controlAPI + "/" + encodeURIComponent(control), {headers: {
+	let response = await fetch(controlAPI + "" + encodeURIComponent(control), {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
 	}});
 	if (response.ok) {
