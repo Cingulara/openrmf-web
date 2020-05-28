@@ -43,7 +43,7 @@
 	<link href="/assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 	
 	<!-- BEGIN CSS for this page -->
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"/>
+	
 	<!-- END CSS for this page -->		
 </head>
 
@@ -146,7 +146,7 @@
 					<a href="/upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
 				</li>
 				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
-					<a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
+					<a href="/audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
 				</li>
             </ul>
             <div class="clearfix"></div>
@@ -189,8 +189,10 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-wrench reporticon"></i><br />
-                                        <button type="button" id="btnRunNessusReport" onclick="location.href = 'nessus.html';" 
-									        class="btn btn-success">Run Report</button>
+                                        <button type="button" id="btnRunNessusReport" title="Run the Nessus ACAS Report by System" onclick="location.href = 'nessus.html';" 
+											class="btn btn-success">Run Report</button>
+										<button type="button" id="btnReloadNessusData" title="Refresh all System data on Nessus ACAS Reports" style="display: none;" onclick="reloadNessusPatchData();" 
+									        class="btn btn-warning">Refresh Data</button>
                                     </div>
                                 </div>
                                 <!-- System Total Score Chart -->
@@ -200,7 +202,7 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-pie-chart reporticon"></i><br />
-                                        <button type="button" id="btnRunSystemCharts" onclick="location.href = 'charts.html';" 
+                                        <button type="button" id="btnRunSystemCharts" title="Run the Scoring Pie Chart Report by System" onclick="location.href = 'charts.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
@@ -210,19 +212,43 @@
                                         System Checklist Listing
                                     </div>
                                     <div class="reportListingDescription">
-                                        <i class="fa fa-check-square reporticon"></i><br />
-                                        <button type="button" id="btnRunChecklistReport" onclick="location.href = 'checklists.html';" 
+                                        <i class="fa fa-list reporticon"></i><br />
+                                        <button type="button" id="btnRunChecklistReport" title="Run the System Checklist Report by Checklist" onclick="location.href = 'checklists.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
-                                <!-- System Checklist with Score Listing -->
+                                <!-- Vulnerability Listing for Hosts / Servers -->
+                                <div class="reportListing">
+                                    <div class="reportListTitle">
+                                        Host Vulnerability Report
+                                    </div>
+                                    <div class="reportListingDescription">
+                                        <i class="fa fa-bug reporticon"></i><br />
+                                        <button type="button" id="btnRunVulnerabilityReport" title="Run the Vulnerability by Host Report by System" onclick="location.href = 'vulnerability.html';" 
+									        class="btn btn-success">Run Report</button>
+										<button type="button" id="btnReloadVulnerabilityData" title="Refresh all System data on Checklist Vulnerability Reports" style="display: none;" onclick="reloadVulnerabilityData();" 
+											class="btn btn-warning">Refresh Data</button>
+                                    </div>
+                                </div>
+                                <!-- Control Listing for Hosts / Servers -->
+                                <div class="reportListing">
+                                    <div class="reportListTitle">
+                                        Host by RMF Control Report
+                                    </div>
+                                    <div class="reportListingDescription">
+                                        <i class="fa fa-check-square reporticon"></i><br />
+                                        <button type="button" id="btnRunControlHostListingReport" title="Run the Host by RMF Control Report by System" onclick="location.href = 'controlhostlisting.html';" 
+									        class="btn btn-success">Run Report</button>
+                                    </div>
+                                </div>
+                                <!-- RMF Controls Listing -->
                                 <div class="reportListing">
                                     <div class="reportListTitle">
                                         RMF Controls Listing
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-table reporticon"></i><br />
-                                        <button type="button" id="btnRunControlsReport" onclick="location.href = 'controls.html';" 
+                                        <button type="button" id="btnRunControlsReport" title="Run the RMF Controls Report" onclick="location.href = 'controls.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
@@ -274,8 +300,6 @@
 <script src="/assets/plugins/sweetalert/sweetalert.js"></script>
 
 <!-- BEGIN Java Script for this page -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-	
 	<script>
 		$(document).ready(function() {
 			// authentication first
@@ -285,6 +309,8 @@
 					setupProfileMenu();
 					// see if the upload menu should show
 					verifyMenus();
+					// see if they are allowed to refresh data
+					verifyReportRefreshData();
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');
