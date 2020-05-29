@@ -189,8 +189,10 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-wrench reporticon"></i><br />
-                                        <button type="button" id="btnRunNessusReport" onclick="location.href = 'nessus.html';" 
-									        class="btn btn-success">Run Report</button>
+                                        <button type="button" id="btnRunNessusReport" title="Run the Nessus ACAS Report by System" onclick="location.href = 'nessus.html';" 
+											class="btn btn-success">Run Report</button>
+										<button type="button" id="btnReloadNessusData" title="Refresh all System data on Nessus ACAS Reports" style="display: none;" onclick="reloadNessusPatchData();" 
+									        class="btn btn-warning">Refresh Data</button>
                                     </div>
                                 </div>
                                 <!-- System Total Score Chart -->
@@ -200,7 +202,7 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-pie-chart reporticon"></i><br />
-                                        <button type="button" id="btnRunSystemCharts" onclick="location.href = 'charts.html';" 
+                                        <button type="button" id="btnRunSystemCharts" title="Run the Scoring Pie Chart Report by System" onclick="location.href = 'charts.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
@@ -211,7 +213,7 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-list reporticon"></i><br />
-                                        <button type="button" id="btnRunChecklistReport" onclick="location.href = 'checklists.html';" 
+                                        <button type="button" id="btnRunChecklistReport" title="Run the System Checklist Report by Checklist" onclick="location.href = 'checklists.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
@@ -222,8 +224,10 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-bug reporticon"></i><br />
-                                        <button type="button" id="btnRunVulnerabilityReport" onclick="location.href = 'vulnerability.html';" 
+                                        <button type="button" id="btnRunVulnerabilityReport" title="Run the Vulnerability by Host Report by System" onclick="location.href = 'vulnerability.html';" 
 									        class="btn btn-success">Run Report</button>
+										<button type="button" id="btnReloadVulnerabilityData" title="Refresh all System data on Checklist Vulnerability Reports" style="display: none;" onclick="reloadVulnerabilityData();" 
+											class="btn btn-warning">Refresh Data</button>
                                     </div>
                                 </div>
                                 <!-- Control Listing for Hosts / Servers -->
@@ -233,7 +237,7 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-check-square reporticon"></i><br />
-                                        <button type="button" id="btnRunControlHostListingReport" onclick="location.href = 'controlhostlisting.html';" 
+                                        <button type="button" id="btnRunControlHostListingReport" title="Run the Host by RMF Control Report by System" onclick="location.href = 'controlhostlisting.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
@@ -244,7 +248,7 @@
                                     </div>
                                     <div class="reportListingDescription">
                                         <i class="fa fa-table reporticon"></i><br />
-                                        <button type="button" id="btnRunControlsReport" onclick="location.href = 'controls.html';" 
+                                        <button type="button" id="btnRunControlsReport" title="Run the RMF Controls Report" onclick="location.href = 'controls.html';" 
 									        class="btn btn-success">Run Report</button>
                                     </div>
                                 </div>
@@ -305,6 +309,8 @@
 					setupProfileMenu();
 					// see if the upload menu should show
 					verifyMenus();
+					// see if they are allowed to refresh data
+					verifyReportRefreshData();
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');
