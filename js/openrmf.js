@@ -1512,7 +1512,7 @@ async function viewVulnDetails(vulnId) {
 			if (data.stiG_DATA[i].vulN_ATTRIBUTE == "CCI_REF"){
 				ccilist += "<b>" + data.stiG_DATA[i].attributE_DATA + "</b>: ";
 				cciInfo = await getCCIItemRecord(data.stiG_DATA[i].attributE_DATA );
-				if (cciInfo != null > 0) {
+				if (cciInfo != null) {
 					ccilist += cciInfo.definition + "<br /><ul>";
 					// foreach of the references spit them out
 					for(const reference of cciInfo.references){
