@@ -43,6 +43,7 @@
 		<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
 		
 		<!-- BEGIN CSS for this page -->
+		<link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="/assets/css/dataTables.bootstrap4.min.css"/>
 		<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
     <style>	
@@ -185,8 +186,11 @@
 						<div class="card mb-3">
 							<div class="card-header">
 								<h3 class="float-left"><i class="fa fa-table"></i> My Systems</h3>
-								<a href="#custom-modal" id="btnAddSystem" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
-                  					data-target="#customModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-plus"></i></span> Add</a>
+								<button id="btnAddSystem" style="display: none;" 
+									onclick="resetAddSystemForm(); $('#customModal').modal('show');"
+									class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
+									><span class="btn-label"><i class="fa fa-plus"></i></span> Add</button>
+									<!-- data-target="#customModal" data-toggle="modal" -->
 							</div>
 							<div class="card-body">
 								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
@@ -237,6 +241,7 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
+<script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
 <script src="assets/js/jquery.dataTables.min.js"></script>
 <script src="assets/js/dataTables.bootstrap4.min.js"></script>
 <script src="js/moment.min.js"></script>
@@ -260,6 +265,23 @@
 					getChecklistListingBySession();
 				else
 					getSystemListing();
+
+				// file setup for the Nessus File Upload
+				$('#frmNessusFile').filer({
+					limit: 1,
+					maxSize: 60,
+					extensions: ['nessus'],
+					changeInput: true,
+					showThumbs: true,
+					addMore: true,
+					captions: {
+						errors: {
+						filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+						filesType: "Only Nessus *.nessus XML-based files can be uploaded.",
+						filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB."
+						}
+					}
+				});
 			}
 			else {
 				swal("Invalid Login", "You are not logged in. Please check your setup with Keycloak.", "error");
@@ -295,8 +317,8 @@
 			  <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this System</small>
 			</div>
 			<div class="form-group">
-				<label for="checklistFile">Nessus ACAS File (if any)</label><br />
-				<input type="file" id="frmNessusFile" /> 
+				<label for="frmNessusFile">Nessus ACAS File (if any)</label><br />
+				<input type="file" name="frmNessusFile" id="frmNessusFile" /> 
 			</div>
 		</div>
 		<div class="modal-footer">

@@ -210,9 +210,10 @@
 										<div id="divSystemCreated"></div>
 										<div id="divSystemUpdated"></div>
 										<div id="divSystemLastCompliance"></div><br />
-										<a href="#custom-modal"  id="btnUpdateSystem" style="display: none;" 
+										<button id="btnUpdateSystem" style="display: none;" 
+											onclick="resetEditSystemForm(); $('#customModal').modal('show');"
 											class="btn btn-primary btn-sm m-r-5 m-b-10" data-target="#customModal" data-toggle="modal"><span 
-											class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
+											class="btn-label"><i class="fa fa-edit"></i></span> Edit</button>
 										<button type="button" id="btnRunCompliance" onclick="runComplianceFromSystem(getParameterByName('id'), false);" 
 											class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-check-square-o"></i></span> Compliance</button>
 										<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromSystem(getParameterByName('id'), false);" 
@@ -470,7 +471,7 @@
 					}
 				} );
 
-				// file setup for the Template Upload
+				// file setup for the Nessus File Upload
 				$('#frmNessusFile').filer({
 					limit: 1,
 					maxSize: 60,
@@ -521,7 +522,7 @@
 			  <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this System</small>
 			</div>
 			<div class="form-group">
-				<label for="checklistFile">Nessus ACAS File (if any)</label><br />
+				<label for="frmNessusFile">Nessus ACAS File (if any)</label><br />
 				<input type="file" name="frmNessusFile" id="frmNessusFile" /> 
 			</div>
 		</div>

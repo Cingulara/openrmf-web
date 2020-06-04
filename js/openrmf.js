@@ -454,6 +454,18 @@ async function getSystemRecord(systemGroupId) {
 	}
 }
 
+// reset the Add System form
+function resetAddSystemForm() {
+	$('#frmNessusFile').trigger("filer.reset");
+	$('#frmSystemTitle').val('');
+	$('#frmSystemDescription').val('');
+}
+
+// reset the Edit System form
+function resetEditSystemForm() {
+	$('#frmNessusFile').trigger("filer.reset");
+}
+
 // the add page on the System record page calls this if you have permissions
 function addSystem(){
 	swal("Adding System...", {
