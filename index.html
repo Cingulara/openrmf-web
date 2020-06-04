@@ -394,8 +394,8 @@
 		// authentication first
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 			if (authenticated) {
-        // setup the profile account and logout menu
-        setupProfileMenu();
+        		// setup the profile account and logout menu
+        		setupProfileMenu();
 				// see if the upload menu should show
 				verifyMenus();
 				getChecklistTotalCount();

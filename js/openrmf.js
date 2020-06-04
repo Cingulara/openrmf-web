@@ -3110,6 +3110,6 @@ function setupProfileMenu()
 			path = path + "/" + locations[i];
 	}
 
-	logoutURL += "?redirect_uri="+encodeURIComponent(location.protocol + "//" + location.host + path + "/logout.html");
+	logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
 	$("#profileLogoutURL").attr("href", logoutURL);
 }
