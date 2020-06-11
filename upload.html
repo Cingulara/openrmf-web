@@ -55,8 +55,8 @@
 		<script src="assets/js/moment.min.js"></script>
 		
 		<!-- BEGIN CSS for this page -->
-		<link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
-		<link href="assets/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet" />
+
+    
 		<!-- END CSS for this page -->
 				
 </head>
@@ -207,9 +207,12 @@
                   </div>
                   <div class="form-group">
                     <label for="checklistFile">Checklist Files (up to 10 at a time)</label><br />
-                    <input type="file" name="files[]" id="checklistFile" multiple="multiple" required />
+                    <input type="file" class="form-group" name="files[]" id="checklistFile" multiple="multiple" required />
+                    <div id="checklistFileList" class="fileArea" style="display:none;"></div>
                   </div>
-                  <button type="submit" onclick="uploadChecklist();" class="btn btn-primary">Upload and Save</button>
+                  <div class="form-group">
+                    <button type="submit" onclick="uploadChecklist(); return false;" class="btn btn-primary">Upload and Save</button>
+                  </div>
                 </form>
 
                 </div><!-- end card body -->							
@@ -317,7 +320,7 @@
 <script src="assets/js/pikeadmin.js"></script>
 
 <!-- BEGIN Java Script for this page -->
-<script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
+<!-- <script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script> -->
 <script src="assets/plugins/sweetalert/sweetalert.js"></script>
 <script src="./js/openrmf.js"></script>
 <script src="./js/apis.js"></script>
@@ -337,38 +340,44 @@
           getChecklistSystemsForUpload(getParameterByName('id'));
             
           // file setup for the 10-max Checklist file upload
-          $('#checklistFile').filer({
-              limit: 10,
-              maxSize: 20,
-              extensions: ['ckl', 'xml'],
-              changeInput: true,
-              showThumbs: true,
-              addMore: true,
-              captions: {
-                errors: {
-                  filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
-                  filesType: "Only Checklist *.CKL and SCAP scan XCCDF *.XML files can be uploaded.",
-                  filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB.",
-                  filesSizeAll: "Files you have chosen are too large! Please upload a file up to {{fi-maxSize}} MB."
-                }
-              }
+          document.getElementById('checklistFile').addEventListener('change', function(e) {
+            if (this.files.length > 10) {
+              alert("Maximum 10 files at a time please.");
+              $('#checklistFile').val(""); // reset the list
+              return false;
+            }
+            var list = document.getElementById('checklistFileList');
+            list.innerHTML = '<div>';
+            var fileList = '';
+            for (var i = 0; i < this.files.length; i++) {
+              fileList  = '<div id="checklistFile' + i + '" class="fileListing"><i class="fa fa-file fileListIcon"></i>';
+              fileList += '<i class="fa fa-trash fileTrashIcon"></i>File: <b>'+ this.files[i].name + '</b><br />type: ' + 
+                  this.files[i].name.substring(this.files[i].name.lastIndexOf('.') + 1);
+              fileList += '</div>';
+
+              list.innerHTML += fileList;
+            }
+            list.innerHTML += '</div>';
+            if (this.files.length == 0) list.style.display = 'none';
+            else list.style.display = 'block';
           });
+          
           // file setup for the Template Upload
-          $('#templateFile').filer({
-              limit: 1,
-              maxSize: 5,
-              extensions: ['ckl'],
-              changeInput: true,
-              showThumbs: true,
-              addMore: true,
-              captions: {
-                errors: {
-                  filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
-                  filesType: "Only Checklist *.CKL files can be uploaded.",
-                  filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB."
-                }
-              }
-          });
+          // $('#templateFile').filer({
+          //     limit: 1,
+          //     maxSize: 5,
+          //     extensions: ['ckl'],
+          //     changeInput: true,
+          //     showThumbs: true,
+          //     addMore: true,
+          //     captions: {
+          //       errors: {
+          //         filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+          //         filesType: "Only Checklist *.CKL files can be uploaded.",
+          //         filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB."
+          //       }
+          //     }
+          // });
           
           var redir = getParameterByName('redir');
           if (redir) {

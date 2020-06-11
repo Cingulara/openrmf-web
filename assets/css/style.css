@@ -1366,3 +1366,29 @@ a.btn:focus {
   width: 100%;
   text-align: center;
 }
+
+/***************************
+ File Upload CSS
+****************************/
+.fileListing {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #999999;
+  background-color: #f9f9f9;
+}
+.fileArea {
+  margin: 10px;
+  width: 100%;
+}
+.fileListIcon {
+  float: left;
+  padding: 5px;
+  font-size: 1.8em;
+  color: rgba(83, 137, 245, 0.7);
+}
+.fileTrashIcon {
+  float: right;
+  padding: 5px;
+  font-size: 1.2em;
+  color: rgba(83, 137, 245, 0.7);
+}
