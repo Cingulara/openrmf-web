@@ -1382,7 +1382,7 @@ a.btn:focus {
 }
 .fileListIcon {
   float: left;
-  padding: 5px;
+  padding: 5px 5px 50px 5px;
   font-size: 1.8em;
   color: rgba(83, 137, 245, 0.7);
 }

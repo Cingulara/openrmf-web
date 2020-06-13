@@ -2106,6 +2106,7 @@ async function getChecklistSystemsForUpload(id) {
 		}
 	}
 }
+
 // called from the Upload page to upload one or more checklists
 function uploadChecklist(){
 	var formData = new FormData();
@@ -2171,7 +2172,7 @@ function uploadChecklist(){
 					swal("You had " + data.successful + " Checklists uploaded successfully!", message, "error");
 				}
 				// reset the form
-				$('#checklistFile').trigger("filer.reset")
+				//$('#checklistFile').trigger("filer.reset")
 			},
 			error: function(data) {
 				//show any that did not work right specifically, the rest worked correctly
