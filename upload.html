@@ -338,44 +338,7 @@
           verifyMenus();
           // get the list of systems
           getChecklistSystemsForUpload(getParameterByName('id'));
-            
-          // // file setup for the 10-max Checklist file upload
-          // document.getElementById('checklistFile').addEventListener('change', function(e) {
-          //   if (this.files.length > 10) {
-          //     alert("Maximum 10 files at a time please.");
-          //     $('#checklistFile').val(""); // reset the list
-          //     return false;
-          //   }
-          //   for (var i = 0; i < this.files.length; i++) {
-          //     if (this.files[i].name.toLowerCase().substring(this.files[i].name.lastIndexOf('.') + 1) != 'xml' && 
-          //         this.files[i].name.toLowerCase().substring(this.files[i].name.lastIndexOf('.') + 1) != 'ckl') {
-          //       alert("Please only use SCAP XML or DISA CKL files.");
-          //       $('#checklistFile').val(""); // reset the list
-          //       return false;
-          //     }
-          //   }
 
-          //   // ok to proceed
-          //   var list = document.getElementById('checklistFileList');
-          //   var fileSize = 0;
-          //   list.innerHTML = '<div>';
-          //   var fileList = '';
-          //   for (var i = 0; i < this.files.length; i++) {
-          //     fileSize = ((this.files[i].size/1024)/1024).toFixed(2); // MB
-
-          //     fileList  = '<div id="checklistFile' + i + '" class="fileListing"><i class="fa fa-file fileListIcon"></i>';
-          //     fileList += '<i class="fa fa-trash fileTrashIcon" onclick=""></i>File: <b>'+ this.files[i].name + '</b><br />type: ' + 
-          //         this.files[i].name.substring(this.files[i].name.lastIndexOf('.') + 1);
-          //     fileList += '&nbsp;&nbsp; size: ' + fileSize.toString() + ' MB';
-          //     fileList += '</div>';
-
-          //     list.innerHTML += fileList;
-          //   }
-          //   list.innerHTML += '</div>';
-          //   if (this.files.length == 0) list.style.display = 'none';
-          //   else list.style.display = 'block';
-          // });
-          
           // file setup for the 10-max Checklist file upload
           $('#checklistFile').filer({
               limit: 10,
