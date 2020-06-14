@@ -2163,7 +2163,7 @@ function uploadChecklist(){
 				if (data.failed == 0)
 					swal("Your " + data.successful + " Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				else {
-					var message = "There were " + data.failed + " failed checklists. ( "; 
+					var message = "There were " + data.failed + " failed checklists. Check that they have a valid Hostname and format. ( "; 
 					$.each(data.failedUploads, function (index, value) {
 						if (index > 0) message += "; ";
 						message += value;
@@ -2172,7 +2172,7 @@ function uploadChecklist(){
 					swal("You had " + data.successful + " Checklists uploaded successfully!", message, "error");
 				}
 				// reset the form
-				//$('#checklistFile').trigger("filer.reset")
+				$('#checklistFile').trigger("filer.reset")
 			},
 			error: function(data) {
 				//show any that did not work right specifically, the rest worked correctly
