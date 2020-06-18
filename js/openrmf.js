@@ -829,6 +829,10 @@ function uploadFromSystem(id) {
 	else 
 		location.href = "upload.html?id=" + sessionStorage.getItem("currentSystem");;
 }
+function uploadFromChecklist() {
+	location.href = "upload.html?id=" + sessionStorage.getItem("currentSystem");;
+}
+
 // delete a system, its checklists, and its scores records
 async function deleteSystem(id) {
 	if (!id) // get it from the session
@@ -1606,11 +1610,6 @@ function updateSingleChecklist(id) {
 	formData.append("assettype",$("#frmChecklistAssetType").val());
 	formData.append("machinerole",$("#frmChecklistRole").val());
 
-	if ($('#checklistFile').val()) {
-		// someone added a file
-		formData.append('checklistFile',$('#checklistFile')[0].files[0]);
-		url = uploadAPI + "" + id; // include the file contents in the update
-	}
 	$.ajax({
 		url : url,
 		data : formData,
@@ -3068,6 +3067,7 @@ function verifyDownloadCompliance() {
 function verifyUpdateChecklist() {
 	if (canUpload()) {
 		$("#btnUpdateChecklist").show();
+		$("#btnUploadChecklist").show();
 	}
 }
 function verifyUpdateSystem() {

@@ -205,6 +205,8 @@
 									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
 								<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
 									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
+								<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromChecklist();" 
+										class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Upload</button>
 								<button type="button" id="btnDeleteChecklist" style="display: none;" onclick="deleteChecklist(getParameterByName('id'), false);" 
 									class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
 							</div>
@@ -590,10 +592,6 @@
 				</select>
 				<small id="titleRole" class="form-text text-muted">Select the Role for this machine</small>
 			</div>			
-			<div class="form-group">
-				<label for="checklistFile">Checklist File (required)</label><br />
-				<input type="file" id="checklistFile" /> 
-			</div>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
