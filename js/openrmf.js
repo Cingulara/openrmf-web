@@ -1550,6 +1550,7 @@ async function viewVulnDetails(vulnId) {
 			$("#frmVulnComments").val(data.comments);
 			$("#frmVulnSecurityOverride").val(data.severitY_OVERRIDE);
 			$("#frmVulnSecurityJustification").val(data.severitY_JUSTIFICATION);
+			$("#frmBulkUpdateCheckbox").prop('checked', false);
 			$("#btnUpdateVulnerability").show();
 		}
 		else {
@@ -1649,6 +1650,7 @@ function updateSingleChecklistVulnerability(artifactid) {
 	formData.append("details",htmlEscape($("#frmVulnDetails").val()));
 	formData.append("severityoverride",$("#frmVulnSecurityOverride").val());
 	formData.append("justification",htmlEscape($("#frmVulnSecurityJustification").val()));
+	formData.append("bulkUpdate",$("#frmBulkUpdateCheckbox").prop("checked"));
 
 	$.ajax({
 		url : url,
