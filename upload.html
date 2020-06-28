@@ -227,9 +227,9 @@
                   <p>Use this form to upload a new *.CKL STIG checklist file or SCAP Scan XCCDF *.XML to the system for scoring, indexing, and managing
                     your STIG information. Select your system and then select up to ten (10) *.CKL or *.XML files to upload at a time. 
                     DoD SCAP as well as Nessus SCAP files should work fine.</p>
-                  <p>All fields are mandatory. One Checklist per CKL file.</p>
+                  <p>All fields are mandatory. One Checklist per CKL file. CKL files are produced by the <a target="_blank" rel="noopener noreferrer" 
+                    href="https://public.cyber.mil/stigs/">DISA StigViewer application</a> available on their public website.</p>
                   <p>* Please fill in the <b><i>Hostname</i></b> field on your Checklist file CKL! All checklists are named by HOSTNAME-STIGTYPE-REVISION.</p>
-                  <p>i.e. <i>ca2335.myorg.navy.mil-Google Chrome Current WIN STIG-V2-R15 dated 25 Jan 2019</i></p>
                 </div><!-- end card body -->							
               </div><!-- end card-->
             </div>
@@ -341,7 +341,7 @@
           // file setup for the 10-max Checklist file upload
           $('#checklistFile').filer({
               limit: 10,
-              maxSize: 20,
+              maxSize: 30,
               extensions: ['ckl', 'xml'],
               changeInput: true,
               showThumbs: true,
