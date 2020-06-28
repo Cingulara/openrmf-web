@@ -35,19 +35,19 @@ Contribute
 Want to be part of this project? Great! All are welcome!
 Whether you have a great feature request or you fancy owning a task from the road map above feel free to get in touch.
 <br>
-By <b>themes</b> you can contribute to plugin by making a <a href="https://github.com/CreativeDream/jquery.filer/pulls" target="_blank">Pull Request</a> to <i>/css/themes/</i> and writing a short description containing plugin templates options.
+By <b>themes</b> you can contribute to plugin by making a <a href="https://github.com/CreativeDream/jquery.filer/pulls" target="_blank" rel="noopener noreferrer">Pull Request</a> to <i>/css/themes/</i> and writing a short description containing plugin templates options.
 
 Support
 -------
-Questions or need help? You can ask it using <a href="http://stackoverflow.com/questions/ask?tags=jQuery,jquery.filer" target="_blank">StackOverflow</a> site where you are most likely to get answer quickly. Make sure you add the tags "jquery" and "jquery.filer" when posting.
+Questions or need help? You can ask it using <a href="http://stackoverflow.com/questions/ask?tags=jQuery,jquery.filer" target="_blank" rel="noopener noreferrer">StackOverflow</a> site where you are most likely to get answer quickly. Make sure you add the tags "jquery" and "jquery.filer" when posting.
 
-If you run into an issue and need to report a bug or you just have a question, please create an <a href="https://github.com/CreativeDream/jquery.filer/issues" target="_blank">Issue</a> on GitHub issues and we will investigate it.
+If you run into an issue and need to report a bug or you just have a question, please create an <a href="https://github.com/CreativeDream/jquery.filer/issues" target="_blank" rel="noopener noreferrer">Issue</a> on GitHub issues and we will investigate it.
 
 Follow <a href="http://twitter.com/increativedream">@creativedream</a> for the latest updates.
 
 <b>Make a donation</b> - jQuery.filer is free and open source and your donations will help us to develop it. You can support our project by donating with PayPal. All contributions, small or great, are very much appreciated. Thank you!
 <br><br>
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WFVGJ66RW22GJ" target="_blank"><img src="http://grandesign.md/__cr/1445905675_paypal-curved.png"></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WFVGJ66RW22GJ" target="_blank" rel="noopener noreferrer"><img src="http://grandesign.md/__cr/1445905675_paypal-curved.png"></a>
 
 PHP File Uploader
 -------

@@ -25,7 +25,7 @@
 						f._changeInput();
 					},
 					_bindInput: function() {
-						if(n.changeInput && o.size() > 0) {
+						if(n.changeInput && o.length > 0) {
 							o.bind("click", f._clickHandler);
 						}
 						s.on({
@@ -344,7 +344,7 @@
 						},
 						renderFile: function(file, html, opts) {
 							if(html.find('.jFiler-item-thumb-image')
-								.size() == 0) {
+								.length == 0) {
 								return false;
 							}
 							if(file.file && opts.type == "image") {

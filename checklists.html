@@ -86,7 +86,7 @@
 						</div>
 	
 						<!-- item-->
-						<a target="_blank" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
+						<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
 							<p class="notify-details ml-0">
 								<b>Do you need documentation on how OpenRMF works?</b>
 								<span>GitHub Pages</span>
@@ -210,9 +210,10 @@
 										<div id="divSystemCreated"></div>
 										<div id="divSystemUpdated"></div>
 										<div id="divSystemLastCompliance"></div><br />
-										<a href="#custom-modal"  id="btnUpdateSystem" style="display: none;" 
+										<button id="btnUpdateSystem" style="display: none;" 
+											onclick="resetEditSystemForm(); $('#customModal').modal('show');"
 											class="btn btn-primary btn-sm m-r-5 m-b-10" data-target="#customModal" data-toggle="modal"><span 
-											class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
+											class="btn-label"><i class="fa fa-edit"></i></span> Edit</button>
 										<button type="button" id="btnRunCompliance" onclick="runComplianceFromSystem(getParameterByName('id'), false);" 
 											class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-check-square-o"></i></span> Compliance</button>
 										<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromSystem(getParameterByName('id'), false);" 
@@ -320,10 +321,11 @@
     
 	<footer class="footer">
 		<span class="text-right">
-		&copy; <a target="_blank" href="https://www.cingulara.com/">Cingulara 2019</a>
+			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
+			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
 		</span>
 		<span class="float-right">
-		Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
 		</span>
 	</footer>
 
@@ -418,7 +420,7 @@
 				}
 				
 				var tableChecklist = $('#tblChecklistListing').DataTable({
-				"pageLength": 50, 
+				"pageLength": 25, 
 				"columns": [
 					{ 
 						"className":      'details-control',
@@ -469,7 +471,7 @@
 					}
 				} );
 
-				// file setup for the Template Upload
+				// file setup for the Nessus File Upload
 				$('#frmNessusFile').filer({
 					limit: 1,
 					maxSize: 60,
@@ -520,7 +522,7 @@
 			  <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this System</small>
 			</div>
 			<div class="form-group">
-				<label for="checklistFile">Nessus ACAS File (if any)</label><br />
+				<label for="frmNessusFile">Nessus ACAS File (if any)</label><br />
 				<input type="file" name="frmNessusFile" id="frmNessusFile" /> 
 			</div>
 		</div>

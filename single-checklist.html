@@ -78,7 +78,7 @@
 					</div>
 
 					<!-- item-->
-					<a target="_blank" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
+					<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
 						<p class="notify-details ml-0">
 							<b>Do you need documentation on how OpenRMF works?</b>
 							<span>GitHub Pages</span>
@@ -205,6 +205,8 @@
 									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
 								<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
 									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
+								<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromChecklist();" 
+										class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Upload</button>
 								<button type="button" id="btnDeleteChecklist" style="display: none;" onclick="deleteChecklist(getParameterByName('id'), false);" 
 									class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
 							</div>
@@ -437,10 +439,11 @@
     
 	<footer class="footer">
 		<span class="text-right">
-			&copy; <a target="_blank" href="https://www.cingulara.com/">Cingulara 2019</a>
+			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
+			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
 		</span>
 		<span class="float-right">
-		Powered by <a target="_blank" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
+		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
 		</span>
 	</footer>
 
@@ -589,10 +592,6 @@
 				</select>
 				<small id="titleRole" class="form-text text-muted">Select the Role for this machine</small>
 			</div>			
-			<div class="form-group">
-				<label for="checklistFile">Checklist File (required)</label><br />
-				<input type="file" id="checklistFile" /> 
-			</div>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -650,6 +649,12 @@
 			  <textarea class="form-control" id="frmVulnSecurityJustification" cols="40" rows="4"
 			  	aria-describedby="titleSecurityJustification" placeholder="Enter any Comments"></textarea>
 			  <small id="titleSecurityJustification" class="form-text text-muted">Enter the justification on the override for this vulnerability</small>
+			</div>
+			<div class="form-group">
+			  <label for="frmBulkUpdateCheckbox">Save Information Across All Checklist Types for this Vulnerability ID?</label>
+			  <input type="checkbox" id="frmBulkUpdateCheckbox" /> Yes
+			  <small id="titleBulkUpdate" class="form-text text-muted">Save this vulnerability information across all similar 
+				  checklists types in this System?</small>
 			</div>
 			
 		</div>
