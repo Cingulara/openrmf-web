@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css?family=Roboto:400,500,700,300");
+@import url("/assets/css/roboto.css");
 
 html {
   position: relative;
@@ -257,7 +257,7 @@ a {
     text-align: center;
     height: 50px;
     position: relative;
-    width: 250px;
+    width: 200px;
     z-index: 1; }
    
 .headerbar .headerbar-left .logo img {
@@ -272,7 +272,7 @@ a {
   border-radius: 0;
   margin-bottom: 0;
   padding: 0 10px;
-  margin-left: 250px;
+  margin-left: 200px;
   min-height: 50px;}
   
 .navbar-custom .nav-link {
@@ -300,7 +300,7 @@ a {
 
 .main-sidebar {
   top: 50px;
-  width: 250px;
+  width: 200px;
   z-index: 10;
   background: #262D33;
   bottom: 70px;
@@ -310,7 +310,7 @@ a {
   position: absolute; }
 
 .content-page {
-  margin-left: 250px;
+  margin-left: 200px;
   overflow: hidden; }
   
 .content-page .content {
@@ -467,7 +467,7 @@ body.adminbody .main-sidebar.left {
     padding: 10px;
     position: absolute;
     right: 0;
-    left: 250px;
+    left: 200px;
     background-color: #fff; }
 
 #main.enlarged .menu-title {
@@ -732,8 +732,8 @@ body.adminbody .main-sidebar.left {
 	}
 
 	.mobile-content {
-		left: 250px;
-		right: -250px;
+		left: 200px;
+		right: -200px;
 	}
 
 	.wrapper-page {
@@ -1365,4 +1365,30 @@ a.btn:focus {
 .reportListingDescription {
   width: 100%;
   text-align: center;
+}
+
+/***************************
+ File Upload CSS
+****************************/
+.fileListing {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #999999;
+  background-color: #f9f9f9;
+}
+.fileArea {
+  margin: 10px;
+  width: 100%;
+}
+.fileListIcon {
+  float: left;
+  padding: 5px 5px 50px 5px;
+  font-size: 1.8em;
+  color: rgba(83, 137, 245, 0.7);
+}
+.fileTrashIcon {
+  float: right;
+  padding: 5px;
+  font-size: 1.2em;
+  color: rgba(83, 137, 245, 0.7);
 }

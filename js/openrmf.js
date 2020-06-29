@@ -454,6 +454,18 @@ async function getSystemRecord(systemGroupId) {
 	}
 }
 
+// reset the Add System form
+function resetAddSystemForm() {
+	$('#frmNessusFile').trigger("filer.reset");
+	$('#frmSystemTitle').val('');
+	$('#frmSystemDescription').val('');
+}
+
+// reset the Edit System form
+function resetEditSystemForm() {
+	$('#frmNessusFile').trigger("filer.reset");
+}
+
 // the add page on the System record page calls this if you have permissions
 function addSystem(){
 	swal("Adding System...", {
@@ -817,6 +829,10 @@ function uploadFromSystem(id) {
 	else 
 		location.href = "upload.html?id=" + sessionStorage.getItem("currentSystem");;
 }
+function uploadFromChecklist() {
+	location.href = "upload.html?id=" + sessionStorage.getItem("currentSystem");;
+}
+
 // delete a system, its checklists, and its scores records
 async function deleteSystem(id) {
 	if (!id) // get it from the session
@@ -1534,6 +1550,7 @@ async function viewVulnDetails(vulnId) {
 			$("#frmVulnComments").val(data.comments);
 			$("#frmVulnSecurityOverride").val(data.severitY_OVERRIDE);
 			$("#frmVulnSecurityJustification").val(data.severitY_JUSTIFICATION);
+			$("#frmBulkUpdateCheckbox").prop('checked', false);
 			$("#btnUpdateVulnerability").show();
 		}
 		else {
@@ -1594,11 +1611,6 @@ function updateSingleChecklist(id) {
 	formData.append("assettype",$("#frmChecklistAssetType").val());
 	formData.append("machinerole",$("#frmChecklistRole").val());
 
-	if ($('#checklistFile').val()) {
-		// someone added a file
-		formData.append('checklistFile',$('#checklistFile')[0].files[0]);
-		url = uploadAPI + "" + id; // include the file contents in the update
-	}
 	$.ajax({
 		url : url,
 		data : formData,
@@ -1638,6 +1650,7 @@ function updateSingleChecklistVulnerability(artifactid) {
 	formData.append("details",htmlEscape($("#frmVulnDetails").val()));
 	formData.append("severityoverride",$("#frmVulnSecurityOverride").val());
 	formData.append("justification",htmlEscape($("#frmVulnSecurityJustification").val()));
+	formData.append("bulkUpdate",$("#frmBulkUpdateCheckbox").prop("checked"));
 
 	$.ajax({
 		url : url,
@@ -2094,6 +2107,7 @@ async function getChecklistSystemsForUpload(id) {
 		}
 	}
 }
+
 // called from the Upload page to upload one or more checklists
 function uploadChecklist(){
 	var formData = new FormData();
@@ -2150,7 +2164,7 @@ function uploadChecklist(){
 				if (data.failed == 0)
 					swal("Your " + data.successful + " Checklists were uploaded successfully!", "Click OK to continue!", "success");
 				else {
-					var message = "There were " + data.failed + " failed checklists. ( "; 
+					var message = "There were " + data.failed + " failed checklists. Check that they have a valid Hostname and format. ( "; 
 					$.each(data.failedUploads, function (index, value) {
 						if (index > 0) message += "; ";
 						message += value;
@@ -3055,6 +3069,7 @@ function verifyDownloadCompliance() {
 function verifyUpdateChecklist() {
 	if (canUpload()) {
 		$("#btnUpdateChecklist").show();
+		$("#btnUploadChecklist").show();
 	}
 }
 function verifyUpdateSystem() {
@@ -3110,6 +3125,6 @@ function setupProfileMenu()
 			path = path + "/" + locations[i];
 	}
 
-	logoutURL += "?redirect_uri="+encodeURIComponent(location.protocol + "//" + location.host + path + "/logout.html");
+	logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
 	$("#profileLogoutURL").attr("href", logoutURL);
 }
