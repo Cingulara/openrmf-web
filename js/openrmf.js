@@ -72,7 +72,7 @@ async function getSystemsForDashboard() {
 	// for each data add to the system listings on the dashboard independently
 	if (data) {
 		$.each(data, function (index, value) {
-				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+				optionString = '<option value="' + value.internalIdString + '">' + value.title + '</option>';
 			$('#checklistSystem').append(optionString);
 			$('#checklistACASSystem').append(optionString);
 		}); 
@@ -160,7 +160,7 @@ async function getTemplates(latest) {
 			$("#divMessaging").html('');
 			$("#divMessaging").hide();
 			for (const item of data) {
-				checklistLink = '<a href="single-template.html?id=' + item.internalId + '" title="Open Checklist Template">'
+				checklistLink = '<a href="single-template.html?id=' + item.internalIdString + '" title="Open Checklist Template">'
 				checklistLink += item.title
 				checklistLink += '</a><br /><span class="small">last updated on '
 				if (item.updatedOn) {
@@ -320,7 +320,7 @@ async function getSystemListing(){
 			$('#divSystemListing').html("");
 			for (const item of data) {
 				chartNumber = chartNumber + 1;
-				systemsListing = '<div class="systemListing"><div class="systemListTitle"><a href="checklists.html?id=' + item.internalId + '" ';
+				systemsListing = '<div class="systemListing"><div class="systemListTitle"><a href="checklists.html?id=' + item.internalIdString + '" ';
 				systemsListing += 'title="view system information and checklists for this system" >' + item.title + ' (' + item.numberOfChecklists + ')</a>';
 				systemsListing += '</div><div class="systemDescription">';
 				if (item.description) {
@@ -332,7 +332,7 @@ async function getSystemListing(){
 				systemsListing += 'class="systemChart" id="pieChart' + chartNumber + '"></canvas> ';
 				systemsListing += '<div style="clear: both;"></div></div></div>';
 				$('#divSystemListing').append(systemsListing);
-				var data = await getScoreForSystemChecklistListing(item.internalId);
+				var data = await getScoreForSystemChecklistListing(item.internalIdString);
 				if (data) 
 					renderSystemPieChart("pieChart" + chartNumber, data); // render the specific data for this system
 			}
@@ -399,11 +399,11 @@ async function getSystemRecord(systemGroupId) {
 					if (item.nessusFilename) 
 						nessusFilename = item.nessusFilename;
 
-					nessusHTML += ' &nbsp; <span><a title="Download the Nessus Scan (' + nessusFilename + ')" href="javascript:downloadNessusXML(\'' + item.internalId + '\')">';
+					nessusHTML += ' &nbsp; <span><a title="Download the Nessus Scan (' + nessusFilename + ')" href="javascript:downloadNessusXML(\'' + item.internalIdString + '\')">';
 					nessusHTML += 'Download</a> ';
-					nessusHTML += ' | <span><a title="Export the Nessus scan Summary to XLSX (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalId + '\', true)">';
+					nessusHTML += ' | <span><a title="Export the Nessus scan Summary to XLSX (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', true)">';
 					nessusHTML += 'Summary Export</a> ';
-					nessusHTML += ' | <span><a title="Export the Nessus scan to XLSX by Host (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalId + '\', false)">';
+					nessusHTML += ' | <span><a title="Export the Nessus scan to XLSX by Host (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', false)">';
 					nessusHTML += 'Host Export</a> ';
 				} else { // they can only know we have one
 					nessusHTML += " Yes";
@@ -489,7 +489,7 @@ function addSystem(){
 				swal("Your System was created successfully!", "Click OK to continue!", "success")
 				.then((value) => {
 					// load the new system
-					location.href = "checklists.html?id=" + data.internalId;
+					location.href = "checklists.html?id=" + data.internalIdString;
 				});
 			},
 			error : function(data){
@@ -1076,7 +1076,7 @@ async function getChecklists(system) {
 					$("#txtSystemName").val(item.systemTitle);
 				}
 
-				checklistLink = '<a href="single-checklist.html?id=' + item.internalId + '" title="View the Checklist Details">'
+				checklistLink = '<a href="single-checklist.html?id=' + item.internalIdString + '" title="View the Checklist Details">'
 				checklistLink += item.title
 				checklistLink += '</a><br /><span class="small">last updated on '
 				if (item.updatedOn) {
@@ -1087,10 +1087,10 @@ async function getChecklists(system) {
 				}
 				checklistLink += "</span>";
 				// now get the score
-				var score = await getScoreForChecklistListing(item.internalId);
+				var score = await getScoreForChecklistListing(item.internalIdString);
 				if (score) {
 					// dynamically add to the datatable but only show main data, click the + for extra data
-					table.row.add( { "title": checklistLink, "id": item.internalId,
+					table.row.add( { "title": checklistLink, "id": item.internalIdString,
 						"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
 						"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
 						"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
@@ -1098,7 +1098,7 @@ async function getChecklists(system) {
 					}).draw();
 				}
 				else {
-					table.row.add( { "title": checklistLink, "id": item.internalId,
+					table.row.add( { "title": checklistLink, "id": item.internalIdString,
 						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
 						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
 						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
@@ -1143,7 +1143,7 @@ async function getChecklistSystemsForChecklistFilter() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystemFilter').append($('<option/>', { 
-				value: value.internalId,
+				value: value.internalIdString,
 					text : value.title
 			}));
 		}); 
@@ -1313,7 +1313,7 @@ async function getChecklistData(id, template) {
 		$("#checklistTree").html(vulnListing);
 
 		if (!template) { // check the version and release # of the checklist
-			var newRelease = await newChecklistAvailable(data.systemGroupId, data.internalId);
+			var newRelease = await newChecklistAvailable(data.systemGroupId, data.internalIdString);
 			if (newRelease != null) {
 				var updatedChecklist = 'ATTN: There is an updated checklist release for your checklist: V';
 				updatedChecklist += newRelease.version + ' ' + newRelease.stigRelease;
@@ -1719,7 +1719,7 @@ async function getChecklistSystemsForChecklist() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#frmChecklistSystem').append($('<option/>', { 
-					value: value.internalId,
+					value: value.internalIdString,
 					text : value.title
 			}));
 		}); 
@@ -2094,10 +2094,10 @@ async function getChecklistSystemsForUpload(id) {
 	if (data) {
 		if (data.length > 0) {
 			$.each(data, function (index, value) {
-				if (id && value.internalId == id)
-					optionString = '<option selected value="' + value.internalId + '">' + value.title + '</option>';
+				if (id && value.internalIdString == id)
+					optionString = '<option selected value="' + value.internalIdString + '">' + value.title + '</option>';
 				else 
-					optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+					optionString = '<option value="' + value.internalIdString + '">' + value.title + '</option>';
 				$('#checklistSystem').append(optionString); 
 			}); 
 		} else {
@@ -2267,7 +2267,7 @@ async function getChecklistSystemsForReportFilter() {
 	if (data) {
 		$.each(data, function (index, value) {
 			$('#checklistSystemFilter').append($('<option/>', { 
-					value: value.internalId,
+					value: value.internalIdString,
 					text : value.title 
 			}));
 		}); 
@@ -2406,7 +2406,7 @@ async function updateChecklistFilter() {
 		if (data) {
 			$.each(data, function (index, value) {
 				$('#checklistFilter').append($('<option/>', { 
-						value: value.internalId,
+						value: value.internalIdString,
 						text : value.title 
 				}));
 			}); 
@@ -2775,10 +2775,10 @@ async function getChecklistSystemsForComplianceFilter(id) {
 	if (data) {
 		var optionString = '';
 		$.each(data, function (index, value) {
-			if (id && value.internalId == id)
-				optionString = '<option selected value="' + value.internalId + '">' + value.title + '</option>';
+			if (id && value.internalIdString == id)
+				optionString = '<option selected value="' + value.internalIdString + '">' + value.title + '</option>';
 			else 
-				optionString = '<option value="' + value.internalId + '">' + value.title + '</option>';
+				optionString = '<option value="' + value.internalIdString + '">' + value.title + '</option>';
 			$('#checklistSystemFilter').append(optionString); 
 		}); 
 	}
