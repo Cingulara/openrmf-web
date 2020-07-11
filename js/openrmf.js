@@ -2964,14 +2964,20 @@ function getOverallCompliance(currentStatus, newStatus) {
 // get the button text for the status summary
 function getComplianceSummaryButton(family, status) {
 	if (status == "open") {
-		return "<button class='btn btn-danger' style='cursor: default;'><i class='fa fa-times'> " + family + "</i></button>";
+		return "<button onclick='setComplianceDataTableFilter(\"" + family + "\"); return false;' class='btn btn-danger' style='cursor: pointer;'><i class='fa fa-times'> " + family + "</i></button>";
 	} else if (status == "notafinding" || status == "not_applicable")  {
-		return "<button class='btn btn-success' style='cursor: default;'><i class='fa fa-check'>" + family + "</i></button>";
+		return "<button onclick='setComplianceDataTableFilter(\"" + family + "\"); return false;' class='btn btn-success' style='cursor: pointer;'><i class='fa fa-check'>" + family + "</i></button>";
 	} else if (status == "not_reviewed")  {
-		return "<button class='btn btn-dark' style='cursor: default;'><i class='fa fa-eye-slash'> " + family + "</i></button>";
+		return "<button onclick='setComplianceDataTableFilter(\"" + family + "\"); return false;' class='btn btn-dark' style='cursor: pointer;'><i class='fa fa-eye-slash'> " + family + "</i></button>";
 	} else {
-		return "<button class='btn btn-outline-secondary' style='cursor: default;'><i class='fa fa-ban'> " + family + "</i></button>";
+		return "<button onclick='setComplianceDataTableFilter(\"" + family + "\"); return false;' class='btn btn-outline-secondary' style='cursor: pointer;'><i class='fa fa-ban'> " + family + "</i></button>";
 	}
+}
+
+// click the summary buttons on Compliance to filter the DataTable
+function setComplianceDataTableFilter(family) {
+	// tableCompliance has the handle on the datatable
+	tableCompliance.search(family+"-").draw();
 }
 
 /************************************ 

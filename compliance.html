@@ -330,6 +330,7 @@
 <script src="./js/openrmf.js"></script>
 <script src="./js/apis.js"></script>
 <script>
+	var tableCompliance;
 	$(document).ready(function() {
 		// authentication first
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
@@ -343,7 +344,7 @@
 				// calls to get the compliance page setup
 				getChecklistSystemsForComplianceFilter(getParameterByName('id'));
 				// setup the datatable format
-		        $('#tblCompliance').DataTable({
+		        tableCompliance = $('#tblCompliance').DataTable({
 					"pageLength": 25, 
 				    "columnDefs": [
 						{ "width": "2%", "targets": 0 },
