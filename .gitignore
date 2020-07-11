@@ -42,3 +42,15 @@ c/\temp\internal-nlog.txt
 
 # generated test files
 test.ckl
+
+
+# Jekyll Help Files
+help/_site/*
+
+help/vendor/*
+
+Gemfile.lock
+
+help/.bundle/*
+
+help/.jekyll-cache/*
