@@ -2,397 +2,397 @@
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Generating your System’s RMF Artifacts",
     "content": "With all your data in one place for your entire system, you can how start to generate the RMF artifacts required such as your POA&amp;M, Risk Assessment Report, and Test Summary Report. Below are examples of each. All of these can be found on the System page where you see the title, list of checklists, overall score, and other data. ",
-    "url": "/artifacts.html#generating-your-systems-rmf-artifacts",
+    "url": "/help/artifacts.html#generating-your-systems-rmf-artifacts",
     "relUrl": "/artifacts.html#generating-your-systems-rmf-artifacts"
   },"1": {
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Nessus Scan Export",
     "content": ". The Nessus Scan Export shows patching items across your system servers/hosts, sorted by criticality/severity, and gives details on the ID, description, and severity level. ",
-    "url": "/artifacts.html#nessus-scan-export",
+    "url": "/help/artifacts.html#nessus-scan-export",
     "relUrl": "/artifacts.html#nessus-scan-export"
   },"2": {
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "POA&amp;M Export",
     "content": ". The Plan of Actions and Milestones (POA&amp;M) Export lists all Open and Not Reviewed items across every single checklist within your system. The data is ordered by severity and then vulnerability so all high level items are near the top. The POA&amp;M is used to show your plan to address, mitigate, and/or close the items still open while you go through the RMF Process. ",
-    "url": "/artifacts.html#poam-export",
+    "url": "/help/artifacts.html#poam-export",
     "relUrl": "/artifacts.html#poam-export"
   },"3": {
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Test Plan Summary Export",
     "content": ". The Test Plan Export shows all Nessus Patch data with items that need to be addressed in Critical and High (CAT I) down to Low (CAT III) items. It then shows similar data across all your checklists (manual and SCAP generated) in a similar fashion. This gives you a high level count of items per severity. ",
-    "url": "/artifacts.html#test-plan-summary-export",
+    "url": "/help/artifacts.html#test-plan-summary-export",
     "relUrl": "/artifacts.html#test-plan-summary-export"
   },"4": {
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Risk Assessment Report (RAR) Export",
     "content": ". The RAR shows all open or not reviewed items in a format to show you the host, the NIST control, the checklist the item was in, as well as severity of the item. This allows you to fill in the actual risk of this item as it pertains to your system and your risk profile. ",
-    "url": "/artifacts.html#risk-assessment-report-rar-export",
+    "url": "/help/artifacts.html#risk-assessment-report-rar-export",
     "relUrl": "/artifacts.html#risk-assessment-report-rar-export"
   },"5": {
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Color Coding Rules",
     "content": "For compliance, a green color means all the vulnerabilities for that control are either Not a Finding or marked as Not Applicable. If 1 vulnerability is marked as Open, then that whole group is Open. And if there are any vulnerabilities that are Not Reviewed with no Open vulnerabilities for that group, then the whole group is marked as Not Reviewed. ",
-    "url": "/artifacts.html#color-coding-rules",
+    "url": "/help/artifacts.html#color-coding-rules",
     "relUrl": "/artifacts.html#color-coding-rules"
   },"6": {
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Step 6 - Generate RMF Artifacts",
     "content": " ",
-    "url": "/artifacts.html",
+    "url": "/help/artifacts.html",
     "relUrl": "/artifacts.html"
   },"7": {
     "doc": "Step 4 - View Checklists",
     "title": "Checklist Detailed View",
     "content": ". The detailed Checklist page shows several things about the checklist. It shows the title, automatically named by the checklist uploaded. The format is “hostname”-“type of checklist”-“release and date of the checklist format”. So a Windows 10 STIG from the Release 19 Oct 25 2019 of the STIG of the machine named “myserver” would be “MYSERVER-WIN 10 STIG-R19 dated 25 Oct 2019”. The scoring of the checklist based on status is one of the first things you see as well. The total and then breakdown by category is shown with the relevant colors. There are also download links for the CKL file, an Excel version of the checklist to download, as well as a Delete button. These buttons depend on the Download role and Editor role respectively. Or if you have the Administrator role you get them all. Each listing in the score table are linked to the Vulnerability Filter below it. For example, click the CAT 1 OPEN number, and you can filter your vulnerabilities below to only show Category 1 (High severity) Open items. This also affects the Export as you will export only those vulnerabilities shown on the page at that time. The specific STIG title and asset information from the STIG checklist are shown next. Then the main section of the checklist is shown. On the left of the section is a list of every single vulnerability for this checklist, color coded by status. Click the vulnerability and the details of it show on the right. You also can filter the vulnerabilities by status by checking / unchecking the 4 statuses to filter the list down accordingly. At the bottom of this page are quick visual graph representations of the status and category breakdown of the checklist as well. ",
-    "url": "/checklists.html#checklist-detailed-view",
+    "url": "/help/checklists.html#checklist-detailed-view",
     "relUrl": "/checklists.html#checklist-detailed-view"
   },"8": {
     "doc": "Step 4 - View Checklists",
     "title": "Editing the Checklist Vulnerability",
     "content": "With the 0.12 version OpenRMF, if you are an Editor or Administrator (role) you can edit the main Checklist data at the top of the screen. The host name, domain name as well as the technology area, asset type and role of the machine for the checklist being viewed/edited. This data will be represented in the downloaded export XLSX as well as the CKL checklist file. You also can edit each Vulnerability record with those roles. The following fields in the image below can be edited. Once saved, the data in the checklist is updated and the score is recalculated for the checklist and subsequently the system. ",
-    "url": "/checklists.html#editing-the-checklist-vulnerability",
+    "url": "/help/checklists.html#editing-the-checklist-vulnerability",
     "relUrl": "/checklists.html#editing-the-checklist-vulnerability"
   },"9": {
     "doc": "Step 4 - View Checklists",
     "title": "Bulk Edits on Similar Checklists",
     "content": "As of version 1.1 you also can do a Bulk Edit on checklists within your system. This allows an edit on one checklist to be applied across all other checklists with the same Checklist Type within your system. i.e. an edit on Windows 2016 Member Server for a vulnerability to mark it as “Not a Finding” based on a group policy can be edited and then applied across all the Win2k16 checklists in your system with a click of a checkbox. This is a big improvement as it allows easy managing of multiple servers and checklists on hosts that are the same within your system. You must have a checklist per type per host for the RMF process artifacts. This allows much easier managing of similar hosts and workstations / servers in your system grouping. ",
-    "url": "/checklists.html#bulk-edits-on-similar-checklists",
+    "url": "/help/checklists.html#bulk-edits-on-similar-checklists",
     "relUrl": "/checklists.html#bulk-edits-on-similar-checklists"
   },"10": {
     "doc": "Step 4 - View Checklists",
     "title": "Step 4 - View Checklists",
     "content": " ",
-    "url": "/checklists.html",
+    "url": "/help/checklists.html",
     "relUrl": "/checklists.html"
   },"11": {
     "doc": "Step 5 - Compliance Report",
     "title": "Generating your System’s Compliance Report",
     "content": ". Running a compliance report across all your checklists is a gigantic effort when done manually! If you do this across all Checklist files using the Java Viewer this can be quite time consuming. Or you have to keep track of the data in yet another media format such as MS Word or Excel. When all your checklists are in OpenRMF, you can run a compliance report against the impact level (Low, Moderate, High) as well as the inclusion of personally identifiable information (PII) for your system. Choose your system and the pertinent details and click the Generate button. In a matter of seconds you have a listing of compliance against all your checklists for the relevant NIST controls. There is a summary presented that gives you an overall compliance by family. And below that there is a detailed view by control linked to the checklists. ",
-    "url": "/compliance.html#generating-your-systems-compliance-report",
+    "url": "/help/compliance.html#generating-your-systems-compliance-report",
     "relUrl": "/compliance.html#generating-your-systems-compliance-report"
   },"12": {
     "doc": "Step 5 - Compliance Report",
     "title": "Viewing Compliance Results",
     "content": "The data in the compliance report is presented in a filterable table that is common across OpenRMF. Pagination is in the bottom right corner and there is a search filter at the top right of the table as well to quickly find your information. Each result is listed per NIST major control and checklist and is color coded according to the overall status of that control within the checklist. Click on the checklist in the compliance result table to quickly view the checklist through the lens of only that control with a filtered vulnerability listing relevant only to that control. This allows you to view the vulnerability items that remain open or not reviewed to quickly tackle your RMF action items. ",
-    "url": "/compliance.html#viewing-compliance-results",
+    "url": "/help/compliance.html#viewing-compliance-results",
     "relUrl": "/compliance.html#viewing-compliance-results"
   },"13": {
     "doc": "Step 5 - Compliance Report",
     "title": "Compliance Color Coding Rules",
     "content": "For compliance, a green color means all the vulnerabilities for that control are either Not a Finding or marked as Not Applicable. If 1 vulnerability is marked as Open, then that whole group is Open. And if there are any vulnerabilities that are Not Reviewed with no Open vulnerabilities for that group, then the whole group is marked as Not Reviewed. ",
-    "url": "/compliance.html#compliance-color-coding-rules",
+    "url": "/help/compliance.html#compliance-color-coding-rules",
     "relUrl": "/compliance.html#compliance-color-coding-rules"
   },"14": {
     "doc": "Step 5 - Compliance Report",
     "title": "Step 5 - Compliance Report",
     "content": " ",
-    "url": "/compliance.html",
+    "url": "/help/compliance.html",
     "relUrl": "/compliance.html"
   },"15": {
     "doc": "Step 2 - Your Dashboard",
     "title": "Your OpenRMF Dashboard",
     "content": ". The initial OpenRMF dashboard shows the total checklists, total systems, and total templates within the system at the very top of the page. Underneath that are two sections: one for Nessus Path scan data and one for Checklist open item data. The Critical and High Findings allow you to select a system (independently from other sections on this page) and see the numbers for Critical, High, and Medium severity items. You can export the summary data of the Nessus file on the System page itself. This dashboard just gives you the high level numbers by system. If there is no Nessus scan file uploaded, the dashboard will notify you of that as well. You must have a Nessus patch scan file (*.nessus) loaded for this to work for your system. The SCAP Scans &amp; Checklists area allows you to quickly see the total number of High, Medium, and Low open items across all your checklists for the system selected. Click on any of these to go to the System to view all items, checklists, and system level data. Future enhancements will allow setting of items on the dashboard to your liking as well as show alerts, status, dates, and valid user information. ",
-    "url": "/dashboard.html#your-openrmf-dashboard",
+    "url": "/help/dashboard.html#your-openrmf-dashboard",
     "relUrl": "/dashboard.html#your-openrmf-dashboard"
   },"16": {
     "doc": "Step 2 - Your Dashboard",
     "title": "Step 2 - Your Dashboard",
     "content": " ",
-    "url": "/dashboard.html",
+    "url": "/help/dashboard.html",
     "relUrl": "/dashboard.html"
   },"17": {
     "doc": "OpenRMF Introduction",
     "title": "OpenRMF Introduction",
     "content": "Welcome to the OpenRMF Docs site. This site contains help screens, scenarios, screenshots and other useful information to use the OpenRMF tool fo you and your team. OpenRMF is the only web-based open source tool to manage your DoD STIG checklists, generate NIST compliance, keep track of your security items that are Open or Not Reviewed, and massively shrink your timeline to collect data and submit for an ATO! . Compare this to the manual way you have to manage STIG Checklists and SCAP scans, outlined in Tutela’s blog post here. See What’s New with the latest version. ",
-    "url": "/",
+    "url": "/help/",
     "relUrl": "/"
   },"18": {
     "doc": "OpenRMF Introduction",
     "title": "What it does",
     "content": "OpenRMF manages your RMF documentation and removes the Cybersecurity mystery! It allows management to view the status of checklists and RMF progress on their systems. It allows IT administrators and developers to store their checklists and scans in a single place. It allows cybersecurity analysts to see the status of systems in a quick glance. And it allows assessors to have a single place to view the system and all its checklists so their job is more organized. It has great use cases for everyone! Most importantly: It greatly minimizes the manual nature of managing all this data for you! . Some of the high level features are below: . | 100% web based | 100% Open Source Software (OSS) | Upload a DISA Checklist CKL, DISA SCAP XCCDF format file or Nessus SCAP XCCDF format file easily to visualize your RMF process | Upload a .Nessus ACAS scan file to see Patch summary of Critical and High items | Automatically organizes your checklists by system | Single source of truth for your system checklists | Single source of truth for your latest Nessus patch scans | Live online editing of your checklist through your web browser with auditing of the changes | Bulk editing of Vulnerabilities across similar Checklist Types within a System | One-click creation of your POA&amp;M for your entire system (all servers, devices, SCAP scans, manual checklists) | One-click creation of your Risk Assessment Report (RAR) for your entire system (all servers, devices, SCAP scans, manual checklists) | One-click creation of your Test Plan Summary for your entire system (all servers, devices, SCAP scans, manual checklists) | Interactive Reports and Searching of Nessus scan data | Interactive Reports and Searching of System and checklist vulnerability data | Easily find errors and deltas across checklists in your system | Easily run a compliance report in seconds for your Low, Moderate, or High system | Management insight into Cybersecurity Status and Security Posture instantly | AuthN, AuthZ, and Role Based Access Control (RBAC) to control access to read as well as edit data | Run on premise, on a local machine, or in the cloud (testing on Raspberry Pi 4 now) | Containerized to run locally, in a container runtime, or in Kubernetes | . ",
-    "url": "/#what-it-does",
+    "url": "/help/#what-it-does",
     "relUrl": "/#what-it-does"
   },"19": {
     "doc": "OpenRMF Introduction",
     "title": "Why use OpenRMF",
     "content": "The current way to implement the Risk Management Framework for your DoD Authority to Operate is VERY manual and VERY, VERY slow. VERY slow. It is driven by disparate pieces of a Java Viewer for checklists, massive amounts of MS Excel spreadsheets for viewing the checklists for management, MS Word documents, various PDF files, your own home grown applications to help automate pieces of this process, and more. Information is shared (hopefully!) via email and shared folders. And there is no one central place for developers, operations, management, and cybersecurity analysts to see the most up to date information that is needed to eventually submit to eMASS. That changes with OpenRMF! . OpenRMF solves this dilemma. All you need is a web browser to view the pertinent information on your checklists within your system. Checklists are grouped by system and quickly show information such as the number of Category 1, 2, and 3 items as well as the number of Open items versus the Not a Finding “closed” items. Without having to open every single checklist file in the heavy Java viewer DISA provides. OpenRMF helps in several ways: . | It is 100% browser based for all the major browsers (Chrome, Edge, Firefox, Safari, IE 11) | You can import multiple checklists for a single source-of-truth for all checklists | You can organize and manage your data by systems for a quicker, less stress filled way to see your system’s risk profile | Reports for management highlight the most asked question on status and numbers of items by type | You can run a single compliance report across all your checklists based on the Low/Moderate/High label as well as PII data included | You can export any checklists to Excel or download a CKL file for viewing in the DISA Java Viewer | You can drill down to your problem areas across all your checklists quickly with a few clicks and get actionable data quickly | . With coming updates such as automating the Risk Assessment Report, automating the POA&amp;M on fixes, as well as online editing of checklist status and comments OpenRMF is the app any DoD IT / Developer / Operations / Cybersecurity professional needs! . More information can be found in our product PDF on our website. ",
-    "url": "/#why-use-openrmf",
+    "url": "/help/#why-use-openrmf",
     "relUrl": "/#why-use-openrmf"
   },"20": {
     "doc": "OpenRMF Introduction",
     "title": "Architecture",
     "content": "Below is the top level architecture as of version 0.11 and beyond, drawn via Draw.io’s great tool (now Diagrams.net). ",
-    "url": "/#architecture",
+    "url": "/help/#architecture",
     "relUrl": "/#architecture"
   },"21": {
     "doc": "OpenRMF Metrics",
     "title": "Using Prometheus and Grafana for OpenRMF Metrics",
     "content": "OpenRMF tracks metrics used by Prometheus starting with version 0.10.7. We currently use the https://github.com/prometheus-net/prometheus-net component for the .NET Core Web APIs and the https://github.com/nats-io/prometheus-nats-exporter container for exporting NATS 2.0 metrics out to a Prometheus endpoint. With that information, you can setup the below Grafana dashboards to show usage, memory, requests, errors, and the like. The docker-compose file for running OpenRMF locally uses a container definition for Prometheus and Grafana locally. The Kubernetes deployment does not. For Kubernetes you can hook to your existing Prometheus and Grafana setup. Or you can deploy separately to namespaces within Kubernetes and then setup the data sources there. For now you have to initially setup the Grafana dashboards. Starting with version 0.14 we use a volume to store the data correctly so you can set it and forget it. ",
-    "url": "/metrics.html#using-prometheus-and-grafana-for-openrmf-metrics",
+    "url": "/help/metrics.html#using-prometheus-and-grafana-for-openrmf-metrics",
     "relUrl": "/metrics.html#using-prometheus-and-grafana-for-openrmf-metrics"
   },"22": {
     "doc": "OpenRMF Metrics",
     "title": ".NET Core Default Metrics",
     "content": "Once you have Prometheus setup, you can use the https://grafana.com/grafana/dashboards/10427 to display .NET Core metrics like the below chart. ",
-    "url": "/metrics.html#net-core-default-metrics",
+    "url": "/help/metrics.html#net-core-default-metrics",
     "relUrl": "/metrics.html#net-core-default-metrics"
   },"23": {
     "doc": "OpenRMF Metrics",
     "title": ".NET Core API Controller Metrics",
     "content": "Once you have Prometheus setup, you can use the https://grafana.com/grafana/dashboards/10915 to display .NET Core metrics like the below chart. ",
-    "url": "/metrics.html#net-core-api-controller-metrics",
+    "url": "/help/metrics.html#net-core-api-controller-metrics",
     "relUrl": "/metrics.html#net-core-api-controller-metrics"
   },"24": {
     "doc": "OpenRMF Metrics",
     "title": "NATS Server Metrics",
     "content": "Once you have Prometheus setup and you deploy the container for https://github.com/nats-io/prometheus-nats-exporter, you can use the https://grafana.com/grafana/dashboards/2279 to display NATS Server Core metrics like the below chart. ",
-    "url": "/metrics.html#nats-server-metrics",
+    "url": "/help/metrics.html#nats-server-metrics",
     "relUrl": "/metrics.html#nats-server-metrics"
   },"25": {
     "doc": "OpenRMF Metrics",
     "title": "NATS Client Connection Metrics",
     "content": "I made a NATS metrics dashboard at https://github.com/Cingulara/nats-client-metrics that goes down to the client level. The default NATS dashboard for Grafana keeps everything at a server level for bytes in and out, messages in and out, etc. I wanted per client. So go to that URL above and add that dashboard referenced in the JSON file to your Prometheus if you want NATS client metrics. ",
-    "url": "/metrics.html#nats-client-connection-metrics",
+    "url": "/help/metrics.html#nats-client-connection-metrics",
     "relUrl": "/metrics.html#nats-client-connection-metrics"
   },"26": {
     "doc": "OpenRMF Metrics",
     "title": "Prometheus Configuration Setup",
     "content": "The prometheus.yml file configuration we use when running the local or docker-compose setup of OpenRMF is here. You can adjust the interval and options as required. Just restart the docker-compose up -d command to relaunch and use the new configuration. See the OpenRMF Metrics in GitHub information to understand how we use those tools within OpenRMF. ",
-    "url": "/metrics.html#prometheus-configuration-setup",
+    "url": "/help/metrics.html#prometheus-configuration-setup",
     "relUrl": "/metrics.html#prometheus-configuration-setup"
   },"27": {
     "doc": "OpenRMF Metrics",
     "title": "cAdvisor Metrics",
     "content": "When running the Docker Compose stack you also can point to http://localhost:9080/ to run cAdvisor. https://github.com/google/cadvisor has great information on running cAdvisor. Feel free to comment out this piece in the docker-compose file if you do not want to run it. ",
-    "url": "/metrics.html#cadvisor-metrics",
+    "url": "/help/metrics.html#cadvisor-metrics",
     "relUrl": "/metrics.html#cadvisor-metrics"
   },"28": {
     "doc": "OpenRMF Metrics",
     "title": "Additional Links",
     "content": "Prometheus: https://prometheus.io/docs/prometheus/latest/querying/basics/ . Grafana: https://grafana.com/ . ",
-    "url": "/metrics.html#additional-links",
+    "url": "/help/metrics.html#additional-links",
     "relUrl": "/metrics.html#additional-links"
   },"29": {
     "doc": "OpenRMF Metrics",
     "title": "OpenRMF Metrics",
     "content": " ",
-    "url": "/metrics.html",
+    "url": "/help/metrics.html",
     "relUrl": "/metrics.html"
   },"30": {
     "doc": "Navigation in OpenRMF",
     "title": "The OpenRMF User Interface at a Glance",
     "content": ". The main navigation is based on the Pike Admin responsive template. Once you login you have a menu of options on the left. Click the hamburger 3-line icon to make this menu collapse down to just icons. In the top far right are two icons. The help icon launches the OpenRMF Docs site in GitHub.io. The second icon in that row is the person icon. Click that to find the User Profile and Logout links. The User Profile opens the Keycloak user profile page that is explained on the User Profile page. And the logout link will remove your session and take you to the logout page. ",
-    "url": "/navigation.html#the-openrmf-user-interface-at-a-glance",
+    "url": "/help/navigation.html#the-openrmf-user-interface-at-a-glance",
     "relUrl": "/navigation.html#the-openrmf-user-interface-at-a-glance"
   },"31": {
     "doc": "Navigation in OpenRMF",
     "title": "Accessing Online Help",
     "content": ". The GitHub.io page for OpenRMF is this site here. This is linked into the help icon in the menu bar on each page in the top right of the screen. ",
-    "url": "/navigation.html#accessing-online-help",
+    "url": "/help/navigation.html#accessing-online-help",
     "relUrl": "/navigation.html#accessing-online-help"
   },"32": {
     "doc": "Navigation in OpenRMF",
     "title": "Navigation in OpenRMF",
     "content": " ",
-    "url": "/navigation.html",
+    "url": "/help/navigation.html",
     "relUrl": "/navigation.html"
   },"33": {
     "doc": "OpenRMF Reports",
     "title": "Available Reports in OpenRMF",
     "content": "Currently there are a few interactive reports in OpenRMF as pictured below. ",
-    "url": "/reports.html#available-reports-in-openrmf",
+    "url": "/help/reports.html#available-reports-in-openrmf",
     "relUrl": "/reports.html#available-reports-in-openrmf"
   },"34": {
     "doc": "OpenRMF Reports",
     "title": "Nessus Scan Report",
     "content": "If you have a Nessus (*.nessus) ACAS scan result file imported for your system, this report will show all data in an interactive table. You can sort the columns, use the Search box to filter data, and click the + icon to see more/less of the detailed data per scan result item. ",
-    "url": "/reports.html#nessus-scan-report",
+    "url": "/help/reports.html#nessus-scan-report",
     "relUrl": "/reports.html#nessus-scan-report"
   },"35": {
     "doc": "OpenRMF Reports",
     "title": "System Score Chart",
     "content": "This is a larger chart used for exporting and viewing the total items in a system by status. The Open items are also further separated by Category 1, 2, and 3 specifically. ",
-    "url": "/reports.html#system-score-chart",
+    "url": "/help/reports.html#system-score-chart",
     "relUrl": "/reports.html#system-score-chart"
   },"36": {
     "doc": "OpenRMF Reports",
     "title": "System Checklist Vulnerability Report",
     "content": "This reports allows you to select a system to load all available checklists. Choose an checklist and click the Run Report button to see all vulnerability data in an interactive table format. You can order columns, use the Search box to filter the information, and click the + icon to see more detailed information on the vulnerability. ",
-    "url": "/reports.html#system-checklist-vulnerability-report",
+    "url": "/help/reports.html#system-checklist-vulnerability-report",
     "relUrl": "/reports.html#system-checklist-vulnerability-report"
   },"37": {
     "doc": "OpenRMF Reports",
     "title": "RMF Controls Listing Report",
     "content": "This report lists out the controls and subcontrols across the RMF control listing to let you have more detailed information on what it represents. ",
-    "url": "/reports.html#rmf-controls-listing-report",
+    "url": "/help/reports.html#rmf-controls-listing-report",
     "relUrl": "/reports.html#rmf-controls-listing-report"
   },"38": {
     "doc": "OpenRMF Reports",
     "title": "System Checklist Vulnerability Report",
     "content": "This reports lets you search on a vulnerability and see what hosts and checklists have that vulnerability across all checklists within your system. ",
-    "url": "/reports.html#system-checklist-vulnerability-report-1",
+    "url": "/help/reports.html#system-checklist-vulnerability-report-1",
     "relUrl": "/reports.html#system-checklist-vulnerability-report-1"
   },"39": {
     "doc": "OpenRMF Reports",
     "title": "System Checklist Vulnerability Report",
     "content": "This reports lets you search on a system and major RMF control and see what servers, workstations, devices, etc. relate to that control across all your checklists. ",
-    "url": "/reports.html#system-checklist-vulnerability-report-2",
+    "url": "/help/reports.html#system-checklist-vulnerability-report-2",
     "relUrl": "/reports.html#system-checklist-vulnerability-report-2"
   },"40": {
     "doc": "OpenRMF Reports",
     "title": "A Note on Refreshing Data",
     "content": "The Nessus Patch Listing and Host Vulnerability Report use the Report API and Report Database to return results quickly. The data is already formatted in a way for very fast retrieval, especially across systems with large numbers of checklists and Nessus Patch data. This data uses an “eventual consistency” pattern. When a new or updated checklist or scan is loaded into OpenRMF, a separate process is kicked off behind the scenes so you can get back to the OpenRMF interface. This process, as an example, pulls the Nessus ACAS Patch data report, parses the data, and puts separate records of the scan results into a particular MongoDB collection for later reporting. “Eventual” does not mean hours later! But it does mean you need to give it processing time. For scans of 4 or 5 machines we are talking a minute or two. For a large system of 100 hosts being scanned, the time required would be more on the lines of 15 minutes or so to process all the data. This of course depends on the amount of data in the scan, the type of scans, the amount of processing power you give OpenRMF and the amount of CPU and Memory in particular you give the Report Message client if you are running something like Kubernetes. Only Administrators can run this. And it is only needed if you want to force a refresh, if you are upgrading from a version before 0.14 and need the data initially loaded, or if your data or system is interrupted and corrupted and you want to ensure the data is right. Right now only those 2 reports use the Report API and database with eventual consistency. There may be more in the future. To learn more about this design choice see https://martinfowler.com/articles/microservice-trade-offs.html. ",
-    "url": "/reports.html#a-note-on-refreshing-data",
+    "url": "/help/reports.html#a-note-on-refreshing-data",
     "relUrl": "/reports.html#a-note-on-refreshing-data"
   },"41": {
     "doc": "OpenRMF Reports",
     "title": "OpenRMF Reports",
     "content": " ",
-    "url": "/reports.html",
+    "url": "/help/reports.html",
     "relUrl": "/reports.html"
   },"42": {
     "doc": "Step 3 - View Systems",
     "title": "Viewing your Systems",
     "content": ". The System listing is available when you log in and click on Systems in the menu. The above screen loads if there are any checklists loaded. Each system is listed with the title linked to the detailed Systems page with information and checklists listed. Note: if you have the Editor or Administrator permission you will also see an Add button here to add a new system. You also can add a new system by specifing a new system title when uploading a checklist or scan file. Each listing shows the title, the number of checklists in that system as well as the overall score of the system. This overall score is based on status across all checklists in your system. ",
-    "url": "/systems.html#viewing-your-systems",
+    "url": "/help/systems.html#viewing-your-systems",
     "relUrl": "/systems.html#viewing-your-systems"
   },"43": {
     "doc": "Step 3 - View Systems",
     "title": "System Detailed View",
     "content": "The System detailed page shows relevant system information such as the title and description. It also allows you to edit specific information if you have the correct role. There is detailed audit information on the right such as the create date and last date updated. The compliance date is updated each time you run a compliance report on the system. New features include the ability to upload and view Nessus ACAS scan file data as well as generate exports and reports from that *.nessus file. And you can generate a Test Plan Summary for your system showing all items that are open from your ACAS scan data, SCAP scans, and your manual CKL checklist files across your whole system. At the bottom of this page is the list of all checklists for this system linked by title. Their overall score is also displayed in the filtered table. Click the plus sign to expand the score by category of vulnerability to get more detailed information. Click on the actual checklist title to view the detailed information on that checklist. ",
-    "url": "/systems.html#system-detailed-view",
+    "url": "/help/systems.html#system-detailed-view",
     "relUrl": "/systems.html#system-detailed-view"
   },"44": {
     "doc": "Step 3 - View Systems",
     "title": "Uploading Nessus ACAS Scans",
     "content": ". Once you have a System record, you can click the Edit button for the system to upload a *.nessus file for your scan output. OpenRMF will save your file (a single file for the OSS version) and generate export listing for the whole system or by host into MS Excel files. You also can run reports on the Nessus file based on your system in the Reports area. The Dashboard will also show the total number of Critical, High, Medium, and Low items once your have uploaded a .nessus file as well. Remember, OpenRMF OSS stores a single file. So upload the most up-to-date file that has all your servers in the listing. More Information Here: https://docs.tenable.com/nessus/Content/PatchManagement.htm . ",
-    "url": "/systems.html#uploading-nessus-acas-scans",
+    "url": "/help/systems.html#uploading-nessus-acas-scans",
     "relUrl": "/systems.html#uploading-nessus-acas-scans"
   },"45": {
     "doc": "Step 3 - View Systems",
     "title": "Step 3 - View Systems",
     "content": " ",
-    "url": "/systems.html",
+    "url": "/help/systems.html",
     "relUrl": "/systems.html"
   },"46": {
     "doc": "Using Template Checklists",
     "title": "Using Templates for your Checklists",
     "content": ". You can use Templates in OpenRMF for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly. IT personnel would download this template and then fill out remaining items based on their software or system. The templates are added via the Upload page in the Template Upload area. The Template listing are user templates that those with permissions have added. The Template name as well as the score of items are shown simimlar to the Checklist listing page. Click the linked Template to view the detailed information. Click the green plus sign to view the scoring based on category. ",
-    "url": "/templates.html#using-templates-for-your-checklists",
+    "url": "/help/templates.html#using-templates-for-your-checklists",
     "relUrl": "/templates.html#using-templates-for-your-checklists"
   },"47": {
     "doc": "Using Template Checklists",
     "title": "Using Template Checklists",
     "content": " ",
-    "url": "/templates.html",
+    "url": "/help/templates.html",
     "relUrl": "/templates.html"
   },"48": {
     "doc": "Step 1 - Uploading",
     "title": "Uploading Checklists and Templates",
     "content": "The Upload page is available to users with the Administrator or Editor role assigned. There are three things you can do from this page. | You can upload a CKL checklist file made from the DISA Java StigViewer. The process of making a CKL is outlined in Tutela’s blog post here. | You also can upload a SCAP (DoD or Nessus SCAP) scan result in XCCDF XML format. | Or you can upload a CKL file as a User Template for others to start from and create their checklist for the appropriate system technology. | . Note: The Nessus Patch Management scan results file *.nessus is uploaded when you add or edit a System, not via the Upload page. ",
-    "url": "/uploading.html#uploading-checklists-and-templates",
+    "url": "/help/uploading.html#uploading-checklists-and-templates",
     "relUrl": "/uploading.html#uploading-checklists-and-templates"
   },"49": {
     "doc": "Step 1 - Uploading",
     "title": "Process of Uploading SCAP results (XCCDF format .xml) or DISA StigViewer CKL files (.ckl) in OpenRMF",
     "content": ". | DISA SCAP Scan Information | Tennable’s Nessus SCAP Scan Information | . ",
-    "url": "/uploading.html#process-of-uploading-scap-results-xccdf-format-xml-or-disa-stigviewer-ckl-files-ckl-in-openrmf",
+    "url": "/help/uploading.html#process-of-uploading-scap-results-xccdf-format-xml-or-disa-stigviewer-ckl-files-ckl-in-openrmf",
     "relUrl": "/uploading.html#process-of-uploading-scap-results-xccdf-format-xml-or-disa-stigviewer-ckl-files-ckl-in-openrmf"
   },"50": {
     "doc": "Step 1 - Uploading",
     "title": "Upload Checklists or SCAP XCCDF files",
     "content": ". To upload a CKL file or XCCDF SCAP scan result file go to the Upload page. Use the top section to choose a System name and the file. You can now upload up to 10 files at a time. You can choose all 10 at once, or do 1 file at a time with the Choose Files button. If your system is not listed, click the “Add a new System” link and type in the System name. Then attach your files and click the Upload and Save button. When you upload your files, you will receive a confirmation of the files loading correctly or not. If all works well, the files are saved into the database. And a separate event is fired off to read and “score” the checklist you uploaded to keep track of the number of items by status by category. These are the numbers that show up when you list your checklist. If you upload an XCCDF XML SCAP scan result file (DISA or Nessus SCAP), that file is matched to internal System Templates from DISA’s known good publicly available checklists. That checklist is filled in with pass or fail items from the SCAP scan accordingly. Any vulnerability item not found within the scan is kept as Not Reviewed. This new checklist file is then saved into the database and the scoring process kicks off for it. Note: You must have a single checklist per CKL file. The Java Viewer from DISA allows more than one, however this makes your Cybersecurity personnel’s job harder to do. And it makes the issues harder to track. This tool looks for one checklist per CKL file if that is what you are uploading. And it will save you time from having to separate the checklists later when asked to do so by those very same Cybersecurity personnel! . ",
-    "url": "/uploading.html#upload-checklists-or-scap-xccdf-files",
+    "url": "/help/uploading.html#upload-checklists-or-scap-xccdf-files",
     "relUrl": "/uploading.html#upload-checklists-or-scap-xccdf-files"
   },"51": {
     "doc": "Step 1 - Uploading",
     "title": "Uploading Templates",
     "content": ". You can upload a checklist file as a Template to start from within the system as well. You can use Templates in OpenRMF for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly. IT personnel would download this template and then fill out remaining items based on their software or system. To upload you go to the Template Upload section and enter a title and description for the template. Then click the Choose file and upload the template. You can only upload one template at a time. ",
-    "url": "/uploading.html#uploading-templates",
+    "url": "/help/uploading.html#uploading-templates",
     "relUrl": "/uploading.html#uploading-templates"
   },"52": {
     "doc": "Step 1 - Uploading",
     "title": "Uploading Nessus ACAS Scans",
     "content": ". Once you have a System record, you can click the Edit button for the system to upload a *.nessus file for your scan output. OpenRMF will save your file (a single file for the OSS version) and generate export listing for the whole system or by host into MS Excel files. You also can run reports on the Nessus file based on your system in the Reports area. The Dashboard will also show the total number of Critical, High, Medium, and Low items once your have uploaded a .nessus file as well. Remember, OpenRMF OSS stores a single file. So upload the most up-to-date file that has all your servers in the listing. ",
-    "url": "/uploading.html#uploading-nessus-acas-scans",
+    "url": "/help/uploading.html#uploading-nessus-acas-scans",
     "relUrl": "/uploading.html#uploading-nessus-acas-scans"
   },"53": {
     "doc": "Step 1 - Uploading",
     "title": "Step 1 - Uploading",
     "content": " ",
-    "url": "/uploading.html",
+    "url": "/help/uploading.html",
     "relUrl": "/uploading.html"
   },"54": {
     "doc": "User Profile",
     "title": "Your OpenRMF User Profile",
     "content": "Currently, OpenRMF uses Keycloak for AuthN and Authz as well as role based access control (RBAC) for the application. Future releases will be tested against other OpenID providers for other variations to work. You can view the See Run Latest Development for information on setting up Keycloak. The specific user information for using Keycloak and OpenRMF is below. ",
-    "url": "/users.html#your-openrmf-user-profile",
+    "url": "/help/users.html#your-openrmf-user-profile",
     "relUrl": "/users.html#your-openrmf-user-profile"
   },"55": {
     "doc": "User Profile",
     "title": "Register as a User",
     "content": "You can register as a new user with the registration form. You also can use the GitHub integration on the OpenRMF Demo site to register as well. Enter the pertinent information including a valid email and you are automatically added as a Reader to the application. Once you have a registered account you can login with your user/password combination or the GitHub integration if on the Demo website. ",
-    "url": "/users.html#register-as-a-user",
+    "url": "/help/users.html#register-as-a-user",
     "relUrl": "/users.html#register-as-a-user"
   },"56": {
     "doc": "User Profile",
     "title": "User Profile",
     "content": ". To access your User Profile from within OpenRMF click the person icon in the very far right top of the application screens. Then click the Profile link. You are redirected to the Keycloak User Profile screen based on your session. From here you can see your account information and update your name and email. You also can change your password and see what sessions your account currently has active. To return to the OpenRMF application you can click the “Back to OpenRMF Login” in the top right of the screen. Or if you wish, click the Sign Out link to log out. ",
-    "url": "/users.html",
+    "url": "/help/users.html",
     "relUrl": "/users.html"
   },"57": {
     "doc": "User Profile",
     "title": "MultiFactor Authentication - Authenticator",
     "content": ". For further security, you can setup multifactor authentication in your User Profile area of Keycloak. Log into OpenRMF, go to your profile and then click the Authenticator menu on the left. Use Google Authenticator or FreeOTP to scan the barcode and follow the instructions on the screen to enable MFA. ",
-    "url": "/users.html#multifactor-authentication---authenticator",
+    "url": "/help/users.html#multifactor-authentication---authenticator",
     "relUrl": "/users.html#multifactor-authentication---authenticator"
   },"58": {
     "doc": "What's New in v1.1",
     "title": "What’s New with OpenRMF",
     "content": "Please refer to the OpenRMF Projects listing on GitHub for more information on feature updates and timeline. ",
-    "url": "/whatsnew.html#whats-new-with-openrmf",
+    "url": "/help/whatsnew.html#whats-new-with-openrmf",
     "relUrl": "/whatsnew.html#whats-new-with-openrmf"
   },"59": {
     "doc": "What's New in v1.1",
     "title": "Version 1.1",
     "content": "Version 1.1 was a security fix primarily with some updated functionality as outlined below: . | Rootless containers for APIs, messages, NGINX, and MongoDB databases | Updated jQuery, File Upload, Bootstrap and other JS components | Security Fixes from an active scan of the web application | Upload an existing checklist for a given checklist type and host = update the info (it was just duplicating the information) | Allow Bulk Edits on Vulnerabilities across similar checklist types within a System grouping | Container “restart: always” on the Docker Compose file | All CSS, HTML, JS are local not reaching out over the public Internet | . ",
-    "url": "/whatsnew.html#version-11",
+    "url": "/help/whatsnew.html#version-11",
     "relUrl": "/whatsnew.html#version-11"
   },"60": {
     "doc": "What's New in v1.1",
     "title": "Version 1.0",
     "content": "Version 1.0 of OpenRMF Core has these updates below: . | Fixing a bug on the Web UI updating Vulnerabilities via the web form in a checklist | Updating the version descriptions to 1.0 throughout the codebase | . ",
-    "url": "/whatsnew.html#version-10",
+    "url": "/help/whatsnew.html#version-10",
     "relUrl": "/whatsnew.html#version-10"
   },"61": {
     "doc": "What's New in v1.1",
     "title": "Version 0.15",
     "content": "Version 0.15 is the last update before going to version 1.0 of OpenRMF Core. The recent updates on that are below: . | Migrating the Web UI and all APIs behind NGINX for a single port 8080 | Automatically updating the checklist score on the page when editing a vulnerability status | Various small bug fixes | . ",
-    "url": "/whatsnew.html#version-015",
+    "url": "/help/whatsnew.html#version-015",
     "relUrl": "/whatsnew.html#version-015"
   },"62": {
     "doc": "What's New in v1.1",
     "title": "Version 0.14",
     "content": "The recent updates on version 0.14 are below: . | A new Report API for certain reports, using eventual consistency for behind the scenes reporting and faster data. | Better indexing across all databases. | Caching of certain data to quicken retrieving (reports, control listing, list of values, etc.). | A new NATS Client Metrics exporter and Grafana dashboard we created to track metrics to the consumer level. | . ",
-    "url": "/whatsnew.html#version-014",
+    "url": "/help/whatsnew.html#version-014",
     "relUrl": "/whatsnew.html#version-014"
   },"63": {
     "doc": "What's New in v1.1",
     "title": "Version 0.13",
     "content": "The recent updates for version 0.13 are below: . | Showing the CCI title and NIST related controls for each Vulnerability in a Checklist | Export the Compliance listing to MS Excel | Updated /healthz checks for Kubernetes for database connectivity | Model showing an external API connected to OpenRMF via Kong API Gateway for “Scoring” a raw checklist | All APIs show tracing information in Jaeger UI | Initial Kubernetes CNI network policies in the Helm 3.0 chart | . ",
-    "url": "/whatsnew.html#version-013",
+    "url": "/help/whatsnew.html#version-013",
     "relUrl": "/whatsnew.html#version-013"
   },"64": {
     "doc": "What's New in v1.1",
     "title": "Version 0.12",
     "content": "The latest working version is version 0.12. The recent updates on that are below: . | Live editing of Checklist Asset data and Vulnerability status data | Showing the version of the checklist | Updated UI of the Template page to match the Checklist page | Filtering on the System page listing checklists by status and severity/category of Vulnerabilities across all System checklists | Filtering on the Checklist page by status and severity/category of Vulnerabilities within that checklist | Create a Test Plan Summary across your System of Checklists and Nessus ACAS scan data | Updated color coding throughout the UI for Open items to show severity / category better | Generating the POA&amp;M for Open and Not Reviewed items for a system (across all checklists) | Generating the Risk Assessment Report (RAR) for a system (across all checklists) | Generating the Test Plan Summary for a system (across all checklists) | Upgrading a Checklist to the latest version and release with the click of a button! | . ",
-    "url": "/whatsnew.html#version-012",
+    "url": "/help/whatsnew.html#version-012",
     "relUrl": "/whatsnew.html#version-012"
   },"65": {
     "doc": "What's New in v1.1",
     "title": "What's New in v1.1",
     "content": " ",
-    "url": "/whatsnew.html",
+    "url": "/help/whatsnew.html",
     "relUrl": "/whatsnew.html"
   }
 }
