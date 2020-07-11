@@ -45,8 +45,6 @@ test.ckl
 
 
 # Jekyll Help Files
-help/_site/*
-
 help/vendor/*
 
 Gemfile.lock
