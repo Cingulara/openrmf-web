@@ -11,6 +11,7 @@
     <title>OpenRMF Controls Report</title>
     <meta name="description" content="OpenRMF Controls Report">
     <meta name="author" content="Dale Bingham - https://www.cingulara.com">
+	<meta name="referrer" content="origin">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/assets/images/favicon.ico">
@@ -86,10 +87,17 @@
 						</div>
 
 						<!-- item-->
+						<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
+							<p class="notify-details ml-0">
+								<b>OpenRMF Online Help</b>
+								<span>Systems, Checklists, Reports</span>
+							</p>
+						</a>
+						<!-- item-->
 						<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
 							<p class="notify-details ml-0">
-								<b>Do you need documentation on how OpenRMF works?</b>
-								<span>GitHub Pages</span>
+								<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
+								<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
 							</p>
 						</a>
 					</div>
@@ -203,7 +211,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="checklistSystemsListLabel" id="checklistPrivacyFilterLabel" for="checklistPrivacyFilter">Include PII / Privacy Data?</label>
-                                        <input type="checkbox" class="form-control" id="checklistPrivacyFilter">
+                                        <input type="checkbox" class="form-control" id="checklistPrivacyFilter" style="width: 25px;">
                                     </div>
                                     <div class="form-group">
                                         <button type="button" class="btn btn-sm btn-primary" onclick="getControlsReport();">Run Report</button>
