@@ -11,6 +11,7 @@
 		<title>OpenRMF - Checklist Record</title>
 		<meta name="description" content="OpenRMF Checklist">
 		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
+		<meta name="referrer" content="origin">
 
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="assets/images/favicon.ico">
@@ -78,10 +79,17 @@
 					</div>
 
 					<!-- item-->
+					<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
+						<p class="notify-details ml-0">
+							<b>OpenRMF Online Help</b>
+							<span>Systems, Checklists, Reports</span>
+						</p>
+					</a>
+					<!-- item-->
 					<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
 						<p class="notify-details ml-0">
-							<b>Do you need documentation on how OpenRMF works?</b>
-							<span>GitHub Pages</span>
+							<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
+							<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
 						</p>
 					</a>
 				</div>
@@ -287,37 +295,6 @@
 				</div><!-- end row-->
 
 				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-table"></i> Severity Breakdown</h3>
-							</div>
-								
-							<div class="card-body">
-								<canvas id="chartSeverity"></canvas>
-							</div>
-							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
-							<button type="button" id="btnDownloadChartSeverity" style="display: none;" onclick="downloadChart('chartSeverity');" style="width: 200px;"
-								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->					
-					</div>
-					
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-table"></i> Category Breakdown</h3>
-							</div>
-								
-							<div class="card-body">
-								<canvas id="chartCategory"></canvas>
-							</div>
-							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
-							<button type="button" id="btnDownloadChartCategory" style="display: none;" onclick="downloadChart('chartCategory');" style="width: 200px;"
-								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->					
-					</div>							
-				</div>
-				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 						<div class="card mb-3">
 							<div class="card-header">
@@ -413,6 +390,38 @@
 					</div><!-- end card-->
 				</div>
 
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-table"></i> Severity Breakdown</h3>
+							</div>
+								
+							<div class="card-body">
+								<canvas id="chartSeverity"></canvas>
+							</div>
+							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
+							<button type="button" id="btnDownloadChartSeverity" style="display: none;" onclick="downloadChart('chartSeverity');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+						</div><!-- end card-->					
+					</div>
+					
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-table"></i> Category Breakdown</h3>
+							</div>
+								
+							<div class="card-body">
+								<canvas id="chartCategory"></canvas>
+							</div>
+							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
+							<button type="button" id="btnDownloadChartCategory" style="display: none;" onclick="downloadChart('chartCategory');" style="width: 200px;"
+								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+						</div><!-- end card-->					
+					</div>							
+				</div>
+				
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
 						<div class="card mb-3">
