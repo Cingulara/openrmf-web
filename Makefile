@@ -1,4 +1,4 @@
-VERSION ?= 1.02.02
+VERSION ?= 1.03.00
 NAME ?= "openrmf-web"
 AUTHOR ?= "Dale Bingham"
 PORT_EXT ?= 9000
