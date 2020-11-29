@@ -1298,7 +1298,10 @@ async function getChecklistData(id, template) {
 				// add to the checklistTree
 				// based on one of the status color the background appropriately
 				vulnListing += '<button id="btnVulnerability-'+ vuln.stiG_DATA[0].attributE_DATA + '" type="button" class="btn btn-sm ';
-				vulnListing += getVulnerabilityStatusClassName(vuln.status, vuln.stiG_DATA[1].attributE_DATA);
+				if (vuln.severitY_OVERRIDE)
+					vulnListing += getVulnerabilityStatusClassName(vuln.status, vuln.severitY_OVERRIDE);
+				else 
+					vulnListing += getVulnerabilityStatusClassName(vuln.status, vuln.stiG_DATA[1].attributE_DATA);
 				vulnListing += '" title="' + vuln.stiG_DATA[5].attributE_DATA + '" ';
 				vulnListing += ' onclick="viewVulnDetails(\'' + vuln.stiG_DATA[0].attributE_DATA + '\'); return false;">'
 				vulnListing += vuln.stiG_DATA[0].attributE_DATA + '</button><br />';
@@ -1403,7 +1406,11 @@ function updateVulnerabilityListingByFilter() {
 			if (showVulnId(vuln)) {
 				var vulnRecord = JSON.parse(sessionStorage.getItem(vuln.vulnId));
 				if (vulnRecord) {
-					severity = vulnRecord.stiG_DATA[1].attributE_DATA;
+					if (vulnRecord.severitY_OVERRIDE) {
+						severity = vulnRecord.severitY_OVERRIDE;
+					} else {
+						severity = vulnRecord.stiG_DATA[1].attributE_DATA;
+					}
 				} else {
 					severity = "high"; // default catch all answer
 				}
@@ -1668,7 +1675,11 @@ function updateSingleChecklistVulnerability(artifactid) {
 				var vulnItem = JSON.parse(sessionStorage.getItem(vulnid));
 				if (vulnItem){ // set all the data
 					// remove the old class for the button color
-					$("#btnVulnerability-"+ vulnid).removeClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
+					if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
+						$("#btnVulnerability-"+ vulnid).removeClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.severitY_OVERRIDE));
+					} else {
+						$("#btnVulnerability-"+ vulnid).removeClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
+					}
 					vulnItem.status = $("#frmVulnStatus").val();
 					vulnItem.findinG_DETAILS = htmlEscape($("#frmVulnDetails").val());
 					vulnItem.comments = htmlEscape($("#frmVulnComments").val());
@@ -1696,7 +1707,12 @@ function updateSingleChecklistVulnerability(artifactid) {
 					}
 				}
 				// color the button correctly for this
-				$("#btnVulnerability-"+ vulnid).addClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
+				if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
+					$("#btnVulnerability-"+ vulnid).addClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.severitY_OVERRIDE));
+				} else {
+					$("#btnVulnerability-"+ vulnid).addClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
+				}
+
 				// refresh the status of this VULN in the listing for this checklist
 				var vulnStatus = JSON.parse(sessionStorage.getItem("vulnStatus"));
 				// set the record we need in the vulnStatus object -- get vulnId set status
@@ -2457,6 +2473,9 @@ async function getSystemChecklistReport() {
 		
 		var strStatus = "";
 		var ccilist = "";
+		var strSeverity = "";
+		var strSeverityOverride = "";
+		var strSeverityJustification = "";
 		for (const item of data.checklist.stigs.iSTIG.vuln) {
 			if (item.status == "NotAFinding") 
 				strStatus = "Not a Finding";
@@ -2466,6 +2485,20 @@ async function getSystemChecklistReport() {
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
+
+			if (item.severitY_OVERRIDE) {
+				strSeverity = item.severitY_OVERRIDE;
+				strSeverityOverride = strSeverity;
+				if (item.severitY_JUSTIFICATION) 
+					strSeverityJustification = item.severitY_JUSTIFICATION;
+				else
+					strSeverityJustification = "";
+			}
+			else {
+				strSeverity = item.stiG_DATA[1].attributE_DATA;
+				strSeverityOverride = "";
+				strSeverityJustification = "";
+			}
 			
 			// set this list to empty
 			ccilist = "";
@@ -2476,11 +2509,12 @@ async function getSystemChecklistReport() {
 			ccilist = ccilist.substring(0, ccilist.length -2);
 
 			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "vulnid": item.stiG_DATA[0].attributE_DATA, "severity": item.stiG_DATA[1].attributE_DATA,
+			table.row.add( { "vulnid": item.stiG_DATA[0].attributE_DATA, "severity": strSeverity,
 				"ruleid": item.stiG_DATA[3].attributE_DATA, "stigid": item.stiG_DATA[4].attributE_DATA, 
 				"status": strStatus, "title": item.stiG_DATA[5].attributE_DATA, "cci": ccilist, 
 				"discussion": item.stiG_DATA[6].attributE_DATA, "checkContent": item.stiG_DATA[8].attributE_DATA, 
-				"fixText": item.stiG_DATA[9].attributE_DATA, "comments": item.comments, "findingDetails": item.findinG_DETAILS
+				"fixText": item.stiG_DATA[9].attributE_DATA, "comments": item.comments, "findingDetails": item.findinG_DETAILS,
+				"severityOverride": strSeverityOverride, "severityJustification": strSeverityJustification
 			}).draw();
 		}
 		$.unblockUI();
@@ -2568,6 +2602,9 @@ async function getHostVulnerabilityReport() {
 		
 		var strStatus = "";
 		var ccilist = "";
+		var strSeverity = "";
+		var strSeverityOverride = "";
+		var strSeverityJustification = "";
 		for (const item of data) {
 			if (item.status == "NotAFinding") 
 				strStatus = "Not a Finding";
@@ -2577,6 +2614,19 @@ async function getHostVulnerabilityReport() {
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
+			if (item.severityOverride) {
+				strSeverity = item.severityOverride;
+				strSeverityOverride = strSeverity;
+				if (item.severityJustification) 
+					strSeverityJustification = item.severityJustification;
+				else
+					strSeverityJustification = "";
+			}
+			else {
+				strSeverity = item.severity;
+				strSeverityOverride = "";
+				strSeverityJustification = "";
+			}
 			
 			// set this list to empty
 			ccilist = "";
@@ -2586,11 +2636,12 @@ async function getHostVulnerabilityReport() {
 			if (ccilist.length > 0) ccilist = ccilist.substring(0, ccilist.length -2);
 
 			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "vulnid": vulnid, "severity": item.severity, "hostname": item.hostname,
+			table.row.add( { "vulnid": vulnid, "severity": strSeverity, "hostname": item.hostname,
 				"ruleTitle": item.ruleTitle, "status": strStatus, "cci": ccilist, 
 				"discussion": item.discussion, "checkContent": item.checkContent,
 				"type": item.checklistType, "release": item.checklistRelease, "version": item.checklistVersion,
-				"fixText": item.fixText, "comments": item.comments, "details": item.details
+				"fixText": item.fixText, "comments": item.comments, "details": item.details, "severityOverride": strSeverityOverride,
+				"severityJustification": strSeverityJustification
 			}).draw();
 		}
 		$.unblockUI();
