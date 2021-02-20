@@ -1,5 +1,104 @@
 // Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
+/*-----------------------------------------------
+|   Startup Routines
+-----------------------------------------------*/
+function setupOpenRMFUI() {
+	// setup the profile account and logout menu
+	setupProfileMenu();
+
+	// setup auto logout
+    setupTimers();
+    $("#includeAutoLogin").load("/includes/modalLogout.html"); 
+
+	// include standard footer
+	$("#includeFooterLink").load("/includes/footertext.html"); 
+}
+
+/*-----------------------------------------------
+|   Timeout Functions
+-----------------------------------------------*/
+var warningTimeout = 840000; // main ~15 minute logout prompt
+var timeoutNow = 60000; // last minute to save the login
+var keycloakTimeout = 295000; // keycloak token refresh if logged in
+var warningTimerID,timeoutTimerID,keycloakTimerID;
+var bWarningAutoLogout = false;
+
+// start counting down
+function startLogoutTimer() {
+    // window.setTimeout returns an Id that can be used to start and stop a timer
+    warningTimerID = window.setTimeout(warningInactive, warningTimeout);
+}
+
+function startKeycloakUpdateTimer() {
+    keycloakTimerID = window.setTimeout(updateKeycloakToken, keycloakTimeout);
+}
+
+// popup the "you will be logged out" modal
+function warningInactive() {
+    bWarningAutoLogout = true;
+    window.clearTimeout(warningTimerID);
+    timeoutTimerID = window.setTimeout(IdleTimeout, timeoutNow);
+    //$('#modalAutoLogout').modal('show');
+	alert('We are going to log you out!');
+    console.log("show the modal timeout to click OK to continue");
+}
+
+// reset the timer to the max and begin the countdown again
+function resetLogoutTimer() {
+    if (!bWarningAutoLogout) { // if we are not currently in the warning period
+        window.clearTimeout(timeoutTimerID);
+        window.clearTimeout(warningTimerID);
+        startLogoutTimer();
+    }
+}
+
+// update the keycloak token for 5 more minutes, as keycloak goes by seconds not ms
+function updateKeycloakToken() {
+    keycloak.updateToken(300).success(() => {
+        console.log('Keycloak successfully have a new token');
+        window.clearTimeout(keycloakTimerID);
+        startKeycloakUpdateTimer();
+    }).error(() => {
+        console.log('Keycloak token refresh unsuccessful');
+    });
+}
+
+// Logout the user
+function IdleTimeout() {
+    autoLogout();
+}
+
+// setup all the countdowns
+function setupTimers () {
+    document.addEventListener("mousemove", resetLogoutTimer, false);
+    document.addEventListener("mousedown", resetLogoutTimer, false);
+    document.addEventListener("keypress", resetLogoutTimer, false);
+    document.addEventListener("touchmove", resetLogoutTimer, false);
+    document.addEventListener("onscroll", resetLogoutTimer, false);
+    startLogoutTimer();
+    startKeycloakUpdateTimer();
+}
+
+// we clicked "Stay" in the auto logout
+$(document).on('click','#btnStayLoggedIn',function(){
+    bWarningAutoLogout = false;
+    resetLogoutTimer();
+    //$('#modalAutoLogout').modal('hide');
+});
+
+function logout() {
+    var logoutURL = keycloak.endpoints.logout();
+    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
+    document.location.href = logoutURL;
+}
+
+function autoLogout() {
+    var logoutURL = keycloak.endpoints.logout();
+    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html?autologout=true");
+    document.location.href = logoutURL;
+}
+
 /*************************************
  * Dashboard functions
  ************************************/
