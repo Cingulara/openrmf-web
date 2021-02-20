@@ -6,7 +6,7 @@ nav_order: 500
 
 # Using Templates for your Checklists
 
-![OpenRMF Templates](/assets/templates.png)
+![OpenRMF Templates](./assets/templates.png)
 
 You can use Templates in OpenRMF for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly. 
 
