@@ -1820,6 +1820,9 @@ function updateSingleChecklistVulnerability(artifactid) {
 				// put it back into the sessionStorage
 				sessionStorage.setItem("vulnStatus", JSON.stringify(vulnStatus));
 				getChecklistScore(artifactid);
+
+				// close the modal that was opened				
+				$('#vulnerabilityModal').modal('hide');
 			});
 		},
 		error: function() {
