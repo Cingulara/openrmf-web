@@ -1,0 +1,24 @@
+name: Dockerfile Build and Scan
+
+on:
+  push:
+    branches: 
+      - develop
+  pull_request:
+    branches: 
+      - release
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Build the Docker image
+      run: docker build . --file ./Dockerfile --tag localbuild/openrmf-web:latest
+    - name: Container image scan
+      uses: Azure/container-scan@v0
+      with:
+        image-name: localbuild/openrmf-web:latest
