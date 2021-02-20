@@ -1,5 +1,105 @@
 // Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
 // Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
+/*-----------------------------------------------
+|   Startup Routines
+-----------------------------------------------*/
+function setupOpenRMFUI() {
+	// setup the profile account and logout menu
+	setupProfileMenu();
+
+	// setup auto logout
+    setupTimers();
+    $("#includeAutoLogin").load("/includes/modalLogout.html"); 
+
+	// include standard footer
+	$("#includeFooterLink").load("/includes/footertext.html"); 
+}
+
+function menuMetricsLink(){
+    window.open(document.location.protocol + '//' + document.location.hostname + ":3000/", "openrmf-metrics");
+}
+/*-----------------------------------------------
+|   Timeout Functions
+-----------------------------------------------*/
+var warningTimeout = 840000; // main ~15 minute logout prompt
+var timeoutNow = 60000; // last minute to save the login
+var keycloakTimeout = 295000; // keycloak token refresh if logged in
+var warningTimerID,timeoutTimerID,keycloakTimerID;
+var bWarningAutoLogout = false;
+
+// start counting down
+function startLogoutTimer() {
+    // window.setTimeout returns an Id that can be used to start and stop a timer
+    warningTimerID = window.setTimeout(warningInactive, warningTimeout);
+}
+
+function startKeycloakUpdateTimer() {
+    keycloakTimerID = window.setTimeout(updateKeycloakToken, keycloakTimeout);
+}
+
+// popup the "you will be logged out" modal
+function warningInactive() {
+    bWarningAutoLogout = true;
+    window.clearTimeout(warningTimerID);
+    timeoutTimerID = window.setTimeout(IdleTimeout, timeoutNow);
+    $('#modalAutoLogout').modal('show');
+}
+
+// reset the timer to the max and begin the countdown again
+function resetLogoutTimer() {
+    if (!bWarningAutoLogout) { // if we are not currently in the warning period
+        window.clearTimeout(timeoutTimerID);
+        window.clearTimeout(warningTimerID);
+        startLogoutTimer();
+    }
+}
+
+// update the keycloak token for 5 more minutes, as keycloak goes by seconds not ms
+function updateKeycloakToken() {
+    keycloak.updateToken(300).success(() => {
+        //console.log('Keycloak successfully have a new token');
+        window.clearTimeout(keycloakTimerID);
+        startKeycloakUpdateTimer();
+    }).error(() => {
+        console.log('Keycloak token refresh unsuccessful');
+    });
+}
+
+// Logout the user
+function IdleTimeout() {
+    autoLogout();
+}
+
+// setup all the countdowns
+function setupTimers () {
+    document.addEventListener("mousemove", resetLogoutTimer, false);
+    document.addEventListener("mousedown", resetLogoutTimer, false);
+    document.addEventListener("keypress", resetLogoutTimer, false);
+    document.addEventListener("touchmove", resetLogoutTimer, false);
+    document.addEventListener("onscroll", resetLogoutTimer, false);
+    startLogoutTimer();
+    startKeycloakUpdateTimer();
+}
+
+// we clicked "Stay" in the auto logout
+$(document).on('click','#btnStayLoggedIn',function(){
+    bWarningAutoLogout = false;
+    resetLogoutTimer();
+    $('#modalAutoLogout').modal('hide');
+});
+
+function logout() {
+    var logoutURL = keycloak.endpoints.logout();
+    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
+    document.location.href = logoutURL;
+}
+
+function autoLogout() {
+    var logoutURL = keycloak.endpoints.logout();
+    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html?autologout=true");
+    document.location.href = logoutURL;
+}
+
 /*************************************
  * Dashboard functions
  ************************************/
@@ -65,9 +165,9 @@ async function getSystemsForDashboard() {
 	sessionStorage.removeItem("checklistSystems");
 	// clear the options
 	$('#checklistSystem').children().remove().end();
-	$('#checklistSystem').append('<option value="">[Choose a System]</option>');
+	$('#checklistSystem').append('<option value="">[Choose a System ATO Package]</option>');
 	$('#checklistACASSystem').children().remove().end();
-	$('#checklistACASSystem').append('<option value="">[Choose a System]</option>');
+	$('#checklistACASSystem').append('<option value="">[Choose a System ATO Package]</option>');
 	var data = await getChecklistSystems();
 	// for each data add to the system listings on the dashboard independently
 	if (data) {
@@ -304,7 +404,7 @@ async function getSystemListing(){
 
 		if (data.length == 0) {
 			$.unblockUI();
-			var alertText = 'There are no Systems in here. Please add your first System or Upload your first checklist to get started.';
+			var alertText = 'There are no System ATO Packages in here. Please add your first System or Upload your first checklist to get started.';
 			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
 			alertText += '<span aria-hidden="true">&times;</span></button>';
 			$("#divMessaging").html(alertText);
@@ -468,7 +568,7 @@ function resetEditSystemForm() {
 
 // the add page on the System record page calls this if you have permissions
 function addSystem(){
-	swal("Adding System...", {
+	swal("Adding System ATO Package...", {
 		buttons: false,
 		timer: 3000,
 	});
@@ -486,14 +586,14 @@ function addSystem(){
 			processData: false,
 			contentType: false,			
 			success: function(data){
-				swal("Your System was created successfully!", "Click OK to continue!", "success")
+				swal("Your System ATO Package was created successfully!", "Click OK to continue!", "success")
 				.then((value) => {
 					// load the new system
 					location.href = "checklists.html?id=" + data.internalIdString;
 				});
 			},
 			error : function(data){
-				swal("There was a Problem. Your System was not created successfully. Please verify all required fields are filled in.", "Click OK to continue!", "error");
+				swal("There was a Problem. Your System ATO Package was not created successfully. Please verify all required fields are filled in.", "Click OK to continue!", "error");
 			}
 	});
 	return false;
@@ -1510,7 +1610,7 @@ async function viewVulnDetails(vulnId) {
 		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + (data.stiG_DATA[21].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + (data.stiG_DATA[1].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + (data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
-		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA.replace(/\n/g, "<br />"));
+		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA.replace(/</g, "&lt; ").replace(/\n/g, "<br />"));
 		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA.replace(/\n/g, "<br />"));
 		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
 		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
@@ -1720,6 +1820,9 @@ function updateSingleChecklistVulnerability(artifactid) {
 				// put it back into the sessionStorage
 				sessionStorage.setItem("vulnStatus", JSON.stringify(vulnStatus));
 				getChecklistScore(artifactid);
+
+				// close the modal that was opened				
+				$('#vulnerabilityModal').modal('hide');
 			});
 		},
 		error: function() {

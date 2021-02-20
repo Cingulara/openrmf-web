@@ -162,6 +162,9 @@
 				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
 					<a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
 				</li>
+				<li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
+					<a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
+				</li>
             </ul>
             <div class="clearfix"></div>
 			</div>
@@ -198,10 +201,11 @@
 								<div class="checklistSystemsList">
 									<form>
 										<div class="form-group">
-										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
+										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package Filter</label>
 										<select class="form-control" id="checklistSystemFilter">
 											<option value="">[Choose One]</option>
 										</select>
+                                        <small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
 										</div>
 										<div class="form-group">
 										<label class="checklistSystemsListLabel" id="checklistImpactFilterLabel" for="checklistImpactFilter">System Impact Level</label>
@@ -210,11 +214,14 @@
 											<option value="moderate">Moderate</option>
 											<option value="high">High</option>
 										</select>
+                                        <small id="titleSystem" class="form-text text-muted">Specify the Overall Impact Level</small>
 										</div>
-										<div class="form-group">
-										<label class="checklistSystemsListLabel" id="checklistPrivacyFilterLabel" for="checklistPrivacyFilter">Contains PII / Privacy Data?</label>
+										<div class="form-inline">
 										<input type="checkbox" class="form-control" id="checklistPrivacyFilter" style="width: 25px;">
+										<label class="checklistSystemsListLabel" id="checklistPrivacyFilterLabel" for="checklistPrivacyFilter">Contains PII / Privacy Data?</label>
+                                        <small id="titleSystem" class="form-text text-muted">Check to include Privacy and PII Controls</small>
 										</div>
+										<br />
 										<div class="form-group">
 											<button onclick="getComplianceBySystem(); return false;" 
 												class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-check-square-o"></i></span> Generate</button>
@@ -234,12 +241,12 @@
 							</div>
 							<div class="card-body">
 								<p>
-									Generate a Compliance Report across all the checklists in your system 
+									Generate a Compliance Report across all the checklists in your System ATO Package 
 									to verify your status on satisfying all relevant controls. Follow the steps 
 									below to generate and validate your checklists for the chosen Impact Level.
 								</p>
 								<ol>
-									<li>Choose your System</li>
+									<li>Choose your System ATO Package</li>
 									<li>Choose your Impact Level (Low, Moderate, High)</li>
 									<li>Check if you contain PII, PHI, or Privacy Data</li>
 									<li>Click the Generate button</li>
@@ -258,7 +265,7 @@
 						<div class="card mb-3">
 							<div class="card-header">
 								<h3><i class="fa fa-list-alt"></i> Compliance Summary</h3>
-								Summary per family for your System Compliance. Details are below in the next section. <br />
+								Summary per family for your System ATO Package Compliance. Details are below in the next section. <br />
 								<i class='fa fa-check'></i> Green = Not A Finding / Not Applicable. <i class='fa fa-eye-slash'></i> Black = Not Reviewed. 
 								<i class='fa fa-times'></i> Red = Open.
 							</div>
@@ -293,15 +300,8 @@
     </div>
 	<!-- END content-page -->
     
-	<footer class="footer">
-		<span class="text-right">
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
-		</span>
-		<span class="float-right">
-		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
-		</span>
-	</footer>
+	<footer class="footer"><div id="includeFooterLink"></div></footer>
+	<div id="includeAutoLogin"></div>
 
 </div>
 <!-- END main -->
@@ -335,8 +335,8 @@
 		// authentication first
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 			if (authenticated) {
-				// setup the profile account and logout menu
-				setupProfileMenu();
+				// setup the User Interface
+				setupOpenRMFUI();
 				// see if the upload menu should show
 				verifyMenus();
 				// see if someone should see the Export Compliance button

@@ -165,7 +165,10 @@
           </li>
           <li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
             <a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
-          </li>          
+          </li>
+          <li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
+            <a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
+          </li>     
         </ul>
         <div class="clearfix"></div>
 			</div>
@@ -200,18 +203,18 @@
                 <div class="card-body">
                 <form id="frmChecklistUpload">
                   <div class="form-group" id="divNewChecklistSystem" >
-                    <label for="checklistSystem">System Name </label>
+                    <label for="checklistSystem">System ATO Package Name </label>
                     <select class="form-control select2" id="checklistSystem" required>
                     </select>
-                    <small id="titleHelp" class="form-text text-muted">Select the system this belongs to. Add a new one if needed.</small>
+                    <small id="titleHelp" class="form-text text-muted">Specify the System ATO Package this belongs to. Add a new one if needed.</small>
                   </div>
                   <div class="form-group" ><a href="#" 
-                    onclick="$('#divNewChecklistSystem').hide(); $('#divNewChecklistSystemText').show(); return false;">Add a new System</a></div>
+                    onclick="$('#divNewChecklistSystem').hide(); $('#divNewChecklistSystemText').show(); return false;">Add a new System ATO Package</a></div>
                   <div class="form-group" id="divNewChecklistSystemText" style="display: none;">
-                    <label for="checklistSystemText">New System Name</label>
+                    <label for="checklistSystemText">New System ATO Package Name</label>
                     <input type="text" class="form-control" id="checklistSystemText" maxlength="100"
-                      aria-describedby="titleHelp" placeholder="Enter a new System Name (if any)">
-                    <small id="titleHelp" class="form-text text-muted">Enter a new system if not in the list above</small>
+                      aria-describedby="titleHelp" placeholder="Enter a new System ATO Package Name">
+                    <small id="titleHelp" class="form-text text-muted">Enter a new System ATO Package if not in the list above</small>
                   </div>
                   <div class="form-group">
                     <label for="checklistFile">Checklist Files (up to 10 at a time)</label><br />
@@ -300,15 +303,8 @@
     </div>
 	<!-- END content-page -->
     
-	<footer class="footer">
-		<span class="text-right">
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
-		</span>
-		<span class="float-right">
-		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
-		</span>
-	</footer>
+	<footer class="footer"><div id="includeFooterLink"></div></footer>
+	<div id="includeAutoLogin"></div>
 
 </div>
 <!-- END main -->
@@ -336,8 +332,8 @@
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 			if (authenticated) {
         if (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator")) {
-          // setup the profile account and logout menu
-          setupProfileMenu();
+          // setup the User Interface
+          setupOpenRMFUI();
           $("#content").show();
           $("#divUploadChecklist").show();
           $("#divUploadTemplate").show();

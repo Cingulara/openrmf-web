@@ -155,6 +155,9 @@
 				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
 					<a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
 				</li>
+				<li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
+					<a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
+				</li>
             </ul>
             <div class="clearfix"></div>
 			</div>
@@ -447,15 +450,8 @@
     </div>
 	<!-- END content-page -->
     
-	<footer class="footer">
-		<span class="text-right">
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
-		</span>
-		<span class="float-right">
-		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
-		</span>
-	</footer>
+	<footer class="footer"><div id="includeFooterLink"></div></footer>
+	<div id="includeAutoLogin"></div>
 
 </div>
 <!-- END main -->
@@ -490,8 +486,8 @@
 		// authentication first
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 			if (authenticated) {
-				// setup the profile account and logout menu
-				setupProfileMenu();
+				// setup the User Interface
+				setupOpenRMFUI();
 				// see if the upload menu should show
 				verifyMenus();
 				// check if they can download
@@ -645,17 +641,17 @@
 			  <small id="titleComments" class="form-text text-muted">Enter any comments for this vulnerability</small>
 			</div>
 			<div class="form-group">
-				<label for="frmVulnSecurityOverride">Security Override</label>
+				<label for="frmVulnSecurityOverride">Severity Override</label>
 				<select class="form-control select2" id="frmVulnSecurityOverride">
 						<option value="">Choose one...</option>
 						<option value="high">CAT I / High</option>
 						<option value="medium">CAT II / Medium</option>
 						<option value="low">CAT III / Low</option>
 				</select>
-				<small id="titleSecurityOverride" class="form-text text-muted">Select the current security override (if any) for this vulnerability</small>
+				<small id="titleSecurityOverride" class="form-text text-muted">Select the current severity override (if any) for this vulnerability</small>
 			</div>
 			<div class="form-group">
-			  <label for="frmVulnSecurityJustification">Security Override Justification</label>
+			  <label for="frmVulnSecurityJustification">Severity Override Justification</label>
 			  <textarea class="form-control" id="frmVulnSecurityJustification" cols="40" rows="4"
 			  	aria-describedby="titleSecurityJustification" placeholder="Enter any Comments"></textarea>
 			  <small id="titleSecurityJustification" class="form-text text-muted">Enter the justification on the override for this vulnerability</small>

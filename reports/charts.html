@@ -157,6 +157,9 @@
 				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
 					<a href="/audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
 				</li>
+				<li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
+					<a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
+				</li>
             </ul>
             <div class="clearfix"></div>
 			</div>
@@ -190,12 +193,17 @@
 						</div>
 						<div class="card-body">
 							<div>
-								<form class="form-inline">
-									<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
-									<select class="form-control" id="checklistSystemFilter">
-										<option value="">[ Choose System ]</option>
-									</select> &nbsp; &nbsp; 
-									<button type="button" class="btn btn-sm btn-primary" onclick="getSystemTotalsByTypeReport();">Run Report</button>
+								<form>
+									<div class="form-group">
+										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package Filter</label>
+										<select class="form-control" id="checklistSystemFilter">
+											<option value="">[ Choose a System ATO Package ]</option>
+										</select>
+                                        <small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
+									</div>
+									<div class="form-group">
+										<button type="button" class="btn btn-sm btn-primary" onclick="getSystemTotalsByTypeReport();">Run Report</button>
+									</div>
 								</form>
 							</div>
 						</div><!-- end card body -->															
@@ -226,15 +234,8 @@
     </div>
 	<!-- END content-page -->
     
-	<footer class="footer">
-		<span class="text-right">
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
-		</span>
-		<span class="float-right">
-		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
-		</span>
-	</footer>
+	<footer class="footer"><div id="includeFooterLink"></div></footer>
+	<div id="includeAutoLogin"></div>
 
 </div>
 <!-- END main -->
@@ -266,8 +267,8 @@
 			// authentication first
 			keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 				if (authenticated) {
-					// setup the profile account and logout menu
-					setupProfileMenu();
+					// setup the User Interface
+					setupOpenRMFUI();
 					// see if the upload menu should show
 					verifyMenus();
 					getChecklistSystemsForReportFilter();

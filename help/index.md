@@ -72,4 +72,4 @@ More information can be found in our <a href="https://www.openrmf.io/doc/OpenRMF
 ## Architecture
 Below is the top level architecture as of version 0.11 and beyond, drawn via <a href="https://app.diagrams.net/" target="_blank">Draw.io</a>'s great tool (now Diagrams.net). 
 
-![OpenRMF v0.11 Architecture and beyond](/assets/openRMF-Tool-Architecture.png)
+![OpenRMF v0.11 Architecture and beyond](./assets/openRMF-Tool-Architecture.png)
