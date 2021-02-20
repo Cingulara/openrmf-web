@@ -39,9 +39,7 @@ function warningInactive() {
     bWarningAutoLogout = true;
     window.clearTimeout(warningTimerID);
     timeoutTimerID = window.setTimeout(IdleTimeout, timeoutNow);
-    //$('#modalAutoLogout').modal('show');
-	alert('We are going to log you out!');
-    console.log("show the modal timeout to click OK to continue");
+    $('#modalAutoLogout').modal('show');
 }
 
 // reset the timer to the max and begin the countdown again
@@ -56,7 +54,7 @@ function resetLogoutTimer() {
 // update the keycloak token for 5 more minutes, as keycloak goes by seconds not ms
 function updateKeycloakToken() {
     keycloak.updateToken(300).success(() => {
-        console.log('Keycloak successfully have a new token');
+        //console.log('Keycloak successfully have a new token');
         window.clearTimeout(keycloakTimerID);
         startKeycloakUpdateTimer();
     }).error(() => {
@@ -84,7 +82,7 @@ function setupTimers () {
 $(document).on('click','#btnStayLoggedIn',function(){
     bWarningAutoLogout = false;
     resetLogoutTimer();
-    //$('#modalAutoLogout').modal('hide');
+    $('#modalAutoLogout').modal('hide');
 });
 
 function logout() {
