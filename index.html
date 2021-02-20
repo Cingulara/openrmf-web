@@ -196,9 +196,9 @@
 					<div class="col-xs-12 col-md-6 col-lg-6 col-xl-3 clickable" onclick="location.href='systems.html';">
 						<div class="card-box noradius noborder bg-success">
 							<i class="fa fa-object-group float-right text-white"></i>
-							<h6 class="text-white text-uppercase m-b-20">Systems</h6>
+							<h6 class="text-white text-uppercase m-b-20">Systems Packages </h6>
 							<h1 id="numberSystemsTotal" class="m-b-20 text-white">-</h1>
-							<span class="text-white"><span id="numberNewSystemsTotal"></span> New Systems</span>
+							<span class="text-white"><span id="numberNewSystemsTotal"></span> System ATO Packages</span>
 						</div>
 					</div>
 
@@ -207,7 +207,7 @@
 							<i class="fa fa-file-text-o float-right text-white"></i>
 							<h6 class="text-white text-uppercase m-b-20">Checklists</h6>
 							<h1 id="numberChecklistsTotal" class="m-b-20 text-white">-</h1>
-							<span class="text-white"><span id="numberNewChecklistsTotal"></span> New Checklists</span>
+							<span class="text-white"><span id="numberNewChecklistsTotal"></span> Checklists</span>
 						</div>
 					</div>
 
@@ -216,7 +216,7 @@
 							<i class="fa fa-clone float-right text-white"></i>
 							<h6 class="text-white text-uppercase m-b-20">Templates</h6>
 							<h1 id="numberTemplatesTotal" class="m-b-20 text-white">-</h1>
-							<span class="text-white"><span id="numberNewTemplatesTotal"></span> New Templates</span>
+							<span class="text-white"><span id="numberNewTemplatesTotal"></span> Templates</span>
 						</div>
 					</div>
 
@@ -224,7 +224,7 @@
 						<div class="card-box noradius noborder bg-warning">
 							<i class="fa fa-code float-right text-white"></i>
 							<h6 class="text-white text-uppercase m-b-20">Version</h6>
-							<h1 class="m-b-20 text-white">1.4.0</h1>
+							<h1 class="m-b-20 text-white">1.5.1</h1>
 							<span class="text-white">OpenRMF OSS</span>
 						</div>
 					</div>
@@ -248,9 +248,9 @@
 								<h3><i class="fa fa-table"></i> Critical and High Findings</h3>
 							</div>			
 							<div class="card-body">
-								<div class="small">Choose a system to display its ACAS Scan Item Dashboard</div>
+								<div class="small">Choose a System ATO Package to display its ACAS Scan Item Dashboard</div>
 								<select class="form-control" style="width: 50%;" id="checklistACASSystem" onchange="getSystemACASItemsForDashboard();">
-									<option value="">[Choose a System]</option>
+									<option value="">[Choose a System Package ]</option>
 								</select>
 								<br />
 								<div id="divNessusStatus" style="display: none;" class="alert alert-warning alert-dismissible fade show" role="alert"></div>
@@ -310,9 +310,9 @@
 								<h3><i class="fa fa-exclamation"></i> High, Medium &amp; Low Open Items</h3>
 							</div>								
 							<div class="card-body">
-								<div class="small">Choose a system to display its Open Item Dashboard</div>
+								<div class="small">Choose a System ATO Package to display its Open Item Dashboard</div>
 								<select class="form-control" style="width: 50%;" id="checklistSystem" onchange="getSystemOpenItemsForDashboard();">
-									<option value="">[Choose a System]</option>
+									<option value="">[Choose a System Package ]</option>
 								</select>
 								<br />
 								<div class="row" id="divSystemCategoryDashboard" style="display: none;">

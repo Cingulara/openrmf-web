@@ -200,18 +200,20 @@
 						</div>
 						<div class="card-body">
 							<div>
-								<form>									
+								<form>
 									<div class="form-group">
-										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Filter</label>
+										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package Filter</label>
 										<select class="form-control" id="checklistSystemFilter" onchange="updateChecklistFilter();">
-											<option value="">[ Choose a System ]</option>
+											<option value="">[ Choose a System ATO Package ]</option>
 										</select>
+                                        <small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
 									</div>
 									<div class="form-group">
 										<label class="checklistSystemListLabel" id="checklistListLabel" for="checklistFilter">Checklist</label>
 										<select class="form-control" id="checklistFilter">
 											<option value="">[ Choose a Checklist ]</option>
 										</select>
+                                        <small id="titleSystem" class="form-text text-muted">Specify the Checklist</small>
 									</div>
 									<div class="form-group">
 										<button type="button" class="btn btn-sm btn-primary" onclick="getSystemChecklistReport();">Run Report</button>
