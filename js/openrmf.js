@@ -15,6 +15,9 @@ function setupOpenRMFUI() {
 	$("#includeFooterLink").load("/includes/footertext.html"); 
 }
 
+function menuMetricsLink(){
+    window.open(document.location.protocol + '//' + document.location.hostname + ":3000/", "openrmf-metrics");
+}
 /*-----------------------------------------------
 |   Timeout Functions
 -----------------------------------------------*/
