@@ -4,6 +4,7 @@
 |   Startup Routines
 -----------------------------------------------*/
 function setupOpenRMFUI() {
+	$("#main").show();
 	// setup the profile account and logout menu
 	setupProfileMenu();
 
@@ -237,7 +238,7 @@ async function getSystemACASItemsForDashboard() {
  * Template listing functions
  ************************************/
 async function getTemplates(latest) {
-	$.blockUI({ message: "Updating the template listing..." }); 
+	$.blockUI({ message: "Updating the template listing...", css: { padding: '15px'} });
 	var url = templateAPI;	
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -385,7 +386,7 @@ function listSystems() {
 }
 
 async function getSystemListing(){
-	$.blockUI({ message: "Updating the system listing..." }); 
+	$.blockUI({ message: "Updating the system listing...", css: { padding: '15px'} }); 
 	var url = readAPI + "systems/";
 
 	// setup the table visibility
@@ -530,11 +531,6 @@ async function getSystemRecord(systemGroupId) {
 				poamHTML += ' title="Generate the POAM in MS Excel" '
 				poamHTML += 'class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-calendar"></i></span> Generate POAM</button>';
 				$("#divSystemPOAM").html(poamHTML);
-				var rarHTML = '<button style="margin: 2px; width: 100%; text-align: left;" type="button" id="btnGeneratePOAM" onclick="exportRAR(getParameterByName(\'id\'), false);" ';
-				rarHTML += ' title="Generate the Risk Assessment Report in MS Excel" '
-				rarHTML += 'class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-bullseye"></i></span> Generate RAR</button>';
-				$("#divSystemLastRAR").html(rarHTML);
-				
 			}
 			// created date and updated date
 			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
@@ -710,7 +706,7 @@ async function downloadNessusXML(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
 	// redirect to the API and it downloads the XML file for the Nessus scan
-	$.blockUI({ message: "Generating the Nessus file...please wait" }); 
+	$.blockUI({ message: "Generating the Nessus file...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + encodeURIComponent(systemGroupId) + "/downloadnessus/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -765,7 +761,7 @@ async function exportNessusXML(systemGroupId, summaryView) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
 
-	$.blockUI({ message: "Generating the Nessus Excel export...please wait" }); 
+	$.blockUI({ message: "Generating the Nessus Excel export...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -803,7 +799,7 @@ async function exportNessusXML(systemGroupId, summaryView) {
 async function exportTestPlan(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
-	$.blockUI({ message: "Generating the System Test Plan Excel export...please wait" }); 
+	$.blockUI({ message: "Generating the System Test Plan Excel export...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + systemGroupId + "/testplanexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -842,7 +838,7 @@ async function exportTestPlan(systemGroupId) {
 async function exportPOAM(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
-	$.blockUI({ message: "Generating the POA&amp;M Excel export...please wait" }); 
+	$.blockUI({ message: "Generating the POA&amp;M Excel export...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + systemGroupId + "/poamexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -864,45 +860,6 @@ async function exportPOAM(systemGroupId) {
 				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
 
 				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-POAM-" + strDate + ".xlsx";
-				document.body.appendChild(downloadLink);
-				downloadLink.click();
-				document.body.removeChild(downloadLink);
-			}
-		} else {
-			alert("There was a problem exporting your report.")
-			$.unblockUI();		
-		}
-	};
-	request.send();
-	$.unblockUI();
-}
-
-// export Test Plan to XLSX for easier viewing
-async function exportRAR(systemGroupId) {
-	if (!systemGroupId) // get it from the session
-		systemGroupId = sessionStorage.getItem("currentSystem");
-	$.blockUI({ message: "Generating the Risk Assessment Report export...please wait" }); 
-	var url = readAPI + "system/" + systemGroupId + "/rarexport/";
-	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
-	var request = new XMLHttpRequest();
-	request.open('GET', url, true);
-	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
-	request.responseType = 'blob';	
-	request.onload = function(e) {
-		if (this.status === 200) {
-			var blob = this.response;
-			if(window.navigator.msSaveOrOpenBlob) {
-				window.navigator.msSaveBlob(blob, fileName);
-			}
-			else{
-				var downloadLink = window.document.createElement('a');
-				var contentTypeHeader = request.getResponseHeader("Content-Type");
-				var strDate = "";
-				var d = new Date();
-				strDate = d.getFullYear().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getDate().toString() + "-" + d.getHours().toString() + "-" + d.getMinutes().toString() + "-" + d.getSeconds().toString();
-				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
-
-				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-RAR-" + strDate + ".xlsx";
 				document.body.appendChild(downloadLink);
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
@@ -1068,6 +1025,55 @@ async function deleteAllSystemChecklists(id){
 		});
 	}
 }
+
+// download all CKL in a zip file
+async function downloadAllSystemChecklists(id) {
+	// redirect to the API and it downloads the ZIP file of all Checklist Listings
+	var systemFilter = '';
+	if ($("#txtSystemName").val()){
+		systemFilter = $("#txtSystemName").val();
+	}
+	$.blockUI({ message: "Generating the System Checklist ZIP ...please wait", css: { padding: '15px'} }); 
+	var url = readAPI;
+	if (getParameterByName('id')) 
+		url += "system/download/" + encodeURIComponent(getParameterByName('id'));
+	else // session
+		url += "system/download/" + encodeURIComponent(sessionStorage.getItem("currentSystem"));
+	// add in the system filter for the export
+	url += "/?naf=" + $("#chkVulnNaF").is(':checked');
+	url += "&open=" + $("#chkVulnOpen").is(':checked');
+	url += "&na="   + $("#chkVulnNA").is(':checked');
+	url += "&nr="   + $("#chkVulnNR").is(':checked');
+	url += "&cat1=" + $("#chkVulnCAT1").is(':checked');
+	url += "&cat2=" + $("#chkVulnCAT2").is(':checked');
+	url += "&cat3=" + $("#chkVulnCAT3").is(':checked');
+
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';
+	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#txtSystemName").val()) + "-checklists.zip";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		}
+	};
+	request.send();
+	$.unblockUI();
+}
 /*************************************
  * Checklist listing functions
  ************************************/
@@ -1126,7 +1132,7 @@ function setSystemChecklistFilter() {
 }
 // main listing of checklists on the system record page
 async function getChecklists(system) {
-	$.blockUI({ message: "Updating the checklist listing..." }); 
+	$.blockUI({ message: "Updating the checklist listing..." , css: { padding: '15px'} }); 
 	// use this to refresh the checklist page if they delete something
 	sessionStorage.setItem("currentSystem", system);
 
@@ -1266,7 +1272,7 @@ async function exportChecklistListingXLSX() {
 	if ($("#txtSystemName").val()){
 		systemFilter = $("#txtSystemName").val();
 	}
-	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait" }); 
+	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait", css: { padding: '15px'} }); 
 	var url = readAPI;
 	if (getParameterByName('id')) 
 		url += "system/export/" + encodeURIComponent(getParameterByName('id'));
@@ -1576,7 +1582,7 @@ function showVulnId(vuln){
 }
 // get the color coding of the class based on vulnerability status
 function getVulnerabilityStatusClassName (status, severity) {
-	if (status.toLowerCase() == 'not_reviewed')
+	if (status.toLowerCase() == 'not_reviewed' || status.toLowerCase() == 'not reviewed')
 		return "vulnNotReviewed";
 	else if (status.toLowerCase() == 'open') {
 		if (severity.toLowerCase() == "high")
@@ -1586,10 +1592,21 @@ function getVulnerabilityStatusClassName (status, severity) {
 		else if (severity.toLowerCase() == "low")
 			return "vulnOpenCAT3";
 	}
-	else if (status.toLowerCase() == 'not_applicable')
+	else if (status.toLowerCase() == 'not_applicable' || status.toLowerCase() == 'not applicable')
 		return "vulnNotApplicable";
 	else // not a finding
 		return "vulnNotAFinding";
+}
+// get the color coding of the class based on vulnerability status
+function getPatchVulnerabilityClassName (severity) {
+		if (severity >= 3)
+			return "vulnOpenCAT1";
+		else if (severity == 2)
+			return "vulnOpenCAT2";
+		else if (severity == 1)
+			return "vulnOpenCAT3";
+		else 
+			return "";
 }
 
 // display the vulnerability information by the Vulnerability Id
@@ -1852,22 +1869,22 @@ async function getChecklistScore(id) {
 
 async function displayChecklistScores(data) {
 	if (data) {
-		$("#checklistNotAFindingCount").html("<a style='color: white;' href='javascript:setVulnerabilityFilter(\"naf\",\"all\")'>" + data.totalNotAFinding.toString() + "</a>");
-		$("#checklistNotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"all\")'>" + data.totalNotApplicable.toString() + "</a>");
-		$("#checklistOpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"all\")'>" + data.totalOpen.toString() + "</a>");
-		$("#checklistNotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"all\")'>" + data.totalNotReviewed.toString() + "</a>");
-		$("#cat1NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat1\")'>" + data.totalCat1NotAFinding.toString() + "</a>");
-		$("#cat1NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat1\")'>" + data.totalCat1NotApplicable.toString() + "</a>");
-		$("#cat1OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat1\")'>" + data.totalCat1Open.toString() + "</a>");
-		$("#cat1NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat1\")'>" + data.totalCat1NotReviewed.toString() + "</a>");
-		$("#cat2NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat2\")'>" + data.totalCat2NotAFinding.toString() + "</a>");
-		$("#cat2NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat2\")'>" + data.totalCat2NotApplicable.toString() + "</a>");
-		$("#cat2OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat2\")'>" + data.totalCat2Open.toString() + "</a>");
-		$("#cat2NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat2\")'>" + data.totalCat2NotReviewed.toString() + "</a>");
-		$("#cat3NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat3\")'>" + data.totalCat3NotAFinding.toString() + "</a>");
-		$("#cat3NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat3\")'>" + data.totalCat3NotApplicable.toString() + "</a>");
-		$("#cat3OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat3\")'>" + data.totalCat3Open.toString() + "</a>");
-		$("#cat3NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat3\")'>" + data.totalCat3NotReviewed.toString() + "</a>");
+		$("#checklistNotAFindingCount").html(data.totalNotAFinding.toString());
+		$("#checklistNotApplicableCount").html(data.totalNotApplicable.toString());
+		$("#checklistOpenCount").html(data.totalOpen.toString());
+		$("#checklistNotReviewedCount").html(data.totalNotReviewed.toString());
+		$("#cat1NotAFindingCount").html(data.totalCat1NotAFinding.toString());
+		$("#cat1NotApplicableCount").html(data.totalCat1NotApplicable.toString());
+		$("#cat1OpenCount").html(data.totalCat1Open.toString());
+		$("#cat1NotReviewedCount").html(data.totalCat1NotReviewed.toString());
+		$("#cat2NotAFindingCount").html(data.totalCat2NotAFinding.toString());
+		$("#cat2NotApplicableCount").html(data.totalCat2NotApplicable.toString());
+		$("#cat2OpenCount").html(data.totalCat2Open.toString());
+		$("#cat2NotReviewedCount").html(data.totalCat2NotReviewed.toString());
+		$("#cat3NotAFindingCount").html(data.totalCat3NotAFinding.toString());
+		$("#cat3NotApplicableCount").html(data.totalCat3NotApplicable.toString());
+		$("#cat3OpenCount").html(data.totalCat3Open.toString());
+		$("#cat3NotReviewedCount").html(data.totalCat3NotReviewed.toString());
 		
 		// show the charts with the same data
 		makeChartSeverity(data);
@@ -2404,7 +2421,7 @@ async function getNessusPatchScanReport() {
 		return;
 	}
 	// call the report API /reports/nessus/xxxxxxxxxxxx
-	$.blockUI({ message: "Generating the Nessus ACAS Patch Report ...please wait" }); 
+	$.blockUI({ message: "Generating the Nessus ACAS Patch Report ...please wait" , css: { padding: '15px'} }); 
 	var url = reportAPI + "system/" + systemGroupId + "/acaspatchdata";
 	// get back the data
 	let response = await fetch(url, {headers: {
@@ -2425,7 +2442,8 @@ async function getNessusPatchScanReport() {
 				"pluginName": item.pluginName, "severity": item.severity + ' - ' + item.severityName, 
 				"hostTotal": item.hostTotal, "total": item.total, "family": item.family, 
 				"description": item.description, "publicationDate": item.publicationDate, 
-				"pluginType": item.pluginType, "riskFactor": item.riskFactor, "synopsis": item.synopsis
+				"pluginType": item.pluginType, "riskFactor": item.riskFactor, "synopsis": item.synopsis, 
+				"severityNumber": item.severity
 			}).draw();
 		}
 		$.unblockUI();
@@ -2444,7 +2462,7 @@ async function getSystemTotalsByTypeReport() {
 		swal("Please choose a system for the report.", "Click OK to continue!", "error");
 		return;
 	}
-	$.blockUI({ message: "Generating the System Totals Chart...please wait" }); 
+	$.blockUI({ message: "Generating the System Totals Chart...please wait" , css: { padding: '15px'} }); 
 	var data = await getScoreForSystemChecklistListing(systemGroupId);
 	if (data) 
 		renderSystemReportPieChart("chartReportSystemTotalsBreakdown", data); // render the specific data for this system
@@ -2541,7 +2559,7 @@ async function getSystemChecklistReport() {
 		return;
 	}
 
-	$.blockUI({ message: "Generating the Checklist Report ...please wait" }); 
+	$.blockUI({ message: "Generating the Checklist Report ...please wait" , css: { padding: '15px'} }); 
 	// call the API to get the checklist data
 	var url = readAPI + "artifact";
 	let response = await fetch(url + "/" + id, {headers: {
@@ -2584,7 +2602,7 @@ async function getSystemChecklistReport() {
 				strStatus = "Not a Finding";
 			else if (item.status == "Not_Reviewed") 
 				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable	") 
+			else if (item.status == "Not_Applicable") 
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
@@ -2630,7 +2648,7 @@ async function getSystemChecklistReport() {
 async function getControlsReport() {
 	var pii = $('#checklistPrivacyFilter')[0].checked;
 	var url = controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
-	$.blockUI({ message: "Generating the Controls Report ...please wait" }); 
+	$.blockUI({ message: "Generating the Controls Report ...please wait" , css: { padding: '15px'} }); 
 	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2646,7 +2664,7 @@ async function getControlsReport() {
 				strStatus = "Not a Finding";
 			else if (item.status == "Not_Reviewed") 
 				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable	") 
+			else if (item.status == "Not_Applicable") 
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
@@ -2690,7 +2708,7 @@ async function getHostVulnerabilityReport() {
 		return;
 	}
 
-	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" }); 
+	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" , css: { padding: '15px'} }); 
 	// call the API to get the checklist data
 	var url = reportAPI + "system/" + id + "/vulnid/" + vulnid;
 	let response = await fetch(url, {headers: {
@@ -2713,7 +2731,7 @@ async function getHostVulnerabilityReport() {
 				strStatus = "Not a Finding";
 			else if (item.status == "Not_Reviewed") 
 				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable	") 
+			else if (item.status == "Not_Applicable") 
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
@@ -2783,7 +2801,7 @@ async function getRMFControlForHostReport() {
 		return;
 	} 
 
-	$.blockUI({ message: "Updating the Hosts for Control listing...this may take a minute" }); 
+	$.blockUI({ message: "Updating the Hosts for Control listing...this may take a minute" , css: { padding: '15px'} }); 
 	// is the PII checked? This is returned as an array even if just one
 	var url = complianceAPI + "system/" + encodeURIComponent(id) + "/?pii=true&filter=high&majorcontrol=" + control;
 
@@ -2893,7 +2911,7 @@ async function reloadVulnerabilityData() {
 async function getAuditRecords() {
 	// call the API to get the checklist data
 	var url = auditAPI;
-	$.blockUI({ message: "Generating the Audit Listing...please wait" }); 
+	$.blockUI({ message: "Generating the Audit Listing...please wait", css: { padding: '15px'} }); 
 	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2942,7 +2960,7 @@ async function getComplianceBySystem() {
 	var system = $("#checklistSystemFilter").val();
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0 && system != "All") {
-		$.blockUI({ message: "Updating the compliance listing...this may take a minute" }); 
+		$.blockUI({ message: "Updating the compliance listing...this may take a minute" , css: { padding: '15px'} }); 
 		// is the PII checked? This is returned as an array even if just one
 		var pii = $('#checklistPrivacyFilter')[0].checked;
 		var url = complianceAPI + "system/" + encodeURIComponent(system) + "/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
@@ -3020,7 +3038,7 @@ async function getComplianceBySystemExport() {
 	var system = $("#checklistSystemFilter").val();
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0) {
-		$.blockUI({ message: "Generating the compliance export...this may take a minute" }); 
+		$.blockUI({ message: "Generating the compliance export...this may take a minute" , css: { padding: '15px'} }); 
 		// is the PII checked? This is returned as an array even if just one
 		var pii = $('#checklistPrivacyFilter')[0].checked;
 		var url = complianceAPI + "system/" + encodeURIComponent(system) + "/export/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();

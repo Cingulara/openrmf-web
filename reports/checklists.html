@@ -5,58 +5,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">		
-		
-		<title>OpenRMF System Checklist Report</title>
-		<meta name="description" content="OpenRMF System Checklist Report">
-		<meta name="author" content="Dale Bingham - https://www.cingulara.com">
-		<meta name="referrer" content="origin">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">		
+	
+	<title>OpenRMF System Checklist Report</title>
+	<meta name="description" content="OpenRMF System Checklist Report">
+	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
+	<meta name="referrer" content="origin">
 
-		<!-- Favicon -->
-		<link rel="shortcut icon" href="/assets/images/favicon.ico">
-		<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
-		<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
-		<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
-		<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
-		<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
-		<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
-		<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
-		<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
-		<link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicons/android-icon-192x192.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
-		<link rel="manifest" href="/assets/favicons/manifest.json">
-		<meta name="msapplication-TileColor" content="#ffffff">
-		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-		<meta name="theme-color" content="#ffffff">
-		
-		<!-- Bootstrap CSS -->
-		<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-		
-		<!-- Font Awesome CSS -->
-		<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-		
-		<!-- Custom CSS -->
-		<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
-		<link href="/assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-		
-		<!-- BEGIN CSS for this page -->
-		<link rel="stylesheet" type="text/css" href="/assets/css/dataTables.bootstrap4.min.css"/>
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
+	<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/assets/favicons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+	<link rel="manifest" href="/assets/favicons/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	
+	<!-- Bootstrap CSS -->
+	<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	
+	<!-- Font Awesome CSS -->
+	<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	
+	<!-- Custom CSS -->
+	<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+	
+	<!-- BEGIN CSS for this page -->
+	<link rel="stylesheet" type="text/css" href="/assets/css/dataTables.bootstrap4.min.css"/>
 
-		<style>	
-			td.details-control {
-			  background: url('/assets/plugins/datatables/img/details_open.png') no-repeat center center;
-			  cursor: pointer;
-			}
-			tr.shown td.details-control {
-			  background: url('/assets/plugins/datatables/img/details_close.png') no-repeat center center;
-			}
-		</style>
-		<!-- END CSS for this page -->
-		
+	<style>	
+		td.details-control {
+			background: url('/assets/plugins/datatables/img/details_open.png') no-repeat center center;
+			cursor: pointer;
+		}
+		tr.shown td.details-control {
+			background: url('/assets/plugins/datatables/img/details_close.png') no-repeat center center;
+		}
+	</style>
+	<!-- END CSS for this page -->		
 </head>
 
 <body class="adminbody">
@@ -64,223 +63,222 @@
 	<script src="/assets/js/keycloak.min.js"></script>
 	<script src="/js/auth.js"></script>
 
-<div id="main">
+	<div id="main" style="display: none;">
+		<!-- top bar navigation -->
+		<div class="headerbar">
 
-	<!-- top bar navigation -->
-	<div class="headerbar">
-
-		<!-- LOGO -->
-      <div class="headerbar-left">
-		<a href="/index.html" class="logo"><img alt="Logo" src="/assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
-	  </div>
-
-        <nav class="navbar-custom">
-			<ul class="list-inline float-right mb-0">
-				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
-						aria-haspopup="false" aria-expanded="false">
-						<i class="fa fa-fw fa-question-circle"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
-						<!-- item-->
-						<div class="dropdown-item noti-title">
-							<h5><small>Help and Support</small></h5>
-						</div>
-
-						<!-- item-->
-						<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
-							<p class="notify-details ml-0">
-								<b>OpenRMF Online Help</b>
-								<span>Systems, Checklists, Reports</span>
-							</p>
-						</a>
-						<!-- item-->
-						<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
-							<p class="notify-details ml-0">
-								<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
-								<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
-							</p>
-						</a>
-					</div>
-				</li>
-				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
-						href="#" role="button" aria-haspopup="false" aria-expanded="false">
-						<img src="/assets/images/avatars/avatar3.png" alt="Profile image" 
-						class="avatar-rounded">
-					</a>
-					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-						<!-- item-->
-						<div class="dropdown-item noti-title">
-							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
-						</div>
-
-						<!-- item-->
-						<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
-							<i class="fa fa-user"></i> <span>Profile</span>
-						</a>
-
-						<!-- item-->
-            			<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
-							class="dropdown-item notify-item">
-							<i class="fa fa-power-off"></i> <span>Logout</span>
-						</a>
-					</div>
-				</li>
-			</ul>            
-            <ul class="list-inline menu-left mb-0">
-                <li class="float-left">
-                    <button class="button-menu-mobile open-left">
-                        <i class="fa fa-fw fa-bars"></i>
-                    </button>
-                </li>                        
-            </ul>
-
-        </nav>
-
-	</div>
-	<!-- End Navigation -->
-	 
-	<!-- Left Sidebar -->
-	<div class="left main-sidebar">
-		<div class="sidebar-inner leftscroll">
-			<div id="sidebar-menu">
-			<ul>
-				<li class="submenu">
-					<a href="/index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="/systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="/compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="/templates.html"  title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
-				</li>
-				<li class="submenu">
-					<a class="active" href="/reports/index.html"  title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
-				</li>
-				<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
-					<a href="/upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
-				</li>
-				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
-					<a href="/audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
-				</li>
-				<li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
-					<a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
-				</li>
-            </ul>
-            <div class="clearfix"></div>
-			</div>
-			<div class="clearfix"></div>
+			<!-- LOGO -->
+		<div class="headerbar-left">
+			<a href="/index.html" class="logo"><img alt="Logo" src="/assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
 		</div>
-	</div>
-	<!-- End Sidebar -->
 
-    <div class="content-page">	
-		<!-- Start content -->
-        <div class="content">            
-		<div class="container-fluid">		
-			<div class="row">
-					<div class="col-xl-12">
-							<div class="breadcrumb-holder">
-									<h1 class="main-title float-left">Reports - Checklist Report</h1>
-									<ol class="breadcrumb float-right">
-										<li class="breadcrumb-item">Home</li>
-										<li class="breadcrumb-item active">Reports</li>
-									</ol>
-									<div class="clearfix"></div>
+			<nav class="navbar-custom">
+				<ul class="list-inline float-right mb-0">
+					<li class="list-inline-item dropdown notif">
+						<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
+							aria-haspopup="false" aria-expanded="false">
+							<i class="fa fa-fw fa-question-circle"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+							<!-- item-->
+							<div class="dropdown-item noti-title">
+								<h5><small>Help and Support</small></h5>
 							</div>
-					</div>
-			</div>
-			<!-- end row -->
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-					<div class="card mb-3">
-						<div class="card-header">
-							<h3><i class="fa fa-filter"></i> Filters</h3>
+
+							<!-- item-->
+							<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
+								<p class="notify-details ml-0">
+									<b>OpenRMF Online Help</b>
+									<span>Systems, Checklists, Reports</span>
+								</p>
+							</a>
+							<!-- item-->
+							<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
+								<p class="notify-details ml-0">
+									<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
+									<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
+								</p>
+							</a>
 						</div>
-						<div class="card-body">
-							<div>
-								<form>
-									<div class="form-group">
-										<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package Filter</label>
-										<select class="form-control" id="checklistSystemFilter" onchange="updateChecklistFilter();">
-											<option value="">[ Choose a System ATO Package ]</option>
-										</select>
-                                        <small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
-									</div>
-									<div class="form-group">
-										<label class="checklistSystemListLabel" id="checklistListLabel" for="checklistFilter">Checklist</label>
-										<select class="form-control" id="checklistFilter">
-											<option value="">[ Choose a Checklist ]</option>
-										</select>
-                                        <small id="titleSystem" class="form-text text-muted">Specify the Checklist</small>
-									</div>
-									<div class="form-group">
-										<button type="button" class="btn btn-sm btn-primary" onclick="getSystemChecklistReport();">Run Report</button>
-									</div>
-								</form>
+					</li>
+					<li class="list-inline-item dropdown notif">
+						<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
+							href="#" role="button" aria-haspopup="false" aria-expanded="false">
+							<img src="/assets/images/avatars/avatar3.png" alt="Profile image" 
+							class="avatar-rounded">
+						</a>
+						<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+							<!-- item-->
+							<div class="dropdown-item noti-title">
+								<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
 							</div>
-						</div><!-- end card body -->					
-					</div><!-- end card-->					
-				</div>				
-				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-					<div class="card mb-3">
-						<div class="card-header">
-							<h3 class="float-left"><i class="fa fa-info-circle"></i> Asset Information</h3>
-						</div>								
-						<div class="card-body">
-							<div id="checklistSystem"></div>
-							<div id="checklistHost"></div>
-							<div id="checklistSTIGTitle"></div>
-							<div id="checklistSTIGVersionInfo"></div>
-							<div id="checklistSTIGReleaseInfo"></div>
-							<div id="checklistFQDN"></div>
-							<div id="checklistTechArea"></div>
-							<div id="checklistAssetType"></div>
-							<div id="checklistRole"></div>
-							<br />
-							<div class="small" id="checklistLastUpdated"></div><br />
+
+							<!-- item-->
+							<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
+								<i class="fa fa-user"></i> <span>Profile</span>
+							</a>
+
+							<!-- item-->
+							<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
+								class="dropdown-item notify-item">
+								<i class="fa fa-power-off"></i> <span>Logout</span>
+							</a>
 						</div>
-					</div><!-- end card-->
+					</li>
+				</ul>            
+				<ul class="list-inline menu-left mb-0">
+					<li class="float-left">
+						<button class="button-menu-mobile open-left">
+							<i class="fa fa-fw fa-bars"></i>
+						</button>
+					</li>                        
+				</ul>
+
+			</nav>
+
+		</div>
+		<!-- End Navigation -->
+		
+		<!-- Left Sidebar -->
+		<div class="left main-sidebar">
+			<div class="sidebar-inner leftscroll">
+				<div id="sidebar-menu">
+				<ul>
+					<li class="submenu">
+						<a href="/index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="/systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="/compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="/templates.html"  title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					</li>
+					<li class="submenu">
+						<a class="active" href="/reports/index.html"  title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+					</li>
+					<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
+						<a href="/upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
+					</li>
+					<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
+						<a href="/audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
+					</li>
+					<li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
+						<a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
 				</div>
-			</div><!-- end row-->
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<!-- End Sidebar -->
 
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-					<div class="card mb-3">
-						<div class="card-header">
-							<h3 id="reportNessusReportName"></h3>
+		<div class="content-page">	
+			<!-- Start content -->
+			<div class="content">            
+			<div class="container-fluid">		
+				<div class="row">
+						<div class="col-xl-12">
+								<div class="breadcrumb-holder">
+										<h1 class="main-title float-left">Reports - Checklist Report</h1>
+										<ol class="breadcrumb float-right">
+											<li class="breadcrumb-item">Home</li>
+											<li class="breadcrumb-item active">Reports</li>
+										</ol>
+										<div class="clearfix"></div>
+								</div>
 						</div>
-						<div class="card-body">
-							<div>
-                                <table id="tblReportSystemChecklist" style="width: 100%;" class="table table-bordered table-hover display">
-									<thead><tr><th></th><th>Vuln ID</th><th>Severity</th><th>Rule ID</th><th>STIG ID</th><th>Status</th>
-										<th>Title</th><th>CCI</th></tr></thead>
-                                    <tbody></tbody>
-                                </table>
+				</div>
+				<!-- end row -->
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-filter"></i> Filters</h3>
 							</div>
-						</div><!-- end card body -->					
-					</div><!-- end card-->					
-				</div>		
-			</div><!-- end row-->
+							<div class="card-body">
+								<div>
+									<form>
+										<div class="form-group">
+											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package Filter</label>
+											<select class="form-control" id="checklistSystemFilter" onchange="updateChecklistFilter();">
+												<option value="">[ Choose a System ATO Package ]</option>
+											</select>
+											<small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
+										</div>
+										<div class="form-group">
+											<label class="checklistSystemListLabel" id="checklistListLabel" for="checklistFilter">Checklist</label>
+											<select class="form-control" id="checklistFilter">
+												<option value="">[ Choose a Checklist ]</option>
+											</select>
+											<small id="titleSystem" class="form-text text-muted">Specify the Checklist</small>
+										</div>
+										<div class="form-group">
+											<button type="button" class="btn btn-sm btn-primary" onclick="getSystemChecklistReport();">Run Report</button>
+										</div>
+									</form>
+								</div>
+							</div><!-- end card body -->					
+						</div><!-- end card-->					
+					</div>				
+					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3 class="float-left"><i class="fa fa-info-circle"></i> Asset Information</h3>
+							</div>								
+							<div class="card-body">
+								<div id="checklistSystem"></div>
+								<div id="checklistHost"></div>
+								<div id="checklistSTIGTitle"></div>
+								<div id="checklistSTIGVersionInfo"></div>
+								<div id="checklistSTIGReleaseInfo"></div>
+								<div id="checklistFQDN"></div>
+								<div id="checklistTechArea"></div>
+								<div id="checklistAssetType"></div>
+								<div id="checklistRole"></div>
+								<br />
+								<div class="small" id="checklistLastUpdated"></div><br />
+							</div>
+						</div><!-- end card-->
+					</div>
+				</div><!-- end row-->
 
-        </div>
-		<!-- END container-fluid -->
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3 id="reportNessusReportName"></h3>
+							</div>
+							<div class="card-body">
+								<div>
+									<table id="tblReportSystemChecklist" style="width: 100%;" class="table table-bordered table-hover display">
+										<thead><tr><th></th><th>Vuln ID</th><th>Severity</th><th>Rule ID</th><th>STIG ID</th><th>Status</th>
+											<th>Title</th><th>CCI</th></tr></thead>
+										<tbody></tbody>
+									</table>
+								</div>
+							</div><!-- end card body -->					
+						</div><!-- end card-->					
+					</div>		
+				</div><!-- end row-->
+
+			</div>
+			<!-- END container-fluid -->
+
+			</div>
+			<!-- END content -->
 
 		</div>
-		<!-- END content -->
+		<!-- END content-page -->
+		
+		<footer class="footer"><div id="includeFooterLink"></div></footer>
+		<div id="includeAutoLogin"></div>
 
-    </div>
-	<!-- END content-page -->
-    
-	<footer class="footer"><div id="includeFooterLink"></div></footer>
-	<div id="includeAutoLogin"></div>
-
-</div>
-<!-- END main -->
+	</div>
+	<!-- END main -->
 
 <script src="/assets/js/modernizr.min.js"></script>
 <script src="/assets/js/jquery.min.js"></script>
@@ -343,18 +341,23 @@
                         { "data": "severity" },
                         { "data": "ruleid" },
                         { "data": "stigid" },
-						{ "data": "status" },
+						{ 
+							"data": null,
+							"render": function (data, type, full, meta) {
+								return '<span style="padding: 5px;" class="' + getVulnerabilityStatusClassName(data.status, data.severity) + '">' + data.status + '</span>';
+							}
+						},
 						{ "data": "title" },
 						{ "data": "cci" }
                     ],
                         "columnDefs": [
 							{ "width": "5%", "targets": 0 },
-                            { "width": "10%", "targets": 1 },
-                            { "width": "10%", "targets": 2 },
-                            { "width": "10%", "targets": 3 },
-                            { "width": "10%", "targets": 4 },
-                            { "width": "10%", "targets": 5 },
-                            { "width": "30%", "targets": 6 },
+                            { "width": "8%", "targets": 1 },
+                            { "width": "8%", "targets": 2 },
+                            { "width": "12%", "targets": 3 },
+                            { "width": "11%", "targets": 4 },
+                            { "width": "12%", "targets": 5 },
+                            { "width": "28%", "targets": 6 },
                             { "width": "10%", "targets": 7 }
                         ],
                         order: [[ 2, 'desc' ]]

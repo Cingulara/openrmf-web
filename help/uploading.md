@@ -18,7 +18,7 @@ The Upload page is available to users with the Administrator or Editor role assi
 * [DISA SCAP Scan Information](https://public.cyber.mil/stigs/scap/)
 * [Tennable's Nessus SCAP Scan Information](https://community.tenable.com/s/article/How-to-create-a-SCAP-scan)
 
-![OpenRMF Upload of SCAP Scan Results](./assets/OpenRMF-SCAP-Process.png)
+![OpenRMF Upload of SCAP Scan Results](./assets/scap-process.png)
 
 ## Upload Checklists or SCAP XCCDF files
 ![OpenRMF Upload of Checklists](./assets/upload-checklist-xccdf.png)
