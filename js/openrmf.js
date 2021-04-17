@@ -4,6 +4,7 @@
 |   Startup Routines
 -----------------------------------------------*/
 function setupOpenRMFUI() {
+	$("#main").show();
 	// setup the profile account and logout menu
 	setupProfileMenu();
 
