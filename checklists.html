@@ -401,30 +401,29 @@
 
 				// START CODE for Child rows (show extra / detailed information) DATA TABLE 
 				function format ( d ) {
-				// `d` is the original data object for the row
-				return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
-					'<tr>'+
-					'<td style="width: 72%; text-align: right;">CAT 1:</td>'+
-					'<td style="width: 7%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
-					'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
-					'<td style="width: 7%;" class="tabco3">'+d.totalNACat1+'</td>'+
-					'<td style="width: 7%;" class="tabco5">'+d.totalNRCat1+'</td>'+
-					'</tr>'+
-					'<tr>'+
-					'<td style="width: 72%; text-align: right;">CAT 2:</td>'+
-					'<td style="width: 7%;" class="tabco6">'+d.totalOpenCat2+'</td>'+
-					'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
-					'<td style="width: 7%;" class="tabco3">'+d.totalNACat2+'</td>'+
-					'<td style="width: 7%;" class="tabco5">'+d.totalNRCat2+'</td>'+
-					'</tr>'+
-					'<tr>'+
-					'<td style="width: 72%; text-align: right;">CAT 3:</td>'+
-					'<td style="width: 7%;" class="tabco7">'+d.totalOpenCat3+'</td>'+
-					'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
-					'<td style="width: 7%;" class="tabco3">'+d.totalNACat3+'</td>'+
-					'<td style="width: 7%;" class="tabco5">'+d.totalNRCat3+'</td>'+
-					'</tr>'+
-				'</table>';
+					// `d` is the original data object for the row
+					return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
+						'<tr>'+
+						'<td style="width: 72%; text-align: right;">CAT 1:</td>'+
+						'<td style="width: 7%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
+						'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
+						'<td style="width: 7%;" class="tabco3">'+d.totalNACat1+'</td>'+
+						'<td style="width: 7%;" class="tabco5">'+d.totalNRCat1+'</td>'+
+						'</tr>'+
+						'<tr>'+
+						'<td style="width: 72%; text-align: right;">CAT 2:</td>'+
+						'<td style="width: 7%;" class="tabco6">'+d.totalOpenCat2+'</td>'+
+						'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
+						'<td style="width: 7%;" class="tabco3">'+d.totalNACat2+'</td>'+
+						'<td style="width: 7%;" class="tabco5">'+d.totalNRCat2+'</td>'+
+						'</tr>'+
+						'<tr>'+
+						'<td style="width: 72%; text-align: right;">CAT 3:</td>'+
+						'<td style="width: 7%;" class="tabco7">'+d.totalOpenCat3+'</td>'+
+						'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
+						'<td style="width: 7%;" class="tabco3">'+d.totalNACat3+'</td>'+
+						'<td style="width: 7%;" class="tabco5">'+d.totalNRCat3+'</td>'+
+						'</tr></table>';
 				}
 				
 				var tableChecklist = $('#tblChecklistListing').DataTable({
