@@ -2584,7 +2584,7 @@ async function getSystemChecklistReport() {
 				strStatus = "Not a Finding";
 			else if (item.status == "Not_Reviewed") 
 				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable	") 
+			else if (item.status == "Not_Applicable") 
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
@@ -2646,7 +2646,7 @@ async function getControlsReport() {
 				strStatus = "Not a Finding";
 			else if (item.status == "Not_Reviewed") 
 				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable	") 
+			else if (item.status == "Not_Applicable") 
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
@@ -2713,7 +2713,7 @@ async function getHostVulnerabilityReport() {
 				strStatus = "Not a Finding";
 			else if (item.status == "Not_Reviewed") 
 				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable	") 
+			else if (item.status == "Not_Applicable") 
 				strStatus = "Not Applicable";
 			else 
 				strStatus = item.status;
