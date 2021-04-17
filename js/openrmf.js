@@ -1852,22 +1852,22 @@ async function getChecklistScore(id) {
 
 async function displayChecklistScores(data) {
 	if (data) {
-		$("#checklistNotAFindingCount").html("<a style='color: white;' href='javascript:setVulnerabilityFilter(\"naf\",\"all\")'>" + data.totalNotAFinding.toString() + "</a>");
-		$("#checklistNotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"all\")'>" + data.totalNotApplicable.toString() + "</a>");
-		$("#checklistOpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"all\")'>" + data.totalOpen.toString() + "</a>");
-		$("#checklistNotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"all\")'>" + data.totalNotReviewed.toString() + "</a>");
-		$("#cat1NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat1\")'>" + data.totalCat1NotAFinding.toString() + "</a>");
-		$("#cat1NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat1\")'>" + data.totalCat1NotApplicable.toString() + "</a>");
-		$("#cat1OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat1\")'>" + data.totalCat1Open.toString() + "</a>");
-		$("#cat1NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat1\")'>" + data.totalCat1NotReviewed.toString() + "</a>");
-		$("#cat2NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat2\")'>" + data.totalCat2NotAFinding.toString() + "</a>");
-		$("#cat2NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat2\")'>" + data.totalCat2NotApplicable.toString() + "</a>");
-		$("#cat2OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat2\")'>" + data.totalCat2Open.toString() + "</a>");
-		$("#cat2NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat2\")'>" + data.totalCat2NotReviewed.toString() + "</a>");
-		$("#cat3NotAFindingCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"naf\",\"cat3\")'>" + data.totalCat3NotAFinding.toString() + "</a>");
-		$("#cat3NotApplicableCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"na\",\"cat3\")'>" + data.totalCat3NotApplicable.toString() + "</a>");
-		$("#cat3OpenCount").html("<a style='color: white;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"open\",\"cat3\")'>" + data.totalCat3Open.toString() + "</a>");
-		$("#cat3NotReviewedCount").html("<a style='color: black;' title='Filter Vulnerabilities' href='javascript:setVulnerabilityFilter(\"nr\",\"cat3\")'>" + data.totalCat3NotReviewed.toString() + "</a>");
+		$("#checklistNotAFindingCount").html(data.totalNotAFinding.toString());
+		$("#checklistNotApplicableCount").html(data.totalNotApplicable.toString());
+		$("#checklistOpenCount").html(data.totalOpen.toString());
+		$("#checklistNotReviewedCount").html(data.totalNotReviewed.toString());
+		$("#cat1NotAFindingCount").html(data.totalCat1NotAFinding.toString());
+		$("#cat1NotApplicableCount").html(data.totalCat1NotApplicable.toString());
+		$("#cat1OpenCount").html(data.totalCat1Open.toString());
+		$("#cat1NotReviewedCount").html(data.totalCat1NotReviewed.toString());
+		$("#cat2NotAFindingCount").html(data.totalCat2NotAFinding.toString());
+		$("#cat2NotApplicableCount").html(data.totalCat2NotApplicable.toString());
+		$("#cat2OpenCount").html(data.totalCat2Open.toString());
+		$("#cat2NotReviewedCount").html(data.totalCat2NotReviewed.toString());
+		$("#cat3NotAFindingCount").html(data.totalCat3NotAFinding.toString());
+		$("#cat3NotApplicableCount").html(data.totalCat3NotApplicable.toString());
+		$("#cat3OpenCount").html(data.totalCat3Open.toString());
+		$("#cat3NotReviewedCount").html(data.totalCat3NotReviewed.toString());
 		
 		// show the charts with the same data
 		makeChartSeverity(data);
