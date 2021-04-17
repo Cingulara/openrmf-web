@@ -531,11 +531,6 @@ async function getSystemRecord(systemGroupId) {
 				poamHTML += ' title="Generate the POAM in MS Excel" '
 				poamHTML += 'class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-calendar"></i></span> Generate POAM</button>';
 				$("#divSystemPOAM").html(poamHTML);
-				var rarHTML = '<button style="margin: 2px; width: 100%; text-align: left;" type="button" id="btnGeneratePOAM" onclick="exportRAR(getParameterByName(\'id\'), false);" ';
-				rarHTML += ' title="Generate the Risk Assessment Report in MS Excel" '
-				rarHTML += 'class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-bullseye"></i></span> Generate RAR</button>';
-				$("#divSystemLastRAR").html(rarHTML);
-				
 			}
 			// created date and updated date
 			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
@@ -865,45 +860,6 @@ async function exportPOAM(systemGroupId) {
 				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
 
 				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-POAM-" + strDate + ".xlsx";
-				document.body.appendChild(downloadLink);
-				downloadLink.click();
-				document.body.removeChild(downloadLink);
-			}
-		} else {
-			alert("There was a problem exporting your report.")
-			$.unblockUI();		
-		}
-	};
-	request.send();
-	$.unblockUI();
-}
-
-// export Test Plan to XLSX for easier viewing
-async function exportRAR(systemGroupId) {
-	if (!systemGroupId) // get it from the session
-		systemGroupId = sessionStorage.getItem("currentSystem");
-	$.blockUI({ message: "Generating the Risk Assessment Report export...please wait" , css: { padding: '15px'} }); 
-	var url = readAPI + "system/" + systemGroupId + "/rarexport/";
-	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
-	var request = new XMLHttpRequest();
-	request.open('GET', url, true);
-	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
-	request.responseType = 'blob';	
-	request.onload = function(e) {
-		if (this.status === 200) {
-			var blob = this.response;
-			if(window.navigator.msSaveOrOpenBlob) {
-				window.navigator.msSaveBlob(blob, fileName);
-			}
-			else{
-				var downloadLink = window.document.createElement('a');
-				var contentTypeHeader = request.getResponseHeader("Content-Type");
-				var strDate = "";
-				var d = new Date();
-				strDate = d.getFullYear().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getDate().toString() + "-" + d.getHours().toString() + "-" + d.getMinutes().toString() + "-" + d.getSeconds().toString();
-				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
-
-				downloadLink.download = $.trim($("#frmSystemTitle").val().replace(" ", "-")) + "-RAR-" + strDate + ".xlsx";
 				document.body.appendChild(downloadLink);
 				downloadLink.click();
 				document.body.removeChild(downloadLink);
