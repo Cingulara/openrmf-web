@@ -400,25 +400,25 @@
 				// `d` is the original data object for the row
 				return '<table cellpadding="5" cellspacing="0" border="0" style="width: 100%;">'+
 					'<tr>'+
-					'<td style="width: 60%; text-align: right;">CAT 1:</td>'+
-					'<td style="width: 10%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
-					'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
-					'<td style="width: 10%;" class="tabco3">'+d.totalNACat1+'</td>'+
-					'<td style="width: 10%;" class="tabco5">'+d.totalNRCat1+'</td>'+
+					'<td style="width: 72%; text-align: right;">CAT 1:</td>'+
+					'<td style="width: 7%;" class="tabco4">'+d.totalOpenCat1+'</td>'+
+					'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat1+'</td>'+
+					'<td style="width: 7%;" class="tabco3">'+d.totalNACat1+'</td>'+
+					'<td style="width: 7%;" class="tabco5">'+d.totalNRCat1+'</td>'+
 					'</tr>'+
 					'<tr>'+
-					'<td style="width: 60%; text-align: right;">CAT 2:</td>'+
-					'<td style="width: 10%;" class="tabco6">'+d.totalOpenCat2+'</td>'+
-					'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
-					'<td style="width: 10%;" class="tabco3">'+d.totalNACat2+'</td>'+
-					'<td style="width: 10%;" class="tabco5">'+d.totalNRCat2+'</td>'+
+					'<td style="width: 72%; text-align: right;">CAT 2:</td>'+
+					'<td style="width: 7%;" class="tabco6">'+d.totalOpenCat2+'</td>'+
+					'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat2+'</td>'+
+					'<td style="width: 7%;" class="tabco3">'+d.totalNACat2+'</td>'+
+					'<td style="width: 7%;" class="tabco5">'+d.totalNRCat2+'</td>'+
 					'</tr>'+
 					'<tr>'+
-					'<td style="width: 60%; text-align: right;">CAT 3:</td>'+
-					'<td style="width: 10%;" class="tabco7">'+d.totalOpenCat3+'</td>'+
-					'<td style="width: 10%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
-					'<td style="width: 10%;" class="tabco3">'+d.totalNACat3+'</td>'+
-					'<td style="width: 10%;" class="tabco5">'+d.totalNRCat3+'</td>'+
+					'<td style="width: 72%; text-align: right;">CAT 3:</td>'+
+					'<td style="width: 7%;" class="tabco7">'+d.totalOpenCat3+'</td>'+
+					'<td style="width: 7%;" class="tabco2">'+d.totalNaFCat3+'</td>'+
+					'<td style="width: 7%;" class="tabco3">'+d.totalNACat3+'</td>'+
+					'<td style="width: 7%;" class="tabco5">'+d.totalNRCat3+'</td>'+
 					'</tr>'+
 				'</table>';
 				}
@@ -427,14 +427,14 @@
 				"pageLength": 25, 
 				"columns": [
 					{ 
-						"className":      'details-control',
+						"className":      'details-control text-center align-middle',
 						"orderable":      false,
 						"data":           null,
 						"defaultContent": '',
 						"targets": 		  0
 					},
 					{ 
-						"className":      'dt-body-center',
+						"className":      'text-center align-middle',
 						"orderable":      false,
 						"data":           null,
 						"defaultContent": '',
@@ -450,11 +450,13 @@
 					{ "data": "totalNR" }
 				],
 					"columnDefs": [
-						{ "width": "60%", "targets": 2 },
-						{ "className": "tabco4", "width": "10%", "targets": 3 },
-						{ "className": "tabco2", "width": "10%", "targets": 4 },
-						{ "className": "tabco3", "width": "10%", "targets": 5 },
-						{ "className": "tabco5", "width": "10%", "targets": 6 }
+						{ "width": "5%", "targets": 0 },
+						{ "width": "5%", "targets": 1 },
+						{ "width": "62%", "targets": 2 },
+						{ "className": "tabco4", "width": "7%", "targets": 3 },
+						{ "className": "tabco2", "width": "7%", "targets": 4 },
+						{ "className": "tabco3", "width": "7%", "targets": 5 },
+						{ "className": "tabco5", "width": "7%", "targets": 6 }
 					],
         			order: [[ 2, 'asc' ]]
 				});
