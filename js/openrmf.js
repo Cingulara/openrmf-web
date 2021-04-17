@@ -237,7 +237,7 @@ async function getSystemACASItemsForDashboard() {
  * Template listing functions
  ************************************/
 async function getTemplates(latest) {
-	$.blockUI({ message: "Updating the template listing..." }); 
+	$.blockUI({ message: "Updating the template listing...", css: { padding: '15px'} });
 	var url = templateAPI;	
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -385,7 +385,7 @@ function listSystems() {
 }
 
 async function getSystemListing(){
-	$.blockUI({ message: "Updating the system listing..." }); 
+	$.blockUI({ message: "Updating the system listing...", css: { padding: '15px'} }); 
 	var url = readAPI + "systems/";
 
 	// setup the table visibility
@@ -710,7 +710,7 @@ async function downloadNessusXML(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
 	// redirect to the API and it downloads the XML file for the Nessus scan
-	$.blockUI({ message: "Generating the Nessus file...please wait" }); 
+	$.blockUI({ message: "Generating the Nessus file...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + encodeURIComponent(systemGroupId) + "/downloadnessus/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -765,7 +765,7 @@ async function exportNessusXML(systemGroupId, summaryView) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
 
-	$.blockUI({ message: "Generating the Nessus Excel export...please wait" }); 
+	$.blockUI({ message: "Generating the Nessus Excel export...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + systemGroupId + "/exportnessus?summaryOnly=" + summaryView.toString();
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -803,7 +803,7 @@ async function exportNessusXML(systemGroupId, summaryView) {
 async function exportTestPlan(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
-	$.blockUI({ message: "Generating the System Test Plan Excel export...please wait" }); 
+	$.blockUI({ message: "Generating the System Test Plan Excel export...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + systemGroupId + "/testplanexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -842,7 +842,7 @@ async function exportTestPlan(systemGroupId) {
 async function exportPOAM(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
-	$.blockUI({ message: "Generating the POA&amp;M Excel export...please wait" }); 
+	$.blockUI({ message: "Generating the POA&amp;M Excel export...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + systemGroupId + "/poamexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -881,7 +881,7 @@ async function exportPOAM(systemGroupId) {
 async function exportRAR(systemGroupId) {
 	if (!systemGroupId) // get it from the session
 		systemGroupId = sessionStorage.getItem("currentSystem");
-	$.blockUI({ message: "Generating the Risk Assessment Report export...please wait" }); 
+	$.blockUI({ message: "Generating the Risk Assessment Report export...please wait" , css: { padding: '15px'} }); 
 	var url = readAPI + "system/" + systemGroupId + "/rarexport/";
 	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
 	var request = new XMLHttpRequest();
@@ -1126,7 +1126,7 @@ function setSystemChecklistFilter() {
 }
 // main listing of checklists on the system record page
 async function getChecklists(system) {
-	$.blockUI({ message: "Updating the checklist listing..." }); 
+	$.blockUI({ message: "Updating the checklist listing..." , css: { padding: '15px'} }); 
 	// use this to refresh the checklist page if they delete something
 	sessionStorage.setItem("currentSystem", system);
 
@@ -1266,7 +1266,7 @@ async function exportChecklistListingXLSX() {
 	if ($("#txtSystemName").val()){
 		systemFilter = $("#txtSystemName").val();
 	}
-	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait" }); 
+	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait", css: { padding: '15px'} }); 
 	var url = readAPI;
 	if (getParameterByName('id')) 
 		url += "system/export/" + encodeURIComponent(getParameterByName('id'));
@@ -2404,7 +2404,7 @@ async function getNessusPatchScanReport() {
 		return;
 	}
 	// call the report API /reports/nessus/xxxxxxxxxxxx
-	$.blockUI({ message: "Generating the Nessus ACAS Patch Report ...please wait" }); 
+	$.blockUI({ message: "Generating the Nessus ACAS Patch Report ...please wait" , css: { padding: '15px'} }); 
 	var url = reportAPI + "system/" + systemGroupId + "/acaspatchdata";
 	// get back the data
 	let response = await fetch(url, {headers: {
@@ -2444,7 +2444,7 @@ async function getSystemTotalsByTypeReport() {
 		swal("Please choose a system for the report.", "Click OK to continue!", "error");
 		return;
 	}
-	$.blockUI({ message: "Generating the System Totals Chart...please wait" }); 
+	$.blockUI({ message: "Generating the System Totals Chart...please wait" , css: { padding: '15px'} }); 
 	var data = await getScoreForSystemChecklistListing(systemGroupId);
 	if (data) 
 		renderSystemReportPieChart("chartReportSystemTotalsBreakdown", data); // render the specific data for this system
@@ -2541,7 +2541,7 @@ async function getSystemChecklistReport() {
 		return;
 	}
 
-	$.blockUI({ message: "Generating the Checklist Report ...please wait" }); 
+	$.blockUI({ message: "Generating the Checklist Report ...please wait" , css: { padding: '15px'} }); 
 	// call the API to get the checklist data
 	var url = readAPI + "artifact";
 	let response = await fetch(url + "/" + id, {headers: {
@@ -2630,7 +2630,7 @@ async function getSystemChecklistReport() {
 async function getControlsReport() {
 	var pii = $('#checklistPrivacyFilter')[0].checked;
 	var url = controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
-	$.blockUI({ message: "Generating the Controls Report ...please wait" }); 
+	$.blockUI({ message: "Generating the Controls Report ...please wait" , css: { padding: '15px'} }); 
 	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2690,7 +2690,7 @@ async function getHostVulnerabilityReport() {
 		return;
 	}
 
-	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" }); 
+	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" , css: { padding: '15px'} }); 
 	// call the API to get the checklist data
 	var url = reportAPI + "system/" + id + "/vulnid/" + vulnid;
 	let response = await fetch(url, {headers: {
@@ -2783,7 +2783,7 @@ async function getRMFControlForHostReport() {
 		return;
 	} 
 
-	$.blockUI({ message: "Updating the Hosts for Control listing...this may take a minute" }); 
+	$.blockUI({ message: "Updating the Hosts for Control listing...this may take a minute" , css: { padding: '15px'} }); 
 	// is the PII checked? This is returned as an array even if just one
 	var url = complianceAPI + "system/" + encodeURIComponent(id) + "/?pii=true&filter=high&majorcontrol=" + control;
 
@@ -2893,7 +2893,7 @@ async function reloadVulnerabilityData() {
 async function getAuditRecords() {
 	// call the API to get the checklist data
 	var url = auditAPI;
-	$.blockUI({ message: "Generating the Audit Listing...please wait" }); 
+	$.blockUI({ message: "Generating the Audit Listing...please wait", css: { padding: '15px'} }); 
 	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2942,7 +2942,7 @@ async function getComplianceBySystem() {
 	var system = $("#checklistSystemFilter").val();
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0 && system != "All") {
-		$.blockUI({ message: "Updating the compliance listing...this may take a minute" }); 
+		$.blockUI({ message: "Updating the compliance listing...this may take a minute" , css: { padding: '15px'} }); 
 		// is the PII checked? This is returned as an array even if just one
 		var pii = $('#checklistPrivacyFilter')[0].checked;
 		var url = complianceAPI + "system/" + encodeURIComponent(system) + "/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
@@ -3020,7 +3020,7 @@ async function getComplianceBySystemExport() {
 	var system = $("#checklistSystemFilter").val();
 	// if they pass in the system use it after encoding it
 	if (system && system.length > 0) {
-		$.blockUI({ message: "Generating the compliance export...this may take a minute" }); 
+		$.blockUI({ message: "Generating the compliance export...this may take a minute" , css: { padding: '15px'} }); 
 		// is the PII checked? This is returned as an array even if just one
 		var pii = $('#checklistPrivacyFilter')[0].checked;
 		var url = complianceAPI + "system/" + encodeURIComponent(system) + "/export/?pii=" + pii + "&filter=" + $('#checklistImpactFilter').val();
