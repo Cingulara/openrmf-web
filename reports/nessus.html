@@ -312,14 +312,20 @@
                         { "data": "pluginId" },
                         { "data": "pluginName" },
                         { "data": "family" },
-                        { "data": "severity" }
+						{ 
+							"className":      'text-center',
+							"data": null,
+							"render": function (data, type, full, meta) {
+								return '<span style="padding: 5px;" class="' + getPatchVulnerabilityClassName(data.severityNumber) + '">' + data.severity + '</span>';
+							}
+						}
                     ],
                         "columnDefs": [
 							{ "width": "5%", "targets": 0 },
                             { "width": "10%", "targets": 1 },
-                            { "width": "10%", "targets": 2 },
-                            { "width": "40%", "targets": 3 },
-                            { "width": "20%", "targets": 4 },
+                            { "width": "7%", "targets": 2 },
+                            { "width": "48%", "targets": 3 },
+                            { "width": "15%", "targets": 4 },
                             { "width": "10%", "targets": 5 }
                         ],
                         order: [[ 5, 'desc' ]]

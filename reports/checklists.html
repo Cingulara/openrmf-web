@@ -341,18 +341,23 @@
                         { "data": "severity" },
                         { "data": "ruleid" },
                         { "data": "stigid" },
-						{ "data": "status" },
+						{ 
+							"data": null,
+							"render": function (data, type, full, meta) {
+								return '<span style="padding: 5px;" class="' + getVulnerabilityStatusClassName(data.status, data.severity) + '">' + data.status + '</span>';
+							}
+						},
 						{ "data": "title" },
 						{ "data": "cci" }
                     ],
                         "columnDefs": [
 							{ "width": "5%", "targets": 0 },
-                            { "width": "10%", "targets": 1 },
-                            { "width": "10%", "targets": 2 },
-                            { "width": "10%", "targets": 3 },
-                            { "width": "10%", "targets": 4 },
-                            { "width": "10%", "targets": 5 },
-                            { "width": "30%", "targets": 6 },
+                            { "width": "8%", "targets": 1 },
+                            { "width": "8%", "targets": 2 },
+                            { "width": "12%", "targets": 3 },
+                            { "width": "11%", "targets": 4 },
+                            { "width": "12%", "targets": 5 },
+                            { "width": "28%", "targets": 6 },
                             { "width": "10%", "targets": 7 }
                         ],
                         order: [[ 2, 'desc' ]]

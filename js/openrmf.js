@@ -1626,7 +1626,7 @@ function showVulnId(vuln){
 }
 // get the color coding of the class based on vulnerability status
 function getVulnerabilityStatusClassName (status, severity) {
-	if (status.toLowerCase() == 'not_reviewed')
+	if (status.toLowerCase() == 'not_reviewed' || status.toLowerCase() == 'not reviewed')
 		return "vulnNotReviewed";
 	else if (status.toLowerCase() == 'open') {
 		if (severity.toLowerCase() == "high")
@@ -1636,10 +1636,21 @@ function getVulnerabilityStatusClassName (status, severity) {
 		else if (severity.toLowerCase() == "low")
 			return "vulnOpenCAT3";
 	}
-	else if (status.toLowerCase() == 'not_applicable')
+	else if (status.toLowerCase() == 'not_applicable' || status.toLowerCase() == 'not applicable')
 		return "vulnNotApplicable";
 	else // not a finding
 		return "vulnNotAFinding";
+}
+// get the color coding of the class based on vulnerability status
+function getPatchVulnerabilityClassName (severity) {
+		if (severity >= 3)
+			return "vulnOpenCAT1";
+		else if (severity == 2)
+			return "vulnOpenCAT2";
+		else if (severity == 1)
+			return "vulnOpenCAT3";
+		else 
+			return "";
 }
 
 // display the vulnerability information by the Vulnerability Id
@@ -2475,7 +2486,8 @@ async function getNessusPatchScanReport() {
 				"pluginName": item.pluginName, "severity": item.severity + ' - ' + item.severityName, 
 				"hostTotal": item.hostTotal, "total": item.total, "family": item.family, 
 				"description": item.description, "publicationDate": item.publicationDate, 
-				"pluginType": item.pluginType, "riskFactor": item.riskFactor, "synopsis": item.synopsis
+				"pluginType": item.pluginType, "riskFactor": item.riskFactor, "synopsis": item.synopsis, 
+				"severityNumber": item.severity
 			}).draw();
 		}
 		$.unblockUI();
