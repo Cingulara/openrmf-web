@@ -1068,6 +1068,55 @@ async function deleteAllSystemChecklists(id){
 		});
 	}
 }
+
+// download all CKL in a zip file
+async function downloadAllSystemChecklists(id) {
+	// redirect to the API and it downloads the ZIP file of all Checklist Listings
+	var systemFilter = '';
+	if ($("#txtSystemName").val()){
+		systemFilter = $("#txtSystemName").val();
+	}
+	$.blockUI({ message: "Generating the System Checklist ZIP ...please wait", css: { padding: '15px'} }); 
+	var url = readAPI;
+	if (getParameterByName('id')) 
+		url += "system/download/" + encodeURIComponent(getParameterByName('id'));
+	else // session
+		url += "system/download/" + encodeURIComponent(sessionStorage.getItem("currentSystem"));
+	// add in the system filter for the export
+	url += "/?naf=" + $("#chkVulnNaF").is(':checked');
+	url += "&open=" + $("#chkVulnOpen").is(':checked');
+	url += "&na="   + $("#chkVulnNA").is(':checked');
+	url += "&nr="   + $("#chkVulnNR").is(':checked');
+	url += "&cat1=" + $("#chkVulnCAT1").is(':checked');
+	url += "&cat2=" + $("#chkVulnCAT2").is(':checked');
+	url += "&cat3=" + $("#chkVulnCAT3").is(':checked');
+
+	// now that you have the URL, post it, get the file, save as a BLOB and name as XLSX
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+	request.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+	request.responseType = 'blob';
+	
+	request.onload = function(e) {
+		if (this.status === 200) {
+			var blob = this.response;
+			if(window.navigator.msSaveOrOpenBlob) {
+				window.navigator.msSaveBlob(blob, fileName);
+			}
+			else{
+				var downloadLink = window.document.createElement('a');
+				var contentTypeHeader = request.getResponseHeader("Content-Type");
+				downloadLink.href = window.URL.createObjectURL(new Blob([blob], { type: contentTypeHeader }));
+				downloadLink.download = $.trim($("#txtSystemName").val()) + "-checklists.zip";
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink);
+			}
+		}
+	};
+	request.send();
+	$.unblockUI();
+}
 /*************************************
  * Checklist listing functions
  ************************************/
