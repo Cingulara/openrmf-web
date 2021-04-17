@@ -274,7 +274,7 @@
 				// file setup for the Nessus File Upload
 				$('#frmNessusFile').filer({
 					limit: 1,
-					maxSize: 60,
+					maxSize: 16,
 					extensions: ['nessus'],
 					changeInput: true,
 					showThumbs: true,
@@ -322,7 +322,7 @@
 			  <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this System</small>
 			</div>
 			<div class="form-group">
-				<label for="frmNessusFile">Nessus ACAS File (if any)</label><br />
+				<label for="frmNessusFile">Nessus ACAS File (if any, up to 16MB)</label><br />
 				<input type="file" name="frmNessusFile" id="frmNessusFile" /> 
 			</div>
 		</div>
