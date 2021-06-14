@@ -17,7 +17,16 @@ function setupOpenRMFUI() {
 }
 
 function menuMetricsLink(){
-    window.open(document.location.protocol + '//' + document.location.hostname + ":3000/", "openrmf-metrics");
+    if (urlMetricsMenuLink) 
+        window.open(urlMetricsMenuLink, "openrmf-metrics");
+    else 
+        alert('The Metrics menu has not been configured yet.');
+}
+function menuKeycloakLink() {
+	if (urlKeycloakMenuLink) 
+	window.open(urlKeycloakMenuLink, "openrmf-users");
+else 
+	alert('The Users menu has not been configured yet.');
 }
 /*-----------------------------------------------
 |   Timeout Functions
