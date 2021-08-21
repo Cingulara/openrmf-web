@@ -22,3 +22,4 @@ jobs:
       uses: Azure/container-scan@v0
       with:
         image-name: localbuild/openrmf-web:latest
+        severity-threshold: CRITICAL
