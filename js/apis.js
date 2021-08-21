@@ -15,3 +15,8 @@
     var controlAPI = root + '/api/control/';
     var auditAPI = root + '/api/audit/';
     var reportAPI = root + '/api/report/';
+
+    // menu link to load Keycloak Groups and Users
+    var urlKeycloakMenuLink = document.location.protocol + '//' + document.location.hostname + ":9001/auth/admin/master/console/#/realms/openrmf/users";
+    // menu link to load Grafana Metrics
+    var urlMetricsMenuLink = document.location.protocol + '//' + document.location.hostname + ":3000/";

@@ -1,0 +1,5 @@
+general:
+  vulnerabilities:
+    - CVE-2021-36159
+  # bestPracticeViolations:
+  #   - CIS-DI-0005
