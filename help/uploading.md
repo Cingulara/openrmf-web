@@ -18,10 +18,10 @@ The Upload page is available to users with the Administrator or Editor role assi
 * [DISA SCAP Scan Information](https://public.cyber.mil/stigs/scap/)
 * [Tennable's Nessus SCAP Scan Information](https://community.tenable.com/s/article/How-to-create-a-SCAP-scan)
 
-![OpenRMF Upload of SCAP Scan Results](/assets/OpenRMF-SCAP-Process.png)
+![OpenRMF Upload of SCAP Scan Results](./assets/scap-process.png)
 
 ## Upload Checklists or SCAP XCCDF files
-![OpenRMF Upload of Checklists](/assets/upload-checklist-xccdf.png)
+![OpenRMF Upload of Checklists](./assets/upload-checklist-xccdf.png)
 
 To upload a CKL file or XCCDF SCAP scan result file go to the Upload page. Use the top section to choose a System name and the file. You can now upload up to 10 files at a time. You can choose all 10 at once, or do 1 file at a time with the Choose Files button. 
 
@@ -35,7 +35,7 @@ If you upload an XCCDF XML SCAP scan result file (DISA or Nessus SCAP), that fil
 
 ## Uploading Templates
 
-![OpenRMF Upload of Templates](/assets/upload-template.png)
+![OpenRMF Upload of Templates](./assets/upload-template.png)
 
 You can upload a checklist file as a Template to start from within the system as well. You can use Templates in OpenRMF for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly.  IT personnel would download this template and then fill out remaining items based on their software or system.
 
@@ -43,7 +43,7 @@ To upload you go to the Template Upload section and enter a title and descriptio
 
 ## Uploading Nessus ACAS Scans
 
-![OpenRMF Upload of Nessus ACAS Scans](/assets/upload-nessus-scan-file.png)
+![OpenRMF Upload of Nessus ACAS Scans](./assets/upload-nessus-scan-file.png)
 
 Once you have a System record, you can click the Edit button for the system to upload a *.nessus file for your scan output. OpenRMF will save your file (a single file for the OSS version) and generate export listing for the whole system or by host into MS Excel files. You also can run reports on the Nessus file based on your system in the Reports area. 
 

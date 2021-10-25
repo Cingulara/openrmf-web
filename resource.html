@@ -63,146 +63,139 @@
 
 <body class="adminbody">
 
-<div id="main">
-	<!-- top bar navigation -->
-	<div class="headerbar">
+	<div id="main">
+		<!-- top bar navigation -->
+		<div class="headerbar">
 
-		<!-- LOGO -->
-      <div class="headerbar-left">
-		<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
-	  </div>
+			<!-- LOGO -->
+		<div class="headerbar-left">
+			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
+		</div>
 
-        <nav class="navbar-custom">
-			<ul class="list-inline float-right mb-0">
-				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
-						aria-haspopup="false" aria-expanded="false">
-						<i class="fa fa-fw fa-question-circle"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
-						<!-- item-->
-						<div class="dropdown-item noti-title">
-							<h5><small>Help and Support</small></h5>
+			<nav class="navbar-custom">
+				<ul class="list-inline float-right mb-0">
+					<li class="list-inline-item dropdown notif">
+						<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
+							aria-haspopup="false" aria-expanded="false">
+							<i class="fa fa-fw fa-question-circle"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+							<!-- item-->
+							<div class="dropdown-item noti-title">
+								<h5><small>Help and Support</small></h5>
+							</div>
+
+							<!-- item-->
+							<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
+								<p class="notify-details ml-0">
+									<b>OpenRMF Online Help</b>
+									<span>Systems, Checklists, Reports</span>
+								</p>
+							</a>
+							<!-- item-->
+							<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
+								<p class="notify-details ml-0">
+									<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
+									<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
+								</p>
+							</a>
 						</div>
-
-						<!-- item-->
-						<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
-							<p class="notify-details ml-0">
-								<b>OpenRMF Online Help</b>
-								<span>Systems, Checklists, Reports</span>
-							</p>
+					</li>
+					<li class="list-inline-item dropdown notif">
+						<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
+							href="#" role="button" aria-haspopup="false" aria-expanded="false">
+							<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
+							class="avatar-rounded">
 						</a>
-						<!-- item-->
-						<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
-							<p class="notify-details ml-0">
-								<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
-								<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
-							</p>
-						</a>
-					</div>
-				</li>
-				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
-						href="#" role="button" aria-haspopup="false" aria-expanded="false">
-						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
-						class="avatar-rounded">
-					</a>
-					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-						<!-- item-->
-						<div class="dropdown-item noti-title">
-							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+						<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+							<!-- item-->
+							<div class="dropdown-item noti-title">
+								<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+							</div>
+		
+							<!-- item-->
+							<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
+								<i class="fa fa-user"></i> <span>Profile</span>
+							</a>
+		
+							<!-- item-->
+							<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
+								class="dropdown-item notify-item"><i class="fa fa-power-off"></i> <span>Logout</span>
+							</a>
 						</div>
-	
-						<!-- item-->
-						<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
-							<i class="fa fa-user"></i> <span>Profile</span>
-						</a>
-	
-						<!-- item-->
-						<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
-							class="dropdown-item notify-item"><i class="fa fa-power-off"></i> <span>Logout</span>
-						</a>
-					</div>
-				</li>
-			</ul>
-	
-			<ul class="list-inline menu-left mb-0">
-				<li class="float-left">
-					<button class="button-menu-mobile open-left">
-						<i class="fa fa-fw fa-bars"></i>
-					</button>
-				</li>                        
-			</ul>
-    	</nav>
-	</div>
-	<!-- End Navigation -->
+					</li>
+				</ul>
+		
+				<ul class="list-inline menu-left mb-0">
+					<li class="float-left">
+						<button class="button-menu-mobile open-left">
+							<i class="fa fa-fw fa-bars"></i>
+						</button>
+					</li>                        
+				</ul>
+			</nav>
+		</div>
+		<!-- End Navigation -->
 
-	<!-- Left Sidebar -->
-	<div class="left main-sidebar">
-		<div class="sidebar-inner leftscroll">
-			<div id="sidebar-menu">
-			<ul>
-				<li class="submenu">
-					<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="/reports/index.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
-				</li>
-            </ul>
-            <div class="clearfix"></div>
+		<!-- Left Sidebar -->
+		<div class="left main-sidebar">
+			<div class="sidebar-inner leftscroll">
+				<div id="sidebar-menu">
+				<ul>
+					<li class="submenu">
+						<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="/reports/index.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
 			</div>
-			<div class="clearfix"></div>
 		</div>
+		<!-- End Sidebar -->
+
+		<div class="content-page">
+		
+			<!-- Start content -->
+		<div class="content">
+				<div class="container-fluid">
+			<div class="row" id="divUploadChecklist">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+				<div class="card mb-3">
+					<div class="card-header">
+						<h3><i class="fa fa-stop"></i> Invalid Resource</h3>
+					</div>
+					<div class="card-body">
+					You have reached an invalid resource. Please press your browser's back 
+					button to return to the previous page. If you think this is in error 
+					please see your application administrator.
+					</div><!-- end card body -->							
+				</div><!-- end card-->
+				</div>
+			</div>
+		</div>
+				<!-- END container-fluid -->
+			</div>
+			<!-- END content -->
+
+		</div>
+		<!-- END content-page -->
+		
+		<footer class="footer"><div id="includeFooterLink"></div></footer>
+		<div id="includeAutoLogin"></div>
+
 	</div>
-	<!-- End Sidebar -->
-
-    <div class="content-page">
-	
-		<!-- Start content -->
-    <div class="content">
-			<div class="container-fluid">
-        <div class="row" id="divUploadChecklist">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
-              <div class="card mb-3">
-                <div class="card-header">
-                    <h3><i class="fa fa-stop"></i> Invalid Resource</h3>
-                </div>
-                <div class="card-body">
-                  You have reached an invalid resource. Please press your browser's back 
-                  button to return to the previous page. If you think this is in error 
-                  please see your application administrator.
-                </div><!-- end card body -->							
-              </div><!-- end card-->
-            </div>
-        </div>
-      </div>
-			<!-- END container-fluid -->
-		</div>
-		<!-- END content -->
-
-    </div>
-	<!-- END content-page -->
-    
-	<footer class="footer">
-		<span class="text-right">
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
-		</span>
-		<span class="float-right">
-		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
-		</span>
-	</footer>
-
-</div>
 <!-- END main -->
 
 <script src="assets/js/popper.min.js"></script>
@@ -222,5 +215,9 @@
 <script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
 
 <!-- END Java Script for this page -->
+	<script>
+		// setup the User Interface
+		setupOpenRMFUI();
+	</script>
 </body>
 </html>

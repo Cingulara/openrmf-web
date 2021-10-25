@@ -53,242 +53,237 @@
 	<script src="/assets/js/keycloak.min.js"></script>
 	<script src="/js/auth.js"></script>
 
-<div id="main">
+	<div id="main" style="display: none;">
+		<!-- top bar navigation -->
+		<div class="headerbar">
 
-	<!-- top bar navigation -->
-	<div class="headerbar">
-
-		<!-- LOGO -->
-      <div class="headerbar-left">
-		<a href="/index.html" class="logo"><img alt="Logo" src="/assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
-	  </div>
-
-        <nav class="navbar-custom">
-			<ul class="list-inline float-right mb-0">
-				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
-						aria-haspopup="false" aria-expanded="false">
-						<i class="fa fa-fw fa-question-circle"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
-						<!-- item-->
-						<div class="dropdown-item noti-title">
-							<h5><small>Help and Support</small></h5>
-						</div>
-
-						<!-- item-->
-						<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
-							<p class="notify-details ml-0">
-								<b>OpenRMF Online Help</b>
-								<span>Systems, Checklists, Reports</span>
-							</p>
-						</a>
-						<!-- item-->
-						<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
-							<p class="notify-details ml-0">
-								<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
-								<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
-							</p>
-						</a>
-					</div>
-				</li>
-				<li class="list-inline-item dropdown notif">
-					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
-						href="#" role="button" aria-haspopup="false" aria-expanded="false">
-						<img src="/assets/images/avatars/avatar3.png" alt="Profile image" 
-						class="avatar-rounded">
-					</a>
-					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-						<!-- item-->
-						<div class="dropdown-item noti-title">
-							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
-						</div>
-
-						<!-- item-->
-						<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
-							<i class="fa fa-user"></i> <span>Profile</span>
-						</a>
-
-						<!-- item-->
-            			<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
-							class="dropdown-item notify-item">
-							<i class="fa fa-power-off"></i> <span>Logout</span>
-						</a>
-					</div>
-				</li>
-			</ul>            
-            <ul class="list-inline menu-left mb-0">
-                <li class="float-left">
-                    <button class="button-menu-mobile open-left">
-                        <i class="fa fa-fw fa-bars"></i>
-                    </button>
-                </li>                        
-            </ul>
-
-        </nav>
-
-	</div>
-	<!-- End Navigation -->
-	 
-	<!-- Left Sidebar -->
-	<div class="left main-sidebar">
-		<div class="sidebar-inner leftscroll">
-			<div id="sidebar-menu">
-			<ul>
-				<li class="submenu">
-					<a href="/index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="/systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="/compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="/templates.html"  title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
-				</li>
-				<li class="submenu">
-					<a class="active" href="/reports/index.html"  title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
-				</li>
-				<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
-					<a href="/upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
-				</li>
-				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
-					<a href="/audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
-				</li>
-            </ul>
-            <div class="clearfix"></div>
-			</div>
-			<div class="clearfix"></div>
+			<!-- LOGO -->
+		<div class="headerbar-left">
+			<a href="/index.html" class="logo"><img alt="Logo" src="/assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
 		</div>
-	</div>
-	<!-- End Sidebar -->
 
-    <div class="content-page">	
-		<!-- Start content -->
-        <div class="content">            
-		<div class="container-fluid">		
-			<div class="row">
-					<div class="col-xl-12">
-							<div class="breadcrumb-holder">
-									<h1 class="main-title float-left">Reports</h1>
-									<ol class="breadcrumb float-right">
-										<li class="breadcrumb-item">Home</li>
-										<li class="breadcrumb-item active">Reports</li>
-									</ol>
-									<div class="clearfix"></div>
+			<nav class="navbar-custom">
+				<ul class="list-inline float-right mb-0">
+					<li class="list-inline-item dropdown notif">
+						<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
+							aria-haspopup="false" aria-expanded="false">
+							<i class="fa fa-fw fa-question-circle"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+							<!-- item-->
+							<div class="dropdown-item noti-title">
+								<h5><small>Help and Support</small></h5>
 							</div>
-					</div>
-			</div>
-		
-			<div class="row">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
-					<div class="card mb-3">
-						<div class="card-header">
-							<h3><i class="fa fa-area-chart"></i> Available Reports</h3>
-						</div>
-							
-						<div class="card-body">
-							<div class="reportsList">
-                                <!-- Nessus ACAS Scan Report -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        Nessus Patch Listing
-                                    </div>
-                                    <div class="reportListingDescription">
-                                        <i class="fa fa-wrench reporticon"></i><br />
-                                        <button type="button" id="btnRunNessusReport" title="Run the Nessus ACAS Report by System" onclick="location.href = 'nessus.html';" 
-											class="btn btn-success">Run Report</button>
-										<button type="button" id="btnReloadNessusData" title="Refresh all System data on Nessus ACAS Reports" style="display: none;" onclick="reloadNessusPatchData();" 
-									        class="btn btn-warning">Refresh Data</button>
-                                    </div>
-                                </div>
-                                <!-- System Total Score Chart -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        System Pie Charts
-                                    </div>
-                                    <div class="reportListingDescription">
-                                        <i class="fa fa-pie-chart reporticon"></i><br />
-                                        <button type="button" id="btnRunSystemCharts" title="Run the Scoring Pie Chart Report by System" onclick="location.href = 'charts.html';" 
-									        class="btn btn-success">Run Report</button>
-                                    </div>
-                                </div>
-                                <!-- System Checklist with Score Listing -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        System Checklist Listing
-                                    </div>
-                                    <div class="reportListingDescription">
-                                        <i class="fa fa-list reporticon"></i><br />
-                                        <button type="button" id="btnRunChecklistReport" title="Run the System Checklist Report by Checklist" onclick="location.href = 'checklists.html';" 
-									        class="btn btn-success">Run Report</button>
-                                    </div>
-                                </div>
-                                <!-- Vulnerability Listing for Hosts / Servers -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        Host Vulnerability Report
-                                    </div>
-                                    <div class="reportListingDescription">
-                                        <i class="fa fa-bug reporticon"></i><br />
-                                        <button type="button" id="btnRunVulnerabilityReport" title="Run the Vulnerability by Host Report by System" onclick="location.href = 'vulnerability.html';" 
-									        class="btn btn-success">Run Report</button>
-										<button type="button" id="btnReloadVulnerabilityData" title="Refresh all System data on Checklist Vulnerability Reports" style="display: none;" onclick="reloadVulnerabilityData();" 
-											class="btn btn-warning">Refresh Data</button>
-                                    </div>
-                                </div>
-                                <!-- Control Listing for Hosts / Servers -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        Host by RMF Control Report
-                                    </div>
-                                    <div class="reportListingDescription">
-                                        <i class="fa fa-check-square reporticon"></i><br />
-                                        <button type="button" id="btnRunControlHostListingReport" title="Run the Host by RMF Control Report by System" onclick="location.href = 'controlhostlisting.html';" 
-									        class="btn btn-success">Run Report</button>
-                                    </div>
-                                </div>
-                                <!-- RMF Controls Listing -->
-                                <div class="reportListing">
-                                    <div class="reportListTitle">
-                                        RMF Controls Listing
-                                    </div>
-                                    <div class="reportListingDescription">
-                                        <i class="fa fa-table reporticon"></i><br />
-                                        <button type="button" id="btnRunControlsReport" title="Run the RMF Controls Report" onclick="location.href = 'controls.html';" 
-									        class="btn btn-success">Run Report</button>
-                                    </div>
-                                </div>
-                            </div>
-						</div>							
-						<div class="card-footer small text-muted"></div>
-					</div><!-- end card-->					
-				</div>
-			</div>
-			<!-- end row -->
 
-        </div>
-		<!-- END container-fluid -->
+							<!-- item-->
+							<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
+								<p class="notify-details ml-0">
+									<b>OpenRMF Online Help</b>
+									<span>Systems, Checklists, Reports</span>
+								</p>
+							</a>
+							<!-- item-->
+							<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
+								<p class="notify-details ml-0">
+									<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
+									<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
+								</p>
+							</a>
+						</div>
+					</li>
+					<li class="list-inline-item dropdown notif">
+						<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
+							href="#" role="button" aria-haspopup="false" aria-expanded="false">
+							<img src="/assets/images/avatars/avatar3.png" alt="Profile image" 
+							class="avatar-rounded">
+						</a>
+						<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+							<!-- item-->
+							<div class="dropdown-item noti-title">
+								<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+							</div>
+
+							<!-- item-->
+							<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
+								<i class="fa fa-user"></i> <span>Profile</span>
+							</a>
+
+							<!-- item-->
+							<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
+								class="dropdown-item notify-item">
+								<i class="fa fa-power-off"></i> <span>Logout</span>
+							</a>
+						</div>
+					</li>
+				</ul>            
+				<ul class="list-inline menu-left mb-0">
+					<li class="float-left">
+						<button class="button-menu-mobile open-left">
+							<i class="fa fa-fw fa-bars"></i>
+						</button>
+					</li>                        
+				</ul>
+
+			</nav>
 
 		</div>
-		<!-- END content -->
+		<!-- End Navigation -->
+		
+		<!-- Left Sidebar -->
+		<div class="left main-sidebar">
+			<div class="sidebar-inner leftscroll">
+				<div id="sidebar-menu">
+				<ul>
+					<li class="submenu">
+						<a href="/index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="/systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="/compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="/templates.html"  title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					</li>
+					<li class="submenu">
+						<a class="active" href="/reports/index.html"  title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+					</li>
+					<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
+						<a href="/upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
+					</li>
+					<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
+						<a href="/audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
+					</li>
+					<li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
+						<a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<!-- End Sidebar -->
 
-    </div>
-	<!-- END content-page -->
-    
-	<footer class="footer">
-		<span class="text-right">
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
-		</span>
-		<span class="float-right">
-		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
-		</span>
-	</footer>
+		<div class="content-page">	
+			<!-- Start content -->
+			<div class="content">            
+			<div class="container-fluid">		
+				<div class="row">
+						<div class="col-xl-12">
+								<div class="breadcrumb-holder">
+										<h1 class="main-title float-left">Reports</h1>
+										<ol class="breadcrumb float-right">
+											<li class="breadcrumb-item">Home</li>
+											<li class="breadcrumb-item active">Reports</li>
+										</ol>
+										<div class="clearfix"></div>
+								</div>
+						</div>
+				</div>
+			
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+						<div class="card mb-3">
+							<div class="card-header">
+								<h3><i class="fa fa-area-chart"></i> Available Reports</h3>
+							</div>
+								
+							<div class="card-body">
+								<div class="reportsList">
+									<!-- Nessus ACAS Scan Report -->
+									<div class="reportListing">
+										<div class="reportListTitle">
+											Nessus Patch Listing
+										</div>
+										<div class="reportListingDescription">
+											<i class="fa fa-wrench reporticon"></i><br />
+											<button type="button" id="btnRunNessusReport" title="Run the Nessus ACAS Report by System" onclick="location.href = 'nessus.html';" 
+												class="btn btn-success">Run Report</button>
+											<!-- <button type="button" id="btnReloadNessusData" title="Refresh all System data on Nessus ACAS Reports" style="display: none;" onclick="reloadNessusPatchData();" 
+												class="btn btn-warning">Refresh Data</button> -->
+										</div>
+									</div>
+									<!-- System Total Score Chart -->
+									<div class="reportListing">
+										<div class="reportListTitle">
+											System Package Pie Charts
+										</div>
+										<div class="reportListingDescription">
+											<i class="fa fa-pie-chart reporticon"></i><br />
+											<button type="button" id="btnRunSystemCharts" title="Run the Scoring Pie Chart Report by System" onclick="location.href = 'charts.html';" 
+												class="btn btn-success">Run Report</button>
+										</div>
+									</div>
+									<!-- System Checklist with Score Listing -->
+									<div class="reportListing">
+										<div class="reportListTitle">
+											System Package Checklist Listing
+										</div>
+										<div class="reportListingDescription">
+											<i class="fa fa-list reporticon"></i><br />
+											<button type="button" id="btnRunChecklistReport" title="Run the System Checklist Report by Checklist" onclick="location.href = 'checklists.html';" 
+												class="btn btn-success">Run Report</button>
+										</div>
+									</div>
+									<!-- Vulnerability Listing for Hosts / Servers -->
+									<div class="reportListing">
+										<div class="reportListTitle">
+											Host Vulnerability Report
+										</div>
+										<div class="reportListingDescription">
+											<i class="fa fa-bug reporticon"></i><br />
+											<button type="button" id="btnRunVulnerabilityReport" title="Run the Vulnerability by Host Report by System" onclick="location.href = 'vulnerability.html';" 
+												class="btn btn-success">Run Report</button>
+											<!-- <button type="button" id="btnReloadVulnerabilityData" title="Refresh all System data on Checklist Vulnerability Reports" style="display: none;" onclick="reloadVulnerabilityData();" 
+												class="btn btn-warning">Refresh Data</button> -->
+										</div>
+									</div>
+									<!-- Control Listing for Hosts / Servers -->
+									<div class="reportListing">
+										<div class="reportListTitle">
+											Host by RMF Control Report
+										</div>
+										<div class="reportListingDescription">
+											<i class="fa fa-check-square reporticon"></i><br />
+											<button type="button" id="btnRunControlHostListingReport" title="Run the Host by RMF Control Report by System" onclick="location.href = 'controlhostlisting.html';" 
+												class="btn btn-success">Run Report</button>
+										</div>
+									</div>
+									<!-- RMF Controls Listing -->
+									<div class="reportListing">
+										<div class="reportListTitle">
+											RMF Controls Listing
+										</div>
+										<div class="reportListingDescription">
+											<i class="fa fa-table reporticon"></i><br />
+											<button type="button" id="btnRunControlsReport" title="Run the RMF Controls Report" onclick="location.href = 'controls.html';" 
+												class="btn btn-success">Run Report</button>
+										</div>
+									</div>
+								</div>
+							</div>							
+							<div class="card-footer small text-muted"></div>
+						</div><!-- end card-->					
+					</div>
+				</div>
+				<!-- end row -->
 
-</div>
-<!-- END main -->
+			</div>
+			<!-- END container-fluid -->
+
+			</div>
+			<!-- END content -->
+
+		</div>
+		<!-- END content-page -->
+		
+		<footer class="footer"><div id="includeFooterLink"></div></footer>
+		<div id="includeAutoLogin"></div>
+
+	</div>
+	<!-- END main -->
 
 <script src="/assets/js/modernizr.min.js"></script>
 <script src="/assets/js/jquery.min.js"></script>
@@ -314,8 +309,8 @@
 			// authentication first
 			keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 				if (authenticated) {
-					// setup the profile account and logout menu
-					setupProfileMenu();
+					// setup the User Interface
+					setupOpenRMFUI();
 					// see if the upload menu should show
 					verifyMenus();
 					// see if they are allowed to refresh data

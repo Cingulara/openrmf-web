@@ -55,410 +55,406 @@
 <body class="adminbody">
 	<script src="assets/js/keycloak.min.js"></script>
 	<script src="./js/auth.js"></script>
-<div id="main">
+	<div id="main" style="display: none;">
 
-	<!-- top bar navigation -->
-	<div class="headerbar">
+		<!-- top bar navigation -->
+		<div class="headerbar">
 
-		<!-- LOGO -->
-      <div class="headerbar-left">
-		<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
-	  </div>
-
-    <nav class="navbar-custom">
-		<ul class="list-inline float-right mb-0">
-			<li class="list-inline-item dropdown notif">
-				<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
-					aria-haspopup="false" aria-expanded="false">
-					<i class="fa fa-fw fa-question-circle"></i>
-				</a>
-				<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
-					<!-- item-->
-					<div class="dropdown-item noti-title">
-						<h5><small>Help and Support</small></h5>
-					</div>
-
-					<!-- item-->
-					<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
-						<p class="notify-details ml-0">
-							<b>OpenRMF Online Help</b>
-							<span>Systems, Checklists, Reports</span>
-						</p>
-					</a>
-					<!-- item-->
-					<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
-						<p class="notify-details ml-0">
-							<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
-							<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
-						</p>
-					</a>
-				</div>
-			</li>
-			<li class="list-inline-item dropdown notif">
-				<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
-					href="#" role="button" aria-haspopup="false" aria-expanded="false">
-					<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
-					class="avatar-rounded">
-				</a>
-				<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-					<!-- item-->
-					<div class="dropdown-item noti-title">
-						<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
-					</div>
-
-					<!-- item-->
-					<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
-						<i class="fa fa-user"></i> <span>Profile</span>
-					</a>
-
-					<!-- item-->
-					<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
-						class="dropdown-item notify-item"><i class="fa fa-power-off"></i> <span>Logout</span>
-					</a>
-				</div>
-			</li>
-		</ul>
-		<ul class="list-inline menu-left mb-0">
-			<li class="float-left">
-				<button class="button-menu-mobile open-left">
-					<i class="fa fa-fw fa-bars"></i>
-				</button>
-			</li>                        
-		</ul>
-    </nav>
-	</div>
-	<!-- End Navigation -->
-
-	<!-- Left Sidebar -->
-	<div class="left main-sidebar">
-		<div class="sidebar-inner leftscroll">
-			<div id="sidebar-menu">
-			<ul>
-				<li class="submenu">
-					<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
-				</li>
-				<li class="submenu">
-					<a href="/reports/index.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
-				</li>
-				<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
-					<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
-				</li>
-				<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
-					<a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
-				</li>
-            </ul>
-            <div class="clearfix"></div>
-			</div>
-			<div class="clearfix"></div>
+			<!-- LOGO -->
+		<div class="headerbar-left">
+			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
 		</div>
-	</div>
-  <!-- End Sidebar -->
-  
-    <div class="content-page">	
-		<!-- Start content -->
-        <div class="content">            
-			<div class="container-fluid">					
-				<div class="row">
-					<div class="col-xl-12">
-						<div class="breadcrumb-holder">
-							<h1 class="main-title float-left">My Checklist</h1>
-							<ol class="breadcrumb float-right">
-								<li class="breadcrumb-item">Home</li>
-								<li class="breadcrumb-item active">Checklist</li>
-							</ol>
-							<div class="clearfix"></div>
+
+		<nav class="navbar-custom">
+			<ul class="list-inline float-right mb-0">
+				<li class="list-inline-item dropdown notif">
+					<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
+						aria-haspopup="false" aria-expanded="false">
+						<i class="fa fa-fw fa-question-circle"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+						<!-- item-->
+						<div class="dropdown-item noti-title">
+							<h5><small>Help and Support</small></h5>
+						</div>
+
+						<!-- item-->
+						<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
+							<p class="notify-details ml-0">
+								<b>OpenRMF Online Help</b>
+								<span>Systems, Checklists, Reports</span>
+							</p>
+						</a>
+						<!-- item-->
+						<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
+							<p class="notify-details ml-0">
+								<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
+								<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
+							</p>
+						</a>
+					</div>
+				</li>
+				<li class="list-inline-item dropdown notif">
+					<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
+						href="#" role="button" aria-haspopup="false" aria-expanded="false">
+						<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
+						class="avatar-rounded">
+					</a>
+					<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+						<!-- item-->
+						<div class="dropdown-item noti-title">
+							<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
+						</div>
+
+						<!-- item-->
+						<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
+							<i class="fa fa-user"></i> <span>Profile</span>
+						</a>
+
+						<!-- item-->
+						<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
+							class="dropdown-item notify-item"><i class="fa fa-power-off"></i> <span>Logout</span>
+						</a>
+					</div>
+				</li>
+			</ul>
+			<ul class="list-inline menu-left mb-0">
+				<li class="float-left">
+					<button class="button-menu-mobile open-left">
+						<i class="fa fa-fw fa-bars"></i>
+					</button>
+				</li>                        
+			</ul>
+		</nav>
+		</div>
+		<!-- End Navigation -->
+
+		<!-- Left Sidebar -->
+		<div class="left main-sidebar">
+			<div class="sidebar-inner leftscroll">
+				<div id="sidebar-menu">
+				<ul>
+					<li class="submenu">
+						<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
+					</li>
+					<li class="submenu">
+						<a href="/reports/index.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
+					</li>
+					<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
+						<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
+					</li>
+					<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
+						<a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
+					</li>
+					<li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
+						<a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	<!-- End Sidebar -->
+	
+		<div class="content-page">	
+			<!-- Start content -->
+			<div class="content">            
+				<div class="container-fluid">					
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="breadcrumb-holder">
+								<h1 class="main-title float-left">My Checklist</h1>
+								<ol class="breadcrumb float-right">
+									<li class="breadcrumb-item">Home</li>
+									<li class="breadcrumb-item active">Checklist</li>
+								</ol>
+								<div class="clearfix"></div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<!-- end row -->
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-						<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
-					</div>	
-				</div>
-				<!-- end row -->
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3 class="float-left"><i class="fa fa-info-circle"></i> Asset Information</h3>
-								<button type="button" id="btnReturnToChecklistListing" onclick="returnToChecklistListing();" 
-									class="btn btn-info btn-sm m-r-5 m-b-10 float-right">List All Checklists</button>&nbsp;
-							</div>								
-							<div class="card-body">
-								<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
-								<div id="checklistSystem"></div>
-								<div id="checklistHost"></div>
-								<div id="checklistSTIGTitle"></div>
-								<div id="checklistSTIGVersionInfo"></div>
-								<div id="checklistSTIGReleaseInfo"></div>
-								<div id="checklistFQDN"></div>
-								<div id="checklistTechArea"></div>
-								<div id="checklistAssetType"></div>
-								<div id="checklistRole"></div>
-								<br />
-								<div class="small" id="checklistLastUpdated"></div><br />
-								<a href="#custom-modal"  id="btnUpdateChecklist" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10" 
-                  					data-target="#customModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
-								<button type="button" id="btnDownloadChecklist" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
-									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
-								<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
-									class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
-								<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromChecklist();" 
-										class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Upload</button>
-								<button type="button" id="btnDeleteChecklist" style="display: none;" onclick="deleteChecklist(getParameterByName('id'), false);" 
-									class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
-							</div>
-						</div><!-- end card-->
+					<!-- end row -->
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+							<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
+						</div>	
 					</div>
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">	
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3 id="checklistTitle" class="float-left"></h3>
-							</div>
-							<div class="card-body">
-								<div style="display: none;" id="divBadChecklistId" 
-									class="alert alert-danger alert-dismissible fade show" role="alert">The Checklist ID passed in 
-									(<span id="txtBadChecklistId"></span>) is not valid. Please return to the page listing the Checklist 
-									and try again. If this continues please contact your application administrator.
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-									</button>
+					<!-- end row -->
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3 class="float-left"><i class="fa fa-info-circle"></i> Asset Information</h3>
+									<button type="button" id="btnReturnToChecklistListing" onclick="returnToChecklistListing();" 
+										class="btn btn-info btn-sm m-r-5 m-b-10 float-right">List All Checklists</button>&nbsp;
+								</div>								
+								<div class="card-body">
+									<div id="divMessaging" class="alert alert-warning alert-dismissible fade show" style="display: none;" role="alert"></div>
+									<div id="checklistSystem"></div>
+									<div id="checklistHost"></div>
+									<div id="checklistSTIGTitle"></div>
+									<div id="checklistSTIGVersionInfo"></div>
+									<div id="checklistSTIGReleaseInfo"></div>
+									<div id="checklistFQDN"></div>
+									<div id="checklistTechArea"></div>
+									<div id="checklistAssetType"></div>
+									<div id="checklistRole"></div>
+									<br />
+									<div class="small" id="checklistLastUpdated"></div><br />
+									<a href="#custom-modal"  id="btnUpdateChecklist" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10" 
+										data-target="#customModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
+									<button type="button" id="btnDownloadChecklist" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
+										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
+									<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
+										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
+									<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromChecklist();" 
+											class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Upload</button>
+									<button type="button" id="btnDeleteChecklist" style="display: none;" onclick="deleteChecklist(getParameterByName('id'), false);" 
+										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
 								</div>
-								<table class="table table-condensed table-hover table-bordered table-responsive-md">
-								<thead>
-									<tr>
-										<th></th>
-										<th class="tabco4">Open</th>
-										<th class="tabco2">Not a Finding</th>
-										<th class="tabco3">Not Applicable</th>
-										<th class="tabco5">Not Reviewed</th>
-									</tr>
-													</thead>
-													<tbody>
-									<tr>
-										<td>Total</td>
-										<td class="tabco4"><div id="checklistOpenCount"></div></td>
-										<td class="tabco2"><div id="checklistNotAFindingCount"></div></td>
-										<td class="tabco3"><div id="checklistNotApplicableCount"></div></td>
-										<td class="tabco5"><div id="checklistNotReviewedCount"></div></td>
-									</tr>
-									<tr>
-										<td style="text-align: right;">CAT 1</td>
-										<td class="tabco4"><div id="cat1OpenCount"></div></td>
-										<td class="tabco2"><div id="cat1NotAFindingCount"></div></td>
-										<td class="tabco3"><div id="cat1NotApplicableCount"></div></td>
-										<td class="tabco5"><div id="cat1NotReviewedCount"></div></td>
-									</tr>
-									<tr>
-										<td style="text-align: right;">CAT 2</td>
-										<td class="tabco6"></i><div id="cat2OpenCount"></div></td>
-										<td class="tabco2"><div id="cat2NotAFindingCount"></div></td>
-										<td class="tabco3"><div id="cat2NotApplicableCount"></div></td>
-										<td class="tabco5"><div id="cat2NotReviewedCount"></div></td>
-									</tr>
-									<tr>
-										<td style="text-align: right;">CAT 3</td>
-										<td class="tabco7"><div id="cat3OpenCount"></div></td>
-										<td class="tabco2"><div id="cat3NotAFindingCount"></div></td>
-										<td class="tabco3"><div id="cat3NotApplicableCount"></div></td>
-										<td class="tabco5"><div id="cat3NotReviewedCount"></div></td>
-									</tr>
-									</tbody>
-								</table>
-								<div class="small">* Click on the numbers to filter the Vulnerabilities below</div>
-							</div><!-- end card body -->
-						</div><!-- end card-->
-					</div>
-				</div><!-- end row-->
-
-				<div class="row" id="rowControlInformation" style="display: none;">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3 class="float-left"><div id="checklistControlTitle"></div></h3>
-							</div>								
-							<div class="card-body">
-								<div id="checklistControlGuidance"></div>
-							</div><!-- end card body -->															
-						</div><!-- end card-->					
-					</div>	
-				</div><!-- end row-->
-
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-folder-open-o"></i> Vulnerability Filter</h3>
-							</div>
-							<div class="card-body">				
-								<div class="row" id="divVulnFilter" style="display: none;">
-									<div class="col-xl-12">
-										<div>
-											<div class="row">
-												<div class="col-xl-6"><b>Status:</b>&nbsp;
-													<input id="chkVulnNaF" type="checkbox" checked="true"> <span class="vulnNotAFindingText">Not a Finding</span>
-													<input id="chkVulnOpen" type="checkbox" checked="true"> <span class="vulnOpenCAT1Text">Open</span> &nbsp;
-													<input id="chkVulnNA" type="checkbox" checked="true"> <span class="vulnNotApplicableText">N/A</span> &nbsp;
-													<input id="chkVulnNR" type="checkbox" checked="true"> <span class="vulnNotReviewedText">Not Reviewed</span> &nbsp;
-												</div>
-												<div class="col-xl-6"><b>Severity:</b>&nbsp;
-													<input id="chkVulnCAT1" type="checkbox" checked="true"> High (CAT 1) &nbsp;
-													<input id="chkVulnCAT2" type="checkbox" checked="true"> Medium (CAT 2) &nbsp;  
-													<input id="chkVulnCAT3" type="checkbox" checked="true"> Low (CAT 3)
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-xl-12"><br />
-													<button id="btnSetVulnFilter" class="btn btn-primary btn-sm m-r-5 m-b-10" 
-														onclick="updateVulnerabilityListingByFilter(); return false;">Apply</button>
-												</div>
-											</div>											
-										</div>
-									</div>
-								</div>			
-							</div>
+							</div><!-- end card-->
 						</div>
-					</div><!-- end card-->
-				</div>
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">	
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3 id="checklistTitle" class="float-left"></h3>
+								</div>
+								<div class="card-body">
+									<div style="display: none;" id="divBadChecklistId" 
+										class="alert alert-danger alert-dismissible fade show" role="alert">The Checklist ID passed in 
+										(<span id="txtBadChecklistId"></span>) is not valid. Please return to the page listing the Checklist 
+										and try again. If this continues please contact your application administrator.
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<table class="table table-condensed table-hover table-bordered table-responsive-md">
+									<thead>
+										<tr>
+											<th></th>
+											<th class="tabco4">Open</th>
+											<th class="tabco2">Not a Finding</th>
+											<th class="tabco3">Not Applicable</th>
+											<th class="tabco5">Not Reviewed</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Total</td>
+											<td class="tabco4 clickable" title="Filter by all Open Items" onclick="setVulnerabilityFilter('open','all'); return false;"><div id="checklistOpenCount"></div></td>
+											<td class="tabco2 clickable" title="Filter by all Not a Finding Items" onclick="setVulnerabilityFilter('naf','all'); return false;"><div id="checklistNotAFindingCount"></div></td>
+											<td class="tabco3 clickable" title="Filter by all Not Applicable Items" onclick="setVulnerabilityFilter('na','all'); return false;"><div id="checklistNotApplicableCount"></div></td>
+											<td class="tabco5 clickable" title="Filter by all Not Reviewed Items" onclick="setVulnerabilityFilter('nr','all'); return false;"><div id="checklistNotReviewedCount"></div></td>
+										</tr>
+										<tr>
+											<td style="text-align: right;">CAT 1</td>
+											<td class="tabco4 clickable" title="Filter by all CAT 1 Open Items" onclick="setVulnerabilityFilter('open','cat1'); return false;"><div id="cat1OpenCount"></div></td>
+											<td class="tabco2 clickable" title="Filter by all CAT 1 Not a Finding Items" onclick="setVulnerabilityFilter('naf','cat1'); return false;"><div id="cat1NotAFindingCount"></div></td>
+											<td class="tabco3 clickable" title="Filter by all CAT 1 Not Applicable Items" onclick="setVulnerabilityFilter('na','cat1'); return false;"><div id="cat1NotApplicableCount"></div></td>
+											<td class="tabco5 clickable" title="Filter by all CAT 1 Not Reviewed Items" onclick="setVulnerabilityFilter('nr','cat1'); return false;"><div id="cat1NotReviewedCount"></div></td>
+										</tr>
+										<tr>
+											<td style="text-align: right;">CAT 2</td>
+											<td class="tabco6 clickable" title="Filter by all CAT 2 Open Items" onclick="setVulnerabilityFilter('open','cat2'); return false;"></i><div id="cat2OpenCount"></div></td>
+											<td class="tabco2 clickable" title="Filter by all CAT 2 Not a Finding Items" onclick="setVulnerabilityFilter('naf','cat2'); return false;"><div id="cat2NotAFindingCount"></div></td>
+											<td class="tabco3 clickable" title="Filter by all CAT 2 Not Applicable Items" onclick="setVulnerabilityFilter('na','cat2'); return false;"><div id="cat2NotApplicableCount"></div></td>
+											<td class="tabco5 clickable" title="Filter by all CAT 2 Not Reviewed Items" onclick="setVulnerabilityFilter('nr','cat2'); return false;"><div id="cat2NotReviewedCount"></div></td>
+										</tr>
+										<tr>
+											<td style="text-align: right;">CAT 3</td>
+											<td class="tabco7 clickable" title="Filter by all CAT 3 Open Items" onclick="setVulnerabilityFilter('open','cat3'); return false;"><div id="cat3OpenCount"></div></td>
+											<td class="tabco2 clickable" title="Filter by all CAT 3 Not a Finding Items" onclick="setVulnerabilityFilter('opnafn','cat3'); return false;"><div id="cat3NotAFindingCount"></div></td>
+											<td class="tabco3 clickable" title="Filter by all CAT 3 Not Applicable Items" onclick="setVulnerabilityFilter('na','cat3'); return false;"><div id="cat3NotApplicableCount"></div></td>
+											<td class="tabco5 clickable" title="Filter by all CAT 3 Not Reviewed Items" onclick="setVulnerabilityFilter('nr','cat3'); return false;"><div id="cat3NotReviewedCount"></div></td>
+										</tr>
+										</tbody>
+									</table>
+									<div class="small">* Click on the numbers to filter the Vulnerabilities below</div>
+								</div><!-- end card body -->
+							</div><!-- end card-->
+						</div>
+					</div><!-- end row-->
 
-				<div class="row" id="divVulnerabilities">
-					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-folder-open-o"></i> Vuln Ids</h3>
-							</div>
-							<div class="card-body">
-								<div class="row">
-									<div class="col-xl-12">
-										<div id="checklistTree" class="vulnListing scrollableDiv"></div>
+					<div class="row" id="rowControlInformation" style="display: none;">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3 class="float-left"><div id="checklistControlTitle"></div></h3>
+								</div>								
+								<div class="card-body">
+									<div id="checklistControlGuidance"></div>
+								</div><!-- end card body -->															
+							</div><!-- end card-->					
+						</div>	
+					</div><!-- end row-->
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-folder-open-o"></i> Vulnerability Filter</h3>
+								</div>
+								<div class="card-body">				
+									<div class="row" id="divVulnFilter" style="display: none;">
+										<div class="col-xl-12">
+											<div>
+												<div class="row">
+													<div class="col-xl-6"><b>Status:</b>&nbsp;
+														<input id="chkVulnNaF" type="checkbox" checked="true"> <span class="vulnNotAFindingText">Not a Finding</span>
+														<input id="chkVulnOpen" type="checkbox" checked="true"> <span class="vulnOpenCAT1Text">Open</span> &nbsp;
+														<input id="chkVulnNA" type="checkbox" checked="true"> <span class="vulnNotApplicableText">N/A</span> &nbsp;
+														<input id="chkVulnNR" type="checkbox" checked="true"> <span class="vulnNotReviewedText">Not Reviewed</span> &nbsp;
+													</div>
+													<div class="col-xl-6"><b>Severity:</b>&nbsp;
+														<input id="chkVulnCAT1" type="checkbox" checked="true"> High (CAT 1) &nbsp;
+														<input id="chkVulnCAT2" type="checkbox" checked="true"> Medium (CAT 2) &nbsp;  
+														<input id="chkVulnCAT3" type="checkbox" checked="true"> Low (CAT 3)
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-xl-12"><br />
+														<button id="btnSetVulnFilter" class="btn btn-primary btn-sm m-r-5 m-b-10" 
+															onclick="updateVulnerabilityListingByFilter(); return false;">Apply</button>
+													</div>
+												</div>											
+											</div>
+										</div>
 									</div>			
 								</div>
 							</div>
-						</div>
-					</div><!-- end card-->
-					<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-folder-open-o"></i> Vulnerability Details</h3>
-							</div>
-							<div class="card-body">
-								<div class="vulnListingDetail scrollableDiv">
-									<div class="vulnSpacing" id="vulnId">Please select a Vulnerability ID to view its details.</div>
-									<div class="vulnSpacing" id="vulnStatus"></div>
-									<div class="vulnSpacing" id="vulnStigId"></div>
-									<div class="vulnSpacing" id="vulnSeverity"></div>
-									<div class="vulnSpacing" id="vulnRuleId"></div>
-									<div class="vulnSpacing" id="vulnRuleName"></div>
-									<div class="vulnSpacing" id="vulnRuleTitle"></div>
-									<div class="vulnSpacing" id="vulnClassification"></div>
-									<div class="vulnSpacing" id="vulnDiscussion"></div>
-									<div class="vulnSpacing" id="vulnCheckText"></div>
-									<div class="vulnSpacing" id="vulnFixText"></div>
-									<div class="vulnSpacing" id="vulnCCIId"></div>
-									<div class="vulnSpacing" id="vulnSeverityOverrideGuidance"></div>
-								</div>
-							</div>
-						</div>
-					</div><!-- end card-->
-					<div class="col-xs-12 col-sm-12 col-md-8 col-lg-4 col-xl-4">
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3 class="float-left"><i class="fa fa-folder-open-o"></i> Status &amp; Comments</h3>
-								<a href="#vulnerability-modal"  id="btnUpdateVulnerability" style="display: none;" 
-									class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
-                  					data-target="#vulnerabilityModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
-							</div>
-							<div class="card-body">
-								<div class="vulnListingDetail scrollableDiv">
-									<div class="vulnSpacing" id="vulnStatus"></div>
-									<div class="vulnSpacing" id="vulnFindingDetails"></div>
-									<div class="vulnSpacing" id="vulnComments"></div>
-									<div class="vulnSpacing" id="vulnSeverityOverride"></div>
-									<div class="vulnSpacing" id="vulnSeverityJustification"></div>
-								</div>
-							</div>
-						</div>
-					</div><!-- end card-->
-				</div>
+						</div><!-- end card-->
+					</div>
 
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-table"></i> Severity Breakdown</h3>
+					<div class="row" id="divVulnerabilities">
+						<div class="col-xs-12 col-sm-12 col-md-4 col-lg-2 col-xl-2">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-folder-open-o"></i> Vuln Ids</h3>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-xl-12">
+											<div id="checklistTree" class="vulnListing scrollableDiv"></div>
+										</div>			
+									</div>
+								</div>
 							</div>
-								
-							<div class="card-body">
-								<canvas id="chartSeverity"></canvas>
+						</div><!-- end card-->
+						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-folder-open-o"></i> Vulnerability Details</h3>
+								</div>
+								<div class="card-body">
+									<div class="vulnListingDetail scrollableDiv">
+										<div class="vulnSpacing" id="vulnId">Please select a Vulnerability ID to view its details.</div>
+										<div class="vulnSpacing" id="vulnStatus"></div>
+										<div class="vulnSpacing" id="vulnStigId"></div>
+										<div class="vulnSpacing" id="vulnSeverity"></div>
+										<div class="vulnSpacing" id="vulnRuleId"></div>
+										<div class="vulnSpacing" id="vulnRuleName"></div>
+										<div class="vulnSpacing" id="vulnRuleTitle"></div>
+										<div class="vulnSpacing" id="vulnClassification"></div>
+										<div class="vulnSpacing" id="vulnDiscussion"></div>
+										<div class="vulnSpacing" id="vulnCheckText"></div>
+										<div class="vulnSpacing" id="vulnFixText"></div>
+										<div class="vulnSpacing" id="vulnCCIId"></div>
+										<div class="vulnSpacing" id="vulnSeverityOverrideGuidance"></div>
+									</div>
+								</div>
 							</div>
-							<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
-							<button type="button" id="btnDownloadChartSeverity" style="display: none;" onclick="downloadChart('chartSeverity');" style="width: 200px;"
-								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->					
+						</div><!-- end card-->
+						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-4 col-xl-4">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3 class="float-left"><i class="fa fa-folder-open-o"></i> Status &amp; Comments</h3>
+									<a href="#vulnerability-modal"  id="btnUpdateVulnerability" style="display: none;" 
+										class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
+										data-target="#vulnerabilityModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
+								</div>
+								<div class="card-body">
+									<div class="vulnListingDetail scrollableDiv">
+										<div class="vulnSpacing" id="vulnStatus"></div>
+										<div class="vulnSpacing" id="vulnFindingDetails"></div>
+										<div class="vulnSpacing" id="vulnComments"></div>
+										<div class="vulnSpacing" id="vulnSeverityOverride"></div>
+										<div class="vulnSpacing" id="vulnSeverityJustification"></div>
+									</div>
+								</div>
+							</div>
+						</div><!-- end card-->
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-table"></i> Severity Breakdown</h3>
+								</div>
+									
+								<div class="card-body">
+									<canvas id="chartSeverity"></canvas>
+								</div>
+								<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
+								<button type="button" id="btnDownloadChartSeverity" style="display: none;" onclick="downloadChart('chartSeverity');" style="width: 200px;"
+									class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+							</div><!-- end card-->					
+						</div>
+						
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-table"></i> Category Breakdown</h3>
+								</div>
+									
+								<div class="card-body">
+									<canvas id="chartCategory"></canvas>
+								</div>
+								<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
+								<button type="button" id="btnDownloadChartCategory" style="display: none;" onclick="downloadChart('chartCategory');" style="width: 200px;"
+									class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+							</div><!-- end card-->					
+						</div>							
 					</div>
 					
-					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">						
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-table"></i> Category Breakdown</h3>
-							</div>
-								
-							<div class="card-body">
-								<canvas id="chartCategory"></canvas>
-							</div>
-							<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
-							<button type="button" id="btnDownloadChartCategory" style="display: none;" onclick="downloadChart('chartCategory');" style="width: 200px;"
-								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->					
-					</div>							
-				</div>
-				
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
-						<div class="card mb-3">
-							<div class="card-header">
-								<h3><i class="fa fa-table"></i> Checklist Score Breakdown</h3>
-							</div>
-								
-							<div class="card-body">
-								<canvas id="barChart"></canvas>
-							</div>							
-							<div id="barChartUpdated" class="card-footer small text-muted"></div>
-							<button type="button" id="btnDownloadBarChart" style="display: none;"  onclick="downloadChart('barChart');" style="width: 200px;"
-								class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-						</div><!-- end card-->					
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-table"></i> Checklist Score Breakdown</h3>
+								</div>
+									
+								<div class="card-body">
+									<canvas id="barChart"></canvas>
+								</div>							
+								<div id="barChartUpdated" class="card-footer small text-muted"></div>
+								<button type="button" id="btnDownloadBarChart" style="display: none;"  onclick="downloadChart('barChart');" style="width: 200px;"
+									class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+							</div><!-- end card-->					
+						</div>
 					</div>
+
 				</div>
-
-            </div>
-			<!-- END container-fluid -->
+				<!-- END container-fluid -->
+			</div>
+			<!-- END content -->
 		</div>
-		<!-- END content -->
-    </div>
-	<!-- END content-page -->
-    
-	<footer class="footer">
-		<span class="text-right">
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.cingulara.com/">Cingulara 2020</a>
-			&copy; <a target="_blank" rel="noopener noreferrer" href="https://www.tutelasec.com/">Tutela 2020</a>
-		</span>
-		<span class="float-right">
-		Powered by <a target="_blank" rel="noopener noreferrer" href="https://www.pikeadmin.com"><b>Pike Admin</b></a>
-		</span>
-	</footer>
+		<!-- END content-page -->
+		
+		<footer class="footer"><div id="includeFooterLink"></div></footer>
+		<div id="includeAutoLogin"></div>
 
-</div>
-<!-- END main -->
+	</div>
+	<!-- END main -->
 
 <script src="assets/js/modernizr.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
@@ -490,8 +486,8 @@
 		// authentication first
 		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
 			if (authenticated) {
-				// setup the profile account and logout menu
-				setupProfileMenu();
+				// setup the User Interface
+				setupOpenRMFUI();
 				// see if the upload menu should show
 				verifyMenus();
 				// check if they can download
@@ -645,17 +641,17 @@
 			  <small id="titleComments" class="form-text text-muted">Enter any comments for this vulnerability</small>
 			</div>
 			<div class="form-group">
-				<label for="frmVulnSecurityOverride">Security Override</label>
+				<label for="frmVulnSecurityOverride">Severity Override</label>
 				<select class="form-control select2" id="frmVulnSecurityOverride">
 						<option value="">Choose one...</option>
 						<option value="high">CAT I / High</option>
 						<option value="medium">CAT II / Medium</option>
 						<option value="low">CAT III / Low</option>
 				</select>
-				<small id="titleSecurityOverride" class="form-text text-muted">Select the current security override (if any) for this vulnerability</small>
+				<small id="titleSecurityOverride" class="form-text text-muted">Select the current severity override (if any) for this vulnerability</small>
 			</div>
 			<div class="form-group">
-			  <label for="frmVulnSecurityJustification">Security Override Justification</label>
+			  <label for="frmVulnSecurityJustification">Severity Override Justification</label>
 			  <textarea class="form-control" id="frmVulnSecurityJustification" cols="40" rows="4"
 			  	aria-describedby="titleSecurityJustification" placeholder="Enter any Comments"></textarea>
 			  <small id="titleSecurityJustification" class="form-text text-muted">Enter the justification on the override for this vulnerability</small>

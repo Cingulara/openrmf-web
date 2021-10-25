@@ -1222,27 +1222,33 @@ a.btn:focus {
 .vulnOpenCAT1 {
   background-color: #E53935;
   margin: 3px 0px 3px 0px;
+  border-radius: 5px;
 }
 .vulnOpenCAT2 {
   background-color: orange;
   margin: 3px 0px 3px 0px;
+  border-radius: 5px;
 }
 .vulnOpenCAT3 {
   background-color: rgba(216, 216, 14, 0.797);
   margin: 3px 0px 3px 0px;
+  border-radius: 5px;
 }
 .vulnNotApplicable {
   background-color: silver;
   margin: 3px 0px 3px 0px;
+  border-radius: 5px;
 }
 .vulnNotAFinding {
   background-color: #50cc83;
   margin: 3px 0px 3px 0px;
+  border-radius: 5px;
 }
 .vulnNotReviewed {
   background-color: #222222;
   margin: 3px 0px 3px 0px;
   color: white;
+  border-radius: 5px;
 }
 .vulnOpenCAT1Text {
   color: #E53935;

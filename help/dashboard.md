@@ -6,7 +6,7 @@ nav_order: 200
 
 # Your OpenRMF Dashboard
 
-![OpenRMF Dashboard](/assets/dashboard.png)
+![OpenRMF Dashboard](./assets/dashboard.png)
 
 The initial OpenRMF dashboard shows the total checklists, total systems, and total templates within the system at the very top of the page.  Underneath that are two sections: one for Nessus Path scan data and one for Checklist open item data.
 
