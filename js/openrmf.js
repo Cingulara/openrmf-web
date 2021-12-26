@@ -1635,11 +1635,11 @@ async function viewVulnDetails(vulnId) {
 		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status.replace("NotAFinding","Not a Finding").replace("_"," "));
 		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + (data.stiG_DATA[21].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + (data.stiG_DATA[1].attributE_DATA).replace(/\n/g, "<br />"));
-		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + (data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
-		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA.replace(/</g, "&lt; ").replace(/\n/g, "<br />"));
-		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA.replace(/\n/g, "<br />"));
-		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
-		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
+		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + htmlEscape(data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + htmlEscape(data.stiG_DATA[8].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + htmlEscape(data.stiG_DATA[9].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + htmlEscape(data.findinG_DETAILS).replace(/\n/g, "<br />"));
+		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + htmlEscape(data.comments).replace(/\n/g, "<br />"));
 		if (data.stiG_DATA[18].attributE_DATA) {
 			$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (data.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
 		}
@@ -3190,6 +3190,12 @@ function htmlEscape(str) {
         .replace(/'/g, '&#39;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
+}
+
+function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
 }
 /************************************ 
  Permission and User Login Functions
