@@ -49,6 +49,7 @@
 		<link href="assets/plugins/jstree/style.css" rel="stylesheet" type="text/css"/>
 		<link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
 		<link href="assets/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet" />
+		<link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
 		<!-- END CSS for this page -->
 </head>
 
@@ -208,10 +209,12 @@
 									<div id="checklistTechArea"></div>
 									<div id="checklistAssetType"></div>
 									<div id="checklistRole"></div>
+									<div id="checklistTags"></div>
 									<br />
 									<div class="small" id="checklistLastUpdated"></div><br />
-									<a href="#custom-modal"  id="btnUpdateChecklist" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10" 
-										data-target="#customModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
+									
+									<button type="button" id="btnUpdateChecklist" style="display: none;" onclick="openChecklistMetadata(); return false;" 
+										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</button>
 									<button type="button" id="btnDownloadChecklist" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
 										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
 									<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
@@ -357,7 +360,6 @@
 								<div class="card-body">
 									<div class="vulnListingDetail scrollableDiv">
 										<div class="vulnSpacing" id="vulnId">Please select a Vulnerability ID to view its details.</div>
-										<div class="vulnSpacing" id="vulnStatus"></div>
 										<div class="vulnSpacing" id="vulnStigId"></div>
 										<div class="vulnSpacing" id="vulnSeverity"></div>
 										<div class="vulnSpacing" id="vulnRuleId"></div>
@@ -470,6 +472,7 @@
 <script src="assets/js/jquery.scrollTo.min.js"></script>
 <script src="assets/plugins/switchery/switchery.min.js"></script>
 <script src="assets/plugins/sweetalert/sweetalert.js"></script>
+<script src="assets/plugins/select2/js/select2.min.js"></script>
 
 <!-- App js -->
 <script src="assets/js/pikeadmin.js"></script>
@@ -527,7 +530,7 @@
 <!-- END Java Script for this page -->
 
 <!-- Update Modal -->
-<div class="modal fade customModal" id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModal" aria-hidden="true">
+<div class="modal fade customModal" id="editChecklistMetadata" tabindex="-1" role="dialog" aria-labelledby="customModal" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 		<div class="modal-header">
@@ -542,7 +545,7 @@
 				<select class="form-control select2" id="frmChecklistSystem">
 						<option value="">Choose one...</option>
 				</select>
-				<small id="titleHelp" class="form-text text-muted">Select the system this belongs to</small>
+				<small id="titleHelp" class="form-text text-muted">Select the system pacakge this checklist belongs to</small>
 			</div>
 			<div class="form-group">
 			  <label for="frmChecklistHost">Host</label>
@@ -597,7 +600,13 @@
 					<option value="Domain Controller">Domain Controller</option>
 				</select>
 				<small id="titleRole" class="form-text text-muted">Select the Role for this machine</small>
-			</div>			
+			</div>
+			<div class="form-group">
+			  <label for="multiple-select">Tags</label>
+			  <select class="selectpicker form-control" style="width: 100%;" id="frmChecklistTags" multiple data-options='{"placeholder":"Add Tags Here"}'>
+			  </select>
+			  <small id="titleTags" class="form-text text-muted">Enter 1 or more tags, if desired</small>
+			</div>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -607,7 +616,7 @@
 	</div>
 </div>
 
-<!-- Update Modal -->
+<!-- Update Vulnerability Modal -->
 <div class="modal fade customModal" id="vulnerabilityModal" tabindex="-1" role="dialog" aria-labelledby="vulnerabilityModal" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">

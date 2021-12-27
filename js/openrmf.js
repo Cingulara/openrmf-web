@@ -1173,6 +1173,7 @@ async function getChecklists(system) {
 		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
 		table.clear().draw();
 		var checklistLink = "";
+		var tags = "";
 		if (data.length == 0) {
 			$.unblockUI();			
 			var alertText = 'There are no Checklists uploaded. Please Upload your first.';
@@ -1201,11 +1202,15 @@ async function getChecklists(system) {
 					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
 				}
 				checklistLink += "</span>";
+				
+				tags = ""; // clear them
+				if (item.tags) tags = item.tags.toString().replace(/\,/g, ", ");
+
 				// now get the score
 				var score = await getScoreForChecklistListing(item.internalIdString);
 				if (score) {
 					// dynamically add to the datatable but only show main data, click the + for extra data
-					table.row.add( { "title": checklistLink, "id": item.internalIdString,
+					table.row.add( { "title": checklistLink, "id": item.internalIdString, "tags": tags,
 						"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
 						"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
 						"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
@@ -1213,7 +1218,7 @@ async function getChecklists(system) {
 					}).draw();
 				}
 				else {
-					table.row.add( { "title": checklistLink, "id": item.internalIdString,
+					table.row.add( { "title": checklistLink, "id": item.internalIdString, "tags": tags,
 						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
 						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
 						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
@@ -1353,6 +1358,10 @@ async function getChecklistData(id, template) {
 		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
 		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
 		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
+		if (data.tags)
+			$("#checklistTags").html("<b>Tags:</b> " + data.tags.toString().replace(/\,/g, ", "));
+		else 
+			$("#checklistTags").html("<b>Tags:</b> ");
 		$("#divMessaging").html(""); // clear this just in case
 
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
@@ -1380,6 +1389,14 @@ async function getChecklistData(id, template) {
 		$("#frmChecklistTechArea").val(data.checklist.asset.tecH_AREA);
 		$("#frmChecklistAssetType").val(data.checklist.asset.asseT_TYPE);
 		$("#frmChecklistRole").val(data.checklist.asset.role);
+		$("#frmChecklistTags").empty();
+		if (data.tags && data.tags.length > 0) {
+		  // add the selections from frmChecklistTags
+		  for(const tag of data.tags){
+			$("#frmChecklistTags").append($('<option/>', { value: tag, text : tag}));
+			$("#frmChecklistTags option[value='" + tag + "']").attr('selected', 'selected');
+		  }
+		}
 
 		// load the vulnerabilities into sessionStorage
 		var vulnListing = "";
@@ -1454,6 +1471,17 @@ async function getChecklistData(id, template) {
 		$("#divBadChecklistId").show();
 	}
 }
+
+function openChecklistMetadata(){
+	// show the Modal
+	$('#editChecklistMetadata').modal({ show: true, focus : true, backdrop: 'static' });
+	$('#frmChecklistTags').select2({ 
+									tags: true,
+									allowClear: true,
+									placeholder: "Add 1 or more tags",
+									tokenSeparators: [',', ' ']
+								  });
+  }
 
 // see if there is a new version or release of the current checklist we are using
 async function newChecklistAvailable(systemGroupId, artifactId) {
@@ -1650,9 +1678,12 @@ async function viewVulnDetails(vulnId) {
 				severityOverride = "CAT II / Medium";
 			else if (data.severitY_OVERRIDE.toLowerCase() == "high") 
 				severityOverride = "CAT I / High";
-			$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
-			$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (data.severitY_JUSTIFICATION).replace(/\n/g, "<br />"));
+		} else {
+			severityOverride = "";
 		}
+		$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
+		$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (data.severitY_JUSTIFICATION).replace(/\n/g, "<br />"));
+
 		// get the CCI Listing and any references
 		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
 		var severityOverride = '';
@@ -1743,6 +1774,12 @@ function updateSingleChecklist(id) {
 	formData.append("techarea",$("#frmChecklistTechArea").val());
 	formData.append("assettype",$("#frmChecklistAssetType").val());
 	formData.append("machinerole",$("#frmChecklistRole").val());
+	var tagListing = "";
+	$("#frmChecklistTags option").each(function() {
+	  if (this.selected)
+		tagListing += this.value + "|";
+	});
+	formData.append("tagList", htmlEscape(tagListing));
 
 	$.ajax({
 		url : url,
@@ -1754,6 +1791,8 @@ function updateSingleChecklist(id) {
 		processData: false,
 		contentType: false,
 		success : function(data){
+            // hide the modal
+            $('#editChecklistMetadata').modal('hide');
 			swal("Your Checklist was updated successfully!", "Click OK to continue!", "success")
 			.then((value) => {
 				getChecklistSystemsForChecklist();
@@ -2596,7 +2635,11 @@ async function getSystemChecklistReport() {
 		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
 		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
 		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
-		
+		if (data.tags)
+			$("#checklistTags").html("<b>Tags:</b> " + data.tags.toString().replace(/\,/g, ", "));
+		else 
+			$("#checklistTags").html("<b>Tags:</b> ");
+
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
 		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
@@ -2607,15 +2650,8 @@ async function getSystemChecklistReport() {
 		var strSeverityOverride = "";
 		var strSeverityJustification = "";
 		for (const item of data.checklist.stigs.iSTIG.vuln) {
-			if (item.status == "NotAFinding") 
-				strStatus = "Not a Finding";
-			else if (item.status == "Not_Reviewed") 
-				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable") 
-				strStatus = "Not Applicable";
-			else 
-				strStatus = item.status;
-
+			strStatus = getStatusName(item.status);
+				
 			if (item.severitY_OVERRIDE) {
 				strSeverity = item.severitY_OVERRIDE;
 				strSeverityOverride = strSeverity;
@@ -2669,14 +2705,7 @@ async function getControlsReport() {
 		table.clear().draw();
 		var impactLevel = "";
 		for (const item of data) {
-			if (item.status == "NotAFinding") 
-				strStatus = "Not a Finding";
-			else if (item.status == "Not_Reviewed") 
-				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable") 
-				strStatus = "Not Applicable";
-			else 
-				strStatus = item.status;
+			strStatus = getStatusName(item.status);
 
 			if (item.highimpact)
 				impactLevel = "High";
@@ -2736,14 +2765,8 @@ async function getHostVulnerabilityReport() {
 		var strSeverityOverride = "";
 		var strSeverityJustification = "";
 		for (const item of data) {
-			if (item.status == "NotAFinding") 
-				strStatus = "Not a Finding";
-			else if (item.status == "Not_Reviewed") 
-				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable") 
-				strStatus = "Not Applicable";
-			else 
-				strStatus = item.status;
+			strStatus = getStatusName(item.status);
+			
 			if (item.severityOverride) {
 				strSeverity = item.severityOverride;
 				strSeverityOverride = strSeverity;
@@ -2994,9 +3017,12 @@ async function getComplianceBySystem() {
 				var currentFamily = "";
 				var currentStatus = "";
 				var complianceSummary = "";
+				var overallStatus = "";
+				var statusName = "";
 				for (const item of data.result) {
 					recordNum++;
 					checklists = '';
+					overallStatus = '';
 					if (currentFamily != item.control.substring(0,2)) {
 						// print out the info
 						if (currentFamily) {
@@ -3008,19 +3034,20 @@ async function getComplianceBySystem() {
 						currentFamily = item.control.substring(0,2);
 					}
 					if (item.complianceRecords.length > 0) {
-						for (const record of item.complianceRecords){
+						for (const record of item.complianceRecords) {
 							checklists = '';
 							recordNum++;
 							currentStatus = getOverallCompliance(currentStatus, record.status);
 							checklists += '<a href="/single-checklist.html?id=';
 							checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
 							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></a>';
+							overallStatus = '<span class="' + getComplianceTextClassName(record.status) + '">' + getStatusName(record.status); + '</span></a>';
 							// dynamically add to the datatable a row per checklist returned
-							table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
+							table.row.add( [recordNum, item.control, item.title, checklists, overallStatus] ).draw();
 						}
 					} else {
 						// dynamically add to the datatable
-						table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
+						table.row.add( [recordNum, item.control, item.title, checklists, overallStatus] ).draw();
 					}
 				}
 				if (complianceSummary) 
@@ -3123,6 +3150,18 @@ function getComplianceTextClassName(status) {
 		return "vulnNotApplicableText";
 	else // not a finding
 		return "vulnNotAFindingText";
+}
+
+function getStatusName (status)
+{
+	if (status.toLowerCase() == 'not_reviewed')
+		return "Not Reviewed";
+	else if (status.toLowerCase() == 'open')
+		return "Open";
+	else if (status.toLowerCase() == 'not_applicable')
+		return "Not Applicable";
+	else 
+		return "Not a Finding";
 }
 
 function getOverallCompliance(currentStatus, newStatus) {
