@@ -1,6 +1,6 @@
 ---
 layout: default
-title: What's New in v1.5
+title: What's New in v1.7
 nav_order: 2
 ---
 

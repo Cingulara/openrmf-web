@@ -33,6 +33,9 @@ I made a NATS metrics dashboard at https://github.com/Cingulara/nats-client-metr
 NATS dashboard for Grafana keeps everything at a server level for bytes in and out, messages in and out, etc. I wanted per client. 
 So go to that URL above and add that dashboard referenced in the [JSON file](https://raw.githubusercontent.com/Cingulara/nats-client-metrics/master/grafana-dashboard.json) to your Prometheus if you want NATS client metrics. 
 
+## Web Interface Metrics
+There is also an NGINX default dashboard in the included dashboards with Grafana packaged with OpenRMF<sup>&reg;</sup> v1.7 and beyond as well. That will show activity for the user interace of the application.
+
 ## Prometheus Configuration Setup
 The prometheus.yml file configuration we use when running the local or docker-compose setup of OpenRMF is 
 [here](https://github.com/Cingulara/openrmf-docs/blob/master/scripts/prometheus.yml). You can adjust 
@@ -40,9 +43,6 @@ the interval and options as required. Just restart the `docker-compose up -d` co
 
 See the [OpenRMF Metrics in GitHub](https://github.com/Cingulara/openrmf-docs/blob/master/metrics.md) information to understand how
 we use those tools within OpenRMF. 
-
-## cAdvisor Metrics
-When running the Docker Compose stack you also can point to http://localhost:9080/ to run cAdvisor. https://github.com/google/cadvisor has great information on running cAdvisor. Feel free to comment out this piece in the docker-compose file if you do not want to run it. 
 
 ## Additional Links
 
