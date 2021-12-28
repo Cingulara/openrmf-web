@@ -1207,10 +1207,11 @@ a.btn:focus {
   cursor: pointer;
 }
 .vulnListing {
-  height:400px;
+  height:600px;
 }
 .vulnListingDetail {
-  height:440px;
+  height:600px;
+  padding-right: 5px;
 }
 
 .scrollableDiv {

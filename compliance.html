@@ -201,11 +201,11 @@
 									<div class="checklistSystemsList">
 										<form>
 											<div class="form-group">
-											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package Filter</label>
+											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Package Filter</label>
 											<select class="form-control" id="checklistSystemFilter">
 												<option value="">[Choose One]</option>
 											</select>
-											<small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
+											<small id="titleSystem" class="form-text text-muted">Specify the System Package</small>
 											</div>
 											<div class="form-group">
 											<label class="checklistSystemsListLabel" id="checklistImpactFilterLabel" for="checklistImpactFilter">System Impact Level</label>
@@ -241,12 +241,12 @@
 								</div>
 								<div class="card-body">
 									<p>
-										Generate a Compliance Report across all the checklists in your System ATO Package 
+										Generate a Compliance Report across all the checklists in your System Package 
 										to verify your status on satisfying all relevant controls. Follow the steps 
 										below to generate and validate your checklists for the chosen Impact Level.
 									</p>
 									<ol>
-										<li>Choose your System ATO Package</li>
+										<li>Choose your System Package</li>
 										<li>Choose your Impact Level (Low, Moderate, High)</li>
 										<li>Check if you contain PII, PHI, or Privacy Data</li>
 										<li>Click the Generate button</li>
@@ -265,7 +265,7 @@
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3><i class="fa fa-list-alt"></i> Compliance Summary</h3>
-									Summary per family for your System ATO Package Compliance. Details are below in the next section. <br />
+									Summary per family for your System Package Compliance. Details are below in the next section. <br />
 									<i class='fa fa-check'></i> Green = Not A Finding / Not Applicable. <i class='fa fa-eye-slash'></i> Black = Not Reviewed. 
 									<i class='fa fa-times'></i> Red = Open.
 								</div>
@@ -285,7 +285,7 @@
 								<div class="card-body">
 									<div class="table-responsive">
 										<table id="tblCompliance" style="width: 100%;" class="table table-bordered table-hover display">
-											<thead><tr><th>#</th><th>Control</th><th>Title</th><th>Checklists</th></tr></thead>
+											<thead><tr><th>#</th><th>Control</th><th>Title</th><th>Checklists</th><th>Status</th></tr></thead>
 											<tbody></tbody>
 										</table>
 									</div>
@@ -349,8 +349,9 @@
 				    "columnDefs": [
 						{ "width": "2%", "targets": 0 },
 						{ "width": "8%", "targets": 1 },
-						{ "width": "40%", "targets": 2 },
-						{ "width": "50%", "targets": 3 }
+						{ "width": "35%", "targets": 2 },
+						{ "width": "45%", "targets": 3 },
+						{ "width": "10%", "targets": 4 }
   			        ]
 			    });
 			}

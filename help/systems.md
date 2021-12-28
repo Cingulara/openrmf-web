@@ -4,7 +4,7 @@ title: Step 3 - View Systems
 nav_order: 300
 ---
 
-# Viewing your System ATO Packages
+# Viewing your System Packages
 
 ![OpenRMF System List](./assets/system-listing.png)
 

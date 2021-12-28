@@ -280,51 +280,63 @@ async function getTemplates(latest) {
 					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
 				}
 				checklistLink += "</span>";
-				// now get the score
-				var score = null;
-				var formData = new FormData();
-				formData.append("rawChecklist", item.rawChecklist);
-				$.ajax({
-					url : scoreAPI,
-					data : formData,
-					async: false,
-					type : 'POST',
-					processData: false,
-					contentType: false,
-					beforeSend: function(request) {
-						request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
-					},
-					success : function(data){
-						score = data;
-						if (score) {
-							// dynamically add to the datatable but only show main data, click the + for extra data
-							table.row.add( { "title": checklistLink, 
-								"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
-								"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
-								"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
-								"totalNaFCat3": score.totalCat3NotAFinding, "totalNACat3": score.totalCat3NotApplicable, "totalOpenCat3": intOpenCat2 = score.totalCat3Open, "totalNRCat3": score.totalCat3NotReviewed
-							}).draw();
-						}
-						else {
-							table.row.add( { "title": checklistLink, 
-								"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
-								"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
-								"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
-								"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
-							}).draw();
-						}
-						$.unblockUI();
-					},
-				error: function() {
+
+				// if not a SYSTEM templateType, then get the score; else just fill the table with the listing
+				if (item.templateType == "SYSTEM") {
 					table.row.add( { "title": checklistLink, 
 						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
 						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
 						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
 						"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
 					}).draw();
-					$.unblockUI();
-				}});
+				} else {
+					// now get the score
+					var score = null;
+					var formData = new FormData();
+					formData.append("rawChecklist", item.rawChecklist);
+					$.ajax({
+						url : scoreAPI,
+						data : formData,
+						async: false,
+						type : 'POST',
+						processData: false,
+						contentType: false,
+						beforeSend: function(request) {
+							request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+						},
+						success : function(data){
+							score = data;
+							if (score) {
+								// dynamically add to the datatable but only show main data, click the + for extra data
+								table.row.add( { "title": checklistLink, 
+									"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
+									"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
+									"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
+									"totalNaFCat3": score.totalCat3NotAFinding, "totalNACat3": score.totalCat3NotApplicable, "totalOpenCat3": intOpenCat2 = score.totalCat3Open, "totalNRCat3": score.totalCat3NotReviewed
+								}).draw();
+							}
+							else {
+								table.row.add( { "title": checklistLink, 
+									"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
+									"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
+									"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
+									"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
+								}).draw();
+							}
+							$.unblockUI();
+						},
+					error: function() {
+						table.row.add( { "title": checklistLink, 
+							"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
+							"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
+							"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
+							"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
+						}).draw();
+						$.unblockUI();
+					}});
+				}
 			}
+			$.unblockUI();
 		}
 	}
 	else {
@@ -1173,6 +1185,7 @@ async function getChecklists(system) {
 		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
 		table.clear().draw();
 		var checklistLink = "";
+		var tags = "";
 		if (data.length == 0) {
 			$.unblockUI();			
 			var alertText = 'There are no Checklists uploaded. Please Upload your first.';
@@ -1201,11 +1214,15 @@ async function getChecklists(system) {
 					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
 				}
 				checklistLink += "</span>";
+				
+				tags = ""; // clear them
+				if (item.tags) tags = item.tags.toString().replace(/\,/g, ", ");
+
 				// now get the score
 				var score = await getScoreForChecklistListing(item.internalIdString);
 				if (score) {
 					// dynamically add to the datatable but only show main data, click the + for extra data
-					table.row.add( { "title": checklistLink, "id": item.internalIdString,
+					table.row.add( { "title": checklistLink, "id": item.internalIdString, "tags": tags,
 						"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
 						"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
 						"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
@@ -1213,7 +1230,7 @@ async function getChecklists(system) {
 					}).draw();
 				}
 				else {
-					table.row.add( { "title": checklistLink, "id": item.internalIdString,
+					table.row.add( { "title": checklistLink, "id": item.internalIdString, "tags": tags,
 						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
 						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
 						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
@@ -1353,6 +1370,10 @@ async function getChecklistData(id, template) {
 		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
 		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
 		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
+		if (data.tags)
+			$("#checklistTags").html("<b>Tags:</b> " + data.tags.toString().replace(/\,/g, ", "));
+		else 
+			$("#checklistTags").html("<b>Tags:</b> ");
 		$("#divMessaging").html(""); // clear this just in case
 
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
@@ -1380,6 +1401,14 @@ async function getChecklistData(id, template) {
 		$("#frmChecklistTechArea").val(data.checklist.asset.tecH_AREA);
 		$("#frmChecklistAssetType").val(data.checklist.asset.asseT_TYPE);
 		$("#frmChecklistRole").val(data.checklist.asset.role);
+		$("#frmChecklistTags").empty();
+		if (data.tags && data.tags.length > 0) {
+		  // add the selections from frmChecklistTags
+		  for(const tag of data.tags){
+			$("#frmChecklistTags").append($('<option/>', { value: tag, text : tag}));
+			$("#frmChecklistTags option[value='" + tag + "']").attr('selected', 'selected');
+		  }
+		}
 
 		// load the vulnerabilities into sessionStorage
 		var vulnListing = "";
@@ -1454,6 +1483,19 @@ async function getChecklistData(id, template) {
 		$("#divBadChecklistId").show();
 	}
 }
+
+function openChecklistMetadata(){
+	// show the Modal
+	$('#editChecklistMetadata').modal({ show: true, focus : true, backdrop: 'static' });
+	$('#frmChecklistTags').select2({ 
+									tags: true,
+									allowClear: true,
+									selectOnClose: true,
+									placeholder: " Add 1 or more tags",
+									tokenSeparators: [',', ' '],
+									minimumInputLength: 3
+								  });
+  }
 
 // see if there is a new version or release of the current checklist we are using
 async function newChecklistAvailable(systemGroupId, artifactId) {
@@ -1621,38 +1663,30 @@ function getPatchVulnerabilityClassName (severity) {
 // display the vulnerability information by the Vulnerability Id
 async function viewVulnDetails(vulnId) {
 	var data = JSON.parse(sessionStorage.getItem(vulnId));
-	$("#vulnStatus").html("");
-	$("#vulnFindingDetails").html("");
-	$("#vulnComments").html("");
-	$("#vulnSeverityOverride").html("");
-	$("#vulnSeverityJustification").html("");
 	if (data) {
+		$("#divVulnerabilityForm").show();
 		$("#vulnId").html("<b>VULN ID:</b>&nbsp;" + vulnId);
+		$("#frmVulnID").val(vulnId);
 		$("#vulnStigId").html("<b>STIG ID:</b>&nbsp;" + data.stiG_DATA[4].attributE_DATA);
 		$("#vulnRuleId").html("<b>Rule ID:</b>&nbsp;" + data.stiG_DATA[3].attributE_DATA);
 		$("#vulnRuleName").html("<b>Rule Name:</b>&nbsp;" + data.stiG_DATA[2].attributE_DATA);
 		$("#vulnRuleTitle").html("<b>Rule Title:</b>&nbsp;" + data.stiG_DATA[5].attributE_DATA);
-		$("#vulnStatus").html("<b>Status:</b>&nbsp;" + data.status.replace("NotAFinding","Not a Finding").replace("_"," "));
+		$("#frmVulnStatus").val(data.status);
 		$("#vulnClassification").html("<b>Classification:</b>&nbsp;" + (data.stiG_DATA[21].attributE_DATA).replace(/\n/g, "<br />"));
 		$("#vulnSeverity").html("<b>Severity:</b>&nbsp;" + (data.stiG_DATA[1].attributE_DATA).replace(/\n/g, "<br />"));
-		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + (data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
-		$("#vulnCheckText").html("<b>Check Text:</b>&nbsp;" + data.stiG_DATA[8].attributE_DATA.replace(/</g, "&lt; ").replace(/\n/g, "<br />"));
-		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + data.stiG_DATA[9].attributE_DATA.replace(/\n/g, "<br />"));
-		$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (data.findinG_DETAILS).replace(/\n/g, "<br />"));
-		$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (data.comments).replace(/\n/g, "<br />"));
+		$("#vulnDiscussion").html("<b>Discussion:</b>&nbsp;" + htmlEscape(data.stiG_DATA[6].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnCheckText").html("<b>Check Content:</b>&nbsp;" + htmlEscape(data.stiG_DATA[8].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#vulnFixText").html("<b>Fix Text:</b>&nbsp;" + htmlEscape(data.stiG_DATA[9].attributE_DATA).replace(/\n/g, "<br />"));
+		$("#frmVulnDetails").val(data.findinG_DETAILS);
+		$("#frmVulnComments").val(data.comments);
 		if (data.stiG_DATA[18].attributE_DATA) {
 			$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (data.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
 		}
 		if (data.severitY_OVERRIDE && data.severitY_OVERRIDE.length > 0) {
-			if (data.severitY_OVERRIDE.toLowerCase() == "low") 
-				severityOverride = "CAT III / Low";
-			else if (data.severitY_OVERRIDE.toLowerCase() == "medium") 
-				severityOverride = "CAT II / Medium";
-			else if (data.severitY_OVERRIDE.toLowerCase() == "high") 
-				severityOverride = "CAT I / High";
-			$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
-			$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (data.severitY_JUSTIFICATION).replace(/\n/g, "<br />"));
+			$("#frmVulnSecurityOverride").val(data.severitY_OVERRIDE);
 		}
+		$("#frmVulnSecurityJustification").val(data.severitY_JUSTIFICATION);
+
 		// get the CCI Listing and any references
 		var ccilist = ''; // the rest of the stig data is 1 or more CCI listed
 		var severityOverride = '';
@@ -1677,17 +1711,11 @@ async function viewVulnDetails(vulnId) {
 
 		// set the form values if they can edit
 		if (canUpload()) { // fill in the values of the form
+			$("#btnSaveVulnerability").show();
 			$("#frmVulnIDTitle").text(vulnId);
-			$("#frmVulnStatus").val(data.status);
-			$("#frmVulnDetails").val(data.findinG_DETAILS);
-			$("#frmVulnComments").val(data.comments);
-			$("#frmVulnSecurityOverride").val(data.severitY_OVERRIDE);
-			$("#frmVulnSecurityJustification").val(data.severitY_JUSTIFICATION);
-			$("#frmBulkUpdateCheckbox").prop('checked', false);
-			$("#btnUpdateVulnerability").show();
 		}
 		else {
-			$("#btnUpdateVulnerability").hide(); // always default to hide this
+			$("#btnSaveVulnerability").hide(); // always default to hide this
 		}
 	}
 }
@@ -1718,17 +1746,17 @@ function clearVulnDetails() {
 	$("#vulnRuleName").html("");
 	$("#vulnRuleTitle").html("");
 	$("#vulnCCIId").html("");
-	$("#vulnStatus").html("");
 	$("#vulnClassification").html("");
 	$("#vulnSeverity").html("");
 	$("#vulnDiscussion").html("");
 	$("#vulnCheckText").html("");
 	$("#vulnFixText").html("");
-	$("#vulnFindingDetails").html("");
-	$("#vulnComments").html("");
-	$("#vulnSeverityOverride").html("");
-	$("#vulnSeverityJustification").html("");
-	$("#vulnSeverityOverrideGuidance").html("");
+	
+	$("#frmVulnDetails").val("");
+	$("#frmVulnComments").val("");
+	$("#frmVulnSecurityOverride").val("");
+	$("#frmVulnSecurityJustification").val("");
+	$("#frmBulkUpdateCheckbox").attr('checked',false);
 }
 
 // update function on the checklist page showing all the individual checklist data
@@ -1743,6 +1771,12 @@ function updateSingleChecklist(id) {
 	formData.append("techarea",$("#frmChecklistTechArea").val());
 	formData.append("assettype",$("#frmChecklistAssetType").val());
 	formData.append("machinerole",$("#frmChecklistRole").val());
+	var tagListing = "";
+	$("#frmChecklistTags option").each(function() {
+	  if (this.selected)
+		tagListing += this.value + "|";
+	});
+	formData.append("tagList", htmlEscape(tagListing));
 
 	$.ajax({
 		url : url,
@@ -1754,6 +1788,8 @@ function updateSingleChecklist(id) {
 		processData: false,
 		contentType: false,
 		success : function(data){
+            // hide the modal
+            $('#editChecklistMetadata').modal('hide');
 			swal("Your Checklist was updated successfully!", "Click OK to continue!", "success")
 			.then((value) => {
 				getChecklistSystemsForChecklist();
@@ -1768,7 +1804,7 @@ function updateSingleChecklist(id) {
 
 // update function on the checklist page showing all the individual checklist data
 function updateSingleChecklistVulnerability(artifactid) {
-	var vulnid = $("#frmVulnIDTitle").text();
+	var vulnid = $("#frmVulnID").val();
 	if (!vulnid || vulnid.length < 4) {
 		swal("Your Vulnerability was not updated. Please refresh the page and try again.", "Click OK to continue!", "success")
 		return false;
@@ -1813,24 +1849,24 @@ function updateSingleChecklistVulnerability(artifactid) {
 					vulnItem.severitY_JUSTIFICATION = htmlEscape($("#frmVulnSecurityJustification").val());
 					// store the changes back
 					sessionStorage.setItem(vulnid, JSON.stringify(vulnItem));
-					var severityOverride = '';
+					// var severityOverride = '';
 
-					$("#vulnStatus").html("<b>Status:</b>&nbsp;" + vulnItem.status.replace("NotAFinding","Not a Finding").replace("_"," "));
-					$("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (htmlEscape(vulnItem.findinG_DETAILS)).replace(/\n/g, "<br />"));
-					$("#vulnComments").html("<b>Comments:</b>&nbsp;" + (htmlEscape(vulnItem.comments)).replace(/\n/g, "<br />"));
-					if (vulnItem.stiG_DATA[18].attributE_DATA) {
-						$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (vulnItem.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
-					}
-					if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
-						if (vulnItem.severitY_OVERRIDE.toLowerCase() == "low") 
-							severityOverride = "CAT III / Low";
-						else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "medium") 
-							severityOverride = "CAT II / Medium";
-						else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "high") 
-							severityOverride = "CAT I / High";
-						$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
-						$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (htmlEscape(vulnItem.severitY_JUSTIFICATION)).replace(/\n/g, "<br />"));
-					}
+					// $("#vulnStatus").html("<b>Status:</b>&nbsp;" + vulnItem.status.replace("NotAFinding","Not a Finding").replace("_"," "));
+					// $("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (htmlEscape(vulnItem.findinG_DETAILS)).replace(/\n/g, "<br />"));
+					// $("#vulnComments").html("<b>Comments:</b>&nbsp;" + (htmlEscape(vulnItem.comments)).replace(/\n/g, "<br />"));
+					// if (vulnItem.stiG_DATA[18].attributE_DATA) {
+					// 	$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (vulnItem.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
+					// }
+					// if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
+					// 	if (vulnItem.severitY_OVERRIDE.toLowerCase() == "low") 
+					// 		severityOverride = "CAT III / Low";
+					// 	else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "medium") 
+					// 		severityOverride = "CAT II / Medium";
+					// 	else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "high") 
+					// 		severityOverride = "CAT I / High";
+					// 	$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
+					// 	$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (htmlEscape(vulnItem.severitY_JUSTIFICATION)).replace(/\n/g, "<br />"));
+					// }
 				}
 				// color the button correctly for this
 				if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
@@ -2596,7 +2632,11 @@ async function getSystemChecklistReport() {
 		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
 		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
 		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
-		
+		if (data.tags)
+			$("#checklistTags").html("<b>Tags:</b> " + data.tags.toString().replace(/\,/g, ", "));
+		else 
+			$("#checklistTags").html("<b>Tags:</b> ");
+
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);
 		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
@@ -2607,15 +2647,8 @@ async function getSystemChecklistReport() {
 		var strSeverityOverride = "";
 		var strSeverityJustification = "";
 		for (const item of data.checklist.stigs.iSTIG.vuln) {
-			if (item.status == "NotAFinding") 
-				strStatus = "Not a Finding";
-			else if (item.status == "Not_Reviewed") 
-				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable") 
-				strStatus = "Not Applicable";
-			else 
-				strStatus = item.status;
-
+			strStatus = getStatusName(item.status);
+				
 			if (item.severitY_OVERRIDE) {
 				strSeverity = item.severitY_OVERRIDE;
 				strSeverityOverride = strSeverity;
@@ -2669,15 +2702,6 @@ async function getControlsReport() {
 		table.clear().draw();
 		var impactLevel = "";
 		for (const item of data) {
-			if (item.status == "NotAFinding") 
-				strStatus = "Not a Finding";
-			else if (item.status == "Not_Reviewed") 
-				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable") 
-				strStatus = "Not Applicable";
-			else 
-				strStatus = item.status;
-
 			if (item.highimpact)
 				impactLevel = "High";
 			else if (item.moderateimpact)
@@ -2736,14 +2760,8 @@ async function getHostVulnerabilityReport() {
 		var strSeverityOverride = "";
 		var strSeverityJustification = "";
 		for (const item of data) {
-			if (item.status == "NotAFinding") 
-				strStatus = "Not a Finding";
-			else if (item.status == "Not_Reviewed") 
-				strStatus = "Not Reviewed";
-			else if (item.status == "Not_Applicable") 
-				strStatus = "Not Applicable";
-			else 
-				strStatus = item.status;
+			strStatus = getStatusName(item.status);
+			
 			if (item.severityOverride) {
 				strSeverity = item.severityOverride;
 				strSeverityOverride = strSeverity;
@@ -2827,8 +2845,10 @@ async function getRMFControlForHostReport() {
 			table.clear().draw();
 			var checklists = ''; // holds the list of checklists
 			var currentStatus = "";
+			var overallStatus = "";
 			for (const item of data.result) {
-				checklists = '';
+				checklists = "";
+				overallStatus = "";
 				if (item.complianceRecords.length > 0) {
 					for (const record of item.complianceRecords){
 						checklists = '';
@@ -2836,8 +2856,9 @@ async function getRMFControlForHostReport() {
 						checklists += '<a href="/single-checklist.html?id=';
 						checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
 						checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></a>';
+						overallStatus = '<span class="' + getComplianceTextClassName(record.status) + '">' + getStatusName(record.status); + '</span></a>';
 						// dynamically add to the datatable a row per checklist returned
-						table.row.add( [record.hostName, checklists] ).draw();
+						table.row.add( [record.hostName, checklists, overallStatus] ).draw();
 					}
 				}
 			}
@@ -2994,9 +3015,12 @@ async function getComplianceBySystem() {
 				var currentFamily = "";
 				var currentStatus = "";
 				var complianceSummary = "";
+				var overallStatus = "";
+				var statusName = "";
 				for (const item of data.result) {
 					recordNum++;
 					checklists = '';
+					overallStatus = '';
 					if (currentFamily != item.control.substring(0,2)) {
 						// print out the info
 						if (currentFamily) {
@@ -3008,19 +3032,20 @@ async function getComplianceBySystem() {
 						currentFamily = item.control.substring(0,2);
 					}
 					if (item.complianceRecords.length > 0) {
-						for (const record of item.complianceRecords){
+						for (const record of item.complianceRecords) {
 							checklists = '';
 							recordNum++;
 							currentStatus = getOverallCompliance(currentStatus, record.status);
 							checklists += '<a href="/single-checklist.html?id=';
 							checklists += record.artifactId + '&ctrl=' + item.control + '" title="View the Checklist Details" target="' + record.artifactId + '">'; 
 							checklists += '<span class="' + getComplianceTextClassName(record.status) + '">' + record.title + '</span></a>';
+							overallStatus = '<span class="' + getComplianceTextClassName(record.status) + '">' + getStatusName(record.status); + '</span></a>';
 							// dynamically add to the datatable a row per checklist returned
-							table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
+							table.row.add( [recordNum, item.control, item.title, checklists, overallStatus] ).draw();
 						}
 					} else {
 						// dynamically add to the datatable
-						table.row.add( [recordNum, item.control, item.title, checklists] ).draw();
+						table.row.add( [recordNum, item.control, item.title, checklists, overallStatus] ).draw();
 					}
 				}
 				if (complianceSummary) 
@@ -3125,6 +3150,18 @@ function getComplianceTextClassName(status) {
 		return "vulnNotAFindingText";
 }
 
+function getStatusName (status)
+{
+	if (status.toLowerCase() == 'not_reviewed')
+		return "Not Reviewed";
+	else if (status.toLowerCase() == 'open')
+		return "Open";
+	else if (status.toLowerCase() == 'not_applicable')
+		return "Not Applicable";
+	else 
+		return "Not a Finding";
+}
+
 function getOverallCompliance(currentStatus, newStatus) {
 	if (!currentStatus)
 		return newStatus.toLowerCase();
@@ -3190,6 +3227,12 @@ function htmlEscape(str) {
         .replace(/'/g, '&#39;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
+}
+
+function decodeHtml(html) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = html;
+    return txt.value;
 }
 /************************************ 
  Permission and User Login Functions

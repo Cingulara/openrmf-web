@@ -1,7 +1,7 @@
 {"0": {
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Generating your System’s RMF Artifacts",
-    "content": "With all your data in one place for your entire system, you can how start to generate the RMF artifacts required such as your POA&amp;M, Risk Assessment Report, and Test Summary Report. Below are examples of each. All of these can be found on the System page where you see the title, list of checklists, overall score, and other data. ",
+    "content": "With all your data in one place for your entire system, you can how start to generate the RMF artifacts required such as your POAM, and Test Summary Report. Below are examples of each. All of these can be found on the System page where you see the title, list of checklists, overall score, and other data. ",
     "url": "/help/artifacts.html#generating-your-systems-rmf-artifacts",
     "relUrl": "/artifacts.html#generating-your-systems-rmf-artifacts"
   },"1": {
@@ -12,8 +12,8 @@
     "relUrl": "/artifacts.html#nessus-scan-export"
   },"2": {
     "doc": "Step 6 - Generate RMF Artifacts",
-    "title": "POA&amp;M Export",
-    "content": ". The Plan of Actions and Milestones (POA&amp;M) Export lists all Open and Not Reviewed items across every single checklist within your system. The data is ordered by severity and then vulnerability so all high level items are near the top. The POA&amp;M is used to show your plan to address, mitigate, and/or close the items still open while you go through the RMF Process. ",
+    "title": "POAM Export",
+    "content": ". The Plan of Actions and Milestones (POAM) Export lists all Open and Not Reviewed items across every single checklist within your system. The data is ordered by severity and then vulnerability so all high level items are near the top. The POAM is used to show your plan to address, mitigate, and/or close the items still open while you go through the RMF Process. ",
     "url": "/help/artifacts.html#poam-export",
     "relUrl": "/artifacts.html#poam-export"
   },"3": {
@@ -24,32 +24,32 @@
     "relUrl": "/artifacts.html#test-plan-summary-export"
   },"4": {
     "doc": "Step 6 - Generate RMF Artifacts",
-    "title": "Risk Assessment Report (RAR) Export",
-    "content": ". The RAR shows all open or not reviewed items in a format to show you the host, the NIST control, the checklist the item was in, as well as severity of the item. This allows you to fill in the actual risk of this item as it pertains to your system and your risk profile. ",
-    "url": "/help/artifacts.html#risk-assessment-report-rar-export",
-    "relUrl": "/artifacts.html#risk-assessment-report-rar-export"
-  },"5": {
-    "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Color Coding Rules",
     "content": "For compliance, a green color means all the vulnerabilities for that control are either Not a Finding or marked as Not Applicable. If 1 vulnerability is marked as Open, then that whole group is Open. And if there are any vulnerabilities that are Not Reviewed with no Open vulnerabilities for that group, then the whole group is marked as Not Reviewed. ",
     "url": "/help/artifacts.html#color-coding-rules",
     "relUrl": "/artifacts.html#color-coding-rules"
-  },"6": {
+  },"5": {
     "doc": "Step 6 - Generate RMF Artifacts",
     "title": "Step 6 - Generate RMF Artifacts",
     "content": " ",
     "url": "/help/artifacts.html",
     "relUrl": "/artifacts.html"
-  },"7": {
+  },"6": {
     "doc": "Step 4 - View Checklists",
     "title": "Checklist Detailed View",
     "content": ". The detailed Checklist page shows several things about the checklist. It shows the title, automatically named by the checklist uploaded. The format is “hostname”-“type of checklist”-“release and date of the checklist format”. So a Windows 10 STIG from the Release 19 Oct 25 2019 of the STIG of the machine named “myserver” would be “MYSERVER-WIN 10 STIG-R19 dated 25 Oct 2019”. The scoring of the checklist based on status is one of the first things you see as well. The total and then breakdown by category is shown with the relevant colors. There are also download links for the CKL file, an Excel version of the checklist to download, as well as a Delete button. These buttons depend on the Download role and Editor role respectively. Or if you have the Administrator role you get them all. Each listing in the score table are linked to the Vulnerability Filter below it. For example, click the CAT 1 OPEN number, and you can filter your vulnerabilities below to only show Category 1 (High severity) Open items. This also affects the Export as you will export only those vulnerabilities shown on the page at that time. The specific STIG title and asset information from the STIG checklist are shown next. Then the main section of the checklist is shown. On the left of the section is a list of every single vulnerability for this checklist, color coded by status. Click the vulnerability and the details of it show on the right. You also can filter the vulnerabilities by status by checking / unchecking the 4 statuses to filter the list down accordingly. At the bottom of this page are quick visual graph representations of the status and category breakdown of the checklist as well. ",
     "url": "/help/checklists.html#checklist-detailed-view",
     "relUrl": "/checklists.html#checklist-detailed-view"
+  },"7": {
+    "doc": "Step 4 - View Checklists",
+    "title": "Editing the Checklist",
+    "content": "If you are an Editor or Administrator (role) you can click the Edit button at the top of the page to edit the main Checklist data. The host name, domain name as well as the technology area, asset type and role of the machine for the checklist being viewed/edited. This data will be represented in the downloaded export XLSX as well as the CKL checklist file. As of version 1.7 you also can add 1 or more tags to the checklist. Tags require a minimum of 3 characters to save them. ",
+    "url": "/help/checklists.html#editing-the-checklist",
+    "relUrl": "/checklists.html#editing-the-checklist"
   },"8": {
     "doc": "Step 4 - View Checklists",
     "title": "Editing the Checklist Vulnerability",
-    "content": "With the 0.12 version OpenRMF, if you are an Editor or Administrator (role) you can edit the main Checklist data at the top of the screen. The host name, domain name as well as the technology area, asset type and role of the machine for the checklist being viewed/edited. This data will be represented in the downloaded export XLSX as well as the CKL checklist file. You also can edit each Vulnerability record with those roles. The following fields in the image below can be edited. Once saved, the data in the checklist is updated and the score is recalculated for the checklist and subsequently the system. ",
+    "content": "You also can edit each Vulnerability record with those roles. The following fields in the image below can be edited. Once saved, the data in the checklist is updated and the score is recalculated for the checklist and subsequently the system. If you are an Editor or Administrator based on roles, you can edit this data and save it for the checklist and all reports generated from it. Click on each vulnerability in the checklist to view its data in form fields and edit/save accordingly. ",
     "url": "/help/checklists.html#editing-the-checklist-vulnerability",
     "relUrl": "/checklists.html#editing-the-checklist-vulnerability"
   },"9": {
@@ -156,16 +156,16 @@
     "relUrl": "/metrics.html#nats-client-connection-metrics"
   },"26": {
     "doc": "OpenRMF Metrics",
+    "title": "Web Interface Metrics",
+    "content": "There is also an NGINX default dashboard in the included dashboards with Grafana packaged with OpenRMF® v1.7 and beyond as well. That will show activity for the user interace of the application. ",
+    "url": "/help/metrics.html#web-interface-metrics",
+    "relUrl": "/metrics.html#web-interface-metrics"
+  },"27": {
+    "doc": "OpenRMF Metrics",
     "title": "Prometheus Configuration Setup",
     "content": "The prometheus.yml file configuration we use when running the local or docker-compose setup of OpenRMF is here. You can adjust the interval and options as required. Just restart the docker-compose up -d command to relaunch and use the new configuration. See the OpenRMF Metrics in GitHub information to understand how we use those tools within OpenRMF. ",
     "url": "/help/metrics.html#prometheus-configuration-setup",
     "relUrl": "/metrics.html#prometheus-configuration-setup"
-  },"27": {
-    "doc": "OpenRMF Metrics",
-    "title": "cAdvisor Metrics",
-    "content": "When running the Docker Compose stack you also can point to http://localhost:9080/ to run cAdvisor. https://github.com/google/cadvisor has great information on running cAdvisor. Feel free to comment out this piece in the docker-compose file if you do not want to run it. ",
-    "url": "/help/metrics.html#cadvisor-metrics",
-    "relUrl": "/metrics.html#cadvisor-metrics"
   },"28": {
     "doc": "OpenRMF Metrics",
     "title": "Additional Links",
@@ -252,10 +252,10 @@
     "relUrl": "/reports.html"
   },"42": {
     "doc": "Step 3 - View Systems",
-    "title": "Viewing your System ATO Packages",
+    "title": "Viewing your System Packages",
     "content": ". The System listing is available when you log in and click on Systems in the menu. The above screen loads if there are any checklists loaded. Each system is listed with the title linked to the detailed Systems page with information and checklists listed. Note: if you have the Editor or Administrator permission you will also see an Add button here to add a new system. You also can add a new system by specifing a new system title when uploading a checklist or scan file. Each listing shows the title, the number of checklists in that system as well as the overall score of the system. This overall score is based on status across all checklists in your system. ",
-    "url": "/help/systems.html#viewing-your-system-ato-packages",
-    "relUrl": "/systems.html#viewing-your-system-ato-packages"
+    "url": "/help/systems.html#viewing-your-system-packages",
+    "relUrl": "/systems.html#viewing-your-system-packages"
   },"43": {
     "doc": "Step 3 - View Systems",
     "title": "System Detailed View",
@@ -277,7 +277,7 @@
   },"46": {
     "doc": "Using Template Checklists",
     "title": "Using Templates for your Checklists",
-    "content": ". You can use Templates in OpenRMF for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly. IT personnel would download this template and then fill out remaining items based on their software or system. The templates are added via the Upload page in the Template Upload area. The Template listing are user templates that those with permissions have added. The Template name as well as the score of items are shown simimlar to the Checklist listing page. Click the linked Template to view the detailed information. Click the green plus sign to view the scoring based on category. ",
+    "content": ". There are 2 types of templates in OpenRMF® OSS as of v1.7. The default DISA templates that are available from their https://public.cyber.mil/stigs/ public listing website. And then there are User Templates that you can upload as a starting point for checklists. User Templates can be from other CKL files you have updated to use as a boilerplate, a custom checklist you make in OpenRMF® Professional, or from a default DISA one you have added some special text or details to. In the OpenRMF OSS we include the latest default DISA templates in our template component so you have them for SCAP scans to associate. All default DISA templates have everthing as Not Reviewed so we do not calculate the score on the DISA default templates to speed up page loading. User Templates are added via the Upload page in the Template Upload area. The User Template listing are user templates that those with permissions have added. The Template name as well as the score of items are shown simimlar to the Checklist listing page. Click the linked Template to view the detailed information. Click the green plus sign to view the scoring based on category. For User Templates, we calculate the score of the template for you based on vulnerabilities. You can use Templates in OpenRMF® for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly. IT personnel would download this template and then fill out remaining items based on their software or system. ",
     "url": "/help/templates.html#using-templates-for-your-checklists",
     "relUrl": "/templates.html#using-templates-for-your-checklists"
   },"47": {
@@ -347,80 +347,92 @@
     "url": "/help/users.html#multifactor-authentication---authenticator",
     "relUrl": "/users.html#multifactor-authentication---authenticator"
   },"58": {
-    "doc": "What's New in v1.5",
+    "doc": "What's New in v1.7",
     "title": "What’s New with OpenRMF",
     "content": "Please refer to the OpenRMF Projects listing on GitHub for more information on feature updates and timeline. ",
     "url": "/help/whatsnew.html#whats-new-with-openrmf",
     "relUrl": "/whatsnew.html#whats-new-with-openrmf"
   },"59": {
-    "doc": "What's New in v1.5",
+    "doc": "What's New in v1.7",
+    "title": "Version 1.7",
+    "content": "Version 1.7 has the latest DISA templates for SCAP scan matching up to December 24, 2021 as well as the following feature updates: . | updated base container image for vulnerability fixes | updated NGINX container for the web UI for vulnerability fixes | easier editing of vulnerabilities, all on one page w/o a popup | fixing a bug removing \\n from Template formatting | fixing loading of HTML / XML characters in checklist details listings | adding the NGINX prometheus exporter for tracking metrics of the web UI | allow tagging of checklists (one at a time) | listing all templates, including internal ones from DISA’s public site | better formatting of plugin description for Nessus report | better formatting for vulnerability detail on reports and chekclist vulnerability listings | . ",
+    "url": "/help/whatsnew.html#version-17",
+    "relUrl": "/whatsnew.html#version-17"
+  },"60": {
+    "doc": "What's New in v1.7",
+    "title": "Version 1.6",
+    "content": "Version 1.6 fixed the POSIX bug after updating to Docker Desktop where the .env file and APIs read the environment variables but they had a “-“ in them. That was breaking it. ",
+    "url": "/help/whatsnew.html#version-16",
+    "relUrl": "/whatsnew.html#version-16"
+  },"61": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.5.4",
     "content": "Version 1.5.4 added the updated DISA Templates from April 27 and April 28 2021. These allow you to match on SCAP scan uploads to automatically create checklists. ",
     "url": "/help/whatsnew.html#version-154",
     "relUrl": "/whatsnew.html#version-154"
-  },"60": {
-    "doc": "What's New in v1.5",
+  },"62": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.5.3",
     "content": "Version 1.5.3 included these updates: . | Keycloak v 12.0.3 OpenRMF Theme | Download All CKL into ZIP for a System Package | Merge POAM and RAR fields into one for XLSX download | Table cell click for filtering Checklists and Templates Vulnerabilities listing | Color code reports for status | Improved UI on messaging and spacing | Various small bug fixes | . ",
     "url": "/help/whatsnew.html#version-153",
     "relUrl": "/whatsnew.html#version-153"
-  },"61": {
-    "doc": "What's New in v1.5",
+  },"63": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.5.2",
     "content": "Version 1.5.2 included one update: . | Update to Keycloak v 12.0.3 | Fix for Keycloak Windows-based realm creation script | . ",
     "url": "/help/whatsnew.html#version-152",
     "relUrl": "/whatsnew.html#version-152"
-  },"62": {
-    "doc": "What's New in v1.5",
+  },"64": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.5.1",
     "content": "Version 1.5.1 included a few updated features: . | Updated base image and application container image to use Alpine and self-contained application executables for reduced scanning surface and size | Bug fix for the Reporting when you upgrade to a new STIG Checklist release with changing Vulnerability IDs | Auto-logoff after 15 minutes | Auto-refresh of the Keycloak token when on a page longer than 5 minutes | . ",
     "url": "/help/whatsnew.html#version-151",
     "relUrl": "/whatsnew.html#version-151"
-  },"63": {
-    "doc": "What's New in v1.5",
+  },"65": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.4",
     "content": "Version 1.4 included one added feature: . | Feature #216: Ability to upload OpenSCAP results XCCDF XML file to create Checklists, along with Nessus and DISA SCAP XCCDF XML results | . ",
     "url": "/help/whatsnew.html#version-14",
     "relUrl": "/whatsnew.html#version-14"
-  },"64": {
-    "doc": "What's New in v1.5",
+  },"66": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.3.2",
     "content": "Version 1.3.2 was a bug fix release primarily as outlined below: . | Fix score calculation bug #213 on checklists for Not a Finding counts | Added additional DISA public STIG Templates | . ",
     "url": "/help/whatsnew.html#version-132",
     "relUrl": "/whatsnew.html#version-132"
-  },"65": {
-    "doc": "What's New in v1.5",
+  },"67": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.3.1",
     "content": "Version 1.3.1 was a bug fix release primarily as outlined below: . | Fix a bug #203 on CAT 3 checklist Not a Finding counts not matching the checklist file | Updated to the Jan 22, 2021 DISA public STIG templates | . ",
     "url": "/help/whatsnew.html#version-131",
     "relUrl": "/whatsnew.html#version-131"
-  },"66": {
-    "doc": "What's New in v1.5",
+  },"68": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.3",
     "content": "Version 1.3 was a bug fix release primarily as outlined below: . | Display the status of the vulnerability in the checklist/template view | Scoring a checklist now uses the Severity Override as the severity if it is filled in (API and MSG client) | Fixed a bug in the low/moderate/high loading of NIST 800.53 Controls | Fixed a bug where PII controls are always used in the Compliance engine – now only if the checkbox is set | . ",
     "url": "/help/whatsnew.html#version-13",
     "relUrl": "/whatsnew.html#version-13"
-  },"67": {
-    "doc": "What's New in v1.5",
+  },"69": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.2",
     "content": "Version 1.2 was also a security fix primarily with some updated functionality as outlined below: . | .NET Core 3.1 update with Debian 10 based containers | Updated .NET Core 3.1 components such as Jaeger client, Swashbuckle, etc. | Keycloak 10 upgrade from 7.0 | Keycloak theme for OpenRMF for seamless look-and-feel interaction | Header Security fixes from an active scan of the web application | Compliance Summary buttons are interactive for filtering now | Help documentation is now local to the application, not up on github.io pages | . ",
     "url": "/help/whatsnew.html#version-12",
     "relUrl": "/whatsnew.html#version-12"
-  },"68": {
-    "doc": "What's New in v1.5",
+  },"70": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.1",
     "content": "Version 1.1 was a security fix primarily with some updated functionality as outlined below: . | Rootless containers for APIs, messages, NGINX, and MongoDB databases | Updated jQuery, File Upload, Bootstrap and other JS components | Security Fixes from an active scan of the web application | Upload an existing checklist for a given checklist type and host = update the info (it was just duplicating the information) | Allow Bulk Edits on Vulnerabilities across similar checklist types within a System grouping | Container “restart: always” on the Docker Compose file | All CSS, HTML, JS are local not reaching out over the public Internet | . ",
     "url": "/help/whatsnew.html#version-11",
     "relUrl": "/whatsnew.html#version-11"
-  },"69": {
-    "doc": "What's New in v1.5",
+  },"71": {
+    "doc": "What's New in v1.7",
     "title": "Version 1.0",
     "content": "Version 1.0 of OpenRMF Core has these updates below: . | Fixing a bug on the Web UI updating Vulnerabilities via the web form in a checklist | Updating the version descriptions to 1.0 throughout the codebase | . ",
     "url": "/help/whatsnew.html#version-10",
     "relUrl": "/whatsnew.html#version-10"
-  },"70": {
-    "doc": "What's New in v1.5",
-    "title": "What's New in v1.5",
+  },"72": {
+    "doc": "What's New in v1.7",
+    "title": "What's New in v1.7",
     "content": " ",
     "url": "/help/whatsnew.html",
     "relUrl": "/whatsnew.html"

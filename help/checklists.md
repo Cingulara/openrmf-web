@@ -20,13 +20,15 @@ The specific STIG title and asset information from the STIG checklist are shown 
 
 At the bottom of this page are quick visual graph representations of the status and category breakdown of the checklist as well. 
 
-## Editing the Checklist Vulnerability
+## Editing the Checklist
 
-With the 0.12 version OpenRMF, if you are an Editor or Administrator (role) you can edit the main Checklist data at the top of the screen. The host name, domain name as well as the technology area, asset type and role of the machine for the checklist being viewed/edited. This data will be represented in the downloaded export XLSX as well as the CKL checklist file.
+If you are an Editor or Administrator (role) you can click the Edit button at the top of the page to edit the main Checklist data. The host name, domain name as well as the technology area, asset type and role of the machine for the checklist being viewed/edited. This data will be represented in the downloaded export XLSX as well as the CKL checklist file. As of version 1.7 you also can add 1 or more tags to the checklist. Tags require a minimum of 3 characters to save them.
 
 ![OpenRMF Edit Checklist Metadata](./assets/checklist-edit-asset.png)
 
-You also can edit each Vulnerability record with those roles. The following fields in the image below can be edited. Once saved, the data in the checklist is updated and the score is recalculated for the checklist and subsequently the system. 
+## Editing the Checklist Vulnerability
+
+You also can edit each Vulnerability record with those roles. The following fields in the image below can be edited. Once saved, the data in the checklist is updated and the score is recalculated for the checklist and subsequently the system. If you are an Editor or Administrator based on roles, you can edit this data and save it for the checklist and all reports generated from it. Click on each vulnerability in the checklist to view its data in form fields and edit/save accordingly.
 
 ![OpenRMF Edit Checklist Vulnerability Details](./assets/checklist-edit-vulnerability.png)
 
