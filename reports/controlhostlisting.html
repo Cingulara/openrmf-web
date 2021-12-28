@@ -205,11 +205,11 @@
 								<div>
 									<form>									
 										<div class="form-group">
-											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package </label>
+											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Package </label>
 											<select class="form-control" id="checklistSystemFilter">
-												<option value="">[ Choose a System ATO Package ]</option>
+												<option value="">[ Choose a System Package ]</option>
 											</select>
-											<small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
+											<small id="titleSystem" class="form-text text-muted">Specify the System Package</small>
 										</div>
 										<div class="form-group">
 											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="rmfControl">RMF Control</label>
@@ -240,7 +240,7 @@
 							<div class="card-body">
 								<div>
 									<table id="tblReportControlHost" style="width: 100%;" class="table table-bordered table-hover display">
-										<thead><tr><th>Host Name</th><th>Checklist</th></tr></thead>
+										<thead><tr><th>Host Name</th><th>Checklist</th><th>Status</th></tr></thead>
 										<tbody></tbody>
 									</table>
 								</div>
@@ -305,8 +305,9 @@
 					var tableControlHost = $('#tblReportControlHost').DataTable({
                     "pageLength": 25, 
                         "columnDefs": [
-                            { "width": "40%", "targets": 0 },
-                            { "width": "60%", "targets": 1 }
+                            { "width": "30%", "targets": 0 },
+                            { "width": "60%", "targets": 1 },
+                            { "width": "10%", "targets": 2 }
                         ],
                         order: [[ 0, 'desc' ]]
 					});

@@ -49,6 +49,7 @@
 		<link href="assets/plugins/jstree/style.css" rel="stylesheet" type="text/css"/>
 		<link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
 		<link href="assets/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet" />
+		<link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
 		<!-- END CSS for this page -->
 </head>
 
@@ -208,18 +209,9 @@
 									<div id="checklistTechArea"></div>
 									<div id="checklistAssetType"></div>
 									<div id="checklistRole"></div>
+									<div id="checklistTags"></div>
 									<br />
-									<div class="small" id="checklistLastUpdated"></div><br />
-									<a href="#custom-modal"  id="btnUpdateChecklist" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10" 
-										data-target="#customModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
-									<button type="button" id="btnDownloadChecklist" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
-										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
-									<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
-										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
-									<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromChecklist();" 
-											class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Upload</button>
-									<button type="button" id="btnDeleteChecklist" style="display: none;" onclick="deleteChecklist(getParameterByName('id'), false);" 
-										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
+									<div class="small" id="checklistLastUpdated"></div>
 								</div>
 							</div><!-- end card-->
 						</div>
@@ -278,7 +270,17 @@
 										</tr>
 										</tbody>
 									</table>
-									<div class="small">* Click on the numbers to filter the Vulnerabilities below</div>
+									<div class="small">* Click on the numbers to filter the Vulnerabilities below</div> <br />
+									<button type="button" id="btnUpdateChecklist" style="display: none;" onclick="openChecklistMetadata(); return false;" 
+										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</button>
+									<button type="button" id="btnDownloadChecklist" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), false);" 
+										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
+									<button type="button" id="btnExportChecklist" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
+										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
+									<button type="button" id="btnUploadChecklist" style="display: none;" onclick="uploadFromChecklist();" 
+											class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Upload</button>
+									<button type="button" id="btnDeleteChecklist" style="display: none;" onclick="deleteChecklist(getParameterByName('id'), false);" 
+										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
 								</div><!-- end card body -->
 							</div><!-- end card-->
 						</div>
@@ -349,7 +351,7 @@
 								</div>
 							</div>
 						</div><!-- end card-->
-						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
+						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-5 col-xl-5">
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3><i class="fa fa-folder-open-o"></i> Vulnerability Details</h3>
@@ -357,7 +359,6 @@
 								<div class="card-body">
 									<div class="vulnListingDetail scrollableDiv">
 										<div class="vulnSpacing" id="vulnId">Please select a Vulnerability ID to view its details.</div>
-										<div class="vulnSpacing" id="vulnStatus"></div>
 										<div class="vulnSpacing" id="vulnStigId"></div>
 										<div class="vulnSpacing" id="vulnSeverity"></div>
 										<div class="vulnSpacing" id="vulnRuleId"></div>
@@ -373,21 +374,56 @@
 								</div>
 							</div>
 						</div><!-- end card-->
-						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-4 col-xl-4">
+						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-5 col-xl-5">
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3 class="float-left"><i class="fa fa-folder-open-o"></i> Status &amp; Comments</h3>
-									<a href="#vulnerability-modal"  id="btnUpdateVulnerability" style="display: none;" 
-										class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" 
-										data-target="#vulnerabilityModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
+									<button id="btnSaveVulnerability" style="display: none;" type="button" class="btn btn-primary btn-sm m-r-5 m-b-10 float-right" onclick="updateSingleChecklistVulnerability(getParameterByName('id'));">Save changes</button>
 								</div>
 								<div class="card-body">
 									<div class="vulnListingDetail scrollableDiv">
-										<div class="vulnSpacing" id="vulnStatus"></div>
-										<div class="vulnSpacing" id="vulnFindingDetails"></div>
-										<div class="vulnSpacing" id="vulnComments"></div>
-										<div class="vulnSpacing" id="vulnSeverityOverride"></div>
-										<div class="vulnSpacing" id="vulnSeverityJustification"></div>
+										<div id="divVulnerabilityForm" style="display: none;">
+											<input type="hidden" id="frmVulnID" />
+											<div class="form-group">
+												<label for="frmVulnStatus">Status (required)</label>
+												<select class="form-control select2" id="frmVulnStatus" readonly="readonly" disabled="disabled">
+														<option value="Open">Open</option>
+														<option value="NotAFinding">Not a Finding</option>
+														<option value="Not_Reviewed">Not Reviewed</option>
+														<option value="Not_Applicable">Not Applicable</option>
+												</select>
+											</div>
+											<div class="form-group">
+											<label for="frmVulnDetails">Finding Details</label>
+											<textarea class="form-control" id="frmVulnDetails" cols="40" rows="3" readonly="readonly"
+												aria-describedby="titleDetails" placeholder="Enter the Finding Details"></textarea>
+											</div>
+											<div class="form-group">
+											<label for="frmVulnComments">Comments</label>
+											<textarea class="form-control" id="frmVulnComments" cols="40" rows="3" readonly="readonly"
+												aria-describedby="titleComments" placeholder="Enter any Comments"></textarea>
+											</div>
+											<div class="form-group">
+												<label for="frmVulnSecurityOverride">Severity Override</label>
+												<select class="form-control select2" id="frmVulnSecurityOverride" readonly="readonly" disabled="disabled">
+														<option value="">Choose one...</option>
+														<option value="high">CAT I / High</option>
+														<option value="medium">CAT II / Medium</option>
+														<option value="low">CAT III / Low</option>
+												</select>
+											</div>
+											<div class="form-group">
+											<label for="frmVulnSecurityJustification">Severity Override Justification</label>
+											<textarea class="form-control" id="frmVulnSecurityJustification" cols="40" rows="4" readonly="readonly"
+												aria-describedby="titleSecurityJustification" placeholder="Enter any Comments"></textarea>
+											</div>
+											<div class="form-group">
+											<label for="frmBulkUpdateCheckbox">Save Information Across All Checklist Types for this Vulnerability ID?</label>
+											<input type="checkbox" id="frmBulkUpdateCheckbox"  readonly="readonly" disabled="disabled" /> Yes
+											<small id="titleBulkUpdate" class="form-text text-muted">Save this vulnerability information across all similar 
+												checklists types in this System?</small>
+											</div>
+									  	</div>
 									</div>
 								</div>
 							</div>
@@ -470,6 +506,7 @@
 <script src="assets/js/jquery.scrollTo.min.js"></script>
 <script src="assets/plugins/switchery/switchery.min.js"></script>
 <script src="assets/plugins/sweetalert/sweetalert.js"></script>
+<script src="assets/plugins/select2/js/select2.min.js"></script>
 
 <!-- App js -->
 <script src="assets/js/pikeadmin.js"></script>
@@ -500,21 +537,34 @@
 				getChecklistData(getParameterByName('id'), false);
         		getChecklistScore(getParameterByName('id'));
         
-        $('#checklistFile').filer({
-              limit: 1,
-              maxSize: 10,
-              extensions: ['ckl', 'xml'],
-              changeInput: true,
-              showThumbs: true,
-              captions: {
-                errors: {
-                  filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
-                  filesType: "Only Checklist *.CKL and SCAP scan XCCDF *.XML files can be uploaded.",
-                  filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB.",
-                  filesSizeAll: "Files you have chosen are too large! Please upload a file up to {{fi-maxSize}} MB."
-                }
-              }
-          });
+				$('#checklistFile').filer({
+					limit: 1,
+					maxSize: 10,
+					extensions: ['ckl', 'xml'],
+					changeInput: true,
+					showThumbs: true,
+					captions: {
+						errors: {
+						filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+						filesType: "Only Checklist *.CKL and SCAP scan XCCDF *.XML files can be uploaded.",
+						filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB.",
+						filesSizeAll: "Files you have chosen are too large! Please upload a file up to {{fi-maxSize}} MB."
+						}
+					}
+				});
+
+				// set the form values if they can edit
+				if (canUpload()) { // fill in the values of the form
+					$("#frmVulnStatus").attr('readonly',false);
+					$("#frmVulnStatus").attr('disabled',false);
+					$("#frmVulnDetails").attr('readonly',false);
+					$("#frmVulnComments").attr('readonly',false);
+					$("#frmVulnSecurityOverride").attr('readonly',false);
+					$("#frmVulnSecurityOverride").attr('disabled',false);
+					$("#frmVulnSecurityJustification").attr('readonly',false);
+					$("#frmBulkUpdateCheckbox").attr('readonly',false);
+					$("#frmBulkUpdateCheckbox").attr('disabled',false);
+				}
 			}
 			else {
 				swal("Invalid Login", "You are not logged in. Please check your setup with Keycloak.", "error");
@@ -527,7 +577,7 @@
 <!-- END Java Script for this page -->
 
 <!-- Update Modal -->
-<div class="modal fade customModal" id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModal" aria-hidden="true">
+<div class="modal fade customModal" id="editChecklistMetadata" tabindex="-1" role="dialog" aria-labelledby="customModal" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 		<div class="modal-header">
@@ -542,7 +592,7 @@
 				<select class="form-control select2" id="frmChecklistSystem">
 						<option value="">Choose one...</option>
 				</select>
-				<small id="titleHelp" class="form-text text-muted">Select the system this belongs to</small>
+				<small id="titleHelp" class="form-text text-muted">Select the system pacakge this checklist belongs to</small>
 			</div>
 			<div class="form-group">
 			  <label for="frmChecklistHost">Host</label>
@@ -597,7 +647,13 @@
 					<option value="Domain Controller">Domain Controller</option>
 				</select>
 				<small id="titleRole" class="form-text text-muted">Select the Role for this machine</small>
-			</div>			
+			</div>
+			<div class="form-group">
+			  <label for="multiple-select">Tags</label>
+			  <select class="selectpicker form-control" style="width: 100%;" id="frmChecklistTags" multiple data-options='{"placeholder":"Add Tags Here"}'>
+			  </select>
+			  <small id="titleTags" class="form-text text-muted">Enter 1 or more tags, if desired</small>
+			</div>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -607,69 +663,5 @@
 	</div>
 </div>
 
-<!-- Update Modal -->
-<div class="modal fade customModal" id="vulnerabilityModal" tabindex="-1" role="dialog" aria-labelledby="vulnerabilityModal" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-		<div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel2">Update <span id="frmVulnIDTitle"></span> Vulnerability</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			</button>
-		</div>
-		<div class="modal-body">
-			<div class="form-group">
-				<label for="frmVulnStatus">Status (required)</label>
-				<select class="form-control select2" id="frmVulnStatus">
-						<option value="Open">Open</option>
-						<option value="NotAFinding">Not a Finding</option>
-						<option value="Not_Reviewed">Not Reviewed</option>
-						<option value="Not_Applicable">Not Applicable</option>
-				</select>
-				<small id="titleStatus" class="form-text text-muted">Select the current status for this vulnerability</small>
-			</div>
-			<div class="form-group">
-			  <label for="frmVulnDetails">Finding Details</label>
-			  <textarea class="form-control" id="frmVulnDetails" cols="40" rows="3"
-			  	aria-describedby="titleDetails" placeholder="Enter the Finding Details"></textarea>
-			  <small id="titleDetails" class="form-text text-muted">Enter the finding details for this vulnerability</small>
-			</div>
-			<div class="form-group">
-			  <label for="frmVulnComments">Comments</label>
-			  <textarea class="form-control" id="frmVulnComments" cols="40" rows="3"
-			  	aria-describedby="titleComments" placeholder="Enter any Comments"></textarea>
-			  <small id="titleComments" class="form-text text-muted">Enter any comments for this vulnerability</small>
-			</div>
-			<div class="form-group">
-				<label for="frmVulnSecurityOverride">Severity Override</label>
-				<select class="form-control select2" id="frmVulnSecurityOverride">
-						<option value="">Choose one...</option>
-						<option value="high">CAT I / High</option>
-						<option value="medium">CAT II / Medium</option>
-						<option value="low">CAT III / Low</option>
-				</select>
-				<small id="titleSecurityOverride" class="form-text text-muted">Select the current severity override (if any) for this vulnerability</small>
-			</div>
-			<div class="form-group">
-			  <label for="frmVulnSecurityJustification">Severity Override Justification</label>
-			  <textarea class="form-control" id="frmVulnSecurityJustification" cols="40" rows="4"
-			  	aria-describedby="titleSecurityJustification" placeholder="Enter any Comments"></textarea>
-			  <small id="titleSecurityJustification" class="form-text text-muted">Enter the justification on the override for this vulnerability</small>
-			</div>
-			<div class="form-group">
-			  <label for="frmBulkUpdateCheckbox">Save Information Across All Checklist Types for this Vulnerability ID?</label>
-			  <input type="checkbox" id="frmBulkUpdateCheckbox" /> Yes
-			  <small id="titleBulkUpdate" class="form-text text-muted">Save this vulnerability information across all similar 
-				  checklists types in this System?</small>
-			</div>
-			
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary" onclick="updateSingleChecklistVulnerability(getParameterByName('id'));">Save changes</button>
-		</div>
-		</div>
-	</div>
-</div>
 </body>
 </html>

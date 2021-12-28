@@ -204,11 +204,11 @@
 								<div>
 									<form>
 										<div class="form-group">
-											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package Filter</label>
+											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Package Filter</label>
 											<select class="form-control" id="checklistSystemFilter">
-												<option value="">[ Choose a System ATO Package]</option>
+												<option value="">[ Choose a System Package]</option>
 											</select>
-											<small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
+											<small id="titleSystem" class="form-text text-muted">Specify the System Package</small>
 										</div>
 										<div class="form-group">
 											<button type="button" class="btn btn-sm btn-primary" onclick="getNessusPatchScanReport();">Run Report</button>
@@ -292,7 +292,7 @@
 					function format ( d ) {
 						// `d` is the original data object for the row
 						return "<div><h6>Synopsis</h6>" + d.synopsis + "</div><br />" + 
-						"<div><h6>Description</h6>" + d.description + "</div><br />" + 
+						"<div><h6>Description</h6>" + htmlEscape(d.description).replace(/\n/g, "<br />") + "</div><br />" + 
 						"<div><h6>Plugin Type</h6>" + d.pluginType + "</div><br />" + 
 						"<div><h6>Publication Date</h6>" + d.publicationDate + "</div>";
 					}

@@ -203,11 +203,11 @@
 								<div>
 									<form>
 										<div class="form-group">
-											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System ATO Package Filter</label>
+											<label class="checklistSystemsListLabel" id="checklistSystemsListLabel" for="checklistSystemFilter">System Package Filter</label>
 											<select class="form-control" id="checklistSystemFilter" onchange="updateChecklistFilter();">
-												<option value="">[ Choose a System ATO Package ]</option>
+												<option value="">[ Choose a System Package ]</option>
 											</select>
-											<small id="titleSystem" class="form-text text-muted">Specify the System ATO Package</small>
+											<small id="titleSystem" class="form-text text-muted">Specify the System Package</small>
 										</div>
 										<div class="form-group">
 											<label class="checklistSystemListLabel" id="checklistListLabel" for="checklistFilter">Checklist</label>
@@ -239,6 +239,7 @@
 								<div id="checklistTechArea"></div>
 								<div id="checklistAssetType"></div>
 								<div id="checklistRole"></div>
+								<div id="checklistTags"></div>
 								<br />
 								<div class="small" id="checklistLastUpdated"></div><br />
 							</div>
@@ -316,14 +317,13 @@
                         
 					// format the extra row data
 					function format ( d ) {
-						// `d` is the original data object for the row
-						return "<div><h6>Discussion</h6>" + d.discussion + "</div><br />" + 
-						"<div><h6>Check Content</h6>" + d.checkContent + "</div><br />" + 
-						"<div><h6>Fix Text</h6>" + d.fixText + "</div><br />" + 
-						"<div><h6>Comments</h6>" + d.comments + "</div><br />" + 
-						"<div><h6>Finding Details</h6>" + d.findingDetails + "</div><br />" + 
+						return "<div><h6>Discussion</h6>" + htmlEscape(d.discussion).replace(/\n/g, "<br />") + "</div><br />" + 
+						"<div><h6>Check Content</h6>" + htmlEscape(d.checkContent).replace(/\n/g, "<br />") + "</div><br />" +
+						"<div><h6>Fix Text</h6>" + htmlEscape(d.fixText).replace(/\n/g, "<br />") + "</div><br />" + 
+						"<div><h6>Comments</h6>" + htmlEscape(d.comments).replace(/\n/g, "<br />") + "</div><br />" + 
+						"<div><h6>Finding Details</h6>" + htmlEscape(d.findingDetails).replace(/\n/g, "<br />") + "</div><br />" + 
 						"<div><h6>Severity Override</h6>" + d.severityOverride + "</div><br />" + 
-						"<div><h6>Severity Override Justification</h6>" + d.severityJustification + "</div>"; 
+						"<div><h6>Severity Override Justification</h6>" + htmlEscape(d.severityJustification).replace(/\n/g, "<br />") + "</div>"; 
 					}
 
 					// setup the table
