@@ -43,7 +43,7 @@
   },"7": {
     "doc": "Step 4 - View Checklists",
     "title": "Editing the Checklist",
-    "content": "If you are an Editor or Administrator (role) you can click the Edit button at the top of the page to edit the main Checklist data. The host name, domain name as well as the technology area, asset type and role of the machine for the checklist being viewed/edited. This data will be represented in the downloaded export XLSX as well as the CKL checklist file. As of version 1.7 you also can add 1 or more tags to the checklist. ",
+    "content": "If you are an Editor or Administrator (role) you can click the Edit button at the top of the page to edit the main Checklist data. The host name, domain name as well as the technology area, asset type and role of the machine for the checklist being viewed/edited. This data will be represented in the downloaded export XLSX as well as the CKL checklist file. As of version 1.7 you also can add 1 or more tags to the checklist. Tags require a minimum of 3 characters to save them. ",
     "url": "/help/checklists.html#editing-the-checklist",
     "relUrl": "/checklists.html#editing-the-checklist"
   },"8": {

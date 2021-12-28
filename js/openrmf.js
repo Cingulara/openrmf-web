@@ -1490,8 +1490,10 @@ function openChecklistMetadata(){
 	$('#frmChecklistTags').select2({ 
 									tags: true,
 									allowClear: true,
-									placeholder: "Add 1 or more tags",
-									tokenSeparators: [',', ' ']
+									selectOnClose: true,
+									placeholder: " Add 1 or more tags",
+									tokenSeparators: [',', ' '],
+									minimumInputLength: 3
 								  });
   }
 
