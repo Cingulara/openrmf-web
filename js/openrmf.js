@@ -175,9 +175,9 @@ async function getSystemsForDashboard() {
 	sessionStorage.removeItem("checklistSystems");
 	// clear the options
 	$('#checklistSystem').children().remove().end();
-	$('#checklistSystem').append('<option value="">[Choose a System ATO Package]</option>');
+	$('#checklistSystem').append('<option value="">[Choose a System Package]</option>');
 	$('#checklistACASSystem').children().remove().end();
-	$('#checklistACASSystem').append('<option value="">[Choose a System ATO Package]</option>');
+	$('#checklistACASSystem').append('<option value="">[Choose a System Package]</option>');
 	var data = await getChecklistSystems();
 	// for each data add to the system listings on the dashboard independently
 	if (data) {
@@ -426,7 +426,7 @@ async function getSystemListing(){
 
 		if (data.length == 0) {
 			$.unblockUI();
-			var alertText = 'There are no System ATO Packages in here. Please add your first System or Upload your first checklist to get started.';
+			var alertText = 'There are no System Packages in here. Please add your first System or Upload your first checklist to get started.';
 			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
 			alertText += '<span aria-hidden="true">&times;</span></button>';
 			$("#divMessaging").html(alertText);
@@ -585,7 +585,7 @@ function resetEditSystemForm() {
 
 // the add page on the System record page calls this if you have permissions
 function addSystem(){
-	swal("Adding System ATO Package...", {
+	swal("Adding System Package...", {
 		buttons: false,
 		timer: 3000,
 	});
@@ -603,14 +603,14 @@ function addSystem(){
 			processData: false,
 			contentType: false,			
 			success: function(data){
-				swal("Your System ATO Package was created successfully!", "Click OK to continue!", "success")
+				swal("Your System Package was created successfully!", "Click OK to continue!", "success")
 				.then((value) => {
 					// load the new system
 					location.href = "checklists.html?id=" + data.internalIdString;
 				});
 			},
 			error : function(data){
-				swal("There was a Problem. Your System ATO Package was not created successfully. Please verify all required fields are filled in.", "Click OK to continue!", "error");
+				swal("There was a Problem. Your System Package was not created successfully. Please verify all required fields are filled in.", "Click OK to continue!", "error");
 			}
 	});
 	return false;
