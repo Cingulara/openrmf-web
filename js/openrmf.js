@@ -270,9 +270,9 @@ async function getTemplates(latest) {
 			$("#divMessaging").html('');
 			$("#divMessaging").hide();
 			for (const item of data) {
-				checklistLink = '<a href="single-template.html?id=' + item.internalIdString + '" title="Open Checklist Template">'
-				checklistLink += item.title
-				checklistLink += '</a><br /><span class="small">last updated on '
+				checklistLink = '<a href="single-template.html?id=' + item.internalIdString + '" title="Open Checklist Template">';
+				checklistLink += item.fullTitle;
+				checklistLink += '</a><br /><span class="small">last updated on ';
 				if (item.updatedOn) {
 					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
 				}
