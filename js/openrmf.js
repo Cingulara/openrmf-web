@@ -515,18 +515,18 @@ async function getSystemRecord(systemGroupId) {
 				$("#divSystemDescription").html("<b>Description:</b> (no description)");
 			$("#divNumberChecklists").html("<b>Checklists:</b> " + item.numberOfChecklists);
 			if (item.rawNessusFile) {
-				var nessusHTML = "<b>Nessus Scan:</b>";				
+				var nessusHTML = "<b>Patch Scan:</b><br />&nbsp;&nbsp;&nbsp;";
 				if (canDownload()) {
 					var nessusFilename = "latest upload";
 					if (item.nessusFilename) 
 						nessusFilename = item.nessusFilename;
 
-					nessusHTML += ' &nbsp; <span><a title="Download the Nessus Scan (' + nessusFilename + ')" href="javascript:downloadNessusXML(\'' + item.internalIdString + '\')">';
-					nessusHTML += 'Download</a> ';
-					nessusHTML += ' | <span><a title="Export the Nessus scan Summary to XLSX (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', true)">';
+					nessusHTML += '<a title="Export the Nessus scan Summary to XLSX (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', true)">';
 					nessusHTML += 'Summary Export</a> ';
-					nessusHTML += ' | <span><a title="Export the Nessus scan to XLSX by Host (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', false)">';
-					nessusHTML += 'Host Export</a> ';
+					nessusHTML += ' | <a title="Export the Nessus scan to XLSX by Host (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', false)">';
+					nessusHTML += 'Host Export</a>';
+					nessusHTML += ' | <a title="Download the Nessus Scan (' + nessusFilename + ')" href="javascript:downloadNessusXML(\'' + item.internalIdString + '\')">Download</a> | <a title="Remove the Nessus Scan file" href="javascript:deleteSystemPatchScanFile(\'' + item.internalIdString + '\')">Remove</a>';
+
 				} else { // they can only know we have one
 					nessusHTML += " Yes";
 				}
@@ -540,7 +540,7 @@ async function getSystemRecord(systemGroupId) {
 					$("#divSystemNessusFile").html(strNessus);
 				} 
 				else 
-				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> N/A");
+				$("#divSystemNessusFile").html("<b>Patch Scan:</b> N/A");
 			}
 			// generate the test plan link
 			if (canDownload()) {
@@ -642,6 +642,7 @@ function updateSystem(systemGroupId){
 				swal("Your System was updated successfully!", "Click OK to continue!", "success")
 				.then((value) => {
 					getSystemRecordBySession();
+					$('#customModal').modal('hide');
 				});
 			},
 			error : function(data){
@@ -944,6 +945,43 @@ async function deleteSystem(id) {
 			  
 			} else {
 			  swal("Canceled the System Deletion.");
+			}
+		});
+	}
+}
+// delete a system package patch scan file
+async function deleteSystemPatchScanFile(id) {
+	if (!id) // get it from the session
+		id = sessionStorage.getItem("currentSystem");
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete Your System Package Patch Scan File",
+			text: "Are you sure you wish to delete this system package patch scan file?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : saveAPI + "system/" + id + "/patchscan",
+					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your System Package patch scan was deleted successfully!", "Click OK to continue!", "success")
+						.then((value) => {
+							location.reload();
+						});						
+					},
+					error : function(data){
+						swal("There was a Problem. Your System Package patch scan file was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the System Package patch file deletion.");
 			}
 		});
 	}
