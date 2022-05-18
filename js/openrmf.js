@@ -1563,7 +1563,7 @@ async function getChecklistData(id, template) {
 				var updatedChecklist = 'ATTN: There is an updated checklist release for your checklist: V';
 				updatedChecklist += newRelease.version + ' ' + newRelease.stigRelease;
 				if (canUpload()) {
-					updatedChecklist += ' &nbsp; &nbsp; <button type="button" id="btnUpgradeChecklist" onclick="upgradeChecklist(getParameterByName(\'id\'), false);" ';
+					updatedChecklist += ' &nbsp; &nbsp; <button type="button" id="btnUpgradeChecklist" title="Upgrade the checklist to the latest version and release" onclick="upgradeChecklist(getParameterByName(\'id\'), false);" ';
 					updatedChecklist += ' class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-long-arrow-up"></i></span> Upgrade</button>';
 				}
 				$("#divMessaging").html(updatedChecklist);
