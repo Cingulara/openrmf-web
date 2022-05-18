@@ -6,7 +6,7 @@
 // will be set in the template or xxxxx-configmap.yml file
 
     var root = document.location.protocol + '//' + document.location.host;
-    var readAPI = root + '/api/read/';
+    var readAPI = root + '/api/read/artifact/';
     var scoreAPI = root + '/api/scoring/';
     var saveAPI = root + '/api/save/';
     var uploadAPI = root + '/api/upload/';
