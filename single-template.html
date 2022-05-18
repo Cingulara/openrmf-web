@@ -200,13 +200,14 @@
 									<div id="checklistRole"></div>
 									<br />
 									<div class="small" id="checklistLastUpdated"></div><br />
-									<a href="#custom-modal"  id="btnUpdateTemplate" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10" 
-										data-target="#customModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
-									<button type="button" id="btnDownloadTemplate" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), true);" 
+									<button type="button" id="btnCreateChecklistFromTemplate" style="display: none;" 
+										title="Create a new checklist from this template" onclick="$('#customModal').modal('show');" 
+										class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-file-text-o"></i></span> Create Checklist</button>
+									<button type="button" id="btnDownloadTemplate" style="display: none;" 
+										title="Download the checklist template .CKL file"  onclick="downloadChecklistFile(getParameterByName('id'), true);" 
 										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
-									<button type="button" id="btnExportTemplate" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
-										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
 									<button type="button" id="btnDeleteTemplate" style="display: none;" onclick="deleteTemplate(getParameterByName('id'), false);" 
+										title="Delete this checklist template"
 										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
 								</div>
 							</div><!-- end card-->
@@ -441,10 +442,16 @@
 				verifyMenus();
 				// see if they can download
 				verifyDownloadTemplate();
+				// see if they can create a checklist from a template
+				verifyCreateChecklist();
 				// see if they can delete
 				verifyDeleteTemplate();
+				// load the list of system packages for creating a checklist w/ this template
+				getChecklistSystemsForChecklistCreation();
 				// calls to get the checklist data from the API
 				getChecklistData(getParameterByName('id'), true);
+				// set the templateId for making a checklist from it
+				$("#templateIdForChecklist").val(getParameterByName('id'));
 			}
 			else {
 				alert('You are not logged in. Please check your setup with Keycloak.');
@@ -455,5 +462,34 @@
 	});
 </script>
 <!-- END Java Script for this page -->
+
+<!-- Add Create Checklist Modal -->
+<div class="modal fade customModal" id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModal" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel2">Create a new Checklist from this Template</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<input type="hidden" id="templateIdForChecklist" value="" />
+					<label class="checklistSystemsListLabel" id="checklistSystemPackageLabel" for="checklistSystemPackage">System Package Filter</label>
+					<select class="form-control" id="checklistSystemPackage">
+						<option value="">[ Choose a System Package ]</option>
+					</select>
+					<small id="titleSystem" class="form-text text-muted">Specify the System Package</small>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="createChecklistFromTemplate();">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+	
 </body>
 </html>

@@ -399,6 +399,58 @@ async function deleteTemplate(id) {
 		});
 	}
 }
+// the system dropdown on the Template Record page
+async function getChecklistSystemsForChecklistCreation() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	if (data) {
+		$.each(data, function (index, value) {
+			$('#checklistSystemPackage').append($('<option/>', { 
+					value: value.internalIdString,
+					text : value.title 
+			}));
+		}); 
+	}
+}
+async function createChecklistFromTemplate() {
+	var systemGroupId = $("#checklistSystemPackage").val();
+	var templateId = $("#templateIdForChecklist").val();
+	// verify the templateId and systemGroup
+	if (templateId && templateId.length > 10 && systemGroupId) {
+		swal({
+			title: "Create a Checklist from this Template?",
+			text: "Are you sure you wish to create a new checklist using this template?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: false,
+		  })
+		  .then((create) => {
+			if (create) {
+				$.ajax({
+					url : uploadAPI + systemGroupId + "/template/" + templateId,
+					type : 'POST',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your Checklist was created successfully!", "Click OK to continue!", "success");
+						// .then((value) => {
+						// 	location.href = "templates.html"; // reload the list of templates
+						// });
+					},
+					error : function(data){
+						swal("There was a Problem. Your Checklist was not created successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the Checklist Creation.");
+			}
+		});
+	} else {
+		alert('Please select a valid system package');
+	}
+}
 /*************************************
  * System listing functions
  ************************************/
@@ -3359,7 +3411,13 @@ function verifyReportRefreshData() {
 		$("#btnReloadVulnerabilityData").show();
 	}
 }
-
+// used on the template single page to create a checklist from a template
+function verifyCreateChecklist() {
+	if (canUpload()) {
+		$("#btnCreateChecklistFromTemplate").show();
+	}
+}
+	
 function clearSessionData() {
 	// keep these settings
 	var currentSystem = sessionStorage.getItem("currentSystem");
