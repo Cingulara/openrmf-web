@@ -57,11 +57,12 @@
         $("#mnuReports").addClass("active");
     } else if ( document.URL.includes("/index.html") ) {
         $("#mnuDashboard").addClass("active");
-    } else if ( document.URL.includes("/systems.html") ) {
+    } else if ( document.URL.includes("/systems.html") || document.URL.includes("/checklists.html") 
+    || document.URL.includes("/single-checklist.html")) {
         $("#mnuSystemPackages").addClass("active");
     } else if ( document.URL.includes("/compliance.html") ) {
         $("#mnuCompliance").addClass("active");
-    } else if ( document.URL.includes("/templates.html") ) {
+    } else if ( document.URL.includes("/templates.html") || document.URL.includes("/single-template.html") ) {
         $("#mnuTemplates").addClass("active");
     } else if ( document.URL.includes("/upload.html") ) {
         $("#mnuUpload").addClass("active");
