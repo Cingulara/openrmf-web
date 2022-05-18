@@ -250,7 +250,7 @@ async function getSystemACASItemsForDashboard() {
  * Template listing functions
  ************************************/
 async function getTemplates(latest) {
-	$.blockUI({ message: "Updating the template listing...", css: { padding: '15px'} });
+	$.blockUI({ message: "Updating the template listing...please wait", css: { padding: '15px'} });
 	var url = templateAPI;	
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -639,7 +639,12 @@ function resetEditSystemForm() {
 }
 
 // the add page on the System record page calls this if you have permissions
-function addSystem(){
+function addSystem() {
+	if (!$("#frmSystemTitle").val() || !$("#frmSystemDescription").val()) {
+		alert('Please enter a system package title and description');
+		return false;
+	}
+
 	swal("Adding System Package...", {
 		buttons: false,
 		timer: 3000,
