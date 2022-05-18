@@ -3,19 +3,22 @@
 /*-----------------------------------------------
 |   Startup Routines
 -----------------------------------------------*/
-function setupOpenRMFUI() {
+function setupOpenRMFUI(disableTimers) {
 	$("#main").show();
-	// setup the profile account and logout menu
-	setupProfileMenu();
-
 	// setup auto logout
-    setupTimers();
-    $("#includeAutoLogin").load("/includes/modalLogout.html"); 
-
+    if (typeof keycloak !== 'undefined') {
+		setupTimers();
+		// setup the profile account and logout menu
+		//setupProfileMenu();
+		$("#includeAutoLogin").load("/includes/modalLogout.html"); 
+	}
+	// include navigation bar
+	$("#includeNavBarLink").load("/includes/navbar.html"); 
+	// include left sidebar menu
+	$("#includeSidebarLink").load("/includes/sidebarmenu.html"); 
 	// include standard footer
 	$("#includeFooterLink").load("/includes/footertext.html"); 
 }
-
 function menuMetricsLink(){
     if (urlMetricsMenuLink) 
         window.open(urlMetricsMenuLink, "openrmf-metrics");
@@ -495,7 +498,7 @@ async function getSystemListing(){
 			for (const item of data) {
 				chartNumber = chartNumber + 1;
 				systemsListing = '<div class="systemListing"><div class="systemListTitle"><a href="checklists.html?id=' + item.internalIdString + '" ';
-				systemsListing += 'title="view system information and checklists for this system" >' + item.title + ' (' + item.numberOfChecklists + ')</a>';
+				systemsListing += 'title="View the system package information and checklists" >' + item.title + ' (' + item.numberOfChecklists + ')</a>';
 				systemsListing += '</div><div class="systemDescription">';
 				if (item.description) {
 					systemsListing += item.description;
@@ -3327,14 +3330,6 @@ function decodeHtml(html) {
 /************************************ 
  Permission and User Login Functions
 ************************************/
-function verifyMenus() {
-	if (canUpload()) {
-    	$("#menuUpload").show();
-	}
-	if (isAdministrator()) {
-    	$("#menuAudit").show();
-	}
-}
 function verifyUploadFromSystem() {
 	if (canUpload()) {
     	$("#btnUploadChecklist").show();
@@ -3436,21 +3431,23 @@ function clearSessionData() {
 
 function setupProfileMenu()
 {
-	// use the person's first name
-	$("#profileUserName").text(keycloak.tokenParsed.given_name);
-	$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
-	var logoutURL = keycloak.endpoints.logout();
-	var path = "";
+    if (typeof keycloak !== 'undefined') {
+		// use the person's first name
+		$("#profileUserName").text(keycloak.tokenParsed.given_name);
+		$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
+		var logoutURL = keycloak.endpoints.logout();
+		var path = "";
 
-	// if there is a subfolder in the path not just the root in this get it
-	var locations = window.location.pathname.split('/');
-	// add all slash subfolders in the URL until the last one which is the filename
-	// if the first one is "" empty it does no harm
-	for (var i = 0; i < locations.length-1; i++) {
-		if (locations[i].length > 0)
-			path = path + "/" + locations[i];
+		// if there is a subfolder in the path not just the root in this get it
+		var locations = window.location.pathname.split('/');
+		// add all slash subfolders in the URL until the last one which is the filename
+		// if the first one is "" empty it does no harm
+		for (var i = 0; i < locations.length-1; i++) {
+			if (locations[i].length > 0)
+				path = path + "/" + locations[i];
+		}
+
+		logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
+		$("#profileLogoutURL").attr("href", logoutURL);
 	}
-
-	logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
-	$("#profileLogoutURL").attr("href", logoutURL);
 }
