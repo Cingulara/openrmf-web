@@ -70,6 +70,6 @@ With coming updates such as automating the Risk Assessment Report, automating th
 More information can be found in our <a href="https://www.openrmf.io/doc/OpenRMF-Product-Information.pdf" target="_blank">product PDF</a> on our website.
 
 ## Architecture
-Below is the top level architecture as of version 0.11 and beyond, drawn via <a href="https://app.diagrams.net/" target="_blank">Draw.io</a>'s great tool (now Diagrams.net). 
+Below is the top level architecture as of version 1.8 and beyond, drawn via <a href="https://app.diagrams.net/" target="_blank">Draw.io</a>'s great tool (now Diagrams.net). 
 
-![OpenRMF v0.11 Architecture and beyond](./assets/openRMF-Tool-Architecture.png)
+![OpenRMF OSS v1.8 Architecture and beyond](./assets/openRMF-Tool-Architecture.png)

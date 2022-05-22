@@ -3,19 +3,22 @@
 /*-----------------------------------------------
 |   Startup Routines
 -----------------------------------------------*/
-function setupOpenRMFUI() {
+function setupOpenRMFUI(disableTimers) {
 	$("#main").show();
-	// setup the profile account and logout menu
-	setupProfileMenu();
-
 	// setup auto logout
-    setupTimers();
-    $("#includeAutoLogin").load("/includes/modalLogout.html"); 
-
+    if (typeof keycloak !== 'undefined') {
+		setupTimers();
+		// setup the profile account and logout menu
+		//setupProfileMenu();
+		$("#includeAutoLogin").load("/includes/modalLogout.html"); 
+	}
+	// include navigation bar
+	$("#includeNavBarLink").load("/includes/navbar.html"); 
+	// include left sidebar menu
+	$("#includeSidebarLink").load("/includes/sidebarmenu.html"); 
 	// include standard footer
 	$("#includeFooterLink").load("/includes/footertext.html"); 
 }
-
 function menuMetricsLink(){
     if (urlMetricsMenuLink) 
         window.open(urlMetricsMenuLink, "openrmf-metrics");
@@ -247,7 +250,7 @@ async function getSystemACASItemsForDashboard() {
  * Template listing functions
  ************************************/
 async function getTemplates(latest) {
-	$.blockUI({ message: "Updating the template listing...", css: { padding: '15px'} });
+	$.blockUI({ message: "Updating the template listing...please wait", css: { padding: '15px'} });
 	var url = templateAPI;	
 	let response = await fetch(url, {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
@@ -270,9 +273,9 @@ async function getTemplates(latest) {
 			$("#divMessaging").html('');
 			$("#divMessaging").hide();
 			for (const item of data) {
-				checklistLink = '<a href="single-template.html?id=' + item.internalIdString + '" title="Open Checklist Template">'
-				checklistLink += item.title
-				checklistLink += '</a><br /><span class="small">last updated on '
+				checklistLink = '<a href="single-template.html?id=' + item.internalIdString + '" title="Open Checklist Template">';
+				checklistLink += item.fullTitle;
+				checklistLink += '</a><br /><span class="small">last updated on ';
 				if (item.updatedOn) {
 					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
 				}
@@ -399,6 +402,58 @@ async function deleteTemplate(id) {
 		});
 	}
 }
+// the system dropdown on the Template Record page
+async function getChecklistSystemsForChecklistCreation() {
+	var data = await getChecklistSystems();
+	// for each data add to the upload checklistSystem
+	if (data) {
+		$.each(data, function (index, value) {
+			$('#checklistSystemPackage').append($('<option/>', { 
+					value: value.internalIdString,
+					text : value.title 
+			}));
+		}); 
+	}
+}
+async function createChecklistFromTemplate() {
+	var systemGroupId = $("#checklistSystemPackage").val();
+	var templateId = $("#templateIdForChecklist").val();
+	// verify the templateId and systemGroup
+	if (templateId && templateId.length > 10 && systemGroupId) {
+		swal({
+			title: "Create a Checklist from this Template?",
+			text: "Are you sure you wish to create a new checklist using this template?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: false,
+		  })
+		  .then((create) => {
+			if (create) {
+				$.ajax({
+					url : uploadAPI + systemGroupId + "/template/" + templateId,
+					type : 'POST',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your Checklist was created successfully!", "Click OK to continue!", "success");
+						// .then((value) => {
+						// 	location.href = "templates.html"; // reload the list of templates
+						// });
+					},
+					error : function(data){
+						swal("There was a Problem. Your Checklist was not created successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the Checklist Creation.");
+			}
+		});
+	} else {
+		alert('Please select a valid system package');
+	}
+}
 /*************************************
  * System listing functions
  ************************************/
@@ -443,7 +498,7 @@ async function getSystemListing(){
 			for (const item of data) {
 				chartNumber = chartNumber + 1;
 				systemsListing = '<div class="systemListing"><div class="systemListTitle"><a href="checklists.html?id=' + item.internalIdString + '" ';
-				systemsListing += 'title="view system information and checklists for this system" >' + item.title + ' (' + item.numberOfChecklists + ')</a>';
+				systemsListing += 'title="View the system package information and checklists" >' + item.title + ' (' + item.numberOfChecklists + ')</a>';
 				systemsListing += '</div><div class="systemDescription">';
 				if (item.description) {
 					systemsListing += item.description;
@@ -515,18 +570,18 @@ async function getSystemRecord(systemGroupId) {
 				$("#divSystemDescription").html("<b>Description:</b> (no description)");
 			$("#divNumberChecklists").html("<b>Checklists:</b> " + item.numberOfChecklists);
 			if (item.rawNessusFile) {
-				var nessusHTML = "<b>Nessus Scan:</b>";				
+				var nessusHTML = "<b>Patch Scan:</b><br />&nbsp;&nbsp;&nbsp;";
 				if (canDownload()) {
 					var nessusFilename = "latest upload";
 					if (item.nessusFilename) 
 						nessusFilename = item.nessusFilename;
 
-					nessusHTML += ' &nbsp; <span><a title="Download the Nessus Scan (' + nessusFilename + ')" href="javascript:downloadNessusXML(\'' + item.internalIdString + '\')">';
-					nessusHTML += 'Download</a> ';
-					nessusHTML += ' | <span><a title="Export the Nessus scan Summary to XLSX (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', true)">';
+					nessusHTML += '<a title="Export the Nessus scan Summary to XLSX (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', true)">';
 					nessusHTML += 'Summary Export</a> ';
-					nessusHTML += ' | <span><a title="Export the Nessus scan to XLSX by Host (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', false)">';
-					nessusHTML += 'Host Export</a> ';
+					nessusHTML += ' | <a title="Export the Nessus scan to XLSX by Host (' + nessusFilename + ')" href="javascript:exportNessusXML(\'' + item.internalIdString + '\', false)">';
+					nessusHTML += 'Host Export</a>';
+					nessusHTML += ' | <a title="Download the Nessus Scan (' + nessusFilename + ')" href="javascript:downloadNessusXML(\'' + item.internalIdString + '\')">Download</a> | <a title="Remove the Nessus Scan file" href="javascript:deleteSystemPatchScanFile(\'' + item.internalIdString + '\')">Remove</a>';
+
 				} else { // they can only know we have one
 					nessusHTML += " Yes";
 				}
@@ -540,7 +595,7 @@ async function getSystemRecord(systemGroupId) {
 					$("#divSystemNessusFile").html(strNessus);
 				} 
 				else 
-				$("#divSystemNessusFile").html("<b>Nessus Scan:</b> N/A");
+				$("#divSystemNessusFile").html("<b>Patch Scan:</b> N/A");
 			}
 			// generate the test plan link
 			if (canDownload()) {
@@ -584,7 +639,12 @@ function resetEditSystemForm() {
 }
 
 // the add page on the System record page calls this if you have permissions
-function addSystem(){
+function addSystem() {
+	if (!$("#frmSystemTitle").val() || !$("#frmSystemDescription").val()) {
+		alert('Please enter a system package title and description');
+		return false;
+	}
+
 	swal("Adding System Package...", {
 		buttons: false,
 		timer: 3000,
@@ -642,6 +702,7 @@ function updateSystem(systemGroupId){
 				swal("Your System was updated successfully!", "Click OK to continue!", "success")
 				.then((value) => {
 					getSystemRecordBySession();
+					$('#customModal').modal('hide');
 				});
 			},
 			error : function(data){
@@ -944,6 +1005,43 @@ async function deleteSystem(id) {
 			  
 			} else {
 			  swal("Canceled the System Deletion.");
+			}
+		});
+	}
+}
+// delete a system package patch scan file
+async function deleteSystemPatchScanFile(id) {
+	if (!id) // get it from the session
+		id = sessionStorage.getItem("currentSystem");
+	if (id && id.length > 10) {
+		swal({
+			title: "Delete Your System Package Patch Scan File",
+			text: "Are you sure you wish to delete this system package patch scan file?",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		  })
+		  .then((willDelete) => {
+			if (willDelete) {
+				$.ajax({
+					url : saveAPI + "system/" + id + "/patchscan",
+					type : 'DELETE',
+					beforeSend: function(request) {
+					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+					},
+					success: function(data){
+						swal("Your System Package patch scan was deleted successfully!", "Click OK to continue!", "success")
+						.then((value) => {
+							location.reload();
+						});						
+					},
+					error : function(data){
+						swal("There was a Problem. Your System Package patch scan file was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+					}
+			    });
+			  
+			} else {
+			  swal("Canceled the System Package patch file deletion.");
 			}
 		});
 	}
@@ -1465,7 +1563,7 @@ async function getChecklistData(id, template) {
 				var updatedChecklist = 'ATTN: There is an updated checklist release for your checklist: V';
 				updatedChecklist += newRelease.version + ' ' + newRelease.stigRelease;
 				if (canUpload()) {
-					updatedChecklist += ' &nbsp; &nbsp; <button type="button" id="btnUpgradeChecklist" onclick="upgradeChecklist(getParameterByName(\'id\'), false);" ';
+					updatedChecklist += ' &nbsp; &nbsp; <button type="button" id="btnUpgradeChecklist" title="Upgrade the checklist to the latest version and release" onclick="upgradeChecklist(getParameterByName(\'id\'), false);" ';
 					updatedChecklist += ' class="btn btn-primary btn-sm"><span class="btn-label"><i class="fa fa-long-arrow-up"></i></span> Upgrade</button>';
 				}
 				$("#divMessaging").html(updatedChecklist);
@@ -3237,14 +3335,6 @@ function decodeHtml(html) {
 /************************************ 
  Permission and User Login Functions
 ************************************/
-function verifyMenus() {
-	if (canUpload()) {
-    	$("#menuUpload").show();
-	}
-	if (isAdministrator()) {
-    	$("#menuAudit").show();
-	}
-}
 function verifyUploadFromSystem() {
 	if (canUpload()) {
     	$("#btnUploadChecklist").show();
@@ -3321,7 +3411,13 @@ function verifyReportRefreshData() {
 		$("#btnReloadVulnerabilityData").show();
 	}
 }
-
+// used on the template single page to create a checklist from a template
+function verifyCreateChecklist() {
+	if (canUpload()) {
+		$("#btnCreateChecklistFromTemplate").show();
+	}
+}
+	
 function clearSessionData() {
 	// keep these settings
 	var currentSystem = sessionStorage.getItem("currentSystem");
@@ -3340,21 +3436,23 @@ function clearSessionData() {
 
 function setupProfileMenu()
 {
-	// use the person's first name
-	$("#profileUserName").text(keycloak.tokenParsed.given_name);
-	$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
-	var logoutURL = keycloak.endpoints.logout();
-	var path = "";
+    if (typeof keycloak !== 'undefined') {
+		// use the person's first name
+		$("#profileUserName").text(keycloak.tokenParsed.given_name);
+		$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
+		var logoutURL = keycloak.endpoints.logout();
+		var path = "";
 
-	// if there is a subfolder in the path not just the root in this get it
-	var locations = window.location.pathname.split('/');
-	// add all slash subfolders in the URL until the last one which is the filename
-	// if the first one is "" empty it does no harm
-	for (var i = 0; i < locations.length-1; i++) {
-		if (locations[i].length > 0)
-			path = path + "/" + locations[i];
+		// if there is a subfolder in the path not just the root in this get it
+		var locations = window.location.pathname.split('/');
+		// add all slash subfolders in the URL until the last one which is the filename
+		// if the first one is "" empty it does no harm
+		for (var i = 0; i < locations.length-1; i++) {
+			if (locations[i].length > 0)
+				path = path + "/" + locations[i];
+		}
+
+		logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
+		$("#profileLogoutURL").attr("href", logoutURL);
 	}
-
-	logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
-	$("#profileLogoutURL").attr("href", logoutURL);
 }

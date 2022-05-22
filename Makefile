@@ -1,4 +1,4 @@
-VERSION ?= 1.07.02
+VERSION ?= 1.08.01
 NAME ?= "openrmf-web"
 AUTHOR ?= "Dale Bingham"
 PORT_EXT ?= 9000
@@ -15,10 +15,6 @@ latest:
 	docker build -f Dockerfile -t $(NAME)\:latest --no-cache=$(NO_CACHE) .
 	docker tag $(NAME)\:latest ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
 	docker push ${DOCKERHUB_ACCOUNT}\/$(NAME)\:latest
-
-clean:
-	@rm -f -r obj
-	@rm -f -r bin
 
 version:
 	@echo ${VERSION}

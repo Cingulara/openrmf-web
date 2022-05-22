@@ -4,10 +4,11 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<title>OpenRMF - Template Record</title>
 	<meta name="description" content="OpenRMF Template">
 	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
@@ -24,7 +25,7 @@
 	<link rel="apple-touch-icon" sizes="144x144" href="assets/favicons/apple-icon-144x144.png">
 	<link rel="apple-touch-icon" sizes="152x152" href="assets/favicons/apple-icon-152x152.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192"  href="assets/favicons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="assets/favicons/android-icon-192x192.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="assets/favicons/favicon-96x96.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
@@ -35,16 +36,16 @@
 
 	<!-- Bootstrap CSS -->
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-	
+
 	<!-- Font Awesome CSS -->
 	<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	
+
 	<!-- Custom CSS -->
 	<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
 	<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
-	
+
 	<!-- BEGIN CSS for this page -->
-	<link rel="stylesheet" type="text/css" href="/assets/css/dataTables.bootstrap4.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/assets/css/dataTables.bootstrap4.min.css" />
 	<link href="assets/css/pricing-tables.css" rel="stylesheet" type="text/css" />
 	<!-- END CSS for this page -->
 </head>
@@ -57,116 +58,17 @@
 	<div id="main" style="display: none;">
 
 		<!-- top bar navigation -->
-		<div class="headerbar">
-
-			<!-- LOGO -->
-		<div class="headerbar-left">
-			<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.jpg" /> <span>Open<span>RMF</span></span></a>
-		</div>
-
-			<nav class="navbar-custom">
-				<ul class="list-inline float-right mb-0">
-					<li class="list-inline-item dropdown notif">
-						<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#" role="button" title="Help and Support"
-							aria-haspopup="false" aria-expanded="false">
-							<i class="fa fa-fw fa-question-circle"></i>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
-							<!-- item-->
-							<div class="dropdown-item noti-title">
-								<h5><small>Help and Support</small></h5>
-							</div>
-
-							<!-- item-->
-							<a target="_blank" rel="noopener noreferrer" href="/help/" class="dropdown-item notify-item">
-								<p class="notify-details ml-0">
-									<b>OpenRMF Online Help</b>
-									<span>Systems, Checklists, Reports</span>
-								</p>
-							</a>
-							<!-- item-->
-							<a target="_blank" rel="noopener noreferrer" href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
-								<p class="notify-details ml-0">
-									<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
-									<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
-								</p>
-							</a>
-						</div>
-					</li>
-					<li class="list-inline-item dropdown notif">
-						<a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" title="Open the User Menu"
-							href="#" role="button" aria-haspopup="false" aria-expanded="false">
-							<img src="assets/images/avatars/avatar3.png" alt="Profile image" 
-							class="avatar-rounded">
-						</a>
-						<div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-							<!-- item-->
-							<div class="dropdown-item noti-title">
-								<h5 class="text-overflow"><small>Hello, <span id="profileUserName"></span></small> </h5>
-							</div>
-		
-							<!-- item-->
-							<a id="profileAccountURL" href="" class="dropdown-item notify-item" title="Open your Profile page">
-								<i class="fa fa-user"></i> <span>Profile</span>
-							</a>
-		
-							<!-- item-->
-							<a id="profileLogoutURL" href="" title="Logout of OpenRMF"
-								class="dropdown-item notify-item"><i class="fa fa-power-off"></i> <span>Logout</span>
-							</a>
-						</div>
-					</li>
-				</ul>
-				<ul class="list-inline menu-left mb-0">
-					<li class="float-left">
-						<button class="button-menu-mobile open-left">
-							<i class="fa fa-fw fa-bars"></i>
-						</button>
-					</li>                        
-				</ul>
-			</nav>
-		</div>
+		<div id="includeNavBarLink"></div>
 		<!-- End Navigation -->
+
 		<!-- Left Sidebar -->
-		<div class="left main-sidebar">
-			<div class="sidebar-inner leftscroll">
-				<div id="sidebar-menu">
-				<ul>
-					<li class="submenu">
-						<a href="index.html" title="View your OpenRMF Dashboard"><i class="fa fa-fw fa-dashboard"></i><span> Dashboard </span> </a>
-					</li>
-					<li class="submenu">
-						<a href="systems.html" title="View your Systems and Checklists"><i class="fa fa-fw fa-table"></i><span> Systems </span> </a>
-					</li>
-					<li class="submenu">
-						<a href="compliance.html" title="Generate your System Compliance Listing"><i class="fa fa-fw fa-check-square-o"></i><span> Compliance </span> </a>
-					</li>
-					<li class="submenu">
-						<a class="active" href="templates.html" title="View your OpenRMF Template Checklists"><i class="fa fa-fw fa-list"></i><span> Templates </span> </a>
-					</li>
-					<li class="submenu">
-						<a href="/reports/index.html" title="View your OpenRMF Reporting Dashboard"><i class="fa fa-fw fa-area-chart"></i><span> Reports </span> </a>
-					</li>
-					<li class="submenu" id="menuUpload" title="Upload New Templates or Checklists or by System" style="display: none;">
-						<a href="upload.html"><i class="fa fa-fw fa-file-text-o"></i><span> Upload </span> </a>
-					</li>
-					<li class="submenu" id="menuAudit" title="View Audit Records" style="display: none;">
-						<a href="audit.html"><i class="fa fa-fw fa-shield"></i><span> Audit </span> </a>
-					</li>
-					<li class="submenu" id="menuMetrics" title="View Grafana Application Metrics">
-						<a style="cursor: pointer;" onclick="menuMetricsLink(); return false;"><i class="fa fa-fw fa-bar-chart"></i><span> Metrics </span> </a>
-					</li>
-				</ul>
-				<div class="clearfix"></div>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
+		<div id="includeSidebarLink"></div>
 		<!-- End Sidebar -->
-		<div class="content-page">	
+
+		<div class="content-page">
 			<!-- Start content -->
-			<div class="content">            
-				<div class="container-fluid">					
+			<div class="content">
+				<div class="container-fluid">
 					<div class="row">
 						<div class="col-xl-12">
 							<div class="breadcrumb-holder">
@@ -179,15 +81,17 @@
 							</div>
 						</div>
 					</div>
-					<!-- end row -->		
+					<!-- end row -->
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3 class="float-left"><i class="fa fa-info-circle"></i> Asset Information</h3>
-									<button type="button" id="btnReturnToTemplateListing" onclick="returnToTemplateListing();" 
-										class="btn btn-info btn-sm m-r-5 m-b-10 float-right">List All Templates</button>&nbsp;
-								</div>								
+									<button type="button" title="Return to the list of all templates"
+										id="btnReturnToTemplateListing" onclick="returnToTemplateListing();"
+										class="btn btn-info btn-sm m-r-5 m-b-10 float-right">List All
+										Templates</button>&nbsp;
+								</div>
 								<div class="card-body">
 									<div id="checklistHost"></div>
 									<div id="checklistSTIGTitle"></div>
@@ -200,14 +104,20 @@
 									<div id="checklistRole"></div>
 									<br />
 									<div class="small" id="checklistLastUpdated"></div><br />
-									<a href="#custom-modal"  id="btnUpdateTemplate" style="display: none;"  class="btn btn-primary btn-sm m-r-5 m-b-10" 
-										data-target="#customModal" data-toggle="modal"><span class="btn-label"><i class="fa fa-edit"></i></span> Edit</a>
-									<button type="button" id="btnDownloadTemplate" style="display: none;" onclick="downloadChecklistFile(getParameterByName('id'), true);" 
-										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Download</button>
-									<button type="button" id="btnExportTemplate" style="display: none;" onclick="exportChecklistXLSX(getParameterByName('id'), false);" 
-										class="btn btn-success btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Export</button>
-									<button type="button" id="btnDeleteTemplate" style="display: none;" onclick="deleteTemplate(getParameterByName('id'), false);" 
-										class="btn btn-danger btn-sm"><span class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
+									<button type="button" id="btnCreateChecklistFromTemplate" style="display: none;"
+										title="Create a new checklist from this template"
+										onclick="$('#customModal').modal('show');" class="btn btn-info btn-sm"><span
+											class="btn-label"><i class="fa fa-file-text-o"></i></span> Create
+										Checklist</button>
+									<button type="button" id="btnDownloadTemplate" style="display: none;"
+										title="Download the checklist template .CKL file"
+										onclick="downloadChecklistFile(getParameterByName('id'), true);"
+										class="btn btn-success btn-sm"><span class="btn-label"><i
+												class="fa fa-download"></i></span> Download</button>
+									<button type="button" id="btnDeleteTemplate" style="display: none;"
+										onclick="deleteTemplate(getParameterByName('id'), false);"
+										title="Delete this checklist template" class="btn btn-danger btn-sm"><span
+											class="btn-label"><i class="fa fa-remove"></i></span> Delete</button>
 								</div>
 							</div><!-- end card-->
 						</div>
@@ -215,95 +125,163 @@
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3 id="checklistTitle"> </h3>
-								</div>								
+								</div>
 								<div class="card-body">
-									<div style="display: none;" id="divBadChecklistId" 
-										class="alert alert-danger alert-dismissible fade show" role="alert">The Template ID passed in 
-										(<span id="txtBadChecklistId"></span>) is not valid. Please return to the page listing the Template 
+									<div style="display: none;" id="divBadChecklistId"
+										class="alert alert-danger alert-dismissible fade show" role="alert">The Template
+										ID passed in
+										(<span id="txtBadChecklistId"></span>) is not valid. Please return to the page
+										listing the Template
 										and try again. If this continues please contact your application administrator.
 										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
+											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
 									<table class="table table-condensed table-hover table-bordered table-responsive-md">
-									<thead>
-										<tr>
-											<th></th>
-											<th class="tabco4">Open</th>
-											<th class="tabco2">Not a Finding</th>
-											<th class="tabco3">Not Applicable</th>
-											<th class="tabco5">Not Reviewed</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Total</td>
-											<td class="tabco4 clickable" title="Filter by all Open Items" onclick="setVulnerabilityFilter('open','all'); return false;"><div id="checklistOpenCount"></div></td>
-											<td class="tabco2 clickable" title="Filter by all Not a Finding Items" onclick="setVulnerabilityFilter('naf','all'); return false;"><div id="checklistNotAFindingCount"></div></td>
-											<td class="tabco3 clickable" title="Filter by all Not Applicable Items" onclick="setVulnerabilityFilter('na','all'); return false;"><div id="checklistNotApplicableCount"></div></td>
-											<td class="tabco5 clickable" title="Filter by all Not Reviewed Items" onclick="setVulnerabilityFilter('nr','all'); return false;"><div id="checklistNotReviewedCount"></div></td>
-										</tr>
-										<tr>
-											<td style="text-align: right;">CAT 1</td>
-											<td class="tabco4 clickable" title="Filter by all CAT 1 Open Items" onclick="setVulnerabilityFilter('open','cat1'); return false;"><div id="cat1OpenCount"></div></td>
-											<td class="tabco2 clickable" title="Filter by all CAT 1 Not a Finding Items" onclick="setVulnerabilityFilter('naf','cat1'); return false;"><div id="cat1NotAFindingCount"></div></td>
-											<td class="tabco3 clickable" title="Filter by all CAT 1 Not Applicable Items" onclick="setVulnerabilityFilter('na','cat1'); return false;"><div id="cat1NotApplicableCount"></div></td>
-											<td class="tabco5 clickable" title="Filter by all CAT 1 Not Reviewed Items" onclick="setVulnerabilityFilter('nr','cat1'); return false;"><div id="cat1NotReviewedCount"></div></td>
-										</tr>
-										<tr>
-											<td style="text-align: right;">CAT 2</td>
-											<td class="tabco6 clickable" title="Filter by all CAT 2 Open Items" onclick="setVulnerabilityFilter('open','cat2'); return false;"></i><div id="cat2OpenCount"></div></td>
-											<td class="tabco2 clickable" title="Filter by all CAT 2 Not a Finding Items" onclick="setVulnerabilityFilter('naf','cat2'); return false;"><div id="cat2NotAFindingCount"></div></td>
-											<td class="tabco3 clickable" title="Filter by all CAT 2 Not Applicable Items" onclick="setVulnerabilityFilter('na','cat2'); return false;"><div id="cat2NotApplicableCount"></div></td>
-											<td class="tabco5 clickable" title="Filter by all CAT 2 Not Reviewed Items" onclick="setVulnerabilityFilter('nr','cat2'); return false;"><div id="cat2NotReviewedCount"></div></td>
-										</tr>
-										<tr>
-											<td style="text-align: right;">CAT 3</td>
-											<td class="tabco7 clickable" title="Filter by all CAT 3 Open Items" onclick="setVulnerabilityFilter('open','cat3'); return false;"><div id="cat3OpenCount"></div></td>
-											<td class="tabco2 clickable" title="Filter by all CAT 3 Not a Finding Items" onclick="setVulnerabilityFilter('opnafn','cat3'); return false;"><div id="cat3NotAFindingCount"></div></td>
-											<td class="tabco3 clickable" title="Filter by all CAT 3 Not Applicable Items" onclick="setVulnerabilityFilter('na','cat3'); return false;"><div id="cat3NotApplicableCount"></div></td>
-											<td class="tabco5 clickable" title="Filter by all CAT 3 Not Reviewed Items" onclick="setVulnerabilityFilter('nr','cat3'); return false;"><div id="cat3NotReviewedCount"></div></td>
-										</tr>
+										<thead>
+											<tr>
+												<th></th>
+												<th class="tabco4">Open</th>
+												<th class="tabco2">Not a Finding</th>
+												<th class="tabco3">Not Applicable</th>
+												<th class="tabco5">Not Reviewed</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Total</td>
+												<td class="tabco4 clickable" title="Filter by all Open Items"
+													onclick="setVulnerabilityFilter('open','all'); return false;">
+													<div id="checklistOpenCount"></div>
+												</td>
+												<td class="tabco2 clickable" title="Filter by all Not a Finding Items"
+													onclick="setVulnerabilityFilter('naf','all'); return false;">
+													<div id="checklistNotAFindingCount"></div>
+												</td>
+												<td class="tabco3 clickable" title="Filter by all Not Applicable Items"
+													onclick="setVulnerabilityFilter('na','all'); return false;">
+													<div id="checklistNotApplicableCount"></div>
+												</td>
+												<td class="tabco5 clickable" title="Filter by all Not Reviewed Items"
+													onclick="setVulnerabilityFilter('nr','all'); return false;">
+													<div id="checklistNotReviewedCount"></div>
+												</td>
+											</tr>
+											<tr>
+												<td style="text-align: right;">CAT 1</td>
+												<td class="tabco4 clickable" title="Filter by all CAT 1 Open Items"
+													onclick="setVulnerabilityFilter('open','cat1'); return false;">
+													<div id="cat1OpenCount"></div>
+												</td>
+												<td class="tabco2 clickable"
+													title="Filter by all CAT 1 Not a Finding Items"
+													onclick="setVulnerabilityFilter('naf','cat1'); return false;">
+													<div id="cat1NotAFindingCount"></div>
+												</td>
+												<td class="tabco3 clickable"
+													title="Filter by all CAT 1 Not Applicable Items"
+													onclick="setVulnerabilityFilter('na','cat1'); return false;">
+													<div id="cat1NotApplicableCount"></div>
+												</td>
+												<td class="tabco5 clickable"
+													title="Filter by all CAT 1 Not Reviewed Items"
+													onclick="setVulnerabilityFilter('nr','cat1'); return false;">
+													<div id="cat1NotReviewedCount"></div>
+												</td>
+											</tr>
+											<tr>
+												<td style="text-align: right;">CAT 2</td>
+												<td class="tabco6 clickable" title="Filter by all CAT 2 Open Items"
+													onclick="setVulnerabilityFilter('open','cat2'); return false;"></i>
+													<div id="cat2OpenCount"></div>
+												</td>
+												<td class="tabco2 clickable"
+													title="Filter by all CAT 2 Not a Finding Items"
+													onclick="setVulnerabilityFilter('naf','cat2'); return false;">
+													<div id="cat2NotAFindingCount"></div>
+												</td>
+												<td class="tabco3 clickable"
+													title="Filter by all CAT 2 Not Applicable Items"
+													onclick="setVulnerabilityFilter('na','cat2'); return false;">
+													<div id="cat2NotApplicableCount"></div>
+												</td>
+												<td class="tabco5 clickable"
+													title="Filter by all CAT 2 Not Reviewed Items"
+													onclick="setVulnerabilityFilter('nr','cat2'); return false;">
+													<div id="cat2NotReviewedCount"></div>
+												</td>
+											</tr>
+											<tr>
+												<td style="text-align: right;">CAT 3</td>
+												<td class="tabco7 clickable" title="Filter by all CAT 3 Open Items"
+													onclick="setVulnerabilityFilter('open','cat3'); return false;">
+													<div id="cat3OpenCount"></div>
+												</td>
+												<td class="tabco2 clickable"
+													title="Filter by all CAT 3 Not a Finding Items"
+													onclick="setVulnerabilityFilter('opnafn','cat3'); return false;">
+													<div id="cat3NotAFindingCount"></div>
+												</td>
+												<td class="tabco3 clickable"
+													title="Filter by all CAT 3 Not Applicable Items"
+													onclick="setVulnerabilityFilter('na','cat3'); return false;">
+													<div id="cat3NotApplicableCount"></div>
+												</td>
+												<td class="tabco5 clickable"
+													title="Filter by all CAT 3 Not Reviewed Items"
+													onclick="setVulnerabilityFilter('nr','cat3'); return false;">
+													<div id="cat3NotReviewedCount"></div>
+												</td>
+											</tr>
 										</tbody>
 									</table>
 									<div class="small">* Click on the numbers to filter the Vulnerabilities below</div>
-								</div><!-- end card body -->															
-							</div><!-- end card-->					
-						</div>		
+								</div><!-- end card body -->
+							</div><!-- end card-->
+						</div>
 					</div><!-- end row-->
-					
+
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3><i class="fa fa-folder-open-o"></i> Vulnerability Filter</h3>
 								</div>
-								<div class="card-body">				
+								<div class="card-body">
 									<div class="row" id="divVulnFilter" style="display: none;">
 										<div class="col-xl-12">
 											<div>
 												<div class="row">
 													<div class="col-xl-6"><b>Status:</b>&nbsp;
-														<input id="chkVulnNaF" type="checkbox" checked="true"> <span class="vulnNotAFindingText">Not a Finding</span>
-														<input id="chkVulnOpen" type="checkbox" checked="true"> <span class="vulnOpenCAT1Text">Open</span> &nbsp;
-														<input id="chkVulnNA" type="checkbox" checked="true"> <span class="vulnNotApplicableText">N/A</span> &nbsp;
-														<input id="chkVulnNR" type="checkbox" checked="true"> <span class="vulnNotReviewedText">Not Reviewed</span> &nbsp;
+														<input id="chkVulnNaF" type="checkbox" checked="true"> <span
+															class="vulnNotAFindingText">Not a Finding</span>
+														<input id="chkVulnOpen" type="checkbox" checked="true"> <span
+															class="vulnOpenCAT1Text">Open</span> &nbsp;
+														<input id="chkVulnNA" type="checkbox" checked="true"> <span
+															class="vulnNotApplicableText">N/A</span> &nbsp;
+														<input id="chkVulnNR" type="checkbox" checked="true"> <span
+															class="vulnNotReviewedText">Not Reviewed</span> &nbsp;
 													</div>
 													<div class="col-xl-6"><b>Severity:</b>&nbsp;
-														<input id="chkVulnCAT1" type="checkbox" checked="true"> High (CAT 1) &nbsp;
-														<input id="chkVulnCAT2" type="checkbox" checked="true"> Medium (CAT 2) &nbsp;  
-														<input id="chkVulnCAT3" type="checkbox" checked="true"> Low (CAT 3)
+														<input id="chkVulnCAT1" type="checkbox" checked="true"> High
+														(CAT 1) &nbsp;
+														<input id="chkVulnCAT2" type="checkbox" checked="true"> Medium
+														(CAT 2) &nbsp;
+														<input id="chkVulnCAT3" type="checkbox" checked="true"> Low (CAT
+														3)
 													</div>
 												</div>
 												<div class="row">
 													<div class="col-xl-12"><br />
-														<button id="btnSetVulnFilter" class="btn btn-primary btn-sm m-r-5 m-b-10" 
+														<button id="btnSetVulnFilter"
+															class="btn btn-primary btn-sm m-r-5 m-b-10"
+															title="Apply this filter and refresh the checklist template vulnerability listing"
 															onclick="updateVulnerabilityListingByFilter(); return false;">Apply</button>
 													</div>
-												</div>											
+												</div>
 											</div>
 										</div>
-									</div>			
+									</div>
 								</div>
 							</div>
 						</div><!-- end card-->
@@ -328,7 +306,8 @@
 								</div>
 								<div class="card-body">
 									<div class="vulnListing scrollableDiv">
-										<div class="vulnSpacing" id="vulnId">Select a Vulnerability ID to view details</div>
+										<div class="vulnSpacing" id="vulnId">Select a Vulnerability ID to view details
+										</div>
 										<div class="vulnSpacing" id="vulnStigId"></div>
 										<div class="vulnSpacing" id="vulnStatus"></div>
 										<div class="vulnSpacing" id="vulnSeverity"></div>
@@ -352,13 +331,14 @@
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3><i class="fa fa-table"></i> Severity Breakdown</h3>
-								</div>								
+								</div>
 								<div class="card-body">
 									<canvas id="chartSeverity"></canvas>
 								</div>
 								<div id="chartSeverityUpdated" class="card-footer small text-muted"></div>
-								<button type="button" onclick="downloadChart('chartSeverity');" style="width: 200px;"
-									class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+								<button type="button" onclick="downloadChart('chartSeverity');" style="width: 100%;"
+									title="Save this chart as a JPG" class="btn btn-info btn-sm"><span
+										class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
 							</div><!-- end card-->
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -366,30 +346,32 @@
 								<div class="card-header">
 									<h3><i class="fa fa-table"></i> Category Breakdown</h3>
 								</div>
-									
+
 								<div class="card-body">
 									<canvas id="chartCategory"></canvas>
 								</div>
 								<div id="chartCategoryUpdated" class="card-footer small text-muted"></div>
-								<button type="button" onclick="downloadChart('chartCategory');" style="width: 200px;"
-									class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-							</div><!-- end card-->					
-						</div>							
-					</div>				
+								<button type="button" onclick="downloadChart('chartCategory');" style="width: 100%;"
+									title="Save this chart as a JPG" class="btn btn-info btn-sm"><span
+										class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+							</div><!-- end card-->
+						</div>
+					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">						
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3><i class="fa fa-table"></i> Checklist Score Breakdown</h3>
 								</div>
-									
+
 								<div class="card-body">
 									<canvas id="barChart"></canvas>
-								</div>							
+								</div>
 								<div id="barChartUpdated" class="card-footer small text-muted"></div>
-								<button type="button" onclick="downloadChart('barChart');" style="width: 200px;"
-									class="btn btn-info btn-sm"><span class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
-							</div><!-- end card-->					
+								<button type="button" onclick="downloadChart('barChart');" style="width: 100%;"
+									title="Save this chart as a JPG" class="btn btn-info btn-sm"><span
+										class="btn-label"><i class="fa fa-download"></i></span> Save Chart</button>
+							</div><!-- end card-->
 						</div>
 					</div>
 
@@ -399,61 +381,100 @@
 			<!-- END content -->
 		</div>
 		<!-- END content-page -->
-		
-		<footer class="footer"><div id="includeFooterLink"></div></footer>
+
+		<footer class="footer">
+			<div id="includeFooterLink"></div>
+		</footer>
 		<div id="includeAutoLogin"></div>
 
 	</div>
 	<!-- END main -->
 
-<script src="assets/js/modernizr.min.js"></script>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/moment.min.js"></script>
+	<script src="assets/js/modernizr.min.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/moment.min.js"></script>
 
-<script src="assets/js/popper.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/popper.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
 
-<script src="assets/js/detect.js"></script>
-<script src="assets/js/fastclick.js"></script>
-<script src="assets/js/jquery.blockUI.js"></script>
-<script src="assets/js/jquery.nicescroll.js"></script>
-<script src="assets/js/jquery.scrollTo.min.js"></script>
-<script src="assets/plugins/switchery/switchery.min.js"></script>
-<script src="assets/plugins/sweetalert/sweetalert.js"></script>
+	<script src="assets/js/detect.js"></script>
+	<script src="assets/js/fastclick.js"></script>
+	<script src="assets/js/jquery.blockUI.js"></script>
+	<script src="assets/js/jquery.nicescroll.js"></script>
+	<script src="assets/js/jquery.scrollTo.min.js"></script>
+	<script src="assets/plugins/switchery/switchery.min.js"></script>
+	<script src="assets/plugins/sweetalert/sweetalert.js"></script>
 
-<!-- App js -->
-<script src="assets/js/pikeadmin.js"></script>
+	<!-- App js -->
+	<script src="assets/js/pikeadmin.js"></script>
 
-<!-- BEGIN Java Script for this page -->
-<script src="js/moment.min.js"></script>
-<script src="./js/openrmf.js"></script>
-<script src="./js/apis.js"></script>
-<script src="assets/plugins/chart.js/chart.min.js"></script>
-<script src="assets/plugins/chart.js/chartjs-plugin-labels.min.js"></script>
-<script>
-	$(document).ready(function() {
-		// authentication first
-		keycloak.init({onLoad: 'login-required' }).success(function(authenticated) {
-			if (authenticated) {
-				// setup the User Interface
-				setupOpenRMFUI();
-				// see if the upload menu should show
-				verifyMenus();
-				// see if they can download
-				verifyDownloadTemplate();
-				// see if they can delete
-				verifyDeleteTemplate();
-				// calls to get the checklist data from the API
-				getChecklistData(getParameterByName('id'), true);
-			}
-			else {
-				alert('You are not logged in. Please check your setup with Keycloak.');
-			}
-		}).error(function() {
-			alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+	<!-- BEGIN Java Script for this page -->
+	<script src="js/moment.min.js"></script>
+	<script src="./js/openrmf.js"></script>
+	<script src="./js/apis.js"></script>
+	<script src="assets/plugins/chart.js/chart.min.js"></script>
+	<script src="assets/plugins/chart.js/chartjs-plugin-labels.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// authentication first
+			keycloak.init({ onLoad: 'login-required' }).success(function (authenticated) {
+				if (authenticated) {
+					// setup the User Interface
+					setupOpenRMFUI();
+					// see if they can download
+					verifyDownloadTemplate();
+					// see if they can create a checklist from a template
+					verifyCreateChecklist();
+					// see if they can delete
+					verifyDeleteTemplate();
+					// load the list of system packages for creating a checklist w/ this template
+					getChecklistSystemsForChecklistCreation();
+					// calls to get the checklist data from the API
+					getChecklistData(getParameterByName('id'), true);
+					// set the templateId for making a checklist from it
+					$("#templateIdForChecklist").val(getParameterByName('id'));
+				}
+				else {
+					alert('You are not logged in. Please check your setup with Keycloak.');
+				}
+			}).error(function () {
+				alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+			});
 		});
-	});
-</script>
-<!-- END Java Script for this page -->
+	</script>
+	<!-- END Java Script for this page -->
+
+	<!-- Add Create Checklist Modal -->
+	<div class="modal fade customModal" id="customModal" tabindex="-1" role="dialog" aria-labelledby="customModal"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel2">Create a new Checklist from this Template</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<input type="hidden" id="templateIdForChecklist" value="" />
+						<label class="checklistSystemsListLabel" id="checklistSystemPackageLabel"
+							for="checklistSystemPackage">System Package Filter</label>
+						<select class="form-control" id="checklistSystemPackage">
+							<option value="">[ Choose a System Package ]</option>
+						</select>
+						<small id="titleSystem" class="form-text text-muted">Specify the System Package</small>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="createChecklistFromTemplate();">Save
+						changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </body>
+
 </html>
