@@ -90,6 +90,19 @@ th.tabco7 {
 	text-transform: uppercase;
 	vertical-align: middle !important;
 }
+.criticalPatch {
+	background: #b10300;
+	text-align: center;
+	color: #fff;
+	vertical-align: middle !important;
+}
+th.criticalPatch {
+	background: #b10300;	
+	padding: 10px 5px !important;
+	font-size: 14px;
+	text-transform: uppercase;
+	vertical-align: middle !important;
+}
 .rightSign {
 	color: #1ab921;
 	background: #fff;

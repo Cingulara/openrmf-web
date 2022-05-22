@@ -16,4 +16,6 @@ User Templates are added via the Upload page in the Template Upload area. The Us
 
 You can use Templates in OpenRMF<sup>&reg;</sup> for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly. 
 
-IT personnel would download this template and then fill out remaining items based on their software or system.
+On the Checklist Template page showing the individual checklist template, you can see the vulnerabilities. You also can click the Create Checklist button to make a new checklist based on the template in a system package you select. 
+
+IT, Cyber, and other personnel would fill in checklists based on this checklist template when added as a checklist in your system package, and then fill out remaining items based on their software or system.
