@@ -2834,9 +2834,6 @@ async function getHostVulnerabilityReport() {
 	{
 		swal("Please enter a Vulnerability Id for the report.", "Click OK to continue!", "error");
 		return;
-	} else if (!vulnid.toLowerCase().startsWith("v-")) { // if it does not start with V-
-		swal("Please enter a valid Vulnerability Id for the report that begins with V-.", "Click OK to continue!", "error");
-		return;
 	}
 
 	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" , css: { padding: '15px'} }); 
@@ -2882,7 +2879,7 @@ async function getHostVulnerabilityReport() {
 			if (ccilist.length > 0) ccilist = ccilist.substring(0, ccilist.length -2);
 
 			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "vulnid": vulnid, "severity": strSeverity, "hostname": item.hostname,
+			table.row.add( { "vulnid": item.vulnid, "severity": strSeverity, "hostname": item.hostname,
 				"ruleTitle": item.ruleTitle, "status": strStatus, "cci": ccilist, 
 				"discussion": item.discussion, "checkContent": item.checkContent,
 				"type": item.checklistType, "release": item.checklistRelease, "version": item.checklistVersion,
