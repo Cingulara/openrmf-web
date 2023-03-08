@@ -17,6 +17,6 @@
     var reportAPI = root + '/api/report/';
 
     // menu link to load Keycloak Groups and Users
-    var urlKeycloakMenuLink = document.location.protocol + '//' + document.location.hostname + ":8080/auth/admin/master/console/#/realms/openrmf/users";
+    var urlKeycloakMenuLink = document.location.protocol + '//' + document.location.host + "/auth/admin/master/console/#/openrmf/users";
     // menu link to load Grafana Metrics
-    var urlMetricsMenuLink = document.location.protocol + '//' + document.location.hostname + ":8080/metrics/";
+    var urlMetricsMenuLink = document.location.protocol + '//' + document.location.host + "/metrics/";

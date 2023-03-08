@@ -101,16 +101,26 @@ $(document).on('click','#btnStayLoggedIn',function(){
     $('#modalAutoLogout').modal('hide');
 });
 
-function logout() {
-    var logoutURL = keycloak.endpoints.logout();
-    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
-    document.location.href = logoutURL;
+function logout() {    
+    var logoutOptions = { redirectUri : document.location.protocol + '//' + document.location.host + "/logout.html" };
+    keycloak.logout(logoutOptions).then((success) => {
+        console.log("--> log: logout success ", success );
+    }).catch((error) => {
+        console.log("--> log: logout error ", error );
+    });
 }
 
 function autoLogout() {
-    var logoutURL = keycloak.endpoints.logout();
-    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html?autologout=true");
-    document.location.href = logoutURL;
+    var logoutOptions = { redirectUri : document.location.protocol + '//' + document.location.host + "/logout.html?autologout=true" };
+    keycloak.logout(logoutOptions).then((success) => {
+        console.log("--> log: logout success ", success );
+    }).catch((error) => {
+        console.log("--> log: logout error ", error );
+    });
+}
+
+function openProfile() {
+    location.href = keycloak.createAccountUrl();
 }
 
 /*************************************
@@ -3436,7 +3446,6 @@ function setupProfileMenu()
     if (typeof keycloak !== 'undefined') {
 		// use the person's first name
 		$("#profileUserName").text(keycloak.tokenParsed.given_name);
-		$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
 		var logoutURL = keycloak.endpoints.logout();
 		var path = "";
 
