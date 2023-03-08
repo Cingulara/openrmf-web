@@ -3446,19 +3446,5 @@ function setupProfileMenu()
     if (typeof keycloak !== 'undefined') {
 		// use the person's first name
 		$("#profileUserName").text(keycloak.tokenParsed.given_name);
-		var logoutURL = keycloak.endpoints.logout();
-		var path = "";
-
-		// if there is a subfolder in the path not just the root in this get it
-		var locations = window.location.pathname.split('/');
-		// add all slash subfolders in the URL until the last one which is the filename
-		// if the first one is "" empty it does no harm
-		for (var i = 0; i < locations.length-1; i++) {
-			if (locations[i].length > 0)
-				path = path + "/" + locations[i];
-		}
-
-		logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
-		$("#profileLogoutURL").attr("href", logoutURL);
 	}
 }
