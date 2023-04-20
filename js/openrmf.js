@@ -101,16 +101,26 @@ $(document).on('click','#btnStayLoggedIn',function(){
     $('#modalAutoLogout').modal('hide');
 });
 
-function logout() {
-    var logoutURL = keycloak.endpoints.logout();
-    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
-    document.location.href = logoutURL;
+function logout() {    
+    var logoutOptions = { redirectUri : document.location.protocol + '//' + document.location.host + "/logout.html" };
+    keycloak.logout(logoutOptions).then((success) => {
+        console.log("--> log: logout success ", success );
+    }).catch((error) => {
+        console.log("--> log: logout error ", error );
+    });
 }
 
 function autoLogout() {
-    var logoutURL = keycloak.endpoints.logout();
-    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html?autologout=true");
-    document.location.href = logoutURL;
+    var logoutOptions = { redirectUri : document.location.protocol + '//' + document.location.host + "/logout.html?autologout=true" };
+    keycloak.logout(logoutOptions).then((success) => {
+        console.log("--> log: logout success ", success );
+    }).catch((error) => {
+        console.log("--> log: logout error ", error );
+    });
+}
+
+function openProfile() {
+    location.href = keycloak.createAccountUrl();
 }
 
 /*************************************
@@ -2834,9 +2844,6 @@ async function getHostVulnerabilityReport() {
 	{
 		swal("Please enter a Vulnerability Id for the report.", "Click OK to continue!", "error");
 		return;
-	} else if (!vulnid.toLowerCase().startsWith("v-")) { // if it does not start with V-
-		swal("Please enter a valid Vulnerability Id for the report that begins with V-.", "Click OK to continue!", "error");
-		return;
 	}
 
 	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" , css: { padding: '15px'} }); 
@@ -2882,7 +2889,7 @@ async function getHostVulnerabilityReport() {
 			if (ccilist.length > 0) ccilist = ccilist.substring(0, ccilist.length -2);
 
 			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "vulnid": vulnid, "severity": strSeverity, "hostname": item.hostname,
+			table.row.add( { "vulnid": item.vulnid, "severity": strSeverity, "hostname": item.hostname,
 				"ruleTitle": item.ruleTitle, "status": strStatus, "cci": ccilist, 
 				"discussion": item.discussion, "checkContent": item.checkContent,
 				"type": item.checklistType, "release": item.checklistRelease, "version": item.checklistVersion,
@@ -3439,20 +3446,5 @@ function setupProfileMenu()
     if (typeof keycloak !== 'undefined') {
 		// use the person's first name
 		$("#profileUserName").text(keycloak.tokenParsed.given_name);
-		$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
-		var logoutURL = keycloak.endpoints.logout();
-		var path = "";
-
-		// if there is a subfolder in the path not just the root in this get it
-		var locations = window.location.pathname.split('/');
-		// add all slash subfolders in the URL until the last one which is the filename
-		// if the first one is "" empty it does no harm
-		for (var i = 0; i < locations.length-1; i++) {
-			if (locations[i].length > 0)
-				path = path + "/" + locations[i];
-		}
-
-		logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
-		$("#profileLogoutURL").attr("href", logoutURL);
 	}
 }
