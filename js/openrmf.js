@@ -245,7 +245,7 @@ async function getSystemACASItemsForDashboard() {
 		else {
 			// tell them there is no ACAS Nessus file
 			$("#divSystemACASPatchListing").hide();
-			$("#divNessusStatus").html("There is no current Nessus patch file loaded for this <a href='checklists.html?id=" + systemId + "'>system</a>.");
+			$("#divNessusStatus").html("There is no current Nessus patch file loaded for this <a href='checklists.html?id=" + systemId + "'>system package</a>.");
 			$("#divNessusStatus").show();
 		}
 	}
@@ -1951,30 +1951,12 @@ function updateSingleChecklistVulnerability(artifactid) {
 						$("#btnVulnerability-"+ vulnid).removeClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
 					}
 					vulnItem.status = $("#frmVulnStatus").val();
-					vulnItem.findinG_DETAILS = htmlEscape($("#frmVulnDetails").val());
-					vulnItem.comments = htmlEscape($("#frmVulnComments").val());
+					vulnItem.findinG_DETAILS = $("#frmVulnDetails").val();
+					vulnItem.comments = $("#frmVulnComments").val();
 					vulnItem.severitY_OVERRIDE = $("#frmVulnSecurityOverride").val();
-					vulnItem.severitY_JUSTIFICATION = htmlEscape($("#frmVulnSecurityJustification").val());
+					vulnItem.severitY_JUSTIFICATION = $("#frmVulnSecurityJustification").val();
 					// store the changes back
 					sessionStorage.setItem(vulnid, JSON.stringify(vulnItem));
-					// var severityOverride = '';
-
-					// $("#vulnStatus").html("<b>Status:</b>&nbsp;" + vulnItem.status.replace("NotAFinding","Not a Finding").replace("_"," "));
-					// $("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (htmlEscape(vulnItem.findinG_DETAILS)).replace(/\n/g, "<br />"));
-					// $("#vulnComments").html("<b>Comments:</b>&nbsp;" + (htmlEscape(vulnItem.comments)).replace(/\n/g, "<br />"));
-					// if (vulnItem.stiG_DATA[18].attributE_DATA) {
-					// 	$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (vulnItem.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
-					// }
-					// if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
-					// 	if (vulnItem.severitY_OVERRIDE.toLowerCase() == "low") 
-					// 		severityOverride = "CAT III / Low";
-					// 	else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "medium") 
-					// 		severityOverride = "CAT II / Medium";
-					// 	else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "high") 
-					// 		severityOverride = "CAT I / High";
-					// 	$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
-					// 	$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (htmlEscape(vulnItem.severitY_JUSTIFICATION)).replace(/\n/g, "<br />"));
-					// }
 				}
 				// color the button correctly for this
 				if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
