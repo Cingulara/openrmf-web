@@ -211,7 +211,14 @@
 
 					// setup the table
 					var tableNessus = $('#tblReportNessus').DataTable({
+						"responsive": false,
+						"searching": true,
 						"pageLength": 25,
+						"autoWidth": false,
+						"deferRender": true,
+						"ajax": {
+							"dataSrc": ""
+						},
 						"columns": [
 							{
 								"className": 'details-control',
@@ -228,7 +235,7 @@
 								"className": 'text-center',
 								"data": null,
 								"render": function (data, type, full, meta) {
-									return '<span style="padding: 5px;" class="' + getPatchVulnerabilityClassName(data.severityNumber) + '">' + data.severity + '</span>';
+									return '<span style="padding: 5px;" class="' + getPatchVulnerabilityClassName(data.severity) + '">' + data.severity + ' - ' + data.severityName + '</span>';
 								}
 							}
 						],
@@ -259,6 +266,13 @@
 							tr.addClass('shown');
 						}
 					});
+
+					$.fn.dataTable.ext.errMode = function(obj,param,err){
+						var tableId = obj.sTableId;
+						//console.log('Handling DataTable issue of Table '+tableId);
+					};
+
+					$('#tblReportNessus').DataTable().clear().draw();
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');

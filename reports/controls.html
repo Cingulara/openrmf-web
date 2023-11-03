@@ -261,11 +261,11 @@
 						] //,order: [[ 1, 'asc' ], [2,'asc']]
 					});
 
-
 					$.fn.dataTable.ext.errMode = function(obj,param,err){
 						var tableId = obj.sTableId;
 						//console.log('Handling DataTable issue of Table '+tableId);
 					};
+
 					// Add event listener for opening and closing details
 					$('#tblReportControls tbody').on('click', 'td.details-control', function () {
 						var tr = $(this).closest('tr');

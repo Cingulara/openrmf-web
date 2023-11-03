@@ -2556,44 +2556,18 @@ async function getReportsBySystem() {
 // run the Nessus report
 async function getNessusPatchScanReport() {
 	var systemGroupId = $("#checklistSystemFilter").val();
-	if (!systemGroupId || systemGroupId.length == 0)
-	{
-		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+	if (!systemGroupId || systemGroupId.length == 0) {
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
 		return;
 	}
 	// call the report API /reports/nessus/xxxxxxxxxxxx
 	$.blockUI({ message: "Generating the Nessus ACAS Patch Report ...please wait" , css: { padding: '15px'} }); 
-	var url = reportAPI + "system/" + systemGroupId + "/acaspatchdata";
+	//var url = reportAPI + "system/" + systemGroupId + "/acaspatchdata";
 	// get back the data
-	let response = await fetch(url, {headers: {
-		'Authorization': 'Bearer ' + keycloak.token
-	}});
-	if (response.ok) {				
-		// put into a datatable like the others
-		var table = $('#tblReportNessus').DataTable(); // the datatable reference to do a row.add() to
-		table.clear().draw();
-		var data = await response.json();
-		if (data && data.length > 0) {
-			// use the Report Name
-			$("#reportNessusReportName").html("Nessus Scan Report: " + data[0].reportName);
-		}
-		for (const item of data) {
-			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "hostname": item.hostname, "pluginId": item.pluginId,
-				"pluginName": item.pluginName, "severity": item.severity + ' - ' + item.severityName, 
-				"hostTotal": item.hostTotal, "total": item.total, "family": item.family, 
-				"description": item.description, "publicationDate": item.publicationDate, 
-				"pluginType": item.pluginType, "riskFactor": item.riskFactor, "synopsis": item.synopsis, 
-				"severityNumber": item.severity
-			}).draw();
-		}
-		$.unblockUI();
-	}
-	else {
-		$.unblockUI();
-		swal("There was a problem running your report. Please check with the Application Administrator to see if all services are running.", "Click OK to continue!", "error");
-		throw new Error(response.status)
-	}
+
+	var table = $('#tblReportNessus').DataTable(); // the datatable reference to do a row.add() to
+	table.clear().draw();
+	table.ajax.url(reportAPI + "system/" + systemGroupId + "/acaspatchdata/").load(finalizeLoadingTable);
 }
 // run the area chart report by system
 async function getSystemTotalsByTypeReport() {
