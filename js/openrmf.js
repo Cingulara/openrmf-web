@@ -18,6 +18,12 @@ function setupOpenRMFUI(disableTimers) {
 	$("#includeSidebarLink").load("/includes/sidebarmenu.html"); 
 	// include standard footer
 	$("#includeFooterLink").load("/includes/footertext.html"); 
+	// default headers
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+        }
+    });
 }
 function menuMetricsLink(){
     if (urlMetricsMenuLink) 
@@ -2779,38 +2785,42 @@ async function getSystemChecklistReport() {
 // Reports: listing of the controls
 async function getControlsReport() {
 	var pii = $('#checklistPrivacyFilter')[0].checked;
-	var url = controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
+	//var url = controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
 	$.blockUI({ message: "Generating the Controls Report ...please wait" , css: { padding: '15px'} }); 
-	let response = await fetch(url, {headers: {
-			'Authorization': 'Bearer ' + keycloak.token
-		}});
-	if (response.ok) {
-		// now get the data set
-		var data = await response.json();
+	// let response = await fetch(url, {headers: {
+	// 		'Authorization': 'Bearer ' + keycloak.token
+	// 	}});
+	// if (response.ok) {
+	// 	// now get the data set
+	// 	var data = await response.json();
 
 		var table = $('#tblReportControls').DataTable();
 		table.clear().draw();
-		var impactLevel = "";
-		for (const item of data) {
-			if (item.highimpact)
-				impactLevel = "High";
-			else if (item.moderateimpact)
-				impactLevel = "Moderate";
-			else if (item.lowimpact)
-				impactLevel = "Low";
-			else
-				impactLevel = "N/A";
-			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "family": item.family,"number": item.number,"title": item.title,"priority": item.priority,
-				"impactlevel": impactLevel,"supplementalGuidance": item.supplementalGuidance, 
-				"subControlDescription": item.subControlDescription, "subControlNumber": item.subControlNumber
-			}).draw();
-		}
-		$.unblockUI();
-	} else {
-		$.unblockUI();
-		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
-	}
+        table.ajax.url(controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val()).load(finalizeLoadingTable);
+		// var impactLevel = "";
+		// for (const item of data) {
+		// 	if (item.highimpact)
+		// 		impactLevel = "High";
+		// 	else if (item.moderateimpact)
+		// 		impactLevel = "Moderate";
+		// 	else if (item.lowimpact)
+		// 		impactLevel = "Low";
+		// 	else
+		// 		impactLevel = "N/A";
+		// 	// dynamically add to the datatable but only show main data, click the + for extra data
+		// 	table.row.add( { "family": item.family,"number": item.number,"title": item.title,"priority": item.priority,
+		// 		"impactlevel": impactLevel,"supplementalGuidance": item.supplementalGuidance, 
+		// 		"subControlDescription": item.subControlDescription, "subControlNumber": item.subControlNumber
+		// 	}).draw();
+		// }
+	// } else {
+	// 	$.unblockUI();
+	// 	swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
+	// }
+}
+
+async function finalizeLoadingTable() {
+	$.unblockUI();
 }
 
 // Reports: list out a vulnerability by host

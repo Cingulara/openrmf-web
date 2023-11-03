@@ -213,14 +213,30 @@
 					// format the extra row data
 					function format(d) {
 						// `d` is the original data object for the row
+						var impactLevel = "";
+						if (d.lowimpact)
+							impactLevel = "Low";
+					    else if (d.moderateimpact)
+							impactLevel = "Moderate";
+						else if (d.highimpact)
+							impactLevel = "High";
+						else
+							impactLevel = "N/A";
 						return "<div><h6>Supplemental Guidance</h6>" + htmlEscape(d.supplementalGuidance).replace(/\n/g, "<br />") + "</div><br />" +
-							"<div><h6>Impact Level</h6>" + d.impactlevel + "</div><br />" +
+							"<div><h6>Impact Level</h6>" + impactLevel + "</div><br />" +
 							"<div><h6>Priorty</h6>" + d.priority + "</div><br />";
 					}
 
 					// setup the table
 					var tableControls = $('#tblReportControls').DataTable({
+						"responsive": false,
+						"searching": true,
 						"pageLength": 25,
+						"autoWidth": false,
+						"deferRender": true,
+						"ajax": {
+							"dataSrc": ""
+						},
 						"columns": [
 							{
 								"className": 'details-control',
@@ -245,6 +261,11 @@
 						] //,order: [[ 1, 'asc' ], [2,'asc']]
 					});
 
+
+					$.fn.dataTable.ext.errMode = function(obj,param,err){
+						var tableId = obj.sTableId;
+						//console.log('Handling DataTable issue of Table '+tableId);
+					};
 					// Add event listener for opening and closing details
 					$('#tblReportControls tbody').on('click', 'td.details-control', function () {
 						var tr = $(this).closest('tr');
@@ -261,6 +282,7 @@
 							tr.addClass('shown');
 						}
 					});
+					$('#tblReportControls').DataTable().clear().draw();
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');
