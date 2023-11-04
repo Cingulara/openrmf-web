@@ -98,7 +98,7 @@
 											<div class="reportListingDescription">
 												<i class="fa fa-wrench reporticon"></i><br />
 												<button type="button" id="btnRunNessusReport"
-													title="Run the Nessus ACAS Report by System"
+													title="Run the Nessus ACAS Report by System Package"
 													onclick="location.href = 'nessus.html';" class="btn btn-success">Run
 													Report</button>
 												<!-- <button type="button" id="btnReloadNessusData" title="Refresh all System data on Nessus ACAS Reports" style="display: none;" onclick="reloadNessusPatchData();" 
@@ -113,7 +113,7 @@
 											<div class="reportListingDescription">
 												<i class="fa fa-pie-chart reporticon"></i><br />
 												<button type="button" id="btnRunSystemCharts"
-													title="Run the Scoring Pie Chart Report by System"
+													title="Run the Scoring Pie Chart Report by System Package"
 													onclick="location.href = 'charts.html';" class="btn btn-success">Run
 													Report</button>
 											</div>
@@ -126,7 +126,7 @@
 											<div class="reportListingDescription">
 												<i class="fa fa-list reporticon"></i><br />
 												<button type="button" id="btnRunChecklistReport"
-													title="Run the System Checklist Report by Checklist"
+													title="Run the System Package Checklist Report by Checklist"
 													onclick="location.href = 'checklists.html';"
 													class="btn btn-success">Run Report</button>
 											</div>
@@ -139,11 +139,61 @@
 											<div class="reportListingDescription">
 												<i class="fa fa-bug reporticon"></i><br />
 												<button type="button" id="btnRunVulnerabilityReport"
-													title="Run the Vulnerability by Host Report by System"
+													title="Run the Vulnerability by Host Report by System Package"
 													onclick="location.href = 'vulnerability.html';"
 													class="btn btn-success">Run Report</button>
-												<!-- <button type="button" id="btnReloadVulnerabilityData" title="Refresh all System data on Checklist Vulnerability Reports" style="display: none;" onclick="reloadVulnerabilityData();" 
-												class="btn btn-warning">Refresh Data</button> -->
+											</div>
+										</div>
+										<!-- Vulnerability Listing by Status and Severity -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Vulnerability by Status &amp; Severity
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-search reporticon"></i><br />
+												<button type="button" id="btnRunVulnerabilityStatusSeverityReport"
+													title="Run the Vulnerability by Severity and Status Report by System Package"
+													onclick="location.href = 'vulnerabilitystatusseverity.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Checklist Upgrade Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Checklist Upgrades Available
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-refresh reporticon"></i><br />
+												<button type="button" id="btnRunChecklistUpgradeReport"
+													title="Run the Available Checklist Upgrades Report by System Package"
+													onclick="location.href = 'checklistupgrades.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Vulnerability Override Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Vulnerabilities with Override Set
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-random reporticon"></i><br />
+												<button type="button" id="btnRunVulnerabilityOverrideReport"
+													title="Run the Vulnerability Overrides Report by System Package"
+													onclick="location.href = 'vulnerabilityoverride.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Checklist Activity Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Checklist Activity Report
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-eye reporticon"></i><br />
+												<button type="button" id="btnRunChecklistActivityReport"
+													title="Run the Checklist Activity Report"
+													onclick="location.href = 'checklistactivity.html';"
+													class="btn btn-success">Run Report</button>
 											</div>
 										</div>
 										<!-- Control Listing for Hosts / Servers -->
@@ -154,7 +204,7 @@
 											<div class="reportListingDescription">
 												<i class="fa fa-check-square reporticon"></i><br />
 												<button type="button" id="btnRunControlHostListingReport"
-													title="Run the Host by RMF Control Report by System"
+													title="Run the Host by RMF Control Report by System Package"
 													onclick="location.href = 'controlhostlisting.html';"
 													class="btn btn-success">Run Report</button>
 											</div>
