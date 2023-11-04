@@ -1,12 +1,25 @@
 ---
 layout: default
-title: What's New in v1.9
+title: What's New in v1.10
 nav_order: 2
 ---
 
 # What's New with OpenRMF
 
 Please refer to the <a href="https://github.com/Cingulara?tab=projects" target="_blank">OpenRMF OSS Projects listing on GitHub</a> for more information on feature updates and timeline.
+
+## Version 1.10 (Performance, Reports, Fixes and Updated Templates)
+Version 1.9 has the following added features and fixes:
+* Sped up reports using AJAX calls to load some tables versus "foreach" Javascript
+* Added indexes on certain fields for speeding up the listing and searching of data in 5 MongoDB databases
+* Added a report to list vulnerabilities by status and severity options
+* Added a report to show activity on checklists for age and stale data
+* Added a report to show all Vulnerabilities with severity override set
+* Added a report to list all Checklists that require an Update
+* Fix for Empty Comments / Details not saved on Checklists
+* Fix for Apostrophe and special HTML characters being escaped in data on textboxes
+* Fix for matching SCAP to Checklists on certain changed DISA templates
+* Latest DISA Templates as of November 4, 2023
 
 ## Version 1.9
 Version 1.9 has the following feature updates:
