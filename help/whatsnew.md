@@ -15,10 +15,12 @@ Version 1.9 has the following added features and fixes:
 * Added a report to list vulnerabilities by status and severity options
 * Added a report to show activity on checklists for age and stale data
 * Added a report to show all Vulnerabilities with severity override set
-* Added a report to list all Checklists that require an Update
+* Added a report to list all Checklists that require an Upgrade
 * Fix for Empty Comments / Details not saved on Checklists
 * Fix for Apostrophe and special HTML characters being escaped in data on textboxes
 * Fix for matching SCAP to Checklists on certain changed DISA templates
+* Fix for Severity Override not resetting after being on a VULN record that has one, to one that does not
+* Remove Caching on Reporting API to show proper data after deleting checklists correctly
 * Latest DISA Templates as of November 4, 2023
 
 ## Version 1.9

@@ -528,13 +528,13 @@ async function getSystemRecord(systemGroupId) {
 				$("#divSystemPOAM").html(poamHTML);
 			}
 			// created date and updated date
-			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
+			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY hh:mm A'));
 			if (item.updatedOn) 
-				$("#divSystemUpdated").html("<b>Last Updated:</b> " + moment(item.updatedOn).format('MM/DD/YYYY h:mm a'));
+				$("#divSystemUpdated").html("<b>Last Updated:</b> " + moment(item.updatedOn).format('MM/DD/YYYY hh:mm A'));
 			else
 				$("#divSystemUpdated").html("<b>Last Updated:</b> N/A");
 			if (item.lastComplianceCheck) 
-				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> " + moment(item.lastComplianceCheck).format('MM/DD/YYYY h:mm a'));
+				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> " + moment(item.lastComplianceCheck).format('MM/DD/YYYY hh:mm A'));
 			else 
 				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> N/A");
 1		}
@@ -912,13 +912,13 @@ async function deleteSystem(id) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
 					success: function(data){
-						swal("Your System was deleted successfully!", "Click OK to continue!", "success")
+						swal("Your System Package was deleted successfully!", "Click OK to continue!", "success")
 						.then((value) => {
 							location.href = "systems.html";
 						});
 					},
 					error : function(data){
-						swal("There was a Problem. Your System was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+						swal("There was a Problem. Your System Package was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
 					}
 			    });
 			  
@@ -1010,13 +1010,13 @@ async function deleteSystemChecklists(id){
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
 					success: function(data){
-						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
+						swal("Your System Package Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
 						.then((value) => {
 							location.reload();
 						});
 					},
 					error : function(data){
-						swal("There was a Problem. Your System Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+						swal("There was a Problem. Your System Package Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
 					}
 			    });
 			  
@@ -1047,13 +1047,13 @@ async function deleteAllSystemChecklists(id){
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
 					success: function(data){
-						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
+						swal("Your System Package Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
 						.then((value) => {
 							location.reload();
 						});
 					},
 					error : function(data){
-						swal("There was a Problem. Your System Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+						swal("There was a Problem. Your System Package Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
 					}
 			    });
 			  
@@ -1225,10 +1225,10 @@ async function getChecklists(system) {
 				checklistLink += item.title
 				checklistLink += '</a><br /><span class="small">last updated on '
 				if (item.updatedOn) {
-					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
+					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY hh:mm A');
 				}
 				else {
-					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
+					checklistLink += moment(item.created).format('MM/DD/YYYY hh:mm A');
 				}
 				checklistLink += "</span>";
 				
@@ -1376,10 +1376,10 @@ async function getChecklistData(id, template) {
 		$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
 		var updatedDate = "Last Updated on ";
 		if (data.updatedOn) {
-			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
+			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY hh:mm A');
 		}
 		else {
-			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+			updatedDate += moment(data.created).format('MM/DD/YYYY hh:mm A');
 		}
 		$("#checklistSystem").html("<b>System:</b> " + data.systemTitle);
 		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
@@ -1408,7 +1408,7 @@ async function getChecklistData(id, template) {
 
 		// update the Template Scoring dynamically
 		if (template) getScoreForTemplateListing(data.rawChecklist);
-
+		if (!sessionStorage.getItem("currentSystem"))
 		await getChecklistSystemsForChecklist();
 		// go ahead and fill in the modal for for upload while we are in here
 		$("#frmChecklistSystem").val(data.systemGroupId);
@@ -1475,7 +1475,8 @@ async function getChecklistData(id, template) {
 		sessionStorage.setItem("vulnStatus", vulnStatus);
 		// see if there is a control passed in and if so, only show the valid controls
 		$("#checklistTree").html(vulnListing);
-
+		sessionStorage.setItem("currentSystem", data.systemGroupId);
+		
 		if (!template) { // check the version and release # of the checklist
 			var newRelease = await newChecklistAvailable(data.systemGroupId, data.internalIdString);
 			if (newRelease != null) {
@@ -1701,6 +1702,8 @@ async function viewVulnDetails(vulnId) {
 		}
 		if (data.severitY_OVERRIDE && data.severitY_OVERRIDE.length > 0) {
 			$("#frmVulnSecurityOverride").val(data.severitY_OVERRIDE);
+		} else {
+			$("#frmVulnSecurityOverride").val("");
 		}
 		$("#frmVulnSecurityJustification").val(data.severitY_JUSTIFICATION);
 
@@ -2587,10 +2590,10 @@ async function getSystemChecklistReport() {
 		//var title = data.title;
 		var updatedDate = "Last Updated on ";
 		if (data.updatedOn) {
-			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
+			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY hh:mm A');
 		}
 		else {
-			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+			updatedDate += moment(data.created).format('MM/DD/YYYY hh:mm A');
 		}
 
 		var table = $('#tblReportSystemChecklist').DataTable();
@@ -2664,11 +2667,9 @@ async function getControlsReport() {
 	table.clear().draw();
 	table.ajax.url(controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val()).load(finalizeLoadingTable);	
 }
-
 async function finalizeLoadingTable() {
 	$.unblockUI();
 }
-
 // Reports: list out a vulnerability by host
 async function getHostVulnerabilityReport() {
 	var id = $("#checklistSystemFilter").val();
@@ -2741,7 +2742,6 @@ async function getHostVulnerabilityReport() {
 		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
 	}
 }
-
 // Reports: list out a vulnerability by status and severity
 async function getVulnerabilityStatusSeverityReport() {
 	var id = $("#checklistSystemFilter").val();
@@ -2775,6 +2775,21 @@ async function getVulnerabilityStatusSeverityReport() {
 	table.clear().draw();
 	table.ajax.url(reportAPI + "system/" + id + "/?naf=" +bNaF + "&open=" + bOpen+ "&na=" + bNA+ "&nr=" +bNR + "&cat1=" +bCat1 + "&cat2=" +bCat2 + "&cat3=" + bCat3).load(finalizeLoadingTable);
 }
+// Reports: list out a vulnerability by status and severity
+async function getVulnerabilityOverrideReport() {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
+
+	$.blockUI({ message: "Generating the Vulnerability Override Report...please wait" , css: { padding: '15px'} }); 
+	// call the API to get the checklist data
+	var table = $('#tblReportVulnerabilityOverride').DataTable();
+	table.clear().draw();
+	table.ajax.url(reportAPI + "system/" + id + "/override/").load(finalizeLoadingTable);
+}
 // generate a list of controls for the control for host report
 async function getControlsListing(){
 	let response = await fetch(controlAPI + "majorcontrols/", {headers: {
@@ -2788,7 +2803,20 @@ async function getControlsListing(){
 			}); 
 	}
 }
-
+// Reports: list checklists in reverse date order for activity
+async function getChecklistActivity() {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	$.blockUI({ message: "Generating the Checklist Activity Report...please wait" , css: { padding: '15px'} }); 
+	// call the API to get the checklist data
+	var table = $('#tblReportChecklistActivity').DataTable();
+	table.clear().draw();
+	table.ajax.url(readAPI + "systems/" + encodeURIComponent(id) + "/").load(finalizeLoadingTable);
+}
 // run the report for listing our hosts that have a control referencing them
 async function getRMFControlForHostReport() {
 	var id = $("#checklistSystemFilter").val();
@@ -2848,7 +2876,6 @@ async function getRMFControlForHostReport() {
 	}
 	$.unblockUI();
 }
-
 // refresh the Nessus ACAS Patch Data
 async function reloadNessusPatchData() {
 	swal({
@@ -2879,7 +2906,6 @@ async function reloadNessusPatchData() {
 		}
 	});
 }
-
 // refresh the Checklist Vulnerability Data
 async function reloadVulnerabilityData() {
 	swal({
@@ -2910,7 +2936,44 @@ async function reloadVulnerabilityData() {
 		}
 	});
 }
+async function getChecklistUpgrades () {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
 
+	$.blockUI({ message: "Generating the Checklist Upgrade Report...please wait" , css: { padding: '15px'} }); 
+	// call the API to get the checklist data
+	var url = readAPI + "systems/" + encodeURIComponent(id) + "/";
+	let response = await fetch(url, {headers: {
+			'Authorization': 'Bearer ' + keycloak.token
+		}});
+	if (response.ok) {
+		// now get the data set
+		var data = await response.json();
+		var table = $('#tblChecklistUpgrades').DataTable();
+		table.clear().draw();
+		var newRelease = {};
+		var updatedChecklist = "";
+		for (const item of data) {
+			newRelease = await newChecklistAvailable(id, item.internalIdString);
+            if (newRelease != null) {
+				updatedChecklist = 'V' + newRelease.version + ' ' + newRelease.stigRelease;
+				// dynamically add to the datatable
+				table.row.add( { "internalIdString": item.internalIdString, "title": item.title, "stigType": item.stigType, 
+				"version": item.version, "stigRelease": item.stigRelease, "hostName": item.hostName, 
+				"updatedChecklist": updatedChecklist
+				}).draw();
+			}
+		}
+		$.unblockUI();
+	} else {
+		$.unblockUI();
+		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
+	}
+}
 /************************************ 
  Audit List Functions
 ************************************/
@@ -3185,7 +3248,6 @@ function htmlEscape(str) {
 	} else
 		return "";
 }
-
 function decodeHtml(html) {
 	if (html) {
 		var txt = document.createElement("textarea");

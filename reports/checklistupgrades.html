@@ -4,12 +4,11 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>OpenRMF Vulnerability Listing by Status and Severity</title>
+	<title>OpenRMF Checklist Upgrades Available</title>
 	<meta name="description" content="OpenRMF Vulnerability Listing by Host">
 	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 	<meta name="referrer" content="origin">
@@ -83,7 +82,7 @@
 					<div class="row">
 						<div class="col-xl-12">
 							<div class="breadcrumb-holder">
-								<h1 class="main-title float-left">Reports - Vulnerability by Status &amp; Severity Report</h1>
+								<h1 class="main-title float-left">Reports - Checklist Upgrades Report</h1>
 								<ol class="breadcrumb float-right">
 									<li class="breadcrumb-item">Home</li>
 									<li class="breadcrumb-item active">Reports</li>
@@ -116,30 +115,8 @@
 													<div class="form-group">
 														<button type="button" title="Run the Host Vulnerability Report"
 															class="btn btn-sm btn-primary"
-															onclick="getVulnerabilityStatusSeverityReport();">Run Report</button>
+															onclick="getChecklistUpgrades();">Run Report</button>
 													</div>
-											</div>
-											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-												<div class="form-group">
-													<label class="vulnerabilityStatus">Status</label><br />
-													<input id="chkVulnCAT1" type="checkbox" checked="true"> High
-													(CAT 1) <br />
-													<input id="chkVulnCAT2" type="checkbox" checked="true"> Medium
-													(CAT 2) <br />
-													<input id="chkVulnCAT3" type="checkbox" checked="true"> Low (CAT
-													3)<br />
-												</div>
-												<div class="form-group">
-													<label class="vulnerabilitySeverity">Severity</label><br />
-													<input id="chkVulnNaF" type="checkbox" checked="true"> <span
-														class="vulnNotAFindingText">Not a Finding</span><br />
-													<input id="chkVulnOpen" type="checkbox" checked="true"> <span
-														class="vulnOpenCAT1Text">Open</span> <br />
-													<input id="chkVulnNA" type="checkbox" checked="true"> <span
-														class="vulnNotApplicableText">N/A</span> <br />
-													<input id="chkVulnNR" type="checkbox" checked="true"> <span
-														class="vulnNotReviewedText">Not Reviewed</span> <br />
-												</div>
 											</div>
 										</div>
 									</form>
@@ -152,20 +129,17 @@
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 							<div class="card mb-3">
 								<div class="card-header">
-									<h3>Vulnerability Listing</h3>
+									<h3>Checklist Upgrades Available</h3>
 								</div>
 								<div class="card-body">
 									<div>
-										<table id="tblReportVulnerabilityStatusSeverity" style="width: 100%;"
+										<table id="tblChecklistUpgrades" style="width: 100%;"
 											class="table table-bordered table-hover display">
 											<thead>
 												<tr>
-													<th></th>
-													<th>Vuln ID</th>
-													<th>Host Name</th>
-													<th>Severity</th>
-													<th>Status</th>
-													<th>Type</th>
+													<th>Title</th>
+													<th>Current Version</th>
+													<th>Available Version</th>
 												</tr>
 											</thead>
 											<tbody></tbody>
@@ -225,25 +199,8 @@
 					setupOpenRMFUI();
 					getChecklistSystemsForReportFilter();
 
-					// format the extra row data
-					function format(d) {
-						var severityOverride = "";
-						if (d.severityOverride) severityOverride = d.severityOverride;
-
-						// `d` is the original data object for the row
-						return "<div><h6>STIG Version</h6>" + d.checklistVersion + "</div><br />" +
-							"<div><h6>STIG Release</h6>" + d.checklistRelease + "</div><br />" +
-							"<div><h6>Discussion</h6>" + htmlEscape(d.discussion).replace(/\n/g, "<br />") + "</div><br />" +
-							"<div><h6>Check Content</h6>" + htmlEscape(d.checkContent).replace(/\n/g, "<br />") + "</div><br />" +
-							"<div><h6>Fix Text</h6>" + htmlEscape(d.fixText).replace(/\n/g, "<br />") + "</div><br />" +
-							"<div><h6>Comments</h6>" + htmlEscape(d.comments).replace(/\n/g, "<br />") + "</div><br />" +
-							"<div><h6>Finding Details</h6>" + htmlEscape(d.details).replace(/\n/g, "<br />") + "</div><br />" +
-							"<div><h6>Severity Override</h6>" +  severityOverride + "</div><br />" +
-							"<div><h6>Severity Override Justification</h6>" + htmlEscape(d.severityJustification).replace(/\n/g, "<br />") + "</div>";
-					}
-
 					// setup the table
-					var tableHostVulnerability = $('#tblReportVulnerabilityStatusSeverity').DataTable({
+					var tblChecklistUpgrades = $('#tblChecklistUpgrades').DataTable({
 						"responsive": false,
 						"searching": true,
 						"pageLength": 25,
@@ -254,49 +211,36 @@
 						},
 						"columns": [
 							{
-								"className": 'details-control',
-								"orderable": false,
-								"data": null,
-								"defaultContent": '',
+								"data": "hostName",
 								"targets": 0
 							},
-							{ "data": "vulnid" },
-							{ "data": "hostname" },
-							{ "data": "severity" },
 							{
 								"data": null,
+								"targets": 1,
 								"render": function (data, type, full, meta) {
-									return '<span style="padding: 5px;" class="' + getVulnerabilityStatusClassName(data.status, data.severity) + '">' + data.status + '</span>';
+									var stigType = "";
+									if (data.stigType) stigType = data.stigType;
+									var stigVersion = "";
+									if (data.version) stigVersion = data.version;
+									var stigRelease = "";
+									if (data.stigRelease) stigRelease = data.stigRelease;
+									var checklistLink = '<a href="/single-checklist.html?id=' + data.internalIdString + '" title="View the Checklist Details">'
+									checklistLink += stigType + " V" + stigVersion + " " + stigRelease;
+									checklistLink += '</a>';
+									return checklistLink;
 								}
 							},
-							{ "data": "checklistType" }
+							{
+								"data": "updatedChecklist",
+								"targets": 2
+							}
 						],
 						"columnDefs": [
-							{ "width": "5%", "targets": 0 },
-							{ "width": "15%", "targets": 1 },
-							{ "width": "10%", "targets": 2 },
-							{ "width": "10%", "targets": 3 },
-							{ "width": "10%", "targets": 4 },
-							{ "width": "40%", "targets": 5 }
+							{ "width": "20%", "targets": 0 },
+							{ "width": "40%", "targets": 1 },
+							{ "width": "40%", "targets": 2 }
 						],
-						order: [[2, 'desc']]
-					});
-
-					// Add event listener for opening and closing details
-					$('#tblReportVulnerabilityStatusSeverity tbody').on('click', 'td.details-control', function () {
-						var tr = $(this).closest('tr');
-						var row = tableHostVulnerability.row(tr);
-
-						if (row.child.isShown()) {
-							// This row is already open - close it
-							row.child.hide();
-							tr.removeClass('shown');
-						}
-						else {
-							// Open this row
-							row.child(format(row.data())).show();
-							tr.addClass('shown');
-						}
+						order: [[0, 'asc']]
 					});
 
 					$.fn.dataTable.ext.errMode = function(obj,param,err){
@@ -304,7 +248,7 @@
 						//console.log('Handling DataTable issue of Table '+tableId);
 					};
 
-					$('#tblReportVulnerabilityStatusSeverity').DataTable().clear().draw();
+					$('#tblChecklistUpgrades').DataTable().clear().draw();
 				}
 				else {
 					alert('You are not logged in. Please check your setup with Keycloak.');
