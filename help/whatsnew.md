@@ -20,6 +20,7 @@ Version 1.10 has the following added features and fixes:
 * Fix for Apostrophe and special HTML characters being escaped in data on textboxes
 * Fix for matching SCAP to Checklists on certain changed DISA templates
 * Fix for Severity Override not resetting after being on a VULN record that has one, to one that does not
+* Fix bug to hide upload Template if not an Administrator
 * Remove Caching on Reporting API to show proper data after deleting checklists correctly
 * Latest DISA Templates as of November 4, 2023
 * Updated help with better descriptions and overview
