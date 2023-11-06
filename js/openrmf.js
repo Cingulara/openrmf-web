@@ -1408,7 +1408,7 @@ async function getChecklistData(id, template) {
 
 		// update the Template Scoring dynamically
 		if (template) getScoreForTemplateListing(data.rawChecklist);
-		if (!sessionStorage.getItem("currentSystem"))
+		//if (!sessionStorage.getItem("currentSystem"))
 		await getChecklistSystemsForChecklist();
 		// go ahead and fill in the modal for for upload while we are in here
 		$("#frmChecklistSystem").val(data.systemGroupId);
@@ -2253,10 +2253,10 @@ function upgradeChecklist(id) {
 // get the list of systems from system memory OR from local storage
 // also need a way to refresh this
 async function getChecklistSystems() {
-	var data = JSON.parse(sessionStorage.getItem("checklistSystems"));
-	if (data) 
-		return data;
-	else {
+	// var data = JSON.parse(sessionStorage.getItem("checklistSystems"));
+	// if (data) 
+	// 	return data;
+	// else {
 		let response = await fetch(readAPI + "systems", {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2265,7 +2265,7 @@ async function getChecklistSystems() {
 				sessionStorage.setItem("checklistSystems", JSON.stringify(data));
 				return data;
 		}
-	}
+	//}
 }
 // get the list of systems for the upload function
 async function getChecklistSystemsForUpload(id) {
