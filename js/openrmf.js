@@ -420,7 +420,7 @@ async function getSystemListing(){
 				systemsListing += 'title="View the system package information and checklists" >' + item.title + ' (' + item.numberOfChecklists + ')</a>';
 				systemsListing += '</div><div class="systemDescription">';
 				if (item.description) {
-					systemsListing += item.description;
+					systemsListing += htmlEscape(item.description);
 				} else {
 					systemsListing += "<i>(No description)</i>"
 				}
@@ -482,7 +482,7 @@ async function getSystemRecord(systemGroupId) {
 			$("#divSystemTitle").html("<b>Title:</b> " + item.title);
 			$("#frmSystemTitle").val(item.title);
 			if (item.description){
-				$("#divSystemDescription").html("<b>Description:</b> " + item.description);
+				$("#divSystemDescription").html("<b>Description:</b> " + htmlEscape(item.description));
 				$("#frmSystemDescription").val(item.description);
 			}
 			else 
