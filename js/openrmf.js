@@ -1392,8 +1392,10 @@ async function getChecklistData(id, template) {
 		else 
 			$("#checklistTags").html("<b>Tags:</b> ");
 		$("#divMessaging").html(""); // clear this just in case
-
-		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+		if (!template)
+			$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+		else 
+			$("#checklistSTIGTitle").html("<b>Title:</b> " + data.title + " (" + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA + ")");
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA.replace("Release: ",""));
 		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
 		// template should use its uploaded description
