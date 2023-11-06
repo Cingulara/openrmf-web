@@ -1,23 +1,22 @@
 ---
 layout: default
-title: Step 5 - Compliance Report
+title: Step 6 - Compliance Report
 nav_order: 400
 ---
 
 # Generating your System's Compliance Report
 
-![OpenRMF Compliance Generator](./assets/compliance.png)
-
 Running a compliance report across all your checklists is a gigantic effort when done manually! If you do this across all Checklist files using the Java Viewer this can be quite time consuming. Or you have to keep track of the data in yet another media format such as MS Word or Excel. 
 
-When all your checklists are in OpenRMF, you can run a compliance report against the impact level (Low, Moderate, High) as well as the inclusion of personally identifiable information (PII) for your system. Choose your system and the pertinent details and click the Generate button. In a matter of seconds you have a listing of compliance against all your checklists for the relevant NIST controls. 
+When all your checklists are in OpenRMF<sup>&reg;</sup>, you can run a compliance report against the impact level (Low, Moderate, High) as well as the inclusion of personally identifiable information (PII) for your system. Choose your system and the pertinent details and click the Generate button. In a matter of seconds you have a listing of compliance against all your checklists for the relevant NIST controls. 
 
 There is a summary presented that gives you an overall compliance by family. And below that there is a detailed view by control linked to the checklists. 
 
+![OpenRMF Compliance Generator](./assets/compliance.png)
 
 ## Viewing Compliance Results
 
-The data in the compliance report is presented in a filterable table that is common across OpenRMF. Pagination is in the bottom right corner and there is a search filter at the top right of the table as well to quickly find your information. 
+The data in the compliance report is presented in a filterable table that is common across OpenRMF<sup>&reg;</sup>. Pagination is in the bottom right corner and there is a search filter at the top right of the table as well to quickly find your information. 
 
 ![OpenRMF Compliance Details](./assets/compliance-detail.png)
 
