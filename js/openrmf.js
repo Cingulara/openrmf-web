@@ -18,6 +18,12 @@ function setupOpenRMFUI(disableTimers) {
 	$("#includeSidebarLink").load("/includes/sidebarmenu.html"); 
 	// include standard footer
 	$("#includeFooterLink").load("/includes/footertext.html"); 
+	// default headers
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+        }
+    });
 }
 function menuMetricsLink(){
     if (urlMetricsMenuLink) 
@@ -101,16 +107,26 @@ $(document).on('click','#btnStayLoggedIn',function(){
     $('#modalAutoLogout').modal('hide');
 });
 
-function logout() {
-    var logoutURL = keycloak.endpoints.logout();
-    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
-    document.location.href = logoutURL;
+function logout() {    
+    var logoutOptions = { redirectUri : document.location.protocol + '//' + document.location.host + "/logout.html" };
+    keycloak.logout(logoutOptions).then((success) => {
+        console.log("--> log: logout success ", success );
+    }).catch((error) => {
+        console.log("--> log: logout error ", error );
+    });
 }
 
 function autoLogout() {
-    var logoutURL = keycloak.endpoints.logout();
-    logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html?autologout=true");
-    document.location.href = logoutURL;
+    var logoutOptions = { redirectUri : document.location.protocol + '//' + document.location.host + "/logout.html?autologout=true" };
+    keycloak.logout(logoutOptions).then((success) => {
+        console.log("--> log: logout success ", success );
+    }).catch((error) => {
+        console.log("--> log: logout error ", error );
+    });
+}
+
+function openProfile() {
+    location.href = keycloak.createAccountUrl();
 }
 
 /*************************************
@@ -235,7 +251,7 @@ async function getSystemACASItemsForDashboard() {
 		else {
 			// tell them there is no ACAS Nessus file
 			$("#divSystemACASPatchListing").hide();
-			$("#divNessusStatus").html("There is no current Nessus patch file loaded for this <a href='checklists.html?id=" + systemId + "'>system</a>.");
+			$("#divNessusStatus").html("There is no current Nessus patch file loaded for this <a href='checklists.html?id=" + systemId + "'>system package</a>.");
 			$("#divNessusStatus").show();
 		}
 	}
@@ -251,105 +267,8 @@ async function getSystemACASItemsForDashboard() {
  ************************************/
 async function getTemplates(latest) {
 	$.blockUI({ message: "Updating the template listing...please wait", css: { padding: '15px'} });
-	var url = templateAPI;	
-	let response = await fetch(url, {headers: {
-		'Authorization': 'Bearer ' + keycloak.token
-	}});
-	// parse the result regardless of the one called as the DIV are the same on Dashboard/index and the checklists pages
-  if (response.ok) {
-		var data = await response.json()
-		var table = $('#tblChecklistListing').DataTable(); // the datatable reference to do a row.add() to
-		table.clear().draw();
-		var checklistLink = "";
-		if (data.length == 0) {
-			$.unblockUI();
-			var alertText = 'There are no Checklist templates uploaded. Please go to the Upload page to add your first.';
-			alertText += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-			alertText += '<span aria-hidden="true">&times;</span></button>';
-			$("#divMessaging").html(alertText);
-			$("#divMessaging").show();
-		}
-		else {
-			$("#divMessaging").html('');
-			$("#divMessaging").hide();
-			for (const item of data) {
-				checklistLink = '<a href="single-template.html?id=' + item.internalIdString + '" title="Open Checklist Template">';
-				checklistLink += item.fullTitle;
-				checklistLink += '</a><br /><span class="small">last updated on ';
-				if (item.updatedOn) {
-					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
-				}
-				else {
-					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
-				}
-				checklistLink += "</span>";
-
-				// if not a SYSTEM templateType, then get the score; else just fill the table with the listing
-				if (item.templateType == "SYSTEM") {
-					table.row.add( { "title": checklistLink, 
-						"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
-						"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
-						"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
-						"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
-					}).draw();
-				} else {
-					// now get the score
-					var score = null;
-					var formData = new FormData();
-					formData.append("rawChecklist", item.rawChecklist);
-					$.ajax({
-						url : scoreAPI,
-						data : formData,
-						async: false,
-						type : 'POST',
-						processData: false,
-						contentType: false,
-						beforeSend: function(request) {
-							request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
-						},
-						success : function(data){
-							score = data;
-							if (score) {
-								// dynamically add to the datatable but only show main data, click the + for extra data
-								table.row.add( { "title": checklistLink, 
-									"totalNaF": score.totalNotAFinding, "totalNA": score.totalNotApplicable, "totalOpen": score.totalOpen, "totalNR": score.totalNotReviewed,
-									"totalNaFCat1": score.totalCat1NotAFinding, "totalNACat1": score.totalCat1NotApplicable, "totalOpenCat1": score.totalCat1Open, "totalNRCat1": score.totalCat1NotReviewed,
-									"totalNaFCat2": score.totalCat2NotAFinding, "totalNACat2": score.totalCat2NotApplicable, "totalOpenCat2": score.totalCat2Open, "totalNRCat2": score.totalCat2NotReviewed,
-									"totalNaFCat3": score.totalCat3NotAFinding, "totalNACat3": score.totalCat3NotApplicable, "totalOpenCat3": intOpenCat2 = score.totalCat3Open, "totalNRCat3": score.totalCat3NotReviewed
-								}).draw();
-							}
-							else {
-								table.row.add( { "title": checklistLink, 
-									"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
-									"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
-									"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
-									"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
-								}).draw();
-							}
-							$.unblockUI();
-						},
-					error: function() {
-						table.row.add( { "title": checklistLink, 
-							"totalNaF": 0, "totalNA": 0, "totalOpen": 0, "totalNR": 0,
-							"totalNaFCat1": 0, "totalNACat1": 0, "totalOpenCat1": 0, "totalNRCat1": 0,
-							"totalNaFCat2": 0, "totalNACat2": 0, "totalOpenCat2": 0, "totalNRCat2": 0,
-							"totalNaFCat3": 0, "totalNACat3": 0, "totalOpenCat3": 0, "totalNRCat3": 0
-						}).draw();
-						$.unblockUI();
-					}});
-				}
-			}
-			$.unblockUI();
-		}
-	}
-	else {
-		$.unblockUI();
-		if (response.status == 401)
-			swal("There is an Authentication problem. Please logout and log back in. And have the application administrator verify your API's authentication settings.", "Click OK to continue!", "error");
-		else if (response.status == 401)
-			swal("There is an application problem. Please have the application administrator verify your system is 100% healthy and running correctly.", "Click OK to continue!", "error");
-		throw new Error(response.status)
-	}
+	var table = $('#tblChecklistListing').DataTable();
+	table.ajax.url(templateAPI).load(finalizeLoadingTable);
 }
 // called from template listing, calls the POST to the scoring API to get back a score dynamically
 async function getScoreForTemplateListing(xmlChecklist) {
@@ -501,7 +420,7 @@ async function getSystemListing(){
 				systemsListing += 'title="View the system package information and checklists" >' + item.title + ' (' + item.numberOfChecklists + ')</a>';
 				systemsListing += '</div><div class="systemDescription">';
 				if (item.description) {
-					systemsListing += item.description;
+					systemsListing += htmlEscape(item.description);
 				} else {
 					systemsListing += "<i>(No description)</i>"
 				}
@@ -563,7 +482,7 @@ async function getSystemRecord(systemGroupId) {
 			$("#divSystemTitle").html("<b>Title:</b> " + item.title);
 			$("#frmSystemTitle").val(item.title);
 			if (item.description){
-				$("#divSystemDescription").html("<b>Description:</b> " + item.description);
+				$("#divSystemDescription").html("<b>Description:</b> " + htmlEscape(item.description));
 				$("#frmSystemDescription").val(item.description);
 			}
 			else 
@@ -609,13 +528,13 @@ async function getSystemRecord(systemGroupId) {
 				$("#divSystemPOAM").html(poamHTML);
 			}
 			// created date and updated date
-			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY h:mm a'));
+			$("#divSystemCreated").html("<b>Created:</b> " + moment(item.created).format('MM/DD/YYYY hh:mm A'));
 			if (item.updatedOn) 
-				$("#divSystemUpdated").html("<b>Last Updated:</b> " + moment(item.updatedOn).format('MM/DD/YYYY h:mm a'));
+				$("#divSystemUpdated").html("<b>Last Updated:</b> " + moment(item.updatedOn).format('MM/DD/YYYY hh:mm A'));
 			else
 				$("#divSystemUpdated").html("<b>Last Updated:</b> N/A");
 			if (item.lastComplianceCheck) 
-				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> " + moment(item.lastComplianceCheck).format('MM/DD/YYYY h:mm a'));
+				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> " + moment(item.lastComplianceCheck).format('MM/DD/YYYY hh:mm A'));
 			else 
 				$("#divSystemLastCompliance").html("<b>Last Compliance Check:</b> N/A");
 1		}
@@ -993,13 +912,13 @@ async function deleteSystem(id) {
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
 					success: function(data){
-						swal("Your System was deleted successfully!", "Click OK to continue!", "success")
+						swal("Your System Package was deleted successfully!", "Click OK to continue!", "success")
 						.then((value) => {
 							location.href = "systems.html";
 						});
 					},
 					error : function(data){
-						swal("There was a Problem. Your System was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+						swal("There was a Problem. Your System Package was not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
 					}
 			    });
 			  
@@ -1091,13 +1010,13 @@ async function deleteSystemChecklists(id){
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
 					success: function(data){
-						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
+						swal("Your System Package Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
 						.then((value) => {
 							location.reload();
 						});
 					},
 					error : function(data){
-						swal("There was a Problem. Your System Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+						swal("There was a Problem. Your System Package Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
 					}
 			    });
 			  
@@ -1128,13 +1047,13 @@ async function deleteAllSystemChecklists(id){
 					  request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
 					},
 					success: function(data){
-						swal("Your System Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
+						swal("Your System Package Checklists were deleted successfully!", "Note: for larger lists this may take a few moments. Click OK to continue!", "success")
 						.then((value) => {
 							location.reload();
 						});
 					},
 					error : function(data){
-						swal("There was a Problem. Your System Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
+						swal("There was a Problem. Your System Package Checklists were not deleted successfully! Please check with the Application Admin.", "Click OK to continue!", "error");
 					}
 			    });
 			  
@@ -1152,7 +1071,7 @@ async function downloadAllSystemChecklists(id) {
 	if ($("#txtSystemName").val()){
 		systemFilter = $("#txtSystemName").val();
 	}
-	$.blockUI({ message: "Generating the System Checklist ZIP ...please wait", css: { padding: '15px'} }); 
+	$.blockUI({ message: "Generating the System Checklist ZIP...please wait", css: { padding: '15px'} }); 
 	var url = readAPI;
 	if (getParameterByName('id')) 
 		url += "system/download/" + encodeURIComponent(getParameterByName('id'));
@@ -1306,10 +1225,10 @@ async function getChecklists(system) {
 				checklistLink += item.title
 				checklistLink += '</a><br /><span class="small">last updated on '
 				if (item.updatedOn) {
-					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY h:mm a');
+					checklistLink += moment(item.updatedOn).format('MM/DD/YYYY hh:mm A');
 				}
 				else {
-					checklistLink += moment(item.created).format('MM/DD/YYYY h:mm a');
+					checklistLink += moment(item.created).format('MM/DD/YYYY hh:mm A');
 				}
 				checklistLink += "</span>";
 				
@@ -1396,7 +1315,7 @@ async function exportChecklistListingXLSX() {
 	if ($("#txtSystemName").val()){
 		systemFilter = $("#txtSystemName").val();
 	}
-	$.blockUI({ message: "Generating the System Checklist Excel export ...please wait", css: { padding: '15px'} }); 
+	$.blockUI({ message: "Generating the System Checklist Excel export...please wait", css: { padding: '15px'} }); 
 	var url = readAPI;
 	if (getParameterByName('id')) 
 		url += "system/export/" + encodeURIComponent(getParameterByName('id'));
@@ -1457,10 +1376,10 @@ async function getChecklistData(id, template) {
 		$("#checklistTitle").html('<i class="fa fa-table"></i> ' + title);
 		var updatedDate = "Last Updated on ";
 		if (data.updatedOn) {
-			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
+			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY hh:mm A');
 		}
 		else {
-			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+			updatedDate += moment(data.created).format('MM/DD/YYYY hh:mm A');
 		}
 		$("#checklistSystem").html("<b>System:</b> " + data.systemTitle);
 		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
@@ -1473,8 +1392,10 @@ async function getChecklistData(id, template) {
 		else 
 			$("#checklistTags").html("<b>Tags:</b> ");
 		$("#divMessaging").html(""); // clear this just in case
-
-		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+		if (!template)
+			$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
+		else 
+			$("#checklistSTIGTitle").html("<b>Title:</b> " + data.title + " (" + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA + ")");
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA.replace("Release: ",""));
 		$("#checklistSTIGVersionInfo").html("<b>Version:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[0].siD_DATA);
 		// template should use its uploaded description
@@ -1489,7 +1410,7 @@ async function getChecklistData(id, template) {
 
 		// update the Template Scoring dynamically
 		if (template) getScoreForTemplateListing(data.rawChecklist);
-
+		//if (!sessionStorage.getItem("currentSystem"))
 		await getChecklistSystemsForChecklist();
 		// go ahead and fill in the modal for for upload while we are in here
 		$("#frmChecklistSystem").val(data.systemGroupId);
@@ -1556,7 +1477,8 @@ async function getChecklistData(id, template) {
 		sessionStorage.setItem("vulnStatus", vulnStatus);
 		// see if there is a control passed in and if so, only show the valid controls
 		$("#checklistTree").html(vulnListing);
-
+		sessionStorage.setItem("currentSystem", data.systemGroupId);
+		
 		if (!template) { // check the version and release # of the checklist
 			var newRelease = await newChecklistAvailable(data.systemGroupId, data.internalIdString);
 			if (newRelease != null) {
@@ -1782,6 +1704,8 @@ async function viewVulnDetails(vulnId) {
 		}
 		if (data.severitY_OVERRIDE && data.severitY_OVERRIDE.length > 0) {
 			$("#frmVulnSecurityOverride").val(data.severitY_OVERRIDE);
+		} else {
+			$("#frmVulnSecurityOverride").val("");
 		}
 		$("#frmVulnSecurityJustification").val(data.severitY_JUSTIFICATION);
 
@@ -1941,30 +1865,12 @@ function updateSingleChecklistVulnerability(artifactid) {
 						$("#btnVulnerability-"+ vulnid).removeClass(getVulnerabilityStatusClassName(vulnItem.status, vulnItem.stiG_DATA[1].attributE_DATA));
 					}
 					vulnItem.status = $("#frmVulnStatus").val();
-					vulnItem.findinG_DETAILS = htmlEscape($("#frmVulnDetails").val());
-					vulnItem.comments = htmlEscape($("#frmVulnComments").val());
+					vulnItem.findinG_DETAILS = $("#frmVulnDetails").val();
+					vulnItem.comments = $("#frmVulnComments").val();
 					vulnItem.severitY_OVERRIDE = $("#frmVulnSecurityOverride").val();
-					vulnItem.severitY_JUSTIFICATION = htmlEscape($("#frmVulnSecurityJustification").val());
+					vulnItem.severitY_JUSTIFICATION = $("#frmVulnSecurityJustification").val();
 					// store the changes back
 					sessionStorage.setItem(vulnid, JSON.stringify(vulnItem));
-					// var severityOverride = '';
-
-					// $("#vulnStatus").html("<b>Status:</b>&nbsp;" + vulnItem.status.replace("NotAFinding","Not a Finding").replace("_"," "));
-					// $("#vulnFindingDetails").html("<b>Finding Details:</b>&nbsp;" + (htmlEscape(vulnItem.findinG_DETAILS)).replace(/\n/g, "<br />"));
-					// $("#vulnComments").html("<b>Comments:</b>&nbsp;" + (htmlEscape(vulnItem.comments)).replace(/\n/g, "<br />"));
-					// if (vulnItem.stiG_DATA[18].attributE_DATA) {
-					// 	$("#vulnSeverityOverrideGuidance").html("<b>Severity Override Guidance:</b>&nbsp;" + (vulnItem.stiG_DATA[18].attributE_DATA).replace(/\n/g, "<br />"));
-					// }
-					// if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
-					// 	if (vulnItem.severitY_OVERRIDE.toLowerCase() == "low") 
-					// 		severityOverride = "CAT III / Low";
-					// 	else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "medium") 
-					// 		severityOverride = "CAT II / Medium";
-					// 	else if (vulnItem.severitY_OVERRIDE.toLowerCase() == "high") 
-					// 		severityOverride = "CAT I / High";
-					// 	$("#vulnSeverityOverride").html("<b>Severity Override:</b>&nbsp;" + severityOverride);
-					// 	$("#vulnSeverityJustification").html("<b>Severity Justification:</b>&nbsp;" + (htmlEscape(vulnItem.severitY_JUSTIFICATION)).replace(/\n/g, "<br />"));
-					// }
 				}
 				// color the button correctly for this
 				if (vulnItem.severitY_OVERRIDE && vulnItem.severitY_OVERRIDE.length > 0) {
@@ -2349,10 +2255,10 @@ function upgradeChecklist(id) {
 // get the list of systems from system memory OR from local storage
 // also need a way to refresh this
 async function getChecklistSystems() {
-	var data = JSON.parse(sessionStorage.getItem("checklistSystems"));
-	if (data) 
-		return data;
-	else {
+	// var data = JSON.parse(sessionStorage.getItem("checklistSystems"));
+	// if (data) 
+	// 	return data;
+	// else {
 		let response = await fetch(readAPI + "systems", {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
@@ -2361,7 +2267,7 @@ async function getChecklistSystems() {
 				sessionStorage.setItem("checklistSystems", JSON.stringify(data));
 				return data;
 		}
-	}
+	//}
 }
 // get the list of systems for the upload function
 async function getChecklistSystemsForUpload(id) {
@@ -2558,44 +2464,15 @@ async function getReportsBySystem() {
 // run the Nessus report
 async function getNessusPatchScanReport() {
 	var systemGroupId = $("#checklistSystemFilter").val();
-	if (!systemGroupId || systemGroupId.length == 0)
-	{
-		swal("Please choose a system for the report.", "Click OK to continue!", "error");
+	if (!systemGroupId || systemGroupId.length == 0) {
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
 		return;
 	}
 	// call the report API /reports/nessus/xxxxxxxxxxxx
-	$.blockUI({ message: "Generating the Nessus ACAS Patch Report ...please wait" , css: { padding: '15px'} }); 
-	var url = reportAPI + "system/" + systemGroupId + "/acaspatchdata";
-	// get back the data
-	let response = await fetch(url, {headers: {
-		'Authorization': 'Bearer ' + keycloak.token
-	}});
-	if (response.ok) {				
-		// put into a datatable like the others
-		var table = $('#tblReportNessus').DataTable(); // the datatable reference to do a row.add() to
-		table.clear().draw();
-		var data = await response.json();
-		if (data && data.length > 0) {
-			// use the Report Name
-			$("#reportNessusReportName").html("Nessus Scan Report: " + data[0].reportName);
-		}
-		for (const item of data) {
-			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "hostname": item.hostname, "pluginId": item.pluginId,
-				"pluginName": item.pluginName, "severity": item.severity + ' - ' + item.severityName, 
-				"hostTotal": item.hostTotal, "total": item.total, "family": item.family, 
-				"description": item.description, "publicationDate": item.publicationDate, 
-				"pluginType": item.pluginType, "riskFactor": item.riskFactor, "synopsis": item.synopsis, 
-				"severityNumber": item.severity
-			}).draw();
-		}
-		$.unblockUI();
-	}
-	else {
-		$.unblockUI();
-		swal("There was a problem running your report. Please check with the Application Administrator to see if all services are running.", "Click OK to continue!", "error");
-		throw new Error(response.status)
-	}
+	$.blockUI({ message: "Generating the Nessus ACAS Patch Report...please wait" , css: { padding: '15px'} }); 
+	var table = $('#tblReportNessus').DataTable(); // the datatable reference to do a row.add() to
+	table.clear().draw();
+	table.ajax.url(reportAPI + "system/" + systemGroupId + "/acaspatchdata/").load(finalizeLoadingTable);
 }
 // run the area chart report by system
 async function getSystemTotalsByTypeReport() {
@@ -2702,7 +2579,7 @@ async function getSystemChecklistReport() {
 		return;
 	}
 
-	$.blockUI({ message: "Generating the Checklist Report ...please wait" , css: { padding: '15px'} }); 
+	$.blockUI({ message: "Generating the Checklist Report...please wait" , css: { padding: '15px'} }); 
 	// call the API to get the checklist data
 	var url = readAPI + "artifact";
 	let response = await fetch(url + "/" + id, {headers: {
@@ -2715,10 +2592,10 @@ async function getSystemChecklistReport() {
 		//var title = data.title;
 		var updatedDate = "Last Updated on ";
 		if (data.updatedOn) {
-			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY h:mm a');
+			updatedDate += moment(data.updatedOn).format('MM/DD/YYYY hh:mm A');
 		}
 		else {
-			updatedDate += moment(data.created).format('MM/DD/YYYY h:mm a');
+			updatedDate += moment(data.created).format('MM/DD/YYYY hh:mm A');
 		}
 
 		var table = $('#tblReportSystemChecklist').DataTable();
@@ -2787,40 +2664,14 @@ async function getSystemChecklistReport() {
 // Reports: listing of the controls
 async function getControlsReport() {
 	var pii = $('#checklistPrivacyFilter')[0].checked;
-	var url = controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val();
-	$.blockUI({ message: "Generating the Controls Report ...please wait" , css: { padding: '15px'} }); 
-	let response = await fetch(url, {headers: {
-			'Authorization': 'Bearer ' + keycloak.token
-		}});
-	if (response.ok) {
-		// now get the data set
-		var data = await response.json();
-
-		var table = $('#tblReportControls').DataTable();
-		table.clear().draw();
-		var impactLevel = "";
-		for (const item of data) {
-			if (item.highimpact)
-				impactLevel = "High";
-			else if (item.moderateimpact)
-				impactLevel = "Moderate";
-			else if (item.lowimpact)
-				impactLevel = "Low";
-			else
-				impactLevel = "N/A";
-			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "family": item.family,"number": item.number,"title": item.title,"priority": item.priority,
-				"impactlevel": impactLevel,"supplementalGuidance": item.supplementalGuidance, 
-				"subControlDescription": item.subControlDescription, "subControlNumber": item.subControlNumber
-			}).draw();
-		}
-		$.unblockUI();
-	} else {
-		$.unblockUI();
-		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
-	}
+	$.blockUI({ message: "Generating the Controls Report...please wait" , css: { padding: '15px'} }); 
+	var table = $('#tblReportControls').DataTable();
+	table.clear().draw();
+	table.ajax.url(controlAPI + "?pii=" + pii + "&impactlevel=" + $('#checklistImpactFilter').val()).load(finalizeLoadingTable);	
 }
-
+async function finalizeLoadingTable() {
+	$.unblockUI();
+}
 // Reports: list out a vulnerability by host
 async function getHostVulnerabilityReport() {
 	var id = $("#checklistSystemFilter").val();
@@ -2834,12 +2685,9 @@ async function getHostVulnerabilityReport() {
 	{
 		swal("Please enter a Vulnerability Id for the report.", "Click OK to continue!", "error");
 		return;
-	} else if (!vulnid.toLowerCase().startsWith("v-")) { // if it does not start with V-
-		swal("Please enter a valid Vulnerability Id for the report that begins with V-.", "Click OK to continue!", "error");
-		return;
 	}
 
-	$.blockUI({ message: "Generating the Host Vulnerability Report ...please wait" , css: { padding: '15px'} }); 
+	$.blockUI({ message: "Generating the Host Vulnerability Report...please wait" , css: { padding: '15px'} }); 
 	// call the API to get the checklist data
 	var url = reportAPI + "system/" + id + "/vulnid/" + vulnid;
 	let response = await fetch(url, {headers: {
@@ -2882,7 +2730,7 @@ async function getHostVulnerabilityReport() {
 			if (ccilist.length > 0) ccilist = ccilist.substring(0, ccilist.length -2);
 
 			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "vulnid": vulnid, "severity": strSeverity, "hostname": item.hostname,
+			table.row.add( { "vulnid": item.vulnid, "severity": strSeverity, "hostname": item.hostname,
 				"ruleTitle": item.ruleTitle, "status": strStatus, "cci": ccilist, 
 				"discussion": item.discussion, "checkContent": item.checkContent,
 				"type": item.checklistType, "release": item.checklistRelease, "version": item.checklistVersion,
@@ -2896,7 +2744,54 @@ async function getHostVulnerabilityReport() {
 		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
 	}
 }
+// Reports: list out a vulnerability by status and severity
+async function getVulnerabilityStatusSeverityReport() {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
 
+	// status checkboxes
+	var bCat1  = $('#chkVulnCAT1').prop('checked');
+	var bCat2  = $('#chkVulnCAT2').prop('checked');
+	var bCat3  = $('#chkVulnCAT3').prop('checked');
+	if (!bCat1 && !bCat2 && !bCat3) {
+		swal("Please choose at least one status for the report.", "Click OK to continue!", "error");
+		return;
+	}	
+	// severity checkboxes
+	var bOpen = $('#chkVulnOpen').prop('checked');
+	var bNaF  = $('#chkVulnNaF').prop('checked');
+	var bNA   = $('#chkVulnNA').prop('checked');
+	var bNR   = $('#chkVulnNR').prop('checked');
+	if (!bOpen && !bNaF && !bNA && !bNR) {
+		swal("Please choose at least one severity for the report.", "Click OK to continue!", "error");
+		return;
+	}
+
+	$.blockUI({ message: "Generating the Vulnerability Status and Severity Report...please wait" , css: { padding: '15px'} }); 
+	// call the API to get the checklist data
+	var table = $('#tblReportVulnerabilityStatusSeverity').DataTable();
+	table.clear().draw();
+	table.ajax.url(reportAPI + "system/" + id + "/?naf=" +bNaF + "&open=" + bOpen+ "&na=" + bNA+ "&nr=" +bNR + "&cat1=" +bCat1 + "&cat2=" +bCat2 + "&cat3=" + bCat3).load(finalizeLoadingTable);
+}
+// Reports: list out a vulnerability by status and severity
+async function getVulnerabilityOverrideReport() {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
+
+	$.blockUI({ message: "Generating the Vulnerability Override Report...please wait" , css: { padding: '15px'} }); 
+	// call the API to get the checklist data
+	var table = $('#tblReportVulnerabilityOverride').DataTable();
+	table.clear().draw();
+	table.ajax.url(reportAPI + "system/" + id + "/override/").load(finalizeLoadingTable);
+}
 // generate a list of controls for the control for host report
 async function getControlsListing(){
 	let response = await fetch(controlAPI + "majorcontrols/", {headers: {
@@ -2910,7 +2805,20 @@ async function getControlsListing(){
 			}); 
 	}
 }
-
+// Reports: list checklists in reverse date order for activity
+async function getChecklistActivity() {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	$.blockUI({ message: "Generating the Checklist Activity Report...please wait" , css: { padding: '15px'} }); 
+	// call the API to get the checklist data
+	var table = $('#tblReportChecklistActivity').DataTable();
+	table.clear().draw();
+	table.ajax.url(readAPI + "systems/" + encodeURIComponent(id) + "/").load(finalizeLoadingTable);
+}
 // run the report for listing our hosts that have a control referencing them
 async function getRMFControlForHostReport() {
 	var id = $("#checklistSystemFilter").val();
@@ -2970,7 +2878,6 @@ async function getRMFControlForHostReport() {
 	}
 	$.unblockUI();
 }
-
 // refresh the Nessus ACAS Patch Data
 async function reloadNessusPatchData() {
 	swal({
@@ -3001,7 +2908,6 @@ async function reloadNessusPatchData() {
 		}
 	});
 }
-
 // refresh the Checklist Vulnerability Data
 async function reloadVulnerabilityData() {
 	swal({
@@ -3032,37 +2938,52 @@ async function reloadVulnerabilityData() {
 		}
 	});
 }
+async function getChecklistUpgrades () {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
 
-/************************************ 
- Audit List Functions
-************************************/
-async function getAuditRecords() {
+	$.blockUI({ message: "Generating the Checklist Upgrade Report...please wait" , css: { padding: '15px'} }); 
 	// call the API to get the checklist data
-	var url = auditAPI;
-	$.blockUI({ message: "Generating the Audit Listing...please wait", css: { padding: '15px'} }); 
+	var url = readAPI + "systems/" + encodeURIComponent(id) + "/";
 	let response = await fetch(url, {headers: {
 			'Authorization': 'Bearer ' + keycloak.token
 		}});
 	if (response.ok) {
 		// now get the data set
 		var data = await response.json();
-
-		var table = $('#tblAuditRecords').DataTable(); // the datatable reference to do a row.add() to
+		var table = $('#tblChecklistUpgrades').DataTable();
 		table.clear().draw();
+		var newRelease = {};
+		var updatedChecklist = "";
 		for (const item of data) {
-			// dynamically add to the datatable but only show main data, click the + for extra data
-			table.row.add( { "auditId": item.auditId, "program": item.program,
-				"created": moment(item.created).format('MM/DD/YYYY h:mm a'), "action": item.action, 
-				"userid": item.userid, "username": item.username, "fullname": item.fullname, 
-				"email": item.email, "url": item.url, 
-				"message": item.message
-			}).draw();
+			newRelease = await newChecklistAvailable(id, item.internalIdString);
+            if (newRelease != null) {
+				updatedChecklist = 'V' + newRelease.version + ' ' + newRelease.stigRelease;
+				// dynamically add to the datatable
+				table.row.add( { "internalIdString": item.internalIdString, "title": item.title, "stigType": item.stigType, 
+				"version": item.version, "stigRelease": item.stigRelease, "hostName": item.hostName, 
+				"updatedChecklist": updatedChecklist
+				}).draw();
+			}
 		}
 		$.unblockUI();
 	} else {
 		$.unblockUI();
-		swal("There was a problem listing the audit records. Please contact your Application Administrator.", "Click OK to continue!", "error");
+		swal("There was a problem generating your report. Please contact your Application Administrator.", "Click OK to continue!", "error");
 	}
+}
+/************************************ 
+ Audit List Functions
+************************************/
+async function getAuditRecords() {
+	$.blockUI({ message: "Generating the Audit Listing...please wait", css: { padding: '15px'} }); 
+	var table = $('#tblAuditRecords').DataTable();
+	table.clear().draw();
+	table.ajax.url(auditAPI).load(finalizeLoadingTable);
 }
 
 /************************************ 
@@ -3319,18 +3240,23 @@ function getRandomColor() {
   return color;
 }
 function htmlEscape(str) {
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+	if (str) {
+    	return str
+			.replace(/&/g, '&amp;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;');
+	} else
+		return "";
 }
-
 function decodeHtml(html) {
-    var txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
+	if (html) {
+		var txt = document.createElement("textarea");
+		txt.innerHTML = html;
+		return txt.value;
+	} else
+		return "";
 }
 /************************************ 
  Permission and User Login Functions
@@ -3439,20 +3365,5 @@ function setupProfileMenu()
     if (typeof keycloak !== 'undefined') {
 		// use the person's first name
 		$("#profileUserName").text(keycloak.tokenParsed.given_name);
-		$("#profileAccountURL").attr("href", keycloak.createAccountUrl());
-		var logoutURL = keycloak.endpoints.logout();
-		var path = "";
-
-		// if there is a subfolder in the path not just the root in this get it
-		var locations = window.location.pathname.split('/');
-		// add all slash subfolders in the URL until the last one which is the filename
-		// if the first one is "" empty it does no harm
-		for (var i = 0; i < locations.length-1; i++) {
-			if (locations[i].length > 0)
-				path = path + "/" + locations[i];
-		}
-
-		logoutURL += "?redirect_uri="+encodeURIComponent(document.location.protocol + '//' + document.location.host + "/logout.html");
-		$("#profileLogoutURL").attr("href", logoutURL);
 	}
 }

@@ -1,16 +1,16 @@
 ---
 layout: default
-title: Step 4 - View Checklists
+title: Step 5 - View Checklists
 nav_order: 350
 ---
 
 # Checklist Detailed View
 
-![OpenRMF Checklist Details](./assets/checklist-record.png)
-
 The detailed Checklist page shows several things about the checklist. It shows the title, automatically named by the checklist uploaded. The format is "hostname"-"type of checklist"-"release and date of the checklist format". So a Windows 10 STIG from the Release 19 Oct 25 2019 of the STIG of the machine named "myserver" would be "MYSERVER-WIN 10 STIG-R19 dated 25 Oct 2019". 
 
 The scoring of the checklist based on status is one of the first things you see as well. The total and then breakdown by category is shown with the relevant colors. There are also download links for the CKL file, an Excel version of the checklist to download, as well as a Delete button. These buttons depend on the Download role and Editor role respectively. Or if you have the Administrator role you get them all. 
+
+![OpenRMF Checklist Details](./assets/checklist-record.png)
 
 Each listing in the score table are linked to the Vulnerability Filter below it. For example, click the CAT 1 OPEN number, and you can filter your vulnerabilities below to only show Category 1 (High severity) Open items. This also affects the Export as you will export only those vulnerabilities shown on the page at that time. 
 
@@ -33,6 +33,8 @@ You also can edit each Vulnerability record with those roles. The following fiel
 ![OpenRMF Edit Checklist Vulnerability Details](./assets/checklist-edit-vulnerability.png)
 
 ## Bulk Edits on Similar Checklists
-As of version 1.1 you also can do a Bulk Edit on checklists within your system. This allows an edit on one checklist to be applied across all other checklists with the same Checklist Type within your system. i.e. an edit on Windows 2016 Member Server for a vulnerability to mark it as "Not a Finding" based on a group policy can be edited and then applied across all the Win2k16 checklists in your system with a click of a checkbox.
+You also can do a Bulk Edit on checklists within your system. This allows an edit on one checklist to be applied across all other checklists with the same Checklist Type within your system. i.e. an edit on Windows 2016 Member Server for a vulnerability to mark it as "Not a Finding" based on a group policy can be edited and then applied across all the Win2k16 checklists in your system with a click of a checkbox.
 
 This is a *big improvement* as it allows easy managing of multiple servers and checklists on hosts that are the same within your system. You must have a checklist per type per host for the RMF process artifacts. This allows much easier managing of similar hosts and workstations / servers in your system grouping.
+
+> Note the Bulk Edit is an ALL-OR-NOTHING type of bulk edit. If you click that checkbox, it will bulk edit EVERY SINGLE vulnerability with that Id throughout all checklists in your system package. So be aware of that.

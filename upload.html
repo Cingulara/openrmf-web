@@ -252,7 +252,7 @@
             setupOpenRMFUI();
             $("#content").show();
             $("#divUploadChecklist").show();
-            $("#divUploadTemplate").show();
+            if (keycloak.hasRealmRole("Administrator")) $("#divUploadTemplate").show();
             // get the list of systems
             getChecklistSystemsForUpload(getParameterByName('id'));
 

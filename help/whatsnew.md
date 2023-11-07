@@ -1,12 +1,51 @@
 ---
 layout: default
-title: What's New in v1.8
+title: What's New in v1.10
 nav_order: 2
 ---
 
-# What's New with OpenRMF
+# What's New with OpenRMF<sup>&reg;</sup>
 
-Please refer to the <a href="https://github.com/Cingulara?tab=projects" target="_blank">OpenRMF OSS Projects listing on GitHub</a> for more information on feature updates and timeline.
+Please refer to the <a href="https://github.com/Cingulara?tab=projects" target="_blank">OpenRMF<sup>&reg;</sup> OSS Projects listing on GitHub</a> for more information on feature updates and timeline.
+
+## Version 1.10 (Performance, Reports, Fixes and Updated Templates)
+Version 1.10 has the following added features and fixes:
+* Sped up reports using AJAX calls to load some tables versus "foreach" Javascript
+* Added indexes on certain fields for speeding up the listing and searching of data in 5 MongoDB databases
+* Added a report to list vulnerabilities by status and severity options
+* Added a report to show activity on checklists for age and stale data
+* Added a report to show all Vulnerabilities with severity override set
+* Added a report to list all Checklists that require an Upgrade
+* Fix for Empty Comments / Details not saved on Checklists
+* Fix for Apostrophe and special HTML characters being escaped in data on textboxes
+* Fix for matching SCAP to Checklists on certain changed DISA templates
+* Fix for Severity Override not resetting after being on a VULN record that has one, to one that does not
+* Fix bug to hide upload Template if not an Administrator
+* Remove Caching on Reporting API to show proper data after deleting checklists correctly
+* Latest DISA Templates as of November 4, 2023
+* Updated help with better descriptions and overview
+
+## Version 1.9
+Version 1.9 has the following feature updates:
+* Fix for SCAP Scans featuring enhanced information from SCC tool
+* Fix for hostname filter to be case insensitive on system package checklist listing
+* Allow searching Vulnerability from Reports with a partial VULN ID match
+* Updated base container images for vulnerability fixes
+* latest DISA templates (480) for SCAP scan matching up to March 08, 2023
+* support for `podman` and `podman-compose`
+* use of `docker compose` versus `docker-compose` in scripts
+
+> BREAKING CHANGE of Keycloak 20 with new configuration, all under a single port 8080 / 8443
+> BREAKING CHANGE of Grafana under a single port 8080 / 8443
+
+## Version 1.8.2
+Version 1.8.2 has the latest DISA templates (460) for SCAP scan matching up to August 28, 2022 as well as updated base images for web and service components for vulnerability issues.
+
+## Version 1.8.1
+Version 1.8.1 had some small fixes in it immediately after v1.8 went public:
+* Fix the Nessus SCAP parser to pull results correctly
+* Fix the msg-system consolidated code from msg-checklist to score new checklists correctly
+* Please see the note on v1.8.0 release on updating the MongoDB compatibility before upgrading from 1.7.2 or earlier
 
 ## Version 1.8
 Version 1.8 has the latest DISA templates (438) for SCAP scan matching up to May 10, 2022 as well as the following feature updates:

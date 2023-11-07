@@ -184,7 +184,14 @@
 
 					// setup the table
 					var tableAudits = $('#tblAuditRecords').DataTable({
+						"responsive": false,
+						"searching": true,
 						"pageLength": 25,
+						"autoWidth": false,
+						"deferRender": true,
+						"ajax": {
+							"dataSrc": ""
+						},
 						"columns": [
 							{
 								"className": 'details-control',
@@ -193,7 +200,14 @@
 								"defaultContent": '',
 								"targets": 0
 							},
-							{ "data": "created" },
+							{
+								"data": null,
+								"targets": 1,
+								"render": function (data, type, full, meta) {
+									return moment(data.created).format('MM/DD/YYYY h:mm a');
+								}
+							},
+							
 							{ "data": "program" },
 							{ "data": "action" },
 							{ "data": "username" },
@@ -226,6 +240,12 @@
 							tr.addClass('shown');
 						}
 					});
+
+					$.fn.dataTable.ext.errMode = function(obj,param,err){
+						var tableId = obj.sTableId;
+						//console.log('Handling DataTable issue of Table '+tableId);
+					};
+					$('#tblAuditRecords').DataTable().clear().draw();
 					// load the data
 					getAuditRecords();
 				}
