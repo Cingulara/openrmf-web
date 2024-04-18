@@ -14,9 +14,9 @@ In the OpenRMF OSS we include the latest default public (i.e. non-PKI required) 
 
 User Templates are added via the Upload page in the Template Upload area. The User Template listing are user templates that those with permissions have added. The Template name as well as the score of items are shown simimlar to the Checklist listing page. Click the linked Template to view the detailed information. Click the green plus sign to view the scoring based on category. For User Templates, we calculate the score of the template for you based on vulnerabilities.
 
-![OpenRMF Templates](./assets/templates.png)
+![OpenRMF OSS Templates](./assets/templates.png)
 
-You can use DISA or User Templates in OpenRMF<sup>&reg;</sup> for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly. 
+You can use DISA or User Templates in OpenRMF<sup>&reg;</sup> OSS for a starting point for your checklists. A great example would be you have an infrastructure package and a platform-as-a-service package that your application(s) run on. That infrastructure and PaaS have known good checklists as a baseline that application owners use as a starting point and adjust the remaining vulnerability items accordingly. 
 
 On the Checklist Template page showing the individual checklist template, you can see the vulnerabilities. You also can click the Create Checklist button to make a new checklist based on the template in a system package you select. 
 

@@ -11,19 +11,19 @@ page where you see the title, list of checklists, overall score, and other data.
 
 ## Nessus Scan Export
 
-![OpenRMF Compliance Generator](./assets/nessus-export-xlsx.png)
+![OpenRMF OSS Compliance Generator](./assets/nessus-export-xlsx.png)
 
 The Nessus Scan Export shows patching items across your system servers/hosts, sorted by criticality/severity, and gives details on the ID, description, and severity level.
 
 ## POAM Export
 
-![OpenRMF POAM Generator](./assets/poam-export.png)
+![OpenRMF OSS POAM Generator](./assets/poam-export.png)
 
 The Plan of Actions and Milestones (POAM) Export lists all Open and Not Reviewed items across every single checklist within your system. The data is ordered by severity and then vulnerability so all high level items are near the top. The POAM is used to show your plan to address, mitigate, and/or close the items still open while you go through the RMF Process.
 
 ## Test Plan Summary Export
 
-![OpenRMF Test Plan Summary Generator](./assets/test-plan-summary-export.png)
+![OpenRMF OSS Test Plan Summary Generator](./assets/test-plan-summary-export.png)
 
 The Test Plan Export shows all Nessus Patch data with items that need to be addressed in Critical and High (CAT I) down to Low (CAT III) items. It then shows similar data across all your checklists (manual and SCAP generated) in a similar fashion. This gives you a high level count of items per severity.  
 

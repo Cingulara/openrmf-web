@@ -1,0 +1,16 @@
+I"�<h1 id="the-openrmf-oss-user-interface-at-a-glance">The OpenRMF<sup>®</sup> OSS User Interface at a Glance</h1>
+
+<p><img src="./assets/navigation.png" alt="OpenRMF OSS Navigation" /></p>
+
+<p>The main navigation is based on the Pike Admin responsive template. Once you login you have a menu of options on the left. Click the hamburger 3-line icon to make this menu collapse down to just icons. In the top far right are two icons. The help icon launches the OpenRMF<sup>®</sup> OSS Docs site in GitHub.io.</p>
+
+<p><img src="./assets/view-profile.png" alt="OpenRMF OSS Profile Menu" /></p>
+
+<p>The second icon in that row is the person icon. Click that to find the User Profile and Logout links. The User Profile opens the Keycloak user profile page that is explained on the <a href="./users.md">User Profile</a> page. And the logout link will remove your session and take you to the logout page.</p>
+
+<h2 id="accessing-online-help">Accessing Online Help</h2>
+
+<p><img src="./assets/online-help.png" alt="OpenRMF OSS Help" /></p>
+
+<p>The GitHub.io page for OpenRMF<sup>®</sup> is this site here. This is linked into the help icon in the menu bar on each page in the top right of the screen.</p>
+:ET

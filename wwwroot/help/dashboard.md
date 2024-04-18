@@ -4,11 +4,11 @@ title: Step 3 - Your Dashboard
 nav_order: 200
 ---
 
-# Your OpenRMF<sup>&reg;</sup> Dashboard
+# Your OpenRMF<sup>&reg;</sup> OSS Dashboard
 
-![OpenRMF Dashboard](./assets/dashboard.png)
+![OpenRMF OSS Dashboard](./assets/dashboard.png)
 
-The initial OpenRMF<sup>&reg;</sup> dashboard shows the total checklists, total systems, and total templates within the system at the very top of the page.  Underneath that are two sections: one for Nessus / ACAS Patch scan data and one for Checklist open vulnerability data.
+The initial OpenRMF<sup>&reg;</sup> OSS dashboard shows the total checklists, total systems, and total templates within the system at the very top of the page.  Underneath that are two sections: one for Nessus / ACAS Patch scan data and one for Checklist open vulnerability data.
 
 The Critical and High Findings allow you to select a system (independently from other sections on this page) and see the numbers for Critical, High, and Medium severity items. You can export the summary data of the Nessus file on the System page itself. This dashboard just gives you the high level numbers by system. 
 

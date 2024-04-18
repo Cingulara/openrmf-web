@@ -4,14 +4,14 @@ title: User Permissions
 nav_order: 1000
 ---
 
-# OpenRMF<sup>&reg;</sup> Roles and Permissions
-OpenRMF<sup>&reg;</sup> uses Roles to allow permissions on the front end user interface as well as the backend API calls for interaction with the data and features. 
+# OpenRMF<sup>&reg;</sup> OSS Roles and Permissions
+OpenRMF<sup>&reg;</sup> OSS uses Roles to allow permissions on the front end user interface as well as the backend API calls for interaction with the data and features. 
 
 Anyone that has a role has that role for all of the system packages for the entire installation. So be careful when you give out roles to people as they will have that role for every single system package. 
 
 # Types of Roles
 
-There are 4 main types of Roles (out of 5) in OpenRMF<sup>&reg;</sup> used in the application:
+There are 4 main types of Roles (out of 5) in OpenRMF<sup>&reg;</sup> OSS used in the application:
 
 ## Administrator
 This role can do anything, including:
