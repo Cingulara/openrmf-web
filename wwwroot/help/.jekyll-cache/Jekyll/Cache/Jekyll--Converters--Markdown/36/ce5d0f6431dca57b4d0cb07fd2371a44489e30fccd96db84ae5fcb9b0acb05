@@ -1,0 +1,39 @@
+I"�<h1 id="openrmf-roles-and-permissions">OpenRMF<sup>®</sup> Roles and Permissions</h1>
+<p>OpenRMF<sup>®</sup> uses Roles to allow permissions on the front end user interface as well as the backend API calls for interaction with the data and features.</p>
+
+<p>Anyone that has a role has that role for all of the system packages for the entire installation. So be careful when you give out roles to people as they will have that role for every single system package.</p>
+
+<h1 id="types-of-roles">Types of Roles</h1>
+
+<p>There are 4 main types of Roles (out of 5) in OpenRMF<sup>®</sup> used in the application:</p>
+
+<h2 id="administrator">Administrator</h2>
+<p>This role can do anything, including:</p>
+<ul>
+  <li>create new system packages</li>
+  <li>upload checklists</li>
+  <li>edit all data</li>
+  <li>delete all data, including system packages</li>
+</ul>
+
+<h2 id="editor">Editor</h2>
+<ul>
+  <li>upload checklists and scans</li>
+  <li>delete checklists and scan results</li>
+</ul>
+
+<h2 id="reader">Reader</h2>
+<ul>
+  <li>read only access to all data</li>
+</ul>
+
+<h2 id="download">Download</h2>
+<ul>
+  <li>read only access to all data and download capability</li>
+</ul>
+
+<h2 id="assessor">Assessor</h2>
+<ul>
+  <li>a placeholder role for future enhancements.</li>
+</ul>
+:ET

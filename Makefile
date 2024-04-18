@@ -1,8 +1,6 @@
-VERSION ?= 1.10.01
+VERSION ?= 1.11.00
 NAME ?= "openrmf-web"
 AUTHOR ?= "Dale Bingham"
-PORT_EXT ?= 9000
-PORT_INT ?= 80
 NO_CACHE ?= true
 DOCKERHUB_ACCOUNT ?= cingulara
   

@@ -1,0 +1,147 @@
+I"<h1 id="whats-new-with-openrmf">What’s New with OpenRMF</h1>
+
+<p>Please refer to the <a href="https://github.com/Cingulara?tab=projects" target="_blank">OpenRMF OSS Projects listing on GitHub</a> for more information on feature updates and timeline.</p>
+
+<h2 id="version-1">Version 1.</h2>
+<p>Version 1.9 has the following feature updates:</p>
+<ul>
+  <li>Fix for SCAP Scans featuring enhanced information from SCC tool</li>
+  <li>Fix for hostname filter to be case insensitive on system package checklist listing</li>
+  <li>Allow searching Vulnerability from Reports with a partial VULN ID match</li>
+  <li>Updated base container images for vulnerability fixes</li>
+  <li>latest DISA templates (480) for SCAP scan matching up to March 08, 2023</li>
+</ul>
+
+<blockquote>
+  <p>BREAKING CHANGE of Keycloak 20 with new configuration, all under a single port 8080 / 8443
+BREAKING CHANGE of Grafana under a single port 8080 / 8443</p>
+</blockquote>
+
+<h2 id="version-18">Version 1.8</h2>
+<p>Version 1.8 has the latest DISA templates (438) for SCAP scan matching up to May 10, 2022 as well as the following feature updates:</p>
+<ul>
+  <li>Allow creating a new checklist from a template from the template checklist page</li>
+  <li>Allow removing a Nessus patch scan from a system package record</li>
+  <li>Updated the POAM to DoD format for use in eMASS and other applications</li>
+  <li>Show the checklist template version and release on the template listing page</li>
+  <li>Updated button help throughout</li>
+  <li>Updated XLSX formatting with merged cells and borders</li>
+  <li>Logging configurable with LOGLEVEL environment variable 0 - 5 (Trace through Critical), defaulting to Warn = 3</li>
+  <li>MongoDB 5.0</li>
+  <li>Keycloak 15.0</li>
+  <li>NATS 2.8</li>
+  <li>.NET Core 6 runtime</li>
+  <li>consolidated 4 APIs into 1</li>
+  <li>consolidated 2 MSG clients into 1</li>
+</ul>
+
+<h2 id="version-17">Version 1.7</h2>
+<p>Version 1.7 has the latest DISA templates for SCAP scan matching up to December 24, 2021 as well as the following feature updates:</p>
+<ul>
+  <li>updated base container image for vulnerability fixes</li>
+  <li>updated NGINX container for the web UI for vulnerability fixes</li>
+  <li>easier editing of vulnerabilities, all on one page w/o a popup</li>
+  <li>fixing a bug removing \n from Template formatting</li>
+  <li>fixing loading of HTML / XML characters in checklist details listings</li>
+  <li>adding the NGINX prometheus exporter for tracking metrics of the web UI</li>
+  <li>allow tagging of checklists (one at a time)</li>
+  <li>listing all templates, including internal ones from DISA’s public site</li>
+  <li>better formatting of plugin description for Nessus report</li>
+  <li>better formatting for vulnerability detail on reports and chekclist vulnerability listings</li>
+</ul>
+
+<h2 id="version-16">Version 1.6</h2>
+<p>Version 1.6 fixed the POSIX bug after updating to Docker Desktop where the .env file and APIs read the environment variables but they had a “-“ in them. That was breaking it.</p>
+
+<h2 id="version-154">Version 1.5.4</h2>
+<p>Version 1.5.4 added the updated DISA Templates from April 27 and April 28 2021. These allow you to match on SCAP scan uploads to automatically create checklists.</p>
+
+<h2 id="version-153">Version 1.5.3</h2>
+<p>Version 1.5.3 included these updates:</p>
+<ul>
+  <li>Keycloak v 12.0.3 OpenRMF Theme</li>
+  <li>Download All CKL into ZIP for a System Package</li>
+  <li>Merge POAM and RAR fields into one for XLSX download</li>
+  <li>Table cell click for filtering Checklists and Templates Vulnerabilities listing</li>
+  <li>Color code reports for status</li>
+  <li>Improved UI on messaging and spacing</li>
+  <li>Various small bug fixes</li>
+</ul>
+
+<h2 id="version-152">Version 1.5.2</h2>
+<p>Version 1.5.2 included one update:</p>
+<ul>
+  <li>Update to Keycloak v 12.0.3</li>
+  <li>Fix for Keycloak Windows-based realm creation script</li>
+</ul>
+
+<h2 id="version-151">Version 1.5.1</h2>
+<p>Version 1.5.1 included a few updated features:</p>
+<ul>
+  <li>Updated base image and application container image to use Alpine and self-contained application executables for reduced scanning surface and size</li>
+  <li>Bug fix for the Reporting when you upgrade to a new STIG Checklist release with changing Vulnerability IDs</li>
+  <li>Auto-logoff after 15 minutes</li>
+  <li>Auto-refresh of the Keycloak token when on a page longer than 5 minutes</li>
+</ul>
+
+<h2 id="version-14">Version 1.4</h2>
+<p>Version 1.4 included one added feature:</p>
+<ul>
+  <li>Feature #216: Ability to upload OpenSCAP results XCCDF XML file to create Checklists, along with Nessus and DISA SCAP XCCDF XML results</li>
+</ul>
+
+<h2 id="version-132">Version 1.3.2</h2>
+<p>Version 1.3.2 was a bug fix release primarily as outlined below:</p>
+<ul>
+  <li>Fix score calculation bug #213 on checklists for Not a Finding counts</li>
+  <li>Added additional DISA public STIG Templates</li>
+</ul>
+
+<h2 id="version-131">Version 1.3.1</h2>
+<p>Version 1.3.1 was a bug fix release primarily as outlined below:</p>
+<ul>
+  <li>Fix a bug #203 on CAT 3 checklist Not a Finding counts not matching the checklist file</li>
+  <li>Updated to the Jan 22, 2021 DISA public STIG templates</li>
+</ul>
+
+<h2 id="version-13">Version 1.3</h2>
+<p>Version 1.3 was a bug fix release primarily as outlined below:</p>
+<ul>
+  <li>Display the status of the vulnerability in the checklist/template view</li>
+  <li>Scoring a checklist now uses the Severity Override as the severity if it is filled in (API and MSG client)</li>
+  <li>Fixed a bug in the low/moderate/high loading of NIST 800.53 Controls</li>
+  <li>Fixed a bug where PII controls are always used in the Compliance engine – now only if the checkbox is set</li>
+</ul>
+
+<h2 id="version-12">Version 1.2</h2>
+<p>Version 1.2 was also a security fix primarily with some updated functionality as outlined below:</p>
+<ul>
+  <li>.NET Core 3.1 update with Debian 10 based containers</li>
+  <li>Updated .NET Core 3.1 components such as Jaeger client, Swashbuckle, etc.</li>
+  <li>Keycloak 10 upgrade from 7.0</li>
+  <li>Keycloak theme for OpenRMF for seamless look-and-feel interaction</li>
+  <li>Header Security fixes from an active scan of the web application</li>
+  <li>Compliance Summary buttons are interactive for filtering now</li>
+  <li>Help documentation is now local to the application, not up on github.io pages</li>
+</ul>
+
+<h2 id="version-11">Version 1.1</h2>
+<p>Version 1.1 was a security fix primarily with some updated functionality as outlined below:</p>
+<ul>
+  <li>Rootless containers for APIs, messages, NGINX, and MongoDB databases</li>
+  <li>Updated jQuery, File Upload, Bootstrap and other JS components</li>
+  <li>Security Fixes from an active scan of the web application</li>
+  <li>Upload an existing checklist for a given checklist type and host = update the info (it was just duplicating the information)</li>
+  <li>Allow Bulk Edits on Vulnerabilities across similar checklist types within a System grouping</li>
+  <li>Container “restart: always” on the Docker Compose file</li>
+  <li>All CSS, HTML, JS are local not reaching out over the public Internet</li>
+</ul>
+
+<h2 id="version-10">Version 1.0</h2>
+
+<p>Version 1.0 of OpenRMF Core has these updates below:</p>
+<ul>
+  <li>Fixing a bug on the Web UI updating Vulnerabilities via the web form in a checklist</li>
+  <li>Updating the version descriptions to 1.0 throughout the codebase</li>
+</ul>
+:ET
