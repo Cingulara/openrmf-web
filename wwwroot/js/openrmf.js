@@ -1384,6 +1384,9 @@ async function getChecklistData(id, template) {
 		$("#checklistSystem").html("<b>System:</b> " + data.systemTitle);
 		$("#checklistHost").html("<b>Host:</b> " + data.checklist.asset.hosT_NAME);
 		$("#checklistFQDN").html("<b>FQDN:</b> " + data.checklist.asset.hosT_FQDN);
+		$("#checklistMarking").html("<b>Marking:</b> " + data.checklist.asset.marking);
+		$("#checklistHostIP").html("<b>Host IP:</b> " + data.checklist.asset.hosT_IP);
+		$("#checklistHostMAC").html("<b>Host MAC:</b> " + data.checklist.asset.hosT_MAC);
 		$("#checklistTechArea").html("<b>Tech Area:</b> " + data.checklist.asset.tecH_AREA);
 		$("#checklistAssetType").html("<b>Asset Type:</b> " + data.checklist.asset.asseT_TYPE);
 		$("#checklistRole").html("<b>Role:</b> " + data.checklist.asset.role);
@@ -1391,6 +1394,14 @@ async function getChecklistData(id, template) {
 			$("#checklistTags").html("<b>Tags:</b> " + data.tags.toString().replace(/\,/g, ", "));
 		else 
 			$("#checklistTags").html("<b>Tags:</b> ");
+
+		if (data.checklist.asset.weB_OR_DATABASE)
+            $("#checklistWebOrDB").html("<b>Web/Application/Database:</b> " + data.checklist.asset.weB_OR_DATABASE);
+        if (data.checklist.asset.weB_DB_SITE)
+            $("#checklistWebOrDBSite").html("<b>Site:</b> " + data.checklist.asset.weB_DB_SITE);
+        if (data.checklist.asset.weB_DB_INSTANCE)
+            $("#checklistWebOrDBInstance").html("<b>Instance:</b> " + data.checklist.asset.weB_DB_INSTANCE);
+
 		$("#divMessaging").html(""); // clear this just in case
 		if (!template)
 			$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
@@ -1420,6 +1431,14 @@ async function getChecklistData(id, template) {
 		$("#frmChecklistTechArea").val(data.checklist.asset.tecH_AREA);
 		$("#frmChecklistAssetType").val(data.checklist.asset.asseT_TYPE);
 		$("#frmChecklistRole").val(data.checklist.asset.role);
+		$("#frmChecklistMarking").val(data.checklist.asset.marking);
+		$("#frmChecklistHostIP").val(data.checklist.asset.hosT_IP);
+		$("#frmChecklistHostMAC").val(data.checklist.asset.hosT_MAC);
+		if (data.checklist.asset.weB_OR_DATABASE && data.checklist.asset.weB_OR_DATABASE == "true")
+			$("#frmChecklistWebOrDB").prop("checked", data.checklist.asset.weB_OR_DATABASE);
+		$("#frmChecklistWebOrDBSite").val(data.checklist.asset.weB_DB_SITE);
+		$("#frmChecklistWebOrDBInstance").val(data.checklist.asset.weB_DB_INSTANCE);
+		
 		$("#frmChecklistTags").empty();
 		if (data.tags && data.tags.length > 0) {
 		  // add the selections from frmChecklistTags
@@ -1799,6 +1818,12 @@ function updateSingleChecklist(id) {
 		tagListing += this.value + "|";
 	});
 	formData.append("tagList", htmlEscape(tagListing));
+	formData.append("hostip",htmlEscape($("#frmChecklistHostIP").val()));
+	formData.append("hostmac",htmlEscape($("#frmChecklistHostMAC").val()));
+	formData.append("webordatabase",$("#frmChecklistWebOrDB").prop('checked'));
+	formData.append("webdatabasesite",htmlEscape($("#frmChecklistWebOrDBSite").val()));
+	formData.append("webdatabaseinstance",htmlEscape($("#frmChecklistWebOrDBInstance").val()));
+	formData.append("marking",htmlEscape($("#frmChecklistMarking").val()));
 
 	$.ajax({
 		url : url,

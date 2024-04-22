@@ -451,7 +451,7 @@
   },"75": {
     "doc": "What's New",
     "title": "Version 1.11 (Security and Performance Update)",
-    "content": "Version 1.11 has the following added features and fixes: . | Updated base images for web, code | Updated 3rd party infrastructure images | Updated matching SCAP to DISA Checklist Templates on naming conventions | Removed Jaeger and OpenTracing older code not used | Removed build warnings on NLog and throwing extra exceptions | Sped up loading of report and template data | Latest DISA Templates as of April 18, 2024 | . ",
+    "content": "Version 1.11 has the following added features and fixes: . | Added MARKING, HOST IP, HOST MAC, Web or Database Fields for display and editing | Get Host IP, MAC, FQDN from the SCAP scan results, if there, for a checklist | Read for Not Applicable in SCAP scan results, and fill in CKL record accordingly | Updated Keycloak KC_PROXY environment variable from passthrough to edge for HTTPS setup later | Updated base images for web, code | Updated 3rd party infrastructure images | Updated matching SCAP to DISA Checklist Templates on naming conventions | Removed Jaeger and OpenTracing older code not used | Removed build warnings on NLog and throwing extra exceptions | Sped up loading of report and template data | Latest DISA Templates as of April 18, 2024 | . ",
     "url": "/help/whatsnew.html#version-111-security-and-performance-update",
     "relUrl": "/whatsnew.html#version-111-security-and-performance-update"
   },"76": {

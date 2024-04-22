@@ -111,9 +111,15 @@
 									<div id="checklistSTIGVersionInfo"></div>
 									<div id="checklistSTIGReleaseInfo"></div>
 									<div id="checklistFQDN"></div>
+									<div id="checklistMarking"></div>
+									<div id="checklistHostIP"></div>
+									<div id="checklistHostMAC"></div>
 									<div id="checklistTechArea"></div>
 									<div id="checklistAssetType"></div>
 									<div id="checklistRole"></div>
+									<div id="checklistWebOrDB"></div>
+									<div id="checklistWebOrDBSite"></div>
+									<div id="checklistWebOrDBInstance"></div>
 									<div id="checklistTags"></div>
 									<br />
 									<div class="small" id="checklistLastUpdated"></div>
@@ -621,6 +627,24 @@
 						<small id="titleFQDN" class="form-text text-muted">Enter the Fully Qualified Domain Name</small>
 					</div>
 					<div class="form-group">
+						<label for="frmChecklistHostIP">Host IP Address</label>
+						<input type="text" class="form-control" id="frmChecklistHostIP" maxlength="250"
+							aria-describedby="titleHostIP" placeholder="Enter the Host IP Address">
+						<small id="titleHostIP" class="form-text text-muted">Enter the IP Addresses for the Host, comma separated</small>
+					</div>
+					<div class="form-group">
+						<label for="frmChecklistHostMAC">Host MAC Address</label>
+						<input type="text" class="form-control" id="frmChecklistHostMAC" maxlength="250"
+							aria-describedby="titleHostMAC" placeholder="Enter the Host MAC Address">
+						<small id="titleHostMAC" class="form-text text-muted">Enter the MAC Addresses for the Host, comma separated</small>
+					</div>
+					<div class="form-group">
+						<label for="frmChecklistMarking">Marking (Classification)</label>
+						<input type="text" class="form-control" id="frmChecklistMarking" maxlength="100"
+							aria-describedby="titleMarking" placeholder="Enter the Marking / Classification">
+						<small id="titleMarking" class="form-text text-muted">Enter the Marking or Classification for this checklist</small>
+					</div>
+					<div class="form-group">
 						<label for="frmChecklistTechArea">Technology Area</label>
 						<select class="form-control select2" id="frmChecklistTechArea" aria-describedby="titleTechArea">
 							<option value="">Choose one...</option>
@@ -662,6 +686,17 @@
 							<option value="Domain Controller">Domain Controller</option>
 						</select>
 						<small id="titleRole" class="form-text text-muted">Select the Role for this machine</small>
+					</div>
+					<div class="form-group">
+						<label for="frmChecklistWebOrDB">Web Site, Application, or Database <input id="frmChecklistWebOrDB" type="checkbox"></label>
+						<input type="text" class="form-control" id="frmChecklistWebOrDBSite" maxlength="100"
+							aria-describedby="titleWebOrDBSite" placeholder="Enter the Web Site, Application, or Database Name">
+						<small id="titleWebOrDBSite" class="form-text text-muted">Enter the Web Site, Application, or Database Name</small>
+					</div>
+					<div class="form-group">
+						<input type="text" class="form-control" id="frmChecklistWebOrDBInstance" maxlength="100"
+							aria-describedby="titleWebOrDBInstance" placeholder="Enter the Web, Application, or Database Instance (if any)">
+						<small id="titleWebOrDBInstance" class="form-text text-muted">Enter the Web, Application, or Database Instance</small>
 					</div>
 					<div class="form-group">
 						<label for="multiple-select">Tags</label>
