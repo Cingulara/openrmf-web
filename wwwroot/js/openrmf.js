@@ -75,11 +75,11 @@ function resetLogoutTimer() {
 
 // update the keycloak token for 5 more minutes, as keycloak goes by seconds not ms
 function updateKeycloakToken() {
-    keycloak.updateToken(300).success(() => {
+    keycloak.updateToken(300).then(() => {
         //console.log('Keycloak successfully have a new token');
         window.clearTimeout(keycloakTimerID);
         startKeycloakUpdateTimer();
-    }).error(() => {
+    }).catch(() => {
         console.log('Keycloak token refresh unsuccessful');
     });
 }

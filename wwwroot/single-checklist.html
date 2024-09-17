@@ -539,7 +539,7 @@
 	<script>
 		$(document).ready(function () {
 			// authentication first
-			keycloak.init({ onLoad: 'login-required' }).success(function (authenticated) {
+			keycloak.init({ onLoad: 'login-required' }).then(function (authenticated) {
 				if (authenticated) {
 					// setup the User Interface
 					setupOpenRMFUI();
@@ -585,7 +585,7 @@
 				else {
 					swal("Invalid Login", "You are not logged in. Please check your setup with Keycloak.", "error");
 				}
-			}).error(function () {
+			}).catch(function () {
 				swal("Invalid Login", "Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an '*' somewhere?", "error");
 			});
 		}); // document ready

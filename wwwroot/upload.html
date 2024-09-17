@@ -245,7 +245,7 @@
   <script src="./js/apis.js"></script>
   <script>
     $(document).ready(function () {
-      keycloak.init({ onLoad: 'login-required' }).success(function (authenticated) {
+      keycloak.init({ onLoad: 'login-required' }).then(function (authenticated) {
         if (authenticated) {
           if (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator")) {
             // setup the User Interface
@@ -303,7 +303,7 @@
         else {
           alert('You are not logged in. Please check your setup with Keycloak.');
         }
-      }).error(function () {
+      }).catch(function () {
         alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
       });
 
