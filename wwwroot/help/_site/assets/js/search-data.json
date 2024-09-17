@@ -397,7 +397,7 @@
   },"66": {
     "doc": "Step 2 - Uploading",
     "title": "Upload Checklists or SCAP XCCDF files",
-    "content": "To upload a CKL file or XCCDF SCAP scan result file go to the Upload page. Use the top section to choose a System Package name and the file. You can now upload up to 10 files at a time. You can choose all 10 at once, or do 1 file at a time with the Choose Files button. If your system is not listed, click the “Add a new System Package” link and type in the System Package name. Then attach your files and click the Upload and Save button. When you upload your files, you will receive a confirmation of the files loading correctly or not. If all works well, the files are saved into the database. And a separate event is fired off to read and “score” the checklist you uploaded to keep track of the number of items by status by category. These are the numbers that show up when you list your checklist. If you upload an XCCDF XML SCAP scan result file (DISA or Nessus SCAP), that file is matched to internal System Package Templates from DISA’s known good publicly available checklists. That checklist is filled in with pass or fail items from the SCAP scan accordingly. Any vulnerability item not found within the scan is kept as Not Reviewed. This new checklist file is then saved into the database and the scoring process kicks off for it. Note: You must have a single checklist per CKL file. The Java Viewer from DISA allows more than one, however this makes your Cybersecurity personnel’s job harder to do. And it makes the issues harder to track. This tool looks for one checklist per CKL file if that is what you are uploading. And it will save you time from having to separate the checklists later when asked to do so by those very same Cybersecurity personnel! . ",
+    "content": "To upload a CKL file or XCCDF SCAP scan result file go to the Upload page. Use the top section to choose a System Package name and the file. You can now upload up to 10 files at a time. You can choose all 10 at once, or do 1 file at a time with the Choose Files button. If your system is not listed, click the “Add a new System Package” link and type in the System Package name. Then attach your files and click the Upload and Save button. When you upload your files, you will receive a confirmation of the files loading correctly or not. If all works well, the files are saved into the database. And a separate event is fired off to read and “score” the checklist you uploaded to keep track of the number of items by status by category. These are the numbers that show up when you list your checklist. If you upload an XCCDF XML SCAP scan result file (DISA or Nessus SCAP), that file is matched to internal System Package Templates from DISA’s known good publicly available checklists. That checklist is filled in with pass or fail items from the SCAP scan accordingly. Any vulnerability item not found within the scan is kept as Not Reviewed. This new checklist file is then saved into the database and the scoring process kicks off for it. Note: You must have a single checklist per CKL file. The Java Viewer from DISA allows more than one, however this makes your Cybersecurity personnel’s job harder to do. And it makes the issues harder to track. This tool looks for one checklist per CKL file if that is what you are uploading. And it will save you time from having to separate the checklists later when asked to do so by those very same Cybersecurity personnel! . When you upload a new SCAP .xml result or CKL checklist to a system package, it compares the hostname, checklist type, “is web or database” as well as site and instance for the web or database to note uniqueness of a checklist. If this is an update of an existing one, it will overwrite the checklist record and update the score and report databases accordingly. If this is a new checklist, it will create a record and then generate its score and reporting data accordingly. Be mindful of the uniqueness of the checklist rules: . | system pacakge | hostname | checklist type | is web or database | web or database site | web or database instance | . ",
     "url": "/help/uploading.html#upload-checklists-or-scap-xccdf-files",
     "relUrl": "/uploading.html#upload-checklists-or-scap-xccdf-files"
   },"67": {
@@ -450,119 +450,125 @@
     "relUrl": "/whatsnew.html#whats-new-with-openrmf"
   },"75": {
     "doc": "What's New",
+    "title": "Version 1.12 (Security and Unique Checklist Update)",
+    "content": "Version 1.12 has the following added features and fixes: . | Added unique checklist match based on system package, hostname, checklist/STIG type, web or database, site, and instance fields | Updated the checklist naming to account for unique web or database fields | Updated Keycloak v25.0.4 KC_PROXY_HEADERS=xforwarded environment variable from KC_PROXY=edge | Updated Keycloak v25.0.5 theme for OpenRMF OSS | Updated base images for web, code | Updated 3rd party infrastructure images | Updated matching SCAP to DISA Checklist Templates on naming conventions | Latest DISA Templates as of September 16, 2024 | . ",
+    "url": "/help/whatsnew.html#version-112-security-and-unique-checklist-update",
+    "relUrl": "/whatsnew.html#version-112-security-and-unique-checklist-update"
+  },"76": {
+    "doc": "What's New",
     "title": "Version 1.11 (Security and Performance Update)",
     "content": "Version 1.11 has the following added features and fixes: . | Added MARKING, HOST IP, HOST MAC, Web or Database Fields for display and editing | Get Host IP, MAC, FQDN from the SCAP scan results, if there, for a checklist | Read for Not Applicable in SCAP scan results, and fill in CKL record accordingly | Updated Keycloak KC_PROXY environment variable from passthrough to edge for HTTPS setup later | Updated base images for web, code | Updated 3rd party infrastructure images | Updated matching SCAP to DISA Checklist Templates on naming conventions | Removed Jaeger and OpenTracing older code not used | Removed build warnings on NLog and throwing extra exceptions | Sped up loading of report and template data | Latest DISA Templates as of April 18, 2024 | . ",
     "url": "/help/whatsnew.html#version-111-security-and-performance-update",
     "relUrl": "/whatsnew.html#version-111-security-and-performance-update"
-  },"76": {
+  },"77": {
     "doc": "What's New",
     "title": "Version 1.10 (Performance, Reports, Fixes and Updated Templates)",
     "content": "Version 1.10 has the following added features and fixes: . | Sped up reports using AJAX calls to load some tables versus “foreach” Javascript | Added indexes on certain fields for speeding up the listing and searching of data in 5 MongoDB databases | Added a report to list vulnerabilities by status and severity options | Added a report to show activity on checklists for age and stale data | Added a report to show all Vulnerabilities with severity override set | Added a report to list all Checklists that require an Upgrade | Fix for Empty Comments / Details not saved on Checklists | Fix for Apostrophe and special HTML characters being escaped in data on textboxes | Fix for matching SCAP to Checklists on certain changed DISA templates | Fix for Severity Override not resetting after being on a VULN record that has one, to one that does not | Fix bug to hide upload Template if not an Administrator | Remove Caching on Reporting API to show proper data after deleting checklists correctly | Latest DISA Templates as of November 4, 2023 | Updated help with better descriptions and overview | . ",
     "url": "/help/whatsnew.html#version-110-performance-reports-fixes-and-updated-templates",
     "relUrl": "/whatsnew.html#version-110-performance-reports-fixes-and-updated-templates"
-  },"77": {
+  },"78": {
     "doc": "What's New",
     "title": "Version 1.9",
     "content": "Version 1.9 has the following feature updates: . | Fix for SCAP Scans featuring enhanced information from SCC tool | Fix for hostname filter to be case insensitive on system package checklist listing | Allow searching Vulnerability from Reports with a partial VULN ID match | Updated base container images for vulnerability fixes | latest DISA templates (480) for SCAP scan matching up to March 08, 2023 | support for podman and podman-compose | use of docker compose versus docker-compose in scripts | . BREAKING CHANGE of Keycloak 20 with new configuration, all under a single port 8080 / 8443 BREAKING CHANGE of Grafana under a single port 8080 / 8443 . ",
     "url": "/help/whatsnew.html#version-19",
     "relUrl": "/whatsnew.html#version-19"
-  },"78": {
+  },"79": {
     "doc": "What's New",
     "title": "Version 1.8.2",
     "content": "Version 1.8.2 has the latest DISA templates (460) for SCAP scan matching up to August 28, 2022 as well as updated base images for web and service components for vulnerability issues. ",
     "url": "/help/whatsnew.html#version-182",
     "relUrl": "/whatsnew.html#version-182"
-  },"79": {
+  },"80": {
     "doc": "What's New",
     "title": "Version 1.8.1",
     "content": "Version 1.8.1 had some small fixes in it immediately after v1.8 went public: . | Fix the Nessus SCAP parser to pull results correctly | Fix the msg-system consolidated code from msg-checklist to score new checklists correctly | Please see the note on v1.8.0 release on updating the MongoDB compatibility before upgrading from 1.7.2 or earlier | . ",
     "url": "/help/whatsnew.html#version-181",
     "relUrl": "/whatsnew.html#version-181"
-  },"80": {
+  },"81": {
     "doc": "What's New",
     "title": "Version 1.8",
     "content": "Version 1.8 has the latest DISA templates (438) for SCAP scan matching up to May 10, 2022 as well as the following feature updates: . | Allow creating a new checklist from a template from the template checklist page | Allow removing a Nessus patch scan from a system package record | Updated the POAM to DoD format for use in eMASS and other applications | Show the checklist template version and release on the template listing page | Updated button help throughout | Updated XLSX formatting with merged cells and borders | Logging configurable with LOGLEVEL environment variable 0 - 5 (Trace through Critical), defaulting to Warn = 3 | MongoDB 5.0 | Keycloak 15.0 | NATS 2.8 | .NET Core 6 runtime | consolidated 4 APIs into 1 | consolidated 2 MSG clients into 1 | . ",
     "url": "/help/whatsnew.html#version-18",
     "relUrl": "/whatsnew.html#version-18"
-  },"81": {
+  },"82": {
     "doc": "What's New",
     "title": "Version 1.7",
     "content": "Version 1.7 has the latest DISA templates for SCAP scan matching up to December 24, 2021 as well as the following feature updates: . | updated base container image for vulnerability fixes | updated NGINX container for the web UI for vulnerability fixes | easier editing of vulnerabilities, all on one page w/o a popup | fixing a bug removing \\n from Template formatting | fixing loading of HTML / XML characters in checklist details listings | adding the NGINX prometheus exporter for tracking metrics of the web UI | allow tagging of checklists (one at a time) | listing all templates, including internal ones from DISA’s public site | better formatting of plugin description for Nessus report | better formatting for vulnerability detail on reports and chekclist vulnerability listings | . ",
     "url": "/help/whatsnew.html#version-17",
     "relUrl": "/whatsnew.html#version-17"
-  },"82": {
+  },"83": {
     "doc": "What's New",
     "title": "Version 1.6",
     "content": "Version 1.6 fixed the POSIX bug after updating to Docker Desktop where the .env file and APIs read the environment variables but they had a “-“ in them. That was breaking it. ",
     "url": "/help/whatsnew.html#version-16",
     "relUrl": "/whatsnew.html#version-16"
-  },"83": {
+  },"84": {
     "doc": "What's New",
     "title": "Version 1.5.4",
     "content": "Version 1.5.4 added the updated DISA Templates from April 27 and April 28 2021. These allow you to match on SCAP scan uploads to automatically create checklists. ",
     "url": "/help/whatsnew.html#version-154",
     "relUrl": "/whatsnew.html#version-154"
-  },"84": {
+  },"85": {
     "doc": "What's New",
     "title": "Version 1.5.3",
     "content": "Version 1.5.3 included these updates: . | Keycloak v 12.0.3 OpenRMF Theme | Download All CKL into ZIP for a System Package | Merge POAM and RAR fields into one for XLSX download | Table cell click for filtering Checklists and Templates Vulnerabilities listing | Color code reports for status | Improved UI on messaging and spacing | Various small bug fixes | . ",
     "url": "/help/whatsnew.html#version-153",
     "relUrl": "/whatsnew.html#version-153"
-  },"85": {
+  },"86": {
     "doc": "What's New",
     "title": "Version 1.5.2",
     "content": "Version 1.5.2 included one update: . | Update to Keycloak v 12.0.3 | Fix for Keycloak Windows-based realm creation script | . ",
     "url": "/help/whatsnew.html#version-152",
     "relUrl": "/whatsnew.html#version-152"
-  },"86": {
+  },"87": {
     "doc": "What's New",
     "title": "Version 1.5.1",
     "content": "Version 1.5.1 included a few updated features: . | Updated base image and application container image to use Alpine and self-contained application executables for reduced scanning surface and size | Bug fix for the Reporting when you upgrade to a new STIG Checklist release with changing Vulnerability IDs | Auto-logoff after 15 minutes | Auto-refresh of the Keycloak token when on a page longer than 5 minutes | . ",
     "url": "/help/whatsnew.html#version-151",
     "relUrl": "/whatsnew.html#version-151"
-  },"87": {
+  },"88": {
     "doc": "What's New",
     "title": "Version 1.4",
     "content": "Version 1.4 included one added feature: . | Feature #216: Ability to upload OpenSCAP results XCCDF XML file to create Checklists, along with Nessus and DISA SCAP XCCDF XML results | . ",
     "url": "/help/whatsnew.html#version-14",
     "relUrl": "/whatsnew.html#version-14"
-  },"88": {
+  },"89": {
     "doc": "What's New",
     "title": "Version 1.3.2",
     "content": "Version 1.3.2 was a bug fix release primarily as outlined below: . | Fix score calculation bug #213 on checklists for Not a Finding counts | Added additional DISA public STIG Templates | . ",
     "url": "/help/whatsnew.html#version-132",
     "relUrl": "/whatsnew.html#version-132"
-  },"89": {
+  },"90": {
     "doc": "What's New",
     "title": "Version 1.3.1",
     "content": "Version 1.3.1 was a bug fix release primarily as outlined below: . | Fix a bug #203 on CAT 3 checklist Not a Finding counts not matching the checklist file | Updated to the Jan 22, 2021 DISA public STIG templates | . ",
     "url": "/help/whatsnew.html#version-131",
     "relUrl": "/whatsnew.html#version-131"
-  },"90": {
+  },"91": {
     "doc": "What's New",
     "title": "Version 1.3",
     "content": "Version 1.3 was a bug fix release primarily as outlined below: . | Display the status of the vulnerability in the checklist/template view | Scoring a checklist now uses the Severity Override as the severity if it is filled in (API and MSG client) | Fixed a bug in the low/moderate/high loading of NIST 800.53 Controls | Fixed a bug where PII controls are always used in the Compliance engine – now only if the checkbox is set | . ",
     "url": "/help/whatsnew.html#version-13",
     "relUrl": "/whatsnew.html#version-13"
-  },"91": {
+  },"92": {
     "doc": "What's New",
     "title": "Version 1.2",
     "content": "Version 1.2 was also a security fix primarily with some updated functionality as outlined below: . | .NET Core 3.1 update with Debian 10 based containers | Updated .NET Core 3.1 components such as Jaeger client, Swashbuckle, etc. | Keycloak 10 upgrade from 7.0 | Keycloak theme for OpenRMF for seamless look-and-feel interaction | Header Security fixes from an active scan of the web application | Compliance Summary buttons are interactive for filtering now | Help documentation is now local to the application, not up on github.io pages | . ",
     "url": "/help/whatsnew.html#version-12",
     "relUrl": "/whatsnew.html#version-12"
-  },"92": {
+  },"93": {
     "doc": "What's New",
     "title": "Version 1.1",
     "content": "Version 1.1 was a security fix primarily with some updated functionality as outlined below: . | Rootless containers for APIs, messages, NGINX, and MongoDB databases | Updated jQuery, File Upload, Bootstrap and other JS components | Security Fixes from an active scan of the web application | Upload an existing checklist for a given checklist type and host = update the info (it was just duplicating the information) | Allow Bulk Edits on Vulnerabilities across similar checklist types within a System grouping | Container “restart: always” on the Docker Compose file | All CSS, HTML, JS are local not reaching out over the public Internet | . ",
     "url": "/help/whatsnew.html#version-11",
     "relUrl": "/whatsnew.html#version-11"
-  },"93": {
+  },"94": {
     "doc": "What's New",
     "title": "Version 1.0",
     "content": "Version 1.0 of OpenRMF Core has these updates below: . | Fixing a bug on the Web UI updating Vulnerabilities via the web form in a checklist | Updating the version descriptions to 1.0 throughout the codebase | . ",
     "url": "/help/whatsnew.html#version-10",
     "relUrl": "/whatsnew.html#version-10"
-  },"94": {
+  },"95": {
     "doc": "What's New",
     "title": "What's New",
     "content": " ",

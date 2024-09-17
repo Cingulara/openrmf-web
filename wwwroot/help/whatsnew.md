@@ -8,6 +8,17 @@ nav_order: 2
 
 Please refer to the <a href="https://github.com/Cingulara?tab=projects" target="_blank">OpenRMF<sup>&reg;</sup> OSS Projects listing on GitHub</a> for more information on feature updates and timeline.
 
+## Version 1.12 (Security and Unique Checklist Update)
+Version 1.12 has the following added features and fixes:
+* Added unique checklist match based on system package, hostname, checklist/STIG type, web or database, site, and instance fields
+* Updated the checklist naming to account for unique web or database fields
+* Updated Keycloak v25.0.4 `KC_PROXY_HEADERS=xforwarded` environment variable from `KC_PROXY=edge`
+* Updated Keycloak v25.0.5 theme for OpenRMF OSS
+* Updated base images for web, code
+* Updated 3rd party infrastructure images
+* Updated matching SCAP to DISA Checklist Templates on naming conventions
+* Latest DISA Templates as of September 16, 2024
+
 ## Version 1.11 (Security and Performance Update)
 Version 1.11 has the following added features and fixes:
 * Added MARKING, HOST IP, HOST MAC, Web or Database Fields for display and editing

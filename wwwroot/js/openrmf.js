@@ -2636,6 +2636,12 @@ async function getSystemChecklistReport() {
 			$("#checklistTags").html("<b>Tags:</b> " + data.tags.toString().replace(/\,/g, ", "));
 		else 
 			$("#checklistTags").html("<b>Tags:</b> ");
+		if (data.checklist.asset.weB_OR_DATABASE)
+			$("#checklistWebOrDB").html("<b>Web/Application/Database:</b> " + data.checklist.asset.weB_OR_DATABASE);
+		if (data.checklist.asset.weB_DB_SITE)
+			$("#checklistWebOrDBSite").html("<b>Site:</b> " + data.checklist.asset.weB_DB_SITE);
+		if (data.checklist.asset.weB_DB_INSTANCE)
+			$("#checklistWebOrDBInstance").html("<b>Instance:</b> " + data.checklist.asset.weB_DB_INSTANCE);
 
 		$("#checklistSTIGTitle").html("<b>Title:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[7].siD_DATA);
 		$("#checklistSTIGReleaseInfo").html("<b>Release:</b> " + data.checklist.stigs.iSTIG.stiG_INFO.sI_DATA[6].siD_DATA);

@@ -34,6 +34,18 @@ If you upload an XCCDF XML SCAP scan result file (DISA or Nessus SCAP), that fil
 
 ![OpenRMF OSS Upload of Checklists](./assets/upload-checklist-xccdf.png)
 
+When you upload a new SCAP .xml result or CKL checklist to a system package, it compares the hostname, checklist type, "is web or database" as well as site and instance for the web or database to note uniqueness of a checklist. 
+
+If this is an update of an existing one, it will overwrite the checklist record and update the score and report databases accordingly. If this is a new checklist, it will create a record and then generate its score and reporting data accordingly.
+
+Be mindful of the uniqueness of the checklist rules:
+* system pacakge
+* hostname
+* checklist type
+* is web or database
+* web or database site
+* web or database instance
+
 ## Uploading Templates
 
 ![OpenRMF OSS Upload of Templates](./assets/upload-template.png)
