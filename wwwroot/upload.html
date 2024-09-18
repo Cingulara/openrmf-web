@@ -1,0 +1,315 @@
+<!-- 
+	// Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
+	// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>OpenRMF Checklist Upload Form</title>
+  <meta name="description" content="OpenRMF tool Dashboard">
+  <meta name="author" content="Dale Bingham - https://www.cingulara.com">
+  <meta name="referrer" content="origin">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="assets/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="57x57" href="assets/favicons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="assets/favicons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/favicons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="assets/favicons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/favicons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="assets/favicons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="assets/favicons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="assets/favicons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/favicons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+  <link rel="manifest" href="assets/favicons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Switchery css -->
+  <link href="assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+
+  <!-- Bootstrap CSS -->
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+  <!-- Font Awesome CSS -->
+  <link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+  <!-- Custom CSS -->
+  <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+  <link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+
+  <!-- Modernizr -->
+  <script src="assets/js/modernizr.min.js"></script>
+
+  <!-- jQuery -->
+  <script src="assets/js/jquery.min.js"></script>
+
+  <!-- Moment -->
+  <script src="assets/js/moment.min.js"></script>
+
+  <!-- BEGIN CSS for this page -->
+  <link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
+  <link href="assets/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet" />
+  <!-- END CSS for this page -->
+
+</head>
+
+<body class="adminbody">
+
+  <div id="main" style="display: none;">
+    <script src="assets/js/keycloak.min.js"></script>
+    <script src="./js/auth.js"></script>
+
+    <!-- top bar navigation -->
+    <div id="includeNavBarLink"></div>
+    <!-- End Navigation -->
+
+    <!-- Left Sidebar -->
+    <div id="includeSidebarLink"></div>
+    <!-- End Sidebar -->
+
+    <div class="content-page">
+
+      <!-- Start content -->
+      <div class="content" id="content" style="display: none;">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-xl-12">
+              <div class="breadcrumb-holder">
+                <h1 class="main-title float-left">Checklist file upload</h1>
+                <ol class="breadcrumb float-right">
+                  <li class="breadcrumb-item">Home</li>
+                  <li class="breadcrumb-item active">New checklist upload</li>
+                </ol>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row" id="divUploadChecklist" style="display: none;">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h3><i class="fa fa-file"></i> Checklist Upload</h3>
+                </div>
+                <div class="card-body">
+                  <form id="frmChecklistUpload">
+                    <div class="form-group" id="divNewChecklistSystem">
+                      <label for="checklistSystem">System Package Name </label>
+                      <select class="form-control select2" id="checklistSystem" required>
+                      </select>
+                      <small id="titleHelp" class="form-text text-muted">Specify the System Package this belongs to. Add
+                        a new one if needed.</small>
+                    </div>
+                    <div class="form-group"><a href="#"
+                        onclick="$('#divNewChecklistSystem').hide(); $('#divNewChecklistSystemText').show(); return false;">Add
+                        a new System Package</a></div>
+                    <div class="form-group" id="divNewChecklistSystemText" style="display: none;">
+                      <label for="checklistSystemText">New System Package Name</label>
+                      <input type="text" class="form-control" id="checklistSystemText" maxlength="100"
+                        aria-describedby="titleHelp" placeholder="Enter a new System Package Name">
+                      <small id="titleHelp" class="form-text text-muted">Enter a new System Package if not in the list
+                        above</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="checklistFile">Checklist Files (up to 10 at a time)</label><br />
+                      <input type="file" class="form-group" name="files[]" id="checklistFile" multiple="multiple"
+                        required />
+                      <div id="checklistFileList" class="fileArea" style="display:none;"></div>
+                    </div>
+                    <div class="form-group">
+                      <button type="button"
+                        title="Upload your checklists (CKL) and SCAP scan result (XML) to create or update your checklists"
+                        onclick="uploadChecklist(); return false;" class="btn btn-primary">Upload and Save</button>
+                    </div>
+                  </form>
+
+                </div><!-- end card body -->
+              </div><!-- end card-->
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h3><i class="fa fa-help"></i> SCAP / Checklist Upload Help</h3>
+                </div>
+                <div class="card-body">
+                  <p>Use this form to upload a new *.CKL STIG checklist file or SCAP Scan XCCDF *.XML to the system for
+                    scoring, indexing, and managing
+                    your STIG information. Select your system and then select up to ten (10) *.CKL or *.XML files to
+                    upload at a time.
+                    DISA SCAP, OpenSCAP as well as Nessus SCAP files should work fine.</p>
+                  <p>All fields are mandatory. One Checklist per CKL file. CKL files are produced by the <a
+                      target="_blank" rel="noopener noreferrer" href="https://public.cyber.mil/stigs/">DISA StigViewer
+                      application</a> available on their public website.</p>
+                  <p>* Please fill in the <b><i>Hostname</i></b> field on your Checklist file CKL! All checklists are
+                    named by HOSTNAME-STIGTYPE-VERSION-REVISION and then if it is a web or database, the SITE and INSTANCE as well.</p>
+                </div><!-- end card body -->
+              </div><!-- end card-->
+            </div>
+          </div>
+          <!-- end row -->
+          <div class="row" id="divUploadTemplate" style="display: none;">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h3><i class="fa fa-file"></i> Template Upload </h3>
+                </div>
+                <div class="card-body">
+                  <form id="frmTemplateUpload">
+                    <div class="form-group">
+                      <label for="templateTitle">Title</label>
+                      <input type="text" class="form-control" id="templateTitle" maxlength="100"
+                        aria-describedby="titleHelp" placeholder="Enter title" required>
+                      <small id="titleHelp" class="form-text text-muted">Specify a good title for this Template</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="templateDescription">Description</label>
+                      <textarea type="text" class="form-control" id="templateDescription" rows="4"
+                        aria-describedby="descriptionHelp" placeholder="Enter a Description" required></textarea>
+                      <small id="descriptionHelp" class="form-text text-muted">Specify a good description for this
+                        Template</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="templateFile">Template Checklist File</label><br />
+                      <input type="file" name="templateFile" id="templateFile" required />
+                    </div>
+                    <button type="button" title="Upload your CKL file to save as a checklist template"
+                      onclick="uploadTemplate(); return false;" class="btn btn-primary">Upload and Save</button>
+                  </form>
+                </div><!-- end card body -->
+              </div><!-- end card-->
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 col-xl-4">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h3><i class="fa fa-help"></i> Template Upload Help</h3>
+                </div>
+                <div class="card-body">
+                  <p>Use this form to upload a new *.CKL STIG checklist template for download and use for any system.
+                    A template is used as a starting point or a baseline for that checklist that your administrators,
+                    developers, cybersecurity personnel and managers can use to include known statuses and information
+                    for
+                    that particular checklist. </p>
+                  <div class="alert alert-info" role="alert">
+                    Example: you have an infrastructure package and a platform-as-a-service package that your
+                    application(s)
+                    run on. That infrastructure and PaaS have known good checklists as a baseline that application
+                    owners use as a starting point and adjust the remaining vulnerability items accordingly.
+                  </div>
+                  <p>All fields are mandatory.</p>
+                </div>
+              </div><!-- end card body -->
+            </div><!-- end card-->
+          </div>
+        </div>
+        <!-- END container-fluid -->
+      </div>
+      <!-- END content -->
+
+    </div>
+    <!-- END content-page -->
+
+    <footer class="footer">
+      <div id="includeFooterLink"></div>
+    </footer>
+    <div id="includeAutoLogin"></div>
+
+  </div>
+  <!-- END main -->
+
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+
+  <script src="assets/js/detect.js"></script>
+  <script src="assets/js/fastclick.js"></script>
+  <script src="assets/js/jquery.blockUI.js"></script>
+  <script src="assets/js/jquery.nicescroll.js"></script>
+  <script src="assets/js/jquery.scrollTo.min.js"></script>
+  <script src="assets/plugins/switchery/switchery.min.js"></script>
+
+  <!-- App js -->
+  <script src="assets/js/pikeadmin.js"></script>
+
+  <!-- BEGIN Java Script for this page -->
+  <script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
+  <script src="assets/plugins/sweetalert/sweetalert.js"></script>
+  <script src="./js/openrmf.js"></script>
+  <script src="./js/apis.js"></script>
+  <script>
+    $(document).ready(function () {
+      keycloak.init({ onLoad: 'login-required' }).then(function (authenticated) {
+        if (authenticated) {
+          if (keycloak.hasRealmRole("Editor") || keycloak.hasRealmRole("Administrator")) {
+            // setup the User Interface
+            setupOpenRMFUI();
+            $("#content").show();
+            $("#divUploadChecklist").show();
+            if (keycloak.hasRealmRole("Administrator")) $("#divUploadTemplate").show();
+            // get the list of systems
+            getChecklistSystemsForUpload(getParameterByName('id'));
+
+            // file setup for the 10-max Checklist file upload
+            $('#checklistFile').filer({
+              limit: 10,
+              maxSize: 30,
+              extensions: ['ckl', 'xml'],
+              changeInput: true,
+              showThumbs: true,
+              addMore: true,
+              captions: {
+                errors: {
+                  filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+                  filesType: "Only Checklist *.CKL and SCAP scan XCCDF *.XML files can be uploaded.",
+                  filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB.",
+                  filesSizeAll: "Files you have chosen are too large! Please upload a file up to {{fi-maxSize}} MB."
+                }
+              }
+            });
+            // file setup for the Template Upload
+            $('#templateFile').filer({
+              limit: 1,
+              maxSize: 5,
+              extensions: ['ckl'],
+              changeInput: true,
+              showThumbs: true,
+              addMore: true,
+              captions: {
+                errors: {
+                  filesLimit: "Only {{fi-limit}} files are allowed to be uploaded at a time.",
+                  filesType: "Only Checklist *.CKL files can be uploaded.",
+                  filesSize: "{{fi-name}} is too large! Please upload a file up to {{fi-maxSize}} MB."
+                }
+              }
+            });
+
+            var redir = getParameterByName('redir');
+            if (redir) {
+              // redirection on empty checklists so tell them
+              swal("Please Upload a Checklist", "There are currently no checklists for you to view. Please upload at least one checklist to start.", "info");
+            }
+          }
+          else {
+            location.href = "resource.html";
+          }
+        }
+        else {
+          alert('You are not logged in. Please check your setup with Keycloak.');
+        }
+      }).catch(function () {
+        alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+      });
+
+    }); // document ready
+  </script>
+  <!-- END Java Script for this page -->
+</body>
+
+</html>

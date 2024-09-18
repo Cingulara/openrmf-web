@@ -45,10 +45,10 @@ test.ckl
 
 
 # Jekyll Help Files
-help/vendor/*
+wwwroot/help/vendor/*
 
 Gemfile.lock
 
-help/.bundle/*
+wwwroot/help/.bundle/*
 
-help/.jekyll-cache/*
+wwwroot/help/.jekyll-cache/*

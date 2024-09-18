@@ -1,0 +1,237 @@
+<!-- 
+	// Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
+	// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>OpenRMF Logout</title>
+	<meta name="description" content="OpenRMF Logout">
+	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
+	<meta name="referrer" content="origin">
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="assets/images/favicon.ico">
+	<link rel="apple-touch-icon" sizes="57x57" href="assets/favicons/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="assets/favicons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="assets/favicons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/favicons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="assets/favicons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="assets/favicons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="assets/favicons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="assets/favicons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="assets/favicons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+	<link rel="manifest" href="assets/favicons/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<!-- Switchery css -->
+	<link href="assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+
+	<!-- Bootstrap CSS -->
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- Font Awesome CSS -->
+	<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- Custom CSS -->
+	<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+
+	<!-- Modernizr -->
+	<script src="assets/js/modernizr.min.js"></script>
+
+	<!-- jQuery -->
+	<script src="assets/js/jquery.min.js"></script>
+
+	<!-- Moment -->
+	<script src="assets/js/moment.min.js"></script>
+
+	<!-- BEGIN CSS for this page -->
+	<link href="assets/plugins/jquery.filer/css/jquery.filer.css" rel="stylesheet" />
+	<link href="assets/plugins/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css" rel="stylesheet" />
+	<!-- END CSS for this page -->
+
+</head>
+
+<body class="adminbody">
+
+	<div id="main">
+		<!-- top bar navigation -->
+		<div class="headerbar">
+
+			<!-- LOGO -->
+			<div class="headerbar-left">
+				<a href="index.html" class="logo"><img alt="Logo" src="assets/images/logo.jpg" />
+					<span>Open<span>RMF<sup>&reg;</sup></span></span></a>
+			</div>
+
+			<nav class="navbar-custom">
+				<ul class="list-inline float-right mb-0">
+					<li class="list-inline-item dropdown notif">
+						<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href="#"
+							title="Help and Support" role="button" aria-haspopup="false" aria-expanded="false">
+							<i class="fa fa-fw fa-question-circle"></i>
+						</a>
+						<div
+							class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-arrow-success dropdown-lg">
+							<!-- item-->
+							<div class="dropdown-item noti-title">
+								<h5><small>Help and Support</small></h5>
+							</div>
+
+							<!-- item-->
+							<a target="_blank" rel="noopener noreferrer" href="/help/"
+								class="dropdown-item notify-item">
+								<p class="notify-details ml-0">
+									<b>OpenRMF Online Help</b>
+									<span>Systems, Checklists, Reports</span>
+								</p>
+							</a>
+							<!-- item-->
+							<a target="_blank" rel="noopener noreferrer"
+								href="https://cingulara.github.io/openrmf-docs/" class="dropdown-item notify-item">
+								<p class="notify-details ml-0">
+									<b>OpenRMF install, download, SCAP, ACAS, RMF Process</b>
+									<span>GitHub Pages <i class="fa fa-fw fa-external-link"></i></span>
+								</p>
+							</a>
+						</div>
+					</li>
+				</ul>
+				<ul class="list-inline menu-left mb-0">
+					<li class="float-left">
+						<button class="button-menu-mobile open-left">
+							<i class="fa fa-fw fa-bars"></i>
+						</button>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<!-- End Navigation -->
+
+		<!-- Left Sidebar -->
+		<div class="left main-sidebar">
+			<div class="sidebar-inner leftscroll">
+				<div id="sidebar-menu">
+					<ul>
+
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<!-- End Sidebar -->
+
+		<div class="content-page">
+
+			<!-- Start content -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-stop"></i> Logged out of OpenRMF<sup>&reg;</sup> OSS</h3>
+								</div>
+								<div class="card-body">
+									<p>Thank you for using OpenRMF<sup>&reg;</sup> OSS! We hope you enjoyed your stay.
+										:^)
+										To view more information please visit our GitHub repositories at
+										<a target="_blank" rel="noopener noreferrer"
+											href="https://www.github.com/cingulara/openrmf-docs/">GitHub</a>
+										<i class="fa fa-fw fa-external-link"></i>.
+									</p>
+									<p>If you wish to log back in then <a href="index.html">click here</a></p>
+								</div><!-- end card body -->
+							</div><!-- end card-->
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-check"></i> Upgrade to OpenRMF<sup>&reg;</sup> Professional</h3>
+								</div>
+								<div class="card-body">
+									<p>If you need more out of your OpenRMF<sup>&reg;</sup> installation such as
+									<ul>
+										<li>automated install or OVA install</li>
+										<li>support, helpdesk, video on demand training platform</li>
+										<li>more fidelity on security and permissions per system package</li>
+										<li>bulk edit vulnerabilities or bulk checklist upgrades</li>
+										<li>a live POAM, with bulk editing and history tracking</li>
+										<li>tracking your patch history</li>
+										<li>checklist edit history</li>
+										<li>automate tracking ports/protocols/services</li>
+										<li>automate tracking software</li>
+										<li>tracking evidence and files for your accreditation</li>
+										<li>compliance to the subcontrol level with tailoring or overlays</li>
+										<li>track FedRAMP or StateRAMP<sup>TM</sup> compliance</li>
+										<li>automating Cyber Readiness Inspections (CCRI)</li>
+										<li>using audit compliance scans</li>
+										<li>using CIS benchmark scans</li>
+										<li>creating custom checklists for process, procedure, policy, cloud services
+										</li>
+										<li>an open API to automate further</li>
+										<li>integrations with scanners and task management</li>
+										<li>choose from 68 reports on patch, checklist, compliance, POAM, and more</li>
+									</ul>
+									then checkout OpenRMF<sup>&reg;</sup> Professional by
+									<a target="_blank" href="https://www.soteriasoft.com/"
+										title="OpenRMF Professional by Soteria Software">Soteria Software</a></p>
+
+								</div><!-- end card body -->
+							</div><!-- end card-->
+						</div>
+					</div>
+				</div>
+				<!-- END container-fluid -->
+			</div>
+			<!-- END content -->
+
+		</div>
+		<!-- END content-page -->
+
+		<footer class="footer">
+			<div id="includeFooterLink"></div>
+		</footer>
+
+	</div>
+	<!-- END main -->
+
+	<script src="assets/js/popper.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+
+	<script src="assets/js/detect.js"></script>
+	<script src="assets/js/fastclick.js"></script>
+	<script src="assets/js/jquery.blockUI.js"></script>
+	<script src="assets/js/jquery.nicescroll.js"></script>
+	<script src="assets/js/jquery.scrollTo.min.js"></script>
+	<script src="assets/plugins/switchery/switchery.min.js"></script>
+
+	<!-- App js -->
+	<script src="assets/js/pikeadmin.js"></script>
+
+	<!-- BEGIN Java Script for this page -->
+	<script src="assets/plugins/jquery.filer/js/jquery.filer.min.js"></script>
+
+	<!-- END Java Script for this page -->
+	<script>
+		// setup the User Interface
+		setupOpenRMFUI();
+		sessionStorage.clear();
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+<!-- 
+	// Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
+	// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>OpenRMF Reports</title>
+	<meta name="description" content="OpenRMF Reports Dashboard">
+	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
+	<meta name="referrer" content="origin">
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="/assets/images/favicon.ico">
+	<link rel="apple-touch-icon" sizes="57x57" href="/assets/favicons/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/assets/favicons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/favicons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/assets/favicons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/favicons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/assets/favicons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/favicons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/assets/favicons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/assets/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
+	<link rel="manifest" href="/assets/favicons/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<!-- Bootstrap CSS -->
+	<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- Font Awesome CSS -->
+	<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- Custom CSS -->
+	<link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+
+	<!-- BEGIN CSS for this page -->
+
+	<!-- END CSS for this page -->
+</head>
+
+<body class="adminbody">
+
+	<script src="/assets/js/keycloak.min.js"></script>
+	<script src="/js/auth.js"></script>
+
+	<div id="main" style="display: none;">
+
+		<!-- top bar navigation -->
+		<div id="includeNavBarLink"></div>
+		<!-- End Navigation -->
+
+		<!-- Left Sidebar -->
+		<div id="includeSidebarLink"></div>
+		<!-- End Sidebar -->
+
+		<div class="content-page">
+			<!-- Start content -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="breadcrumb-holder">
+								<h1 class="main-title float-left">Reports</h1>
+								<ol class="breadcrumb float-right">
+									<li class="breadcrumb-item">Home</li>
+									<li class="breadcrumb-item active">Reports</li>
+								</ol>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-area-chart"></i> Available Reports</h3>
+								</div>
+
+								<div class="card-body">
+									<div class="reportsList">
+										<!-- Nessus ACAS Scan Report -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Nessus Patch Listing
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-wrench reporticon"></i><br />
+												<button type="button" id="btnRunNessusReport"
+													title="Run the Nessus ACAS Report by System Package"
+													onclick="location.href = 'nessus.html';" class="btn btn-success">Run
+													Report</button>
+											</div>
+										</div>
+										<!-- System Total Score Chart -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												System Package Pie Charts
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-pie-chart reporticon"></i><br />
+												<button type="button" id="btnRunSystemCharts"
+													title="Run the Scoring Pie Chart Report by System Package"
+													onclick="location.href = 'charts.html';" class="btn btn-success">Run
+													Report</button>
+											</div>
+										</div>
+										<!-- System Checklist with Score Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												System Package Checklist Listing
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-list reporticon"></i><br />
+												<button type="button" id="btnRunChecklistReport"
+													title="Run the System Package Checklist Report by Checklist"
+													onclick="location.href = 'checklists.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Vulnerability Listing for Hosts / Servers -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Host Vulnerability Report
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-bug reporticon"></i><br />
+												<button type="button" id="btnRunVulnerabilityReport"
+													title="Run the Vulnerability by Host Report by System Package"
+													onclick="location.href = 'vulnerability.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Vulnerability Listing by Status and Severity -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Vulnerability by Status &amp; Severity
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-search reporticon"></i><br />
+												<button type="button" id="btnRunVulnerabilityStatusSeverityReport"
+													title="Run the Vulnerability by Severity and Status Report by System Package"
+													onclick="location.href = 'vulnerabilitystatusseverity.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Checklist Upgrade Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Checklist Upgrades Available
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-refresh reporticon"></i><br />
+												<button type="button" id="btnRunChecklistUpgradeReport"
+													title="Run the Available Checklist Upgrades Report by System Package"
+													onclick="location.href = 'checklistupgrades.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Vulnerability Override Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Vulnerabilities with Override Set
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-random reporticon"></i><br />
+												<button type="button" id="btnRunVulnerabilityOverrideReport"
+													title="Run the Vulnerability Overrides Report by System Package"
+													onclick="location.href = 'vulnerabilityoverride.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Checklist Activity Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Checklist Activity Report
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-eye reporticon"></i><br />
+												<button type="button" id="btnRunChecklistActivityReport"
+													title="Run the Checklist Activity Report"
+													onclick="location.href = 'checklistactivity.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Control Listing for Hosts / Servers -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Host by RMF Control Report
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-check-square reporticon"></i><br />
+												<button type="button" id="btnRunControlHostListingReport"
+													title="Run the Host by RMF Control Report by System Package"
+													onclick="location.href = 'controlhostlisting.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- RMF Controls Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												RMF Controls Listing
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-table reporticon"></i><br />
+												<button type="button" id="btnRunControlsReport"
+													title="Run the RMF Controls Report"
+													onclick="location.href = 'controls.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card-footer small text-muted"></div>
+							</div><!-- end card-->
+						</div>
+					</div>
+					<!-- end row -->
+
+				</div>
+				<!-- END container-fluid -->
+
+			</div>
+			<!-- END content -->
+
+		</div>
+		<!-- END content-page -->
+
+		<footer class="footer">
+			<div id="includeFooterLink"></div>
+		</footer>
+		<div id="includeAutoLogin"></div>
+
+	</div>
+	<!-- END main -->
+
+	<script src="/assets/js/modernizr.min.js"></script>
+	<script src="/assets/js/jquery.min.js"></script>
+	<script src="/assets/js/moment.min.js"></script>
+
+	<script src="/assets/js/popper.min.js"></script>
+	<script src="/assets/js/bootstrap.min.js"></script>
+
+	<script src="/assets/js/detect.js"></script>
+	<script src="/assets/js/fastclick.js"></script>
+	<script src="/assets/js/jquery.blockUI.js"></script>
+	<script src="/assets/js/jquery.nicescroll.js"></script>
+
+	<!-- App js -->
+	<script src="/assets/js/pikeadmin.js"></script>
+	<script src="/js/openrmf.js"></script>
+	<script src="/js/apis.js"></script>
+	<script src="/assets/plugins/sweetalert/sweetalert.js"></script>
+
+	<!-- BEGIN Java Script for this page -->
+	<script>
+		$(document).ready(function () {
+			// authentication first
+			keycloak.init({ onLoad: 'login-required' }).then(function (authenticated) {
+				if (authenticated) {
+					// setup the User Interface
+					setupOpenRMFUI();
+					// see if they are allowed to refresh data
+					verifyReportRefreshData();
+				}
+				else {
+					alert('You are not logged in. Please check your setup with Keycloak.');
+				}
+			}).catch(function () {
+				alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+			});
+		});
+	</script>
+	<!-- END Java Script for this page -->
+
+</body>
+
+</html>

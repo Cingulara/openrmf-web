@@ -1,0 +1,295 @@
+<!-- 
+	// Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
+	// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>OpenRMF - Compliance Generator</title>
+	<meta name="description" content="OpenRMF Compliance Generator">
+	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
+	<meta name="referrer" content="origin">
+
+	<!-- Favicon -->
+	<link rel="shortcut icon" href="assets/images/favicon.ico">
+	<link rel="apple-touch-icon" sizes="57x57" href="assets/favicons/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="assets/favicons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="assets/favicons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/favicons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="assets/favicons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="assets/favicons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="assets/favicons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="assets/favicons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="assets/favicons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+	<link rel="manifest" href="assets/favicons/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<!-- Bootstrap CSS -->
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- Font Awesome CSS -->
+	<link href="assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+	<!-- Custom CSS -->
+	<link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="assets/plugins/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" />
+
+	<!-- BEGIN CSS for this page -->
+	<link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css" />
+	<style>
+		td.details-control {
+			background: url('assets/plugins/datatables/img/details_open.png') no-repeat center center;
+			cursor: pointer;
+		}
+
+		tr.shown td.details-control {
+			background: url('assets/plugins/datatables/img/details_close.png') no-repeat center center;
+		}
+	</style>
+	<!-- END CSS for this page -->
+</head>
+
+<body class="adminbody">
+
+	<script src="assets/js/keycloak.min.js"></script>
+	<script src="./js/auth.js"></script>
+
+	<div id="main" style="display: none;">
+
+		<!-- top bar navigation -->
+		<div id="includeNavBarLink"></div>
+		<!-- End Navigation -->
+
+		<!-- Left Sidebar -->
+		<div id="includeSidebarLink"></div>
+		<!-- End Sidebar -->
+
+		<div class="content-page">
+			<!-- Start content -->
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="breadcrumb-holder">
+								<h1 class="main-title float-left">Compliance</h1>
+								<ol class="breadcrumb float-right">
+									<li class="breadcrumb-item">Home</li>
+									<li class="breadcrumb-item active">Compliance</li>
+								</ol>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+					</div>
+					<!-- end row -->
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-table"></i> Compliance Generator</h3>
+								</div>
+								<div class="card-body">
+									<div class="checklistSystemsList">
+										<form>
+											<div class="form-group">
+												<label class="checklistSystemsListLabel" id="checklistSystemsListLabel"
+													for="checklistSystemFilter">System Package Filter</label>
+												<select class="form-control" id="checklistSystemFilter">
+													<option value="">[Choose One]</option>
+												</select>
+												<small id="titleSystem" class="form-text text-muted">Specify the System
+													Package</small>
+											</div>
+											<div class="form-group">
+												<label class="checklistSystemsListLabel" id="checklistImpactFilterLabel"
+													for="checklistImpactFilter">System Impact Level</label>
+												<select class="form-control" id="checklistImpactFilter">
+													<option value="low">Low</option>
+													<option value="moderate">Moderate</option>
+													<option value="high">High</option>
+												</select>
+												<small id="titleSystem" class="form-text text-muted">Specify the Overall
+													Impact Level</small>
+											</div>
+											<div class="form-inline">
+												<input type="checkbox" class="form-control" id="checklistPrivacyFilter"
+													style="width: 25px;">
+												<label class="checklistSystemsListLabel"
+													id="checklistPrivacyFilterLabel"
+													for="checklistPrivacyFilter">Contains PII / Privacy Data?</label>
+												<small id="titleSystem" class="form-text text-muted">Check to include
+													Privacy and PII Controls</small>
+											</div>
+											<br />
+											<div class="form-group">
+												<button onclick="getComplianceBySystem(); return false;"
+													title="Generate your RMF compliance"
+													class="btn btn-primary btn-sm"><span class="btn-label"><i
+															class="fa fa-check-square-o"></i></span> Generate</button>
+												<button onclick="getComplianceBySystemExport(); return false;"
+													id="btnComplianceExport" style="display: none;"
+													title="Export the Compliance listing to MS Excel"
+													class="btn btn-success btn-sm"><span class="btn-label"><i
+															class="fa fa-download"></i></span> Export</button>
+											</div>
+										</form>
+									</div>
+								</div><!-- end card body -->
+							</div><!-- end card-->
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+							<div class="card mb-9">
+								<div class="card-header">
+									<h3><i class="fa fa-table"></i> Compliance Help</h3>
+								</div>
+								<div class="card-body">
+									<p>
+										Generate a Compliance Report across all the checklists in your System Package
+										to verify your status on satisfying all relevant controls. Follow the steps
+										below to generate and validate your checklists for the chosen Impact Level.
+									</p>
+									<ol>
+										<li>Choose your System Package</li>
+										<li>Choose your Impact Level (Low, Moderate, High)</li>
+										<li>Check if you contain PII, PHI, or Privacy Data</li>
+										<li>Click the Generate button</li>
+										<li>Review the controls and checklists</li>
+										<li>Click the checklist to view the Vulnerabilities for that control</li>
+										<li>Page through the results at the bottom of the table</li>
+										<li>Use the Search box to filter results as you type</li>
+									</ol>
+								</div><!-- end card body -->
+							</div>
+						</div>
+					</div><!-- end row-->
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-list-alt"></i> Compliance Summary</h3>
+									Summary per family for your System Package Compliance. Details are below in the next
+									section. <br />
+									<i class='fa fa-check'></i> Green = Not A Finding / Not Applicable. <i
+										class='fa fa-eye-slash'></i> Black = Not Reviewed.
+									<i class='fa fa-times'></i> Red = Open.
+								</div>
+								<div class="card-body">
+									<div id="divComplianceSummary"></div>
+								</div>
+							</div><!-- end card-->
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-table"></i> Compliance Details</h3>
+									Below find the results. Green = Not A Finding / Not Applicable. Blue = Not Reviewed.
+									Red = Open.
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table id="tblCompliance" style="width: 100%;"
+											class="table table-bordered table-hover display">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>Control</th>
+													<th>Title</th>
+													<th>Checklists</th>
+													<th>Status</th>
+												</tr>
+											</thead>
+											<tbody></tbody>
+										</table>
+									</div>
+								</div>
+							</div><!-- end card-->
+						</div>
+					</div>
+				</div>
+				<!-- END container-fluid -->
+			</div>
+			<!-- END content -->
+		</div>
+		<!-- END content-page -->
+
+		<footer class="footer">
+			<div id="includeFooterLink"></div>
+		</footer>
+		<div id="includeAutoLogin"></div>
+
+	</div>
+	<!-- END main -->
+
+	<script src="assets/js/modernizr.min.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/moment.min.js"></script>
+
+	<script src="assets/js/popper.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+
+	<script src="assets/js/detect.js"></script>
+	<script src="assets/js/fastclick.js"></script>
+	<script src="assets/js/jquery.blockUI.js"></script>
+	<script src="assets/js/jquery.nicescroll.js"></script>
+	<script src="assets/js/jquery.scrollTo.min.js"></script>
+	<script src="assets/plugins/switchery/switchery.min.js"></script>
+
+	<!-- App js -->
+	<script src="assets/js/pikeadmin.js"></script>
+
+	<!-- BEGIN Java Script for this page -->
+	<script src="assets/js/jquery.dataTables.min.js"></script>
+	<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+	<script src="assets/plugins/sweetalert/sweetalert.js"></script>
+	<script src="./js/openrmf.js"></script>
+	<script src="./js/apis.js"></script>
+	<script>
+		var tableCompliance;
+		$(document).ready(function () {
+			// authentication first
+			keycloak.init({ onLoad: 'login-required' }).then(function (authenticated) {
+				if (authenticated) {
+					// setup the User Interface
+					setupOpenRMFUI();
+					// see if someone should see the Export Compliance button
+					verifyDownloadCompliance();
+					// calls to get the compliance page setup
+					getChecklistSystemsForComplianceFilter(getParameterByName('id'));
+					// setup the datatable format
+					tableCompliance = $('#tblCompliance').DataTable({
+						"pageLength": 25,
+						"columnDefs": [
+							{ "width": "2%", "targets": 0 },
+							{ "width": "8%", "targets": 1 },
+							{ "width": "35%", "targets": 2 },
+							{ "width": "45%", "targets": 3 },
+							{ "width": "10%", "targets": 4 }
+						]
+					});
+				}
+				else {
+					alert('You are not logged in. Please check your setup with Keycloak.');
+				}
+			}).catch(function () {
+				alert('Keycloak did not respond correctly. Please verify your Keycloak realm as well as Redirect URI and Web Origins information. (i.e. are you missing an \'*\' somewhere?');
+			});
+		});
+	</script>
+	<!-- END Java Script for this page -->
+
+</body>
+
+</html>

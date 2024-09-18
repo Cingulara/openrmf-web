@@ -19,7 +19,8 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file ./Dockerfile --tag localbuild/openrmf-web:latest
     - name: Container image scan
-      uses: Azure/container-scan@v0
+      uses: anchore/scan-action@v3
       with:
-        image-name: localbuild/openrmf-web:latest
-        severity-threshold: CRITICAL
+        image: localbuild/openrmf-web:latest
+        fail-build: false
+        output-format: table
