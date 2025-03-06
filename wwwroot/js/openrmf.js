@@ -2764,7 +2764,7 @@ async function getHostVulnerabilityReport() {
 			table.row.add( { "vulnid": item.vulnid, "severity": strSeverity, "hostname": item.hostname,
 				"ruleTitle": item.ruleTitle, "status": strStatus, "cci": ccilist, 
 				"discussion": item.discussion, "checkContent": item.checkContent,
-				"type": item.checklistType, "release": item.checklistRelease, "version": item.checklistVersion,
+				"typeFullTitle": item.typeFullTitle, "release": item.checklistRelease, "version": item.checklistVersion,
 				"fixText": item.fixText, "comments": item.comments, "details": item.details, "severityOverride": strSeverityOverride,
 				"severityJustification": strSeverityJustification
 			}).draw();
