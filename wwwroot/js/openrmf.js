@@ -224,6 +224,37 @@ async function getSystemACASItemsForDashboard() {
 		$("#divNessusStatus").show();
 	}
 }
+async function getSystemACASItemsForSystemPackageDashboard(systemId) {
+	if (systemId) {
+		var data = await getNessusFileSummaryData(systemId);
+		if (data) {
+			$("#divSystemACASPatchListing").show();
+			$("#divNessusStatus").hide();
+			$("#numberCriticalOpen").html(data.totalCriticalOpen);
+			$("#numberHighOpen").html(data.totalHighOpen);
+			$("#numberMediumOpen").html(data.totalMediumOpen);
+			$("#numberLowOpen").html(data.totalLowOpen);
+		}
+		else {
+			$("#numberCriticalOpen").html("-");
+			$("#numberHighOpen").html("-");
+			$("#numberMediumOpen").html("-");
+			$("#numberLowOpen").html("-");
+		}
+	}
+	else {
+		$("#divSystemACASPatchListing").hide();
+		$("#divNessusStatus").html("There is no current valid Nessus patch file loaded for this system.");
+		$("#divNessusStatus").show();
+	}
+}
+function getSystemACASItemsForSystemPackageDashboardBySession(){
+	var currentSystem = sessionStorage.getItem("currentSystem");
+	if (currentSystem)
+		getSystemACASItemsForSystemPackageDashboard(currentSystem);
+	else
+		location.href = "systems.html";
+}
 async function getTemplates(latest) {
 	$.blockUI({ message: "Updating the template listing...please wait", css: { padding: '15px'} });
 	var table = $('#tblChecklistListing').DataTable();

@@ -119,7 +119,7 @@
 									</div>
 									<div class="row">
 										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-											<br />
+											<br /><br /><br />
 											<h5>Audit Information:</h3>
 												<div id="divSystemCreated"></div>
 												<div id="divSystemUpdated"></div>
@@ -152,7 +152,6 @@
 								</div>
 							</div><!-- end card-->
 						</div>
-
 						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
 							<div class="card mb-3">
 								<div class="card-header">
@@ -170,19 +169,19 @@
 					</div>
 
 					<!-- Filter for the checklists -->
-
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
 							<div class="card mb-3">
 								<div class="card-header">
-									<h3><i class="fa fa-folder-open-o"></i> Checklist Filter</h3>
+									<h3><i class="fa fa-filter"></i> Checklist Filter</h3>
 								</div>
 								<div class="card-body">
 									<div class="row" id="divChecklistFilter">
 										<div class="col-xl-12">
 											<div>
-												<div class="row">
-													<div class="col-xl-6"><b>Status:</b>&nbsp;
+												<div class="row mb-3">
+													<div class="col-xl-12">
+													<h6>Status:</h6>
 														<input id="chkVulnNaF" type="checkbox" checked="true"> <span
 															class="vulnNotAFindingText">Not a Finding</span>
 														<input id="chkVulnOpen" type="checkbox" checked="true"> <span
@@ -192,7 +191,10 @@
 														<input id="chkVulnNR" type="checkbox" checked="true"> <span
 															class="vulnNotReviewedText">Not Reviewed</span> &nbsp;
 													</div>
-													<div class="col-xl-6"><b>Severity:</b>&nbsp;
+												</div>
+												<div class="row mb-3">
+													<div class="col-xl-12">
+														<h6>Severity:</h6>
 														<input id="chkVulnCAT1" type="checkbox" checked="true"> High
 														(CAT 1) &nbsp;
 														<input id="chkVulnCAT2" type="checkbox" checked="true"> Medium
@@ -201,8 +203,9 @@
 														3)
 													</div>
 												</div>
-												<div class="row">
-													<div class="col-xl-6"><b><br />Host Name:</b>&nbsp;
+												<div class="row mb-3">
+													<div class="col-xl-12">
+														<h6>Host Name:</h6>
 														<input id="chkVulnHostname" type="text" maxlength="50"
 															placeholder="Enter the host name" /><br />
 														<span class="small">* Does a contains search so can be a partial
@@ -222,7 +225,56 @@
 									</div>
 								</div>
 							</div>
-						</div><!-- end card-->
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+							<div class="card mb-3">
+								<div class="card-header">
+									<h3><i class="fa fa-bug"></i> Patch Vulnerabilities</h3>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-xl-12">
+											<div class="row">
+												<div class="col-md-6 col-lg-6 col-xl-6">
+													<div class="card-box noradius noborder criticalPatch">
+														<i class="fa fa-times-circle float-right text-white" style="font-size: 40px;"></i>
+														<h1 id="numberCriticalOpen" class="m-b-20 text-white"></h1>
+														<span class="text-white">Critical Open items</span>
+													</div>
+												</div>
+												<div class="col-md-6 col-lg-6 col-xl-6">
+													<div class="card-box noradius noborder tabco4">
+														<i class="fa fa-exclamation float-right text-white" style="font-size: 40px;"></i>
+														<h1 id="numberHighOpen" class="m-b-20 text-white"></h1>
+														<span class="text-white">High Open Items</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xl-12">
+											<div class="row">
+												<div class="col-md-6 col-lg-6 col-xl-6">
+													<div class="card-box noradius noborder tabco6">
+														<i class="fa fa-exclamation-triangle float-right text-white" style="font-size: 40px;"></i>
+														<h1 id="numberMediumOpen" class="m-b-20 text-white"></h1>
+														<span class="text-white">Medium Open Items</span>
+													</div>
+												</div>
+												<div class="col-md-6 col-lg-6 col-xl-6">
+													<div class="card-box noradius noborder tabco7">
+														<i class="fa fa-bell float-right text-white" style="font-size: 40px;"></i>
+														<h1 id="numberLowOpen" class="m-b-20 text-white"></h1>
+														<span class="text-white">Low Open Items</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div class="row">
@@ -342,12 +394,14 @@
 						getSystemRecordBySession();
 						getChecklistListingBySession();
 						getSystemScoreChartBySession();
+						getSystemACASItemsForSystemPackageDashboardBySession();
 					}
 					else {
 						// get the system info from the Id
 						getSystemRecord(getParameterByName('id'));
 						getChecklists(getParameterByName('id'));
 						getSystemScoreChart(getParameterByName('id'));
+						getSystemACASItemsForSystemPackageDashboard(getParameterByName('id'));
 					}
 
 					// START CODE for Child rows (show extra / detailed information) DATA TABLE 
