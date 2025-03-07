@@ -2583,6 +2583,19 @@ async function getVulnerabilityOverrideReport() {
 	table.clear().draw();
 	table.ajax.url(reportAPI + "system/" + id + "/override/").load(finalizeLoadingTable);
 }
+async function getVulnerabilityMissingDataReport() {
+	var id = $("#checklistSystemFilter").val();
+	if (!id || id.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
+
+	$.blockUI({ message: "Generating the Vulnerability Missing Data...please wait" , css: { padding: '15px'} }); 
+	var table = $('#tblReportVulnerabilityMissingData').DataTable();
+	table.clear().draw();
+	table.ajax.url(reportAPI + "system/" + id + "/missingdata/").load(finalizeLoadingTable);
+}
 async function getControlsListing(){
 	let response = await fetch(controlAPI + "majorcontrols/", {headers: {
 		'Authorization': 'Bearer ' + keycloak.token
