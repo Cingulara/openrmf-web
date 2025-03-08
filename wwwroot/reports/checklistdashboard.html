@@ -178,7 +178,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+						<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
 							<div class="card mb-3">
 								<div class="card-header">
 									<h3><i class="fa fa-pie-chart"></i> Checklists by Type</h3>
@@ -193,10 +193,10 @@
 											class="fa fa-download"></i></span> Save Chart</button>
 							</div><!-- end card-->
 						</div>
-						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+						<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
 							<div class="card mb-3">
 								<div class="card-header">
-									<h3><i class="fa fa-list"></i> Checklists Types by Hostname</h3>
+									<h3><i class="fa fa-list"></i> Checklists Count per Hostname</h3>
 								</div>
 
 								<div class="card-body">
@@ -206,7 +206,7 @@
 											<thead>
 												<tr>
 													<th>Hostname</th>
-													<th># Checklists</th>
+													<th>#</th>
 												</tr>
 											</thead>
 											<tbody></tbody>
@@ -271,7 +271,7 @@
 					// setup the table
 					var tableChecklistHosts = $('#tblChecklistHostList').DataTable({
 						"responsive": false,
-						"searching": true,
+						"searching": false,
 						"pageLength": 25,
 						"autoWidth": false,
 						"deferRender": true,
@@ -283,8 +283,8 @@
 							{ "data": "numberOfChecklists" }
 						],
 						"columnDefs": [
-							{ "width": "60%", "targets": 0 },
-							{ "width": "40%", "targets": 1 }
+							{ "width": "80%", "targets": 0 },
+							{ "width": "20%", "targets": 1 }
 						], 
 						order: [[ 0, 'asc' ]]
 					});
