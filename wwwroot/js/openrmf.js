@@ -2348,6 +2348,43 @@ function renderSystemReportPieChart(element, data) {
 		}
 	});
 }
+async function getChecklistDashboardTotals() {
+	var systemGroupId = $("#checklistSystemFilter").val();
+	if (!systemGroupId || systemGroupId.length == 0)
+	{
+		swal("Please choose a system package for the report.", "Click OK to continue!", "error");
+		return;
+	}
+	$.blockUI({ message: "Generating the Checklist Dashboard Totals...please wait" , css: { padding: '15px'} }); 
+	var url = readAPI;
+	url += "system/" + encodeURIComponent(systemGroupId);
+	let response = await fetch(url, {headers: {
+		'Authorization': 'Bearer ' + keycloak.token
+	}});
+	if (response.ok) {
+		var item = await response.json()
+		if (item.length == 0) {
+			$("#numberChecklists").text("0");
+		}
+		else {
+			$("#numberChecklists").text(item.numberOfChecklists);
+		}
+	}
+	var data = await getScoreForSystemChecklistListing(systemGroupId);
+	if (data) {		
+		$("#numberCAT1OpenItems").text(data.totalCat1Open);
+		$("#numberCAT2OpenItems").text(data.totalCat2Open);
+		$("#numberCAT3OpenItems").text(data.totalCat3Open);
+		$("#numberNotAFindingItems").text(data.totalNotAFinding);
+		$("#numberNotApplicableItems").text(data.totalNotApplicable);
+		$("#numberNotReviewedItems").text(data.totalNotReviewed);
+	}
+	var tblChecklistHostList = $('#tblChecklistHostList').DataTable();
+	tblChecklistHostList.clear().draw();
+	tblChecklistHostList.ajax.url(readAPI + "system/" + encodeURIComponent(systemGroupId) + "/checklistsbyhost/").load();
+	await getChecklistTypeBreakdown(systemGroupId);
+	$.unblockUI();
+}
 async function updateChecklistFilter() {
 	var systemGroupId = $("#checklistSystemFilter").val();
 	if (!systemGroupId || systemGroupId.length == 0)
