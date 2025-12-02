@@ -9,7 +9,7 @@ nav_order: 2
 Please refer to the <a href="https://github.com/Cingulara?tab=projects" target="_blank">OpenRMF<sup>&reg;</sup> OSS Projects listing on GitHub</a> for more information on feature updates and timeline.
 
 ## Version 1.14 (Security Update)
-Version 1.13 has the following added features and fixes:
+Version 1.14 has the following added features and fixes:
 * Updated Keycloak v26.4.4 theme for OpenRMF OSS
 * Updated base images for web, code
 * Updated 3rd party infrastructure images
@@ -19,8 +19,8 @@ Version 1.13 has the following added features and fixes:
 * Updated CCI list from DISA as of September 2025
 * Latest DISA Templates as of November 15, 2025
 
-## Version 1.13 (Security and Unique Checklist Update)
-Version 1.12 has the following added features and fixes:
+## Version 1.13 (Security Update)
+Version 1.13 has the following added features and fixes:
 * Added the patch vulnerability numbers to the system package dashboard
 * Added a checklist dashboard report
 * Added a Missing Data report (checklist with Not a Finding or N/A, but no details or comments)
