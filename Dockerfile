@@ -1,4 +1,4 @@
-FROM docker.io/nginxinc/nginx-unprivileged:1.27.4-alpine
+FROM docker.io/nginxinc/nginx-unprivileged:1.29.2-alpine3.22
 # Fix for broken build on Docker in GH is to put RUN true between multiple COPY statements :(
 RUN true
 COPY ./wwwroot/*.html /usr/share/nginx/html/
