@@ -8,6 +8,34 @@ nav_order: 2
 
 Please refer to the <a href="https://github.com/Cingulara?tab=projects" target="_blank">OpenRMF<sup>&reg;</sup> OSS Projects listing on GitHub</a> for more information on feature updates and timeline.
 
+## Version 1.14 (Security Update)
+Version 1.13 has the following added features and fixes:
+* Updated Keycloak v26.4.4 theme for OpenRMF OSS
+* Updated base images for web, code
+* Updated 3rd party infrastructure images
+* Updated matching SCAP to DISA Checklist Templates on naming conventions
+* Mongo 7 DB compatibility updates
+* Use a comma separated list for JWTAUTHORITY lists for duplicate URLs
+* Updated CCI list from DISA as of September 2025
+* Latest DISA Templates as of November 15, 2025
+
+## Version 1.13 (Security and Unique Checklist Update)
+Version 1.12 has the following added features and fixes:
+* Added the patch vulnerability numbers to the system package dashboard
+* Added a checklist dashboard report
+* Added a Missing Data report (checklist with Not a Finding or N/A, but no details or comments)
+* Added CCI and NIST 800-53 to checklist report results
+* Fixed parsing STIG Viewer v3 combined CKLs with their different field usage
+* Updated the Template xccdf parsing to use "info" as "low" for severity
+* Added a Postgres migration to 16.2-alpine
+* Added MongoDB 6 compatibility scripts
+* Updated 3rd party images including Keycloak
+* Update the CCI listing to the latest from DISA January 2025
+* Latest DISA Templates as of February 28, 2025
+* Migrated code to .NET 8 baseline
+* Added the OpenRMF OSS logo
+* Updated base images when compiling for cleaner vulnerability scans
+
 ## Version 1.12 (Security and Unique Checklist Update)
 Version 1.12 has the following added features and fixes:
 * Added unique checklist match based on system package, hostname, checklist/STIG type, web or database, site, and instance fields
