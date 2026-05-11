@@ -8,6 +8,13 @@ nav_order: 2
 
 Please refer to the <a href="https://github.com/Cingulara?tab=projects" target="_blank">OpenRMF<sup>&reg;</sup> OSS Projects listing on GitHub</a> for more information on feature updates and timeline.
 
+## Version 1.14.01 (Security Update)
+Version 1.14.01 has the following added features and fixes:
+* Updated Keycloak v26.5.7 theme for OpenRMF OSS
+* Updated base images for web, code
+* Updated 3rd party infrastructure images
+* Latest DISA Templates as of April 10, 2026
+
 ## Version 1.14 (Security Update)
 Version 1.14 has the following added features and fixes:
 * Updated Keycloak v26.4.4 theme for OpenRMF OSS
