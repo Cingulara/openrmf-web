@@ -1,5 +1,5 @@
 <!-- 
-	// Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
+	// Copyright (c) Cingulara LLC 2025 and Tutela LLC 2025. All rights reserved.
 	// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
 -->
 <!DOCTYPE html>
@@ -9,7 +9,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>OpenRMF System Checklist Report</title>
+	<title>OpenRMF OSS System Package Checklist Report</title>
 	<meta name="description" content="OpenRMF System Checklist Report">
 	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 	<meta name="referrer" content="origin">
@@ -237,13 +237,43 @@
 
 					// format the extra row data
 					function format(d) {
-						return "<div><h6>Discussion</h6>" + htmlEscape(d.discussion).replace(/\n/g, "<br />") + "</div><br />" +
+						var returnValue = "<div><h6>Discussion</h6>" + htmlEscape(d.discussion).replace(/\n/g, "<br />") + "</div><br />" +
 							"<div><h6>Check Content</h6>" + htmlEscape(d.checkContent).replace(/\n/g, "<br />") + "</div><br />" +
 							"<div><h6>Fix Text</h6>" + htmlEscape(d.fixText).replace(/\n/g, "<br />") + "</div><br />" +
 							"<div><h6>Comments</h6>" + htmlEscape(d.comments).replace(/\n/g, "<br />") + "</div><br />" +
 							"<div><h6>Finding Details</h6>" + htmlEscape(d.findingDetails).replace(/\n/g, "<br />") + "</div><br />" +
 							"<div><h6>Severity Override</h6>" + d.severityOverride + "</div><br />" +
-							"<div><h6>Severity Override Justification</h6>" + htmlEscape(d.severityJustification).replace(/\n/g, "<br />") + "</div>";
+							"<div><h6>Severity Override Justification</h6>" + htmlEscape(d.severityJustification).replace(/\n/g, "<br />") + "</div><br />";
+							// get the CCI Listing and any references
+							var cciListing = []; // the rest of the stig data is 1 or more CCI listed
+							var cciInfo;
+							var cciResults = "";
+							if (d.cci && d.cci.length > 0)
+								cciListing = d.cci.split(",")
+							var url = complianceAPI;
+							for (i = 0; i < cciListing.length; i++) {
+								$.ajax({
+									url: complianceAPI + "cci/" + cciListing[i].trim(),
+									async: false,
+									type: 'GET',
+									beforeSend: function (request) {
+										request.setRequestHeader("Authorization", 'Bearer ' + keycloak.token);
+									},
+									success: function (data) {
+										if (data) {
+											cciResults = cciResults + "<b>" + data.cciId + "</b>: " + data.definition + "<ul>";
+											// foreach of the references spit them out
+											for (const reference of data.references) {
+												cciResults += "<li>" + reference.title + " :: " + reference.index + "</li>";
+											}
+											cciResults += "</ul>";
+										}
+									}
+								});
+							}
+							cciResults = cciResults.substring(0, cciResults.length -2);
+							returnValue = returnValue + cciResults;
+						return returnValue;
 					}
 
 					// setup the table
@@ -309,7 +339,5 @@
 		});
 	</script>
 	<!-- END Java Script for this page -->
-
 </body>
-
 </html>

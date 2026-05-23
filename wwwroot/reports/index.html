@@ -1,5 +1,5 @@
 <!-- 
-	// Copyright (c) Cingulara LLC 2020 and Tutela LLC 2020. All rights reserved.
+	// Copyright (c) Cingulara LLC 2025 and Tutela LLC 2025. All rights reserved.
 	// Licensed under the GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 license. See LICENSE file in the project root for full license information.
 -->
 <!DOCTYPE html>
@@ -9,7 +9,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>OpenRMF Reports</title>
+	<title>OpenRMF OSS Reports Dashboard</title>
 	<meta name="description" content="OpenRMF Reports Dashboard">
 	<meta name="author" content="Dale Bingham - https://www.cingulara.com">
 	<meta name="referrer" content="origin">
@@ -112,7 +112,7 @@
 												<i class="fa fa-pie-chart reporticon"></i><br />
 												<button type="button" id="btnRunSystemCharts"
 													title="Run the Scoring Pie Chart Report by System Package"
-													onclick="location.href = 'charts.html';" class="btn btn-success">Run
+													onclick="location.href = 'systempackagescore.html';" class="btn btn-success">Run
 													Report</button>
 											</div>
 										</div>
@@ -126,6 +126,19 @@
 												<button type="button" id="btnRunChecklistReport"
 													title="Run the System Package Checklist Report by Checklist"
 													onclick="location.href = 'checklists.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- System Checklist with Score Listing -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Checklist Dashboard
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-dashboard reporticon"></i><br />
+												<button type="button" id="btnRunChecklistDashboard"
+													title="Run the System Package Checklist Dashboard"
+													onclick="location.href = 'checklistdashboard.html';"
 													class="btn btn-success">Run Report</button>
 											</div>
 										</div>
@@ -178,6 +191,19 @@
 												<button type="button" id="btnRunVulnerabilityOverrideReport"
 													title="Run the Vulnerability Overrides Report by System Package"
 													onclick="location.href = 'vulnerabilityoverride.html';"
+													class="btn btn-success">Run Report</button>
+											</div>
+										</div>
+										<!-- Checklist Missing Data -->
+										<div class="reportListing">
+											<div class="reportListTitle">
+												Vulnerabilities Missing Data
+											</div>
+											<div class="reportListingDescription">
+												<i class="fa fa-ban reporticon"></i><br />
+												<button type="button" id="btnRunVunlerabilitiesMissingDataReport"
+													title="Run the Vulnerabilities Missing Data Report"
+													onclick="location.href = 'vulnerabilitymissingdata.html';"
 													class="btn btn-success">Run Report</button>
 											</div>
 										</div>
